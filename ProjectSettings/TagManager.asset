@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Follow Camera
+  - Aim Camera
+  - CinemachineTarget
+  - FPS Camera
+  - FPS Player
+  - Ground
+  - Aim
+  - Target
+  - Concrete
+  - Blood
+  - Projectile
+  - UI
+  - ExplosiveBarrel
+  - GasTank
+  - Metal
+  - FX
+  - World
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - PostProcessing
+  - 
+  - FirstPersonWeapon
+  - PhysicalAmmo
+  - Ground and Walls
+  - Player
+  - HideItself
+  - Projectile
+  - OtherPlayers
+  - Buildings
+  - Enemy
+  - Bullets
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Background
+    uniqueID: 788040023
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Foreground
+    uniqueID: 3922283465
+    locked: 0
