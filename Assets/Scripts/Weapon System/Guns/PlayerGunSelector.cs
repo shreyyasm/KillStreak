@@ -31,6 +31,7 @@ public class PlayerGunSelector : NetworkBehaviour
     GunScriptableObject gun1;
     GunScriptableObject gun2;
 
+    public GameObject bulletTrail;
     private void Start()
     {
         //gun1 = Guns.Find(gun => gun.Type == PrimaryGun);
@@ -64,5 +65,6 @@ public class PlayerGunSelector : NetworkBehaviour
             if (!weaponSwitching.gunChanging)
                 ActiveGun = gun2;
         }
+        bulletTrail = ActiveGun.ReturnBullet();
     }
 }

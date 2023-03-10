@@ -9,10 +9,12 @@ using UnityEngine.Animations.Rigging;
 using FishNet;
 using FishNet.Object.Synchronizing;
 using FishNet.Component.Animating;
+using FishNet.Observing;
 
 [DisallowMultipleComponent]
 public class PlayerAction : NetworkBehaviour
 {
+    public static PlayerAction Instance;
     [SerializeField]
     private PlayerGunSelector GunSelector;
     [SerializeField]
@@ -29,6 +31,7 @@ public class PlayerAction : NetworkBehaviour
     private ShooterController shooterController;
     [SerializeField]
     private WeaponSwitching weaponSwitch;
+    public GameObject spawnedObject;
 
     [field: SyncVar]
     public bool IsReloading { get; [ServerRpc(RunLocally = true)] set; }
@@ -39,10 +42,18 @@ public class PlayerAction : NetworkBehaviour
     {
         if (!base.IsOwner)
             return;
+        
+        if(Instance == null)
+            Instance = this;
         if (GunSelector.ActiveGun != null)
         {
-             if (!IsReloading)
+            if (!IsReloading)
+            {
                 GunSelector.ActiveGun.Tick(IsShooting);
+                //if(IsShooting)
+                //    PlayerAction.Instance.SpawnBulletServerRPC();
+            }
+                
         }
         //ManualReloadMouse();
         //GunSelector.ActiveGun.Tick(
@@ -167,5 +178,23 @@ public class PlayerAction : NetworkBehaviour
             IsReloading = true;
             networkAnimator.SetTrigger("Reload");
         }
+    }
+    [ServerRpc]
+    public void SpawnBulletServerRPC()
+    {
+
+        ////Instansiate Bullet
+        //prefab.AddComponent<NetworkObject>();
+        //prefab.AddComponent<NetworkObserver>();
+        ServerManager.Spawn(GunSelector.bulletTrail, base.Owner);
+        SetSpawnBullet(GunSelector.bulletTrail, this);
+        Debug.Log("work");
+    }
+
+    [ObserversRpc]
+    public void SetSpawnBullet(GameObject spawned, PlayerAction script)
+    {
+        script.spawnedObject = spawned;
+
     }
 }

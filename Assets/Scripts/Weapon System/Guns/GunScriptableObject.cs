@@ -1,4 +1,6 @@
+using FishNet.Managing.Object;
 using FishNet.Object;
+using FishNet.Observing;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -18,7 +20,7 @@ public class GunScriptableObject : ScriptableObject
     public AmmoConfigScriptableObject AmmoConfig;
     public TrailConfigScriptableObject TrailConfig;
     public AudioConfigScriptableObject AudioConfig;
-
+    public DefaultPrefabObjects fishnetSpawnList;
     private NetworkBehaviour ActiveMonoBehaviour;
     private AudioSource ShootingAudioSource;
     private GameObject Model;
@@ -35,6 +37,7 @@ public class GunScriptableObject : ScriptableObject
     GameObject fpsVirtualCamera;
     GameObject aimVirtualCamera;
     GameObject followVirtualCamera;
+    GameObject bulletTrail;
     /// <summary>
     /// Spawns the Gun Model into the scene
     /// </summary>
@@ -51,8 +54,10 @@ public class GunScriptableObject : ScriptableObject
         InitialClickTime = 0;
         AmmoConfig.CurrentClipAmmo = AmmoConfig.ClipSize;
         AmmoConfig.CurrentAmmo = AmmoConfig.MaxAmmo;
-
+   
         TrailPool = new ObjectPool<TrailRenderer>(CreateTrail);
+        
+
         if (!ShootConfig.IsHitscan)
         {
             BulletPool = new ObjectPool<Bullet>(CreateBullet);
@@ -84,6 +89,11 @@ public class GunScriptableObject : ScriptableObject
     /// <param name="WantsToShoot">Whether or not the player is trying to shoot</param>
     public void Tick(bool WantsToShoot)
     {
+        //foreach (Transform i in TrailPool.Get().transform)
+        //{
+
+        //}
+        
         Model.transform.localRotation = Quaternion.Lerp(
             Model.transform.localRotation,
             Quaternion.Euler(SpawnRotation),
@@ -104,6 +114,7 @@ public class GunScriptableObject : ScriptableObject
             StopShootingTime = Time.time;
             LastFrameWantedToShoot = false;
         }
+
     }
 
     /// <summary>
@@ -320,6 +331,7 @@ public class GunScriptableObject : ScriptableObject
                 )
             );
         }
+        
     }
 
     /// <summary>
@@ -333,6 +345,10 @@ public class GunScriptableObject : ScriptableObject
     private IEnumerator PlayTrail(Vector3 StartPoint, Vector3 EndPoint, RaycastHit Hit)
     {
         TrailRenderer instance = TrailPool.Get();
+        bulletTrail = instance.gameObject;
+        //bulletTrail.AddComponent<NetworkObject>();
+        //bulletTrail.AddComponent<NetworkObserver>();
+        //Debug.Log(bulletTrail);
         instance.gameObject.SetActive(true);
         instance.transform.position = StartPoint;
         yield return null; // avoid position carry-over from last frame if reused
@@ -449,6 +465,10 @@ public class GunScriptableObject : ScriptableObject
     {
         GameObject instance = new GameObject("Bullet Trail");
         TrailRenderer trail = instance.AddComponent<TrailRenderer>();
+        instance.AddComponent<NetworkObject>();
+        instance.AddComponent<NetworkObserver>();
+        //fishnetSpawnList.Prefabs.;
+        //PlayerAction.Instance.SpawnBulletServerRPC(bulletTrail);
         trail.colorGradient = TrailConfig.Color;
         trail.material = TrailConfig.Material;
         trail.widthCurve = TrailConfig.WidthCurve;
@@ -457,7 +477,7 @@ public class GunScriptableObject : ScriptableObject
 
         trail.emitting = false;
         trail.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-
+       // PlayerAction.Instance.SpawnBulletServerRPC(trail.gameObject);
         return trail;
     }
 
@@ -477,5 +497,9 @@ public class GunScriptableObject : ScriptableObject
     {
 
         return Fired;
+    }
+    public GameObject ReturnBullet()
+    {
+        return bulletTrail;
     }
 }
