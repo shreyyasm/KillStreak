@@ -2,6 +2,7 @@ using FishNet.Managing.Object;
 using FishNet.Object;
 using FishNet.Observing;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -56,8 +57,8 @@ public class GunScriptableObject : ScriptableObject
         AmmoConfig.CurrentAmmo = AmmoConfig.MaxAmmo;
    
         TrailPool = new ObjectPool<TrailRenderer>(CreateTrail);
-        
 
+        //PlayerAction.Instance.SpawnBulletServerRPC(TrailPo);
         if (!ShootConfig.IsHitscan)
         {
             BulletPool = new ObjectPool<Bullet>(CreateBullet);
@@ -344,22 +345,25 @@ public class GunScriptableObject : ScriptableObject
     /// <returns>Coroutine</returns>
     private IEnumerator PlayTrail(Vector3 StartPoint, Vector3 EndPoint, RaycastHit Hit)
     {
-        TrailRenderer instance = TrailPool.Get();
-        bulletTrail = instance.gameObject;
+        
+        TrailRenderer tail = GetPooledObject().GetComponentInChildren<TrailRenderer>();
+        //TrailRenderer instance = TrailPool.Get();
+        
+        //bulletTrail = instance.gameObject;
         //bulletTrail.AddComponent<NetworkObject>();
         //bulletTrail.AddComponent<NetworkObserver>();
         //Debug.Log(bulletTrail);
-        instance.gameObject.SetActive(true);
-        instance.transform.position = StartPoint;
+        tail.gameObject.SetActive(true);
+        tail.transform.position = StartPoint;
         yield return null; // avoid position carry-over from last frame if reused
 
-        instance.emitting = true;
+        tail.emitting = true;
 
         float distance = Vector3.Distance(StartPoint, EndPoint);
         float remainingDistance = distance;
         while (remainingDistance > 0)
         {
-            instance.transform.position = Vector3.Lerp(
+            tail.transform.position = Vector3.Lerp(
                 StartPoint,
                 EndPoint,
                 Mathf.Clamp01(1 - (remainingDistance / distance))
@@ -369,7 +373,7 @@ public class GunScriptableObject : ScriptableObject
             yield return null;
         }
 
-        instance.transform.position = EndPoint;
+        tail.transform.position = EndPoint;
 
         if (Hit.collider != null)
         {
@@ -378,9 +382,9 @@ public class GunScriptableObject : ScriptableObject
 
         yield return new WaitForSeconds(TrailConfig.Duration);
         yield return null;
-        instance.emitting = false;
-        instance.gameObject.SetActive(false);
-        TrailPool.Release(instance);
+        tail.emitting = false;
+        tail.gameObject.SetActive(false);
+        //TrailPool.Release(instance);
     }
 
     /// <summary>
@@ -467,8 +471,6 @@ public class GunScriptableObject : ScriptableObject
         TrailRenderer trail = instance.AddComponent<TrailRenderer>();
         instance.AddComponent<NetworkObject>();
         instance.AddComponent<NetworkObserver>();
-        //fishnetSpawnList.Prefabs.;
-        //PlayerAction.Instance.SpawnBulletServerRPC(bulletTrail);
         trail.colorGradient = TrailConfig.Color;
         trail.material = TrailConfig.Material;
         trail.widthCurve = TrailConfig.WidthCurve;
@@ -477,7 +479,6 @@ public class GunScriptableObject : ScriptableObject
 
         trail.emitting = false;
         trail.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-       // PlayerAction.Instance.SpawnBulletServerRPC(trail.gameObject);
         return trail;
     }
 
@@ -502,4 +503,42 @@ public class GunScriptableObject : ScriptableObject
     {
         return bulletTrail;
     }
+    public static ObjectPooler SharedInstance;
+    public List<GameObject> pooledObjects;
+    public GameObject objectToPool;
+    public int amountToPool;
+
+    public void StartPool()
+    {
+        pooledObjects = new List<GameObject>();
+        for (int i = 0; i < amountToPool; i++)
+        {
+            //GameObject instance = new GameObject("Bullet Trail");
+            GameObject obj = (GameObject)Instantiate(objectToPool);
+            //PlayerAction.Instance.SpawnBulletServerRPC(obj);
+            //PlayerAction.Instance.SpawnBulletServerRPC(obj);
+            //obj.transform.parent = instance.transform;
+            obj.SetActive(false);
+            pooledObjects.Add(obj);         
+            //PlayerAction.Instance.SpawnBulletServerRPC(pooledObjects[i]);
+            
+        }
+
+    }
+    public GameObject GetPooledObject()
+    {
+        //1
+        for (int i = 0; i < pooledObjects.Count; i++)
+        {
+            //2
+            if (!pooledObjects[i].activeInHierarchy)
+            {
+                return pooledObjects[i];
+            }
+        }
+        //3   
+        return null;
+    }
+
+
 }

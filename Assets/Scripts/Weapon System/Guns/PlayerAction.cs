@@ -9,7 +9,6 @@ using UnityEngine.Animations.Rigging;
 using FishNet;
 using FishNet.Object.Synchronizing;
 using FishNet.Component.Animating;
-using FishNet.Observing;
 
 [DisallowMultipleComponent]
 public class PlayerAction : NetworkBehaviour
@@ -42,18 +41,12 @@ public class PlayerAction : NetworkBehaviour
     {
         if (!base.IsOwner)
             return;
-        
         if(Instance == null)
             Instance = this;
         if (GunSelector.ActiveGun != null)
         {
-            if (!IsReloading)
-            {
+             if (!IsReloading)
                 GunSelector.ActiveGun.Tick(IsShooting);
-                //if(IsShooting)
-                //    PlayerAction.Instance.SpawnBulletServerRPC();
-            }
-                
         }
         //ManualReloadMouse();
         //GunSelector.ActiveGun.Tick(
@@ -180,15 +173,12 @@ public class PlayerAction : NetworkBehaviour
         }
     }
     [ServerRpc]
-    public void SpawnBulletServerRPC()
+    public void SpawnBulletServerRPC(GameObject prefab)
     {
 
         ////Instansiate Bullet
-        //prefab.AddComponent<NetworkObject>();
-        //prefab.AddComponent<NetworkObserver>();
-        ServerManager.Spawn(GunSelector.bulletTrail, base.Owner);
-        SetSpawnBullet(GunSelector.bulletTrail, this);
-        Debug.Log("work");
+        ServerManager.Spawn(prefab, base.Owner);
+        SetSpawnBullet(prefab, this);
     }
 
     [ObserversRpc]

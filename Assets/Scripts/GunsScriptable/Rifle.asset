@@ -24,4 +24,14 @@ MonoBehaviour:
   AmmoConfig: {fileID: 11400000, guid: 92206e180190e8e49bd4d688847bdd38, type: 2}
   TrailConfig: {fileID: 11400000, guid: d212a906b2dbb1647a6e8de776e53693, type: 2}
   AudioConfig: {fileID: 11400000, guid: 10b2f3d58845e3a4392852870a40bd1b, type: 2}
+  fishnetSpawnList: {fileID: 0}
   Automatic: 1
+  pooledObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  objectToPool: {fileID: 8081663345739861187, guid: c2e6aed9ca9047c4e9e811b1a9d78ecb,
+    type: 3}
+  amountToPool: 5

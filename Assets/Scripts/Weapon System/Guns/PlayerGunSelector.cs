@@ -45,10 +45,22 @@ public class PlayerGunSelector : NetworkBehaviour
             return;
         }
 
-       
+        gunSelected = weaponSwitching.selectedWeapon;
+        if (gunSelected == 0)
+        {
+            if (!weaponSwitching.gunChanging)
+                ActiveGun = gun1;
+        }
+        else
+        {
+            if (!weaponSwitching.gunChanging)
+                ActiveGun = gun2;
+        }
         gun1.Spawn(GunParent, this);
         gun2.Spawn(GunParent, this);
-       
+        gun1.StartPool();
+        gun2.StartPool();
+        //ActiveGun.StartPool();
     }
     private void Update()
     {
