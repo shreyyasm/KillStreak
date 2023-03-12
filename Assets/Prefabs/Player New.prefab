@@ -5031,16 +5031,16 @@ MonoBehaviour:
   - {fileID: 5005272529247113057}
   - {fileID: 8100289299958904026}
   - {fileID: 5005272530028327135}
+  - {fileID: 5005272529568936361}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
-  <ChildNetworkObjects>k__BackingField:
-  - {fileID: 0}
+  <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
   _isGlobal: 0
   _initializeOrder: 0
   _predictedSpawningType: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 10
+  <PrefabId>k__BackingField: 9
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
@@ -5150,6 +5150,12 @@ MonoBehaviour:
   InverseKinematics: {fileID: 5005272530031856897}
   ActiveGun: {fileID: 0}
   weaponSwitching: {fileID: 5005272529568936361}
+  bulletTrail: {fileID: 0}
+  pooledObjects: []
+  objectToPool: {fileID: 8081663345739861187, guid: c2e6aed9ca9047c4e9e811b1a9d78ecb,
+    type: 3}
+  amountToPool: 5
+  playerAction: {fileID: 5005272530031856896}
 --- !u!114 &5005272530031856897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5195,7 +5201,9 @@ MonoBehaviour:
   thirdPersonController: {fileID: 5005272530031856945}
   shooterController: {fileID: 5005272530031856944}
   weaponSwitch: {fileID: 5005272529568936361}
+  spawnedObject: {fileID: 0}
   <IsReloading>k__BackingField: 0
+  IsShooting: 0
 --- !u!114 &1737377146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8137,9 +8145,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f544f2f09089d5e46a3d4724a3d2589e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 0
+  _componentIndexCache: 12
   _addedNetworkObject: {fileID: 5005272530031856902}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 5005272530031856902}
   <selectedWeapon>k__BackingField: 0
   shooterController: {fileID: 5005272530031856944}
   weaponInventory: {fileID: 5005272529568936363}
@@ -8712,8 +8720,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1.6198975, y: 1.6200074}
-  m_SizeDelta: {x: 270, y: 270}
+  m_AnchoredPosition: {x: 1.4485841, y: 1.4486207}
+  m_SizeDelta: {x: 105, y: 105}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &5005272529589322692
 GameObject:
@@ -12937,8 +12945,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 160.35004, y: 136.34998}
-  m_SizeDelta: {x: 272.7, y: 272.7}
+  m_AnchoredPosition: {x: 163.29193, y: 121.92581}
+  m_SizeDelta: {x: 106.049995, y: 106.049995}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &5005272530053016490
 CanvasRenderer:

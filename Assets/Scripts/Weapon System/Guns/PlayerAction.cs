@@ -35,7 +35,7 @@ public class PlayerAction : NetworkBehaviour
     [field: SyncVar]
     public bool IsReloading { get; [ServerRpc(RunLocally = true)] set; }
 
-    private bool IsShooting;
+    public bool IsShooting;
 
     private void Update()
     {
@@ -45,8 +45,12 @@ public class PlayerAction : NetworkBehaviour
             Instance = this;
         if (GunSelector.ActiveGun != null)
         {
-             if (!IsReloading)
+            if (!IsReloading)
+            {
                 GunSelector.ActiveGun.Tick(IsShooting);
+                //GunSelector.FireCondition(IsShooting);
+            }
+                
         }
         //ManualReloadMouse();
         //GunSelector.ActiveGun.Tick(

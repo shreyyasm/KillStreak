@@ -25,11 +25,11 @@ public class GunScriptableObject : ScriptableObject
     private NetworkBehaviour ActiveMonoBehaviour;
     private AudioSource ShootingAudioSource;
     private GameObject Model;
-    private float LastShootTime;
+    public float LastShootTime;
     private float InitialClickTime;
     private float StopShootingTime;
 
-    private ParticleSystem ShootSystem;
+    public ParticleSystem ShootSystem;
     private ObjectPool<TrailRenderer> TrailPool;
     private ObjectPool<Bullet> BulletPool;
     private bool LastFrameWantedToShoot;
@@ -39,6 +39,10 @@ public class GunScriptableObject : ScriptableObject
     GameObject aimVirtualCamera;
     GameObject followVirtualCamera;
     GameObject bulletTrail;
+    GameObject bulletTrailPool;
+    TrailRenderer tail;
+    public Vector3 shootDirection;
+    public Vector3 spreadAmount;
     /// <summary>
     /// Spawns the Gun Model into the scene
     /// </summary>
@@ -82,6 +86,7 @@ public class GunScriptableObject : ScriptableObject
             followVirtualCamera = GameObject.FindWithTag("Follow Camera");
             //fpsVirtualCamera = GameObject.FindWithTag("FPS Camera");
         }
+        //StartPool();
     }
 
     /// <summary>
@@ -149,7 +154,7 @@ public class GunScriptableObject : ScriptableObject
     /// <summary>
     /// Performs the shooting raycast if possible based on gun rate of fire. Also applies bullet spread and plays sound effects based on the AudioConfig.
     /// </summary>
-    Ray ray;
+    public Ray ray;
     private void TryToShoot()
     {
         if (Time.time - LastShootTime - ShootConfig.FireRate > Time.deltaTime)
@@ -180,7 +185,7 @@ public class GunScriptableObject : ScriptableObject
             Vector3 spreadAmount = ShootConfig.GetSpread(Time.time - InitialClickTime);
             Model.transform.forward += Model.transform.TransformDirection(spreadAmount);
 
-            Vector3 shootDirection = ShootSystem.transform.forward;
+            shootDirection = ShootSystem.transform.forward;
 
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
             Camera.main.transform.forward += Camera.main.transform.TransformDirection(spreadAmount);
@@ -201,6 +206,12 @@ public class GunScriptableObject : ScriptableObject
                 DoProjectileShoot(shootDirection);
             }
         }
+    }
+    public void CheckRay()
+    {
+        Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+        Camera.main.transform.forward += Camera.main.transform.TransformDirection(spreadAmount);
+        ray = Camera.main.ScreenPointToRay(screenCenterPoint);
     }
     private void TryToShootManual()
     {
@@ -231,7 +242,7 @@ public class GunScriptableObject : ScriptableObject
                 ShootSystem.Play();
                 AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
 
-                Vector3 spreadAmount = ShootConfig.GetSpread(Time.time - InitialClickTime);
+                spreadAmount = ShootConfig.GetSpread(Time.time - InitialClickTime);
                 Model.transform.forward += Model.transform.TransformDirection(spreadAmount);
 
                 Vector3 shootDirection = ShootSystem.transform.forward;
@@ -257,6 +268,12 @@ public class GunScriptableObject : ScriptableObject
             }
         }
   
+    }
+    public void RayCast()
+    {
+        Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+        //Camera.main.transform.forward += Camera.main.transform.TransformDirection(spreadAmount);
+        ray = Camera.main.ScreenPointToRay(screenCenterPoint);
     }
     /// <summary>
     /// Generates a live Bullet instance that is launched in the <paramref name="ShootDirection"/> direction
@@ -291,24 +308,8 @@ public class GunScriptableObject : ScriptableObject
     private void DoHitscanShoot(Vector3 ShootDirection)
     {
         
-        if (Physics.Raycast(
-                ray,              
-                out RaycastHit hit,
-                float.MaxValue,
-                ShootConfig.HitMask
-            ))
-        {
-            ActiveMonoBehaviour.StartCoroutine(
-                PlayTrail(
-                    ShootSystem.transform.position,
-                    hit.point,
-                    hit
-                )
-            );
-        }
         //if (Physics.Raycast(
-        //        ShootSystem.transform.position,
-        //        ShootDirection,
+        //        ray,              
         //        out RaycastHit hit,
         //        float.MaxValue,
         //        ShootConfig.HitMask
@@ -322,16 +323,32 @@ public class GunScriptableObject : ScriptableObject
         //        )
         //    );
         //}
-        else
-        {
-            ActiveMonoBehaviour.StartCoroutine(
-                PlayTrail(
-                    ShootSystem.transform.position,
-                    ShootSystem.transform.position + (ShootDirection * TrailConfig.MissDistance),
-                    new RaycastHit()
-                )
-            );
-        }
+        ////if (Physics.Raycast(
+        ////        ShootSystem.transform.position,
+        ////        ShootDirection,
+        ////        out RaycastHit hit,
+        ////        float.MaxValue,
+        ////        ShootConfig.HitMask
+        ////    ))
+        ////{
+        ////    ActiveMonoBehaviour.StartCoroutine(
+        ////        PlayTrail(
+        ////            ShootSystem.transform.position,
+        ////            hit.point,
+        ////            hit
+        ////        )
+        ////    );
+        ////}
+        //else
+        //{
+        //    ActiveMonoBehaviour.StartCoroutine(
+        //        PlayTrail(
+        //            ShootSystem.transform.position,
+        //            ShootSystem.transform.position + (ShootDirection * TrailConfig.MissDistance),
+        //            new RaycastHit()
+        //        )
+        //    );
+        //}
         
     }
 
@@ -345,10 +362,10 @@ public class GunScriptableObject : ScriptableObject
     /// <returns>Coroutine</returns>
     private IEnumerator PlayTrail(Vector3 StartPoint, Vector3 EndPoint, RaycastHit Hit)
     {
-        
-        TrailRenderer tail = GetPooledObject().GetComponentInChildren<TrailRenderer>();
+
+        //TrailRenderer tail = GetPooledObject().GetComponent<TrailRenderer>();
         //TrailRenderer instance = TrailPool.Get();
-        
+        //tail = bulletTrailPool.GetComponentInChildren<TrailRenderer>();
         //bulletTrail = instance.gameObject;
         //bulletTrail.AddComponent<NetworkObject>();
         //bulletTrail.AddComponent<NetworkObserver>();
@@ -510,20 +527,22 @@ public class GunScriptableObject : ScriptableObject
 
     public void StartPool()
     {
+        bulletTrailPool = new GameObject("Bullet Pool");
         pooledObjects = new List<GameObject>();
         for (int i = 0; i < amountToPool; i++)
         {
-            //GameObject instance = new GameObject("Bullet Trail");
+            
             GameObject obj = (GameObject)Instantiate(objectToPool);
             //PlayerAction.Instance.SpawnBulletServerRPC(obj);
             //PlayerAction.Instance.SpawnBulletServerRPC(obj);
-            //obj.transform.parent = instance.transform;
+            obj.transform.parent = bulletTrailPool.transform;
             obj.SetActive(false);
             pooledObjects.Add(obj);         
             //PlayerAction.Instance.SpawnBulletServerRPC(pooledObjects[i]);
             
         }
-
+       
+        
     }
     public GameObject GetPooledObject()
     {
@@ -538,6 +557,7 @@ public class GunScriptableObject : ScriptableObject
         }
         //3   
         return null;
+        
     }
 
 

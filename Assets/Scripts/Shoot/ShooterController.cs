@@ -46,11 +46,16 @@ public class ShooterController : NetworkBehaviour
     float lastShotTime;
     private WeaponManager equippedWeapon;
 
+
     private void Awake()
     {
         //References       
         aimVirtualCamera = GameObject.FindWithTag("Aim Camera").GetComponent<CinemachineVirtualCamera>();
         followVirtualCamera = GameObject.FindWithTag("Follow Camera").GetComponent<CinemachineVirtualCamera>();
+    }
+    private void Start()
+    {
+        //StartPool();
     }
     public void Update()
     {
@@ -226,5 +231,6 @@ public class ShooterController : NetworkBehaviour
         animator.SetLayerWeight(3, 0);
         animator.SetLayerWeight(1, 0);
     }
+    
 
 }
