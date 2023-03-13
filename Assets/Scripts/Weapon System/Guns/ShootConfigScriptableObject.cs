@@ -14,6 +14,7 @@ public class ShootConfigScriptableObject : ScriptableObject
     public float MaxSpreadTime = 1f;
     [Header("Simple Spread")]
     public Vector3 Spread = new Vector3(0.1f, 0.1f, 0.1f);
+    public float SpreadUp = 0.1f;
     [Header("Texture-Based Spread")]
     [Range(0.001f, 5f)]
     public float SpreadMultiplier = 0.1f;
@@ -36,7 +37,7 @@ public class ShootConfigScriptableObject : ScriptableObject
                 Vector3.zero,
                 new Vector3(
                     Random.Range(-Spread.x, Spread.x),
-                    Random.Range(-Spread.y, Spread.y),
+                    Random.Range(-Spread.y, SpreadUp),
                     Random.Range(-Spread.z, Spread.z)
                 ),
                 Mathf.Clamp01(ShootTime / MaxSpreadTime)

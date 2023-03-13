@@ -39,7 +39,12 @@ public class PlayerGunSelector : NetworkBehaviour
     public GameObject objectToPool;
     public int amountToPool;
     private Ray ray;
+    Camera ActiveCamera;
     public PlayerAction playerAction;
+    private void Awake()
+    {
+        ActiveCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+    }
     private void Start()
     {
         //gun1 = Guns.Find(gun => gun.Type == PrimaryGun);
@@ -92,11 +97,9 @@ public class PlayerGunSelector : NetworkBehaviour
         {
             //ActiveGun.CheckRay();
             //ActiveGun.RayCast();
-            if (Time.time > ActiveGun.ShootConfig.FireRate + ActiveGun.LastShootTime)
-            {
+
                 if (ActiveGun.ShootConfig.IsHitscan)
                     FireCondition();
-            }
 
         }
        
@@ -139,33 +142,53 @@ public class PlayerGunSelector : NetworkBehaviour
     }
     public void FireCondition()
     {
-        
-        if (Physics.Raycast(
-                ActiveGun.ray,
-                out RaycastHit hit,
-                float.MaxValue,
-                ActiveGun.ShootConfig.HitMask
-            ))
+        if (Time.time - ActiveGun.LastShootTime - ActiveGun.ShootConfig.FireRate > Time.deltaTime)
         {
-            StartCoroutine(
-                PlayTrail(
-                    ActiveGun.ShootSystem.transform.position,
-                    hit.point,
-                    hit
-                )
+            float lastDuration = Mathf.Clamp(
+                0,
+                (ActiveGun.StopShootingTime - ActiveGun.InitialClickTime),
+                ActiveGun.ShootConfig.MaxSpreadTime
             );
+            float lerpTime = (ActiveGun.ShootConfig.RecoilRecoverySpeed - (Time.time - ActiveGun.StopShootingTime))
+                / ActiveGun.ShootConfig.RecoilRecoverySpeed;
+
+            ActiveGun.InitialClickTime = Time.time - Mathf.Lerp(0, lastDuration, Mathf.Clamp01(lerpTime));
+        }
+        if (Time.time > ActiveGun.ShootConfig.FireRate + ActiveGun.LastShootTime)
+        {
+            ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
+            Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+            ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+
+            Vector3 shootDirection = Vector3.zero;
+            shootDirection = ActiveCamera.transform.forward + ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
+            Vector3 origin = ActiveCamera.transform.position
+                        + ActiveCamera.transform.forward * Vector3.Distance(
+                                ActiveCamera.transform.position,
+                                ActiveGun.ShootSystem.transform.position);
+            if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+            {
+                StartCoroutine(
+                    PlayTrail(
+                        ActiveGun.ShootSystem.transform.position,
+                        hit.point,
+                        hit
+                    )
+                );
+            }
+
+            else
+            {
+                StartCoroutine(
+                     PlayTrail(
+                         ActiveGun.ShootSystem.transform.position,
+                         ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                         new RaycastHit()
+                     )
+                 );
+            }
         }
        
-        else
-        {
-           StartCoroutine(
-                PlayTrail(
-                    ActiveGun.ShootSystem.transform.position,
-                    ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
-                    new RaycastHit()
-                )
-            );
-        }
     }
 
     private IEnumerator PlayTrail(Vector3 StartPoint, Vector3 EndPoint, RaycastHit Hit)

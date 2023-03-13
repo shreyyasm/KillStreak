@@ -26,8 +26,8 @@ public class GunScriptableObject : ScriptableObject
     private AudioSource ShootingAudioSource;
     private GameObject Model;
     public float LastShootTime;
-    private float InitialClickTime;
-    private float StopShootingTime;
+    public float InitialClickTime;
+    public float StopShootingTime;
 
     public ParticleSystem ShootSystem;
     private ObjectPool<TrailRenderer> TrailPool;
@@ -155,6 +155,7 @@ public class GunScriptableObject : ScriptableObject
     /// Performs the shooting raycast if possible based on gun rate of fire. Also applies bullet spread and plays sound effects based on the AudioConfig.
     /// </summary>
     public Ray ray;
+    public float shootHoldTime;
     private void TryToShoot()
     {
         if (Time.time - LastShootTime - ShootConfig.FireRate > Time.deltaTime)
@@ -182,7 +183,8 @@ public class GunScriptableObject : ScriptableObject
             ShootSystem.Play();
             AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
 
-            Vector3 spreadAmount = ShootConfig.GetSpread(Time.time - InitialClickTime);
+            shootHoldTime = Time.time;
+            Vector3 spreadAmount = ShootConfig.GetSpread(shootHoldTime - InitialClickTime);
             Model.transform.forward += Model.transform.TransformDirection(spreadAmount);
 
             shootDirection = ShootSystem.transform.forward;
@@ -207,12 +209,7 @@ public class GunScriptableObject : ScriptableObject
             }
         }
     }
-    public void CheckRay()
-    {
-        Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
-        Camera.main.transform.forward += Camera.main.transform.TransformDirection(spreadAmount);
-        ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-    }
+    
     private void TryToShootManual()
     {
         if(Fired)
@@ -269,12 +266,7 @@ public class GunScriptableObject : ScriptableObject
         }
   
     }
-    public void RayCast()
-    {
-        Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
-        //Camera.main.transform.forward += Camera.main.transform.TransformDirection(spreadAmount);
-        ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-    }
+  
     /// <summary>
     /// Generates a live Bullet instance that is launched in the <paramref name="ShootDirection"/> direction
     /// with velocity from <see cref="ShootConfigScriptableObject.BulletSpawnForce"/>.
@@ -307,9 +299,9 @@ public class GunScriptableObject : ScriptableObject
     /// <param name="ShootDirection"></param>
     private void DoHitscanShoot(Vector3 ShootDirection)
     {
-        
+
         //if (Physics.Raycast(
-        //        ray,              
+        //        ray,
         //        out RaycastHit hit,
         //        float.MaxValue,
         //        ShootConfig.HitMask
@@ -323,22 +315,7 @@ public class GunScriptableObject : ScriptableObject
         //        )
         //    );
         //}
-        ////if (Physics.Raycast(
-        ////        ShootSystem.transform.position,
-        ////        ShootDirection,
-        ////        out RaycastHit hit,
-        ////        float.MaxValue,
-        ////        ShootConfig.HitMask
-        ////    ))
-        ////{
-        ////    ActiveMonoBehaviour.StartCoroutine(
-        ////        PlayTrail(
-        ////            ShootSystem.transform.position,
-        ////            hit.point,
-        ////            hit
-        ////        )
-        ////    );
-        ////}
+       
         //else
         //{
         //    ActiveMonoBehaviour.StartCoroutine(
@@ -349,7 +326,7 @@ public class GunScriptableObject : ScriptableObject
         //        )
         //    );
         //}
-        
+
     }
 
     /// <summary>

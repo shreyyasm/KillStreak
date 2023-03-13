@@ -5141,6 +5141,7 @@ MonoBehaviour:
   _componentIndexCache: 5
   _addedNetworkObject: {fileID: 5005272530031856902}
   _networkObjectCache: {fileID: 5005272530031856902}
+  Camera: {fileID: 0}
   PrimaryGun: 0
   SecondaryGun: 1
   GunParent: {fileID: 5005272529568936362}
@@ -5202,6 +5203,7 @@ MonoBehaviour:
   shooterController: {fileID: 5005272530031856944}
   weaponSwitch: {fileID: 5005272529568936361}
   spawnedObject: {fileID: 0}
+  Crosshair: {fileID: 5005272529950022722}
   <IsReloading>k__BackingField: 0
   IsShooting: 0
 --- !u!114 &1737377146
@@ -8720,8 +8722,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1.4485841, y: 1.4486207}
-  m_SizeDelta: {x: 105, y: 105}
+  m_AnchoredPosition: {x: 1.6198975, y: 1.6200074}
+  m_SizeDelta: {x: 270, y: 270}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &5005272529589322692
 GameObject:
@@ -12945,8 +12947,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 163.29193, y: 121.92581}
-  m_SizeDelta: {x: 106.049995, y: 106.049995}
+  m_AnchoredPosition: {x: 160.34998, y: 136.35}
+  m_SizeDelta: {x: 272.7, y: 272.7}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &5005272530053016490
 CanvasRenderer:
