@@ -505,6 +505,7 @@ public class GunScriptableObject : ScriptableObject
     public void StartPool()
     {
         bulletTrailPool = new GameObject("Bullet Pool");
+
         pooledObjects = new List<GameObject>();
         for (int i = 0; i < amountToPool; i++)
         {

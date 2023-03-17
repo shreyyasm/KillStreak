@@ -49,8 +49,10 @@ public class ObjectPool
     private void CreateObject()
     {
         PoolableObject poolableObject = GameObject.Instantiate(Prefab, Vector3.zero, Quaternion.identity, Parent.transform);
+        //SurfaceManager.Instance.SpawnBulletServerRPC(poolableObject.gameObject);
         poolableObject.Parent = this;
         poolableObject.gameObject.SetActive(false); // PoolableObject handles re-adding the object to the AvailableObjects
+        //SurfaceManager.Instance.Despawn(poolableObject.gameObject);
     }
 
     public PoolableObject GetObject(Vector3 Position, Quaternion Rotation)

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using FishNet.Object;
+using FishNet.Observing;
+using FishNet.Connection;
+
 [DisallowMultipleComponent]
 public class PlayerGunSelector : NetworkBehaviour
 {
@@ -26,7 +29,8 @@ public class PlayerGunSelector : NetworkBehaviour
 
     [SerializeField]
     private WeaponSwitching weaponSwitching;
-
+    [SerializeField]
+    private SurfaceManager surfaceManager;
     int gunSelected;
     GunScriptableObject gun1;
     GunScriptableObject gun2;
@@ -41,6 +45,9 @@ public class PlayerGunSelector : NetworkBehaviour
     private Ray ray;
     Camera ActiveCamera;
     public PlayerAction playerAction;
+    public GameObject spawnedObject;
+    private NetworkConnection ownerConnection;
+
     private void Awake()
     {
         ActiveCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -72,6 +79,7 @@ public class PlayerGunSelector : NetworkBehaviour
         gun1.Spawn(GunParent, this);
         gun2.Spawn(GunParent, this);
         StartPool();
+        //SurfaceManager.Instance.StartPool();
         //gun1.StartPool();
         //gun2.StartPool();
         //ActiveGun.StartPool();
@@ -118,10 +126,13 @@ public class PlayerGunSelector : NetworkBehaviour
             //PlayerAction.Instance.SpawnBulletServerRPC(obj);
             //PlayerAction.Instance.SpawnBulletServerRPC(obj);
             obj.transform.parent = bulletTrailPool.transform;
+            //obj.AddComponent<NetworkObject>();
+            //obj.AddComponent<NetworkObserver>();
             obj.SetActive(false);
+            
             pooledObjects.Add(obj);
-            //PlayerAction.Instance.SpawnBulletServerRPC(pooledObjects[i]);
-
+            SpawnBulletServerRPC(pooledObjects[i]);
+            base.Despawn(obj, DespawnType.Pool);
         }
 
 
@@ -196,7 +207,7 @@ public class PlayerGunSelector : NetworkBehaviour
 
         TrailRenderer tail = GetPooledObject().GetComponent<TrailRenderer>();
         //TrailRenderer instance = TrailPool.Get();
-
+        
         //bulletTrail = instance.gameObject;
         //bulletTrail.AddComponent<NetworkObject>();
         //bulletTrail.AddComponent<NetworkObserver>();
@@ -240,7 +251,7 @@ public class PlayerGunSelector : NetworkBehaviour
        Vector3 HitNormal,
        Collider HitCollider)
     {
-        SurfaceManager.Instance.HandleImpact(
+        surfaceManager.HandleImpact(
                 HitCollider.gameObject,
                 HitLocation,
                 HitNormal,
@@ -252,5 +263,20 @@ public class PlayerGunSelector : NetworkBehaviour
         {
             damageable.TakeDamage(ActiveGun.DamageConfig.GetDamage(DistanceTraveled));
         }
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void SpawnBulletServerRPC(GameObject prefab)
+    {
+
+        ////Instansiate Bullet
+        ServerManager.Spawn(prefab, base.Owner);
+        SetSpawnBullet(prefab, this);
+    }
+
+    [ObserversRpc(BufferLast = false, IncludeOwner = true)]
+    public void SetSpawnBullet(GameObject spawned, PlayerGunSelector script)
+    {
+        script.spawnedObject = spawned;
+
     }
 }

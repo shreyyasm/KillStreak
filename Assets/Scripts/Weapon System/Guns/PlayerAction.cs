@@ -30,7 +30,7 @@ public class PlayerAction : NetworkBehaviour
     private ShooterController shooterController;
     [SerializeField]
     private WeaponSwitching weaponSwitch;
-    public GameObject spawnedObject;
+  
 
     [field: SyncVar]
     public bool IsReloading { get; [ServerRpc(RunLocally = true)] set; }
@@ -176,19 +176,5 @@ public class PlayerAction : NetworkBehaviour
             networkAnimator.SetTrigger("Reload");
         }
     }
-    [ServerRpc]
-    public void SpawnBulletServerRPC(GameObject prefab)
-    {
-
-        ////Instansiate Bullet
-        ServerManager.Spawn(prefab, base.Owner);
-        SetSpawnBullet(prefab, this);
-    }
-
-    [ObserversRpc]
-    public void SetSpawnBullet(GameObject spawned, PlayerAction script)
-    {
-        script.spawnedObject = spawned;
-
-    }
+    
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4587651611338842}
   - component: {fileID: 114777204554752142}
   - component: {fileID: 82763957066427458}
-  - component: {fileID: 2663978510928926984}
+  - component: {fileID: 2632968475557464597}
   m_Layer: 0
   m_Name: Bullet Impact
   m_TagString: Untagged
@@ -153,7 +153,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &2663978510928926984
+--- !u!114 &2632968475557464597
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
