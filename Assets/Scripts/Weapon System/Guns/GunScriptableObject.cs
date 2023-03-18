@@ -441,13 +441,13 @@ public class GunScriptableObject : ScriptableObject
         Vector3 HitNormal,
         Collider HitCollider)
     {
-        SurfaceManager.Instance.HandleImpact(
-                HitCollider.gameObject,
-                HitLocation,
-                HitNormal,
-                ImpactType,
-                0
-            );
+        //SurfaceManager.Instance.HandleImpact(
+        //        HitCollider.gameObject,
+        //        HitLocation,
+        //        HitNormal,
+        //        ImpactType,
+        //        0
+        //    );
 
         if (HitCollider.TryGetComponent(out IDamageable damageable))
         {

@@ -7,23 +7,15 @@ using UnityEngine;
 
 public class SurfaceManager : NetworkBehaviour
 {
-    private static SurfaceManager _instance;
     public GameObject spawnedObject;
-    public static SurfaceManager Instance
+
+    public override void OnStartNetwork()
     {
-        get
-        {
-            return _instance;
-        }
-        private set
-        {
-            _instance = value;
-        }
+        base.OnStartNetwork();
+        StartPoolServer();
     }
-    private void Start()
-    {
-        StartPool();
-    }
+
+
 
     [SerializeField]
     private List<SurfaceType> Surfaces = new List<SurfaceType>();
@@ -165,14 +157,11 @@ public class SurfaceManager : NetworkBehaviour
         {
             if (spawnObjectEffect.Probability > Random.value)
             {
-                //ObjectPool pool = ObjectPool.CreateInstance(spawnObjectEffect.Prefab.GetComponent<PoolableObject>(), DefaultPoolSizes);
-                
-                //PoolableObject instance = pool.GetObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal));
-                GameObject objectPool = GetPooledObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal));
-                StartCoroutine(DisableImpact(objectPool));
+               
+                GameObject getobject =  GetPooledObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal);
+                getobject.transform.forward = HitNormal;
 
-                objectPool.transform.forward = HitNormal;
-
+                //getobject.GetComponent<ImpactDespawn>().StartDespawn();
                 if (spawnObjectEffect.RandomizeRotation)
                 {
                     Vector3 offset = new Vector3(
@@ -181,8 +170,9 @@ public class SurfaceManager : NetworkBehaviour
                         Random.Range(0, 180 * spawnObjectEffect.RandomizedRotationMultiplier.z)
                     );
 
-                    objectPool.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + offset);
+                    getobject.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + offset);
                 }
+                StartCoroutine(DisableImpact(getobject));
             }
         }
 
@@ -216,8 +206,10 @@ public class SurfaceManager : NetworkBehaviour
     public List<GameObject> pooledObjects;
     public GameObject objectToPool;
     public int amountToPool;
-    public void StartPool()
+
+    public void StartPoolServer()
     {
+        Debug.Log("Pool");
         impactTrailPool = new GameObject("Imapct Pool");
         pooledObjects = new List<GameObject>();
         for (int i = 0; i < amountToPool; i++)
@@ -240,8 +232,24 @@ public class SurfaceManager : NetworkBehaviour
         }
     }
 
-    
-    public GameObject GetPooledObject(Vector3 Position, Quaternion Rotation)
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void GetPoolObjectServerRPC(int i, Vector3 Position, Quaternion Rotation, Vector3 HitNormal)
+    {
+        pooledObjects[i].transform.position = Position;
+        pooledObjects[i].transform.rotation = Rotation;
+        pooledObjects[i].gameObject.SetActive(true);
+       // pooledObjects[i].transform.forward = HitNormal;
+    }
+    [ObserversRpc(BufferLast = false, IncludeOwner = true)]
+    public void GetPoolObjectObserverRPC(int i,Vector3 Position, Quaternion Rotation, Vector3 HitNormal)
+    {
+        pooledObjects[i].transform.position = Position;
+        pooledObjects[i].transform.rotation = Rotation;
+        pooledObjects[i].gameObject.SetActive(true);
+       // pooledObjects[i].transform.forward = HitNormal;
+    }
+
+    public GameObject GetPooledObject(Vector3 Position, Quaternion Rotation, Vector3 HitNormal)
     {
         //1
         for (int i = 0; i < pooledObjects.Count; i++)
@@ -249,24 +257,30 @@ public class SurfaceManager : NetworkBehaviour
             //2
             if (!pooledObjects[i].activeInHierarchy)
             {
-                pooledObjects[i].transform.position = Position;
-                pooledObjects[i].transform.rotation = Rotation;
-                pooledObjects[i].gameObject.SetActive(true);
+                if (base.IsServer)
+                    GetPoolObjectObserverRPC(i,Position, Rotation, HitNormal);
+
+                else
+                    GetPoolObjectServerRPC(i, Position, Rotation, HitNormal);
+
                 return pooledObjects[i];
             }
         }
         //3   
         return null;
     }
-    public IEnumerator DisableImpact(GameObject pooledObject)
+    IEnumerator DisableImpact(GameObject pooledObject)
     {
         yield return new WaitForSeconds(3f);
-        pooledObject.SetActive(false);
+        //pooledObject.SetActive(false);
+        if (base.IsServer)
+            DespawnImpactServer(pooledObject);
+        if(base.IsOwner)
+            DespawnImpactObserver(pooledObject);
     }
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void SpawnImpactServerRPC(GameObject prefab)
     {
-
         ////Instansiate Bullet
         ServerManager.Spawn(prefab, base.Owner);
         SetSpawnImpact(prefab, this);
@@ -278,9 +292,16 @@ public class SurfaceManager : NetworkBehaviour
         script.spawnedObject = spawned;
     }
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
-    public void DespawnImpact(GameObject obj)
+    public void DespawnImpactServer(GameObject pooledObject)
     {
-        base.Despawn(obj, DespawnType.Pool);
+        //base.Despawn(pooledObject, DespawnType.Pool);
+        pooledObject.SetActive(false);
+    }
+    [ObserversRpc(BufferLast = false, IncludeOwner = true)]
+    public void DespawnImpactObserver(GameObject pooledObject)
+    {
+        //base.Despawn(pooledObject, DespawnType.Pool);
+        pooledObject.SetActive(false);
     }
 
 }
