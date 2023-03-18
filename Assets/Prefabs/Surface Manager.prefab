@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5342081945277875022}
-  - component: {fileID: 5342081945277875021}
+  - component: {fileID: 2349726479341663345}
+  - component: {fileID: 9104335417041985778}
   m_Layer: 0
   m_Name: Surface Manager
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5342081945277875021
+--- !u!114 &2349726479341663345
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,20 +42,46 @@ MonoBehaviour:
   m_GameObject: {fileID: 5342081945277875020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d57b97c78a0b71943b16a2a0a8a4640a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a9116996d9b8654dade50eaba6d6223, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 0}
-  _networkObjectCache: {fileID: 0}
+  _addedNetworkObject: {fileID: 9104335417041985778}
+  _networkObjectCache: {fileID: 9104335417041985778}
   spawnedObject: {fileID: 0}
-  Surfaces:
-  - Albedo: {fileID: 2800000, guid: 177e7f514292f9247aaff29e2bd7934f, type: 3}
-    Surface: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
-  - Albedo: {fileID: 2800000, guid: 4429eb1d9b2cf914abc67f2b83b761d7, type: 3}
-    Surface: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
-  DefaultPoolSizes: 20
-  DefaultSurface: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
+  Surfaces: []
+  DefaultPoolSizes: 10
+  DefaultSurface: {fileID: 0}
   pooledObjects: []
   objectToPool: {fileID: 0}
   amountToPool: 0
+--- !u!114 &9104335417041985778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5342081945277875020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  <ComponentIndex>k__BackingField: 0
+  _networkBehaviours:
+  - {fileID: 2349726479341663345}
+  <ParentNetworkObject>k__BackingField: {fileID: 0}
+  <ChildNetworkObjects>k__BackingField: []
+  _isNetworked: 1
+  _isGlobal: 0
+  _initializeOrder: 0
+  _predictedSpawningType: 0
+  _defaultDespawnType: 0
+  NetworkObserver: {fileID: 0}
+  <PrefabId>k__BackingField: -1
+  <SpawnableCollectionId>k__BackingField: 0
+  _scenePathHash: 0
+  <SceneId>k__BackingField: 0
+  <AssetPathHash>k__BackingField: 9739587014981370359
+  _sceneNetworkObjects: []

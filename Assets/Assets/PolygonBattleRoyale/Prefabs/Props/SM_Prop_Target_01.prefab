@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 33920960278335828}
   - component: {fileID: 23304885942391806}
   - component: {fileID: 64814216261905374}
-  - component: {fileID: 222618673}
   m_Layer: 17
   m_Name: SM_Prop_Target_01
   m_TagString: Blood
@@ -99,15 +98,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43004275098325928, guid: b167d1e295259224194b5d15dcc007da, type: 2}
---- !u!114 &222618673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301019947510714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53632d0cb5abcda46a9369b0dc6243d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

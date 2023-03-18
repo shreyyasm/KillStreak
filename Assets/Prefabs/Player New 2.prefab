@@ -17064,7 +17064,8 @@ MonoBehaviour:
   - {fileID: 2086626057577581779}
   - {fileID: 2086626058976464293}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
-  <ChildNetworkObjects>k__BackingField: []
+  <ChildNetworkObjects>k__BackingField:
+  - {fileID: 5163738861015260342}
   _isNetworked: 1
   _isGlobal: 0
   _initializeOrder: 0
@@ -18699,9 +18700,52 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9104335417041985778, guid: c5fa1635b443eaf42a181b1a6b4425a3,
+        type: 3}
+      propertyPath: <IsNested>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104335417041985778, guid: c5fa1635b443eaf42a181b1a6b4425a3,
+        type: 3}
+      propertyPath: _networkBehaviours.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104335417041985778, guid: c5fa1635b443eaf42a181b1a6b4425a3,
+        type: 3}
+      propertyPath: <ComponentIndex>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104335417041985778, guid: c5fa1635b443eaf42a181b1a6b4425a3,
+        type: 3}
+      propertyPath: _networkBehaviours.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104335417041985778, guid: c5fa1635b443eaf42a181b1a6b4425a3,
+        type: 3}
+      propertyPath: _networkBehaviours.Array.data[1]
+      value: 
+      objectReference: {fileID: 7911791207667427746}
+    - target: {fileID: 9104335417041985778, guid: c5fa1635b443eaf42a181b1a6b4425a3,
+        type: 3}
+      propertyPath: <ParentNetworkObject>k__BackingField
+      value: 
+      objectReference: {fileID: 2086626057564614922}
     m_RemovedComponents:
     - {fileID: 5342081945277875021, guid: c5fa1635b443eaf42a181b1a6b4425a3, type: 3}
+    - {fileID: 2349726479341663345, guid: c5fa1635b443eaf42a181b1a6b4425a3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c5fa1635b443eaf42a181b1a6b4425a3, type: 3}
+--- !u!114 &5163738861015260342 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9104335417041985778, guid: c5fa1635b443eaf42a181b1a6b4425a3,
+    type: 3}
+  m_PrefabInstance: {fileID: 4174926952709913668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8345929633114013448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8345929633114013448 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5342081945277875020, guid: c5fa1635b443eaf42a181b1a6b4425a3,
@@ -18720,6 +18764,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a9116996d9b8654dade50eaba6d6223, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 1
+  _addedNetworkObject: {fileID: 2086626057564614922}
+  _networkObjectCache: {fileID: 5163738861015260342}
+  spawnedObject: {fileID: 0}
   Surfaces:
   - Albedo: {fileID: 2800000, guid: 177e7f514292f9247aaff29e2bd7934f, type: 3}
     Surface: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
@@ -18727,6 +18775,10 @@ MonoBehaviour:
     Surface: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
   DefaultPoolSizes: 10
   DefaultSurface: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
+  pooledObjects: []
+  objectToPool: {fileID: 1067471869909948, guid: 5e02303289b3c494e8e185be0fbbd405,
+    type: 3}
+  amountToPool: 40
 --- !u!4 &8345929633114013450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5342081945277875022, guid: c5fa1635b443eaf42a181b1a6b4425a3,

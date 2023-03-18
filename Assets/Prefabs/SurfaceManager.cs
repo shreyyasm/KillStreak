@@ -1,10 +1,13 @@
+using FishNet.Managing.Server;
+using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SurfaceManager : MonoBehaviour
+public class SurfaceManager : NetworkBehaviour
 {
     private static SurfaceManager _instance;
+    public GameObject spawnedObject;
     public static SurfaceManager Instance
     {
         get
@@ -17,18 +20,10 @@ public class SurfaceManager : MonoBehaviour
         }
     }
 
-    private void Awake()
+    private void Start()
     {
-        if (Instance != null)
-        {
-            Debug.LogError("More than one SurfaceManager active in the scene! Destroying latest one: " + name);
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
+        StartPool();
     }
-
     [SerializeField]
     private List<SurfaceType> Surfaces = new List<SurfaceType>();
     [SerializeField]
@@ -169,11 +164,14 @@ public class SurfaceManager : MonoBehaviour
         {
             if (spawnObjectEffect.Probability > Random.value)
             {
-                ObjectPool pool = ObjectPool.CreateInstance(spawnObjectEffect.Prefab.GetComponent<PoolableObject>(), DefaultPoolSizes);
+                //ObjectPool pool = ObjectPool.CreateInstance(spawnObjectEffect.Prefab.GetComponent<PoolableObject>(), DefaultPoolSizes);
+                
+                //PoolableObject instance = pool.GetObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal));
+                GameObject objectPool = GetPooledObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal));
+                StartCoroutine(DisableImpact(objectPool));
 
-                PoolableObject instance = pool.GetObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal));
+                objectPool.transform.forward = HitNormal;
 
-                instance.transform.forward = HitNormal;
                 if (spawnObjectEffect.RandomizeRotation)
                 {
                     Vector3 offset = new Vector3(
@@ -182,7 +180,7 @@ public class SurfaceManager : MonoBehaviour
                         Random.Range(0, 180 * spawnObjectEffect.RandomizedRotationMultiplier.z)
                     );
 
-                    instance.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + offset);
+                    objectPool.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + offset);
                 }
             }
         }
@@ -210,5 +208,69 @@ public class SurfaceManager : MonoBehaviour
     {
         public float Alpha;
         public Texture Texture;
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void SpawnBulletServerRPC(GameObject prefab)
+    {
+
+        ////Instansiate Bullet
+        ServerManager.Spawn(prefab, base.Owner);
+        SetSpawnBullet(prefab, this);
+    }
+
+    [ObserversRpc(BufferLast = false, IncludeOwner = true)]
+    public void SetSpawnBullet(GameObject spawned, SurfaceManager script)
+    {
+        script.spawnedObject = spawned;
+
+    }
+    public static ObjectPooler SharedInstance;
+    private GameObject impactTrailPool;
+    public List<GameObject> pooledObjects;
+    public GameObject objectToPool;
+    public int amountToPool;
+    public void StartPool()
+    {
+        impactTrailPool = new GameObject("Imapct Pool");
+        pooledObjects = new List<GameObject>();
+        for (int i = 0; i < amountToPool; i++)
+        {
+
+            GameObject obj = (GameObject)Instantiate(objectToPool);
+            //PlayerAction.Instance.SpawnBulletServerRPC(obj);
+            //PlayerAction.Instance.SpawnBulletServerRPC(obj);
+            obj.transform.parent = impactTrailPool.transform;
+            //obj.AddComponent<NetworkObject>();
+            //obj.AddComponent<NetworkObserver>();
+            obj.SetActive(false);
+
+            pooledObjects.Add(obj);
+            // SpawnBulletServerRPC(pooledObjects[i]);
+            //base.Despawn(obj, DespawnType.Pool);
+        }
+
+
+    }
+    public GameObject GetPooledObject(Vector3 Position, Quaternion Rotation)
+    {
+        //1
+        for (int i = 0; i < pooledObjects.Count; i++)
+        {
+            //2
+            if (!pooledObjects[i].activeInHierarchy)
+            {
+                pooledObjects[i].transform.position = Position;
+                pooledObjects[i].transform.rotation = Rotation;
+                pooledObjects[i].gameObject.SetActive(true);
+                return pooledObjects[i];
+            }
+        }
+        //3   
+        return null;
+    }
+    public IEnumerator DisableImpact(GameObject pooledObject)
+    {
+        yield return new WaitForSeconds(3f);
+        pooledObject.SetActive(false);
     }
 }

@@ -131,8 +131,8 @@ public class PlayerGunSelector : NetworkBehaviour
             obj.SetActive(false);
             
             pooledObjects.Add(obj);
-            SpawnBulletServerRPC(pooledObjects[i]);
-            base.Despawn(obj, DespawnType.Pool);
+           // SpawnBulletServerRPC(pooledObjects[i]);
+           //base.Despawn(obj, DespawnType.Pool);
         }
 
 
