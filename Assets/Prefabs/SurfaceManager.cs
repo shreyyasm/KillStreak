@@ -1,5 +1,6 @@
 using FishNet.Managing.Server;
 using FishNet.Object;
+using FishNet.Observing;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,11 +20,11 @@ public class SurfaceManager : NetworkBehaviour
             _instance = value;
         }
     }
-
     private void Start()
     {
         StartPool();
     }
+
     [SerializeField]
     private List<SurfaceType> Surfaces = new List<SurfaceType>();
     [SerializeField]
@@ -185,16 +186,16 @@ public class SurfaceManager : NetworkBehaviour
             }
         }
 
-        foreach (PlayAudioEffect playAudioEffect in SurfaceEffect.PlayAudioEffects)
-        {
-            AudioClip clip = playAudioEffect.AudioClips[Random.Range(0, playAudioEffect.AudioClips.Count)];
-            ObjectPool pool = ObjectPool.CreateInstance(playAudioEffect.AudioSourcePrefab.GetComponent<PoolableObject>(), DefaultPoolSizes);
-            AudioSource audioSource = pool.GetObject().GetComponent<AudioSource>();
+        //foreach (PlayAudioEffect playAudioEffect in SurfaceEffect.PlayAudioEffects)
+        //{
+        //    AudioClip clip = playAudioEffect.AudioClips[Random.Range(0, playAudioEffect.AudioClips.Count)];
+        //    ObjectPool pool = ObjectPool.CreateInstance(playAudioEffect.AudioSourcePrefab.GetComponent<PoolableObject>(), DefaultPoolSizes);
+        //    AudioSource audioSource = pool.GetObject().GetComponent<AudioSource>();
 
-            audioSource.transform.position = HitPoint;
-            audioSource.PlayOneShot(clip, SoundOffset * Random.Range(playAudioEffect.VolumeRange.x, playAudioEffect.VolumeRange.y));
-            StartCoroutine(DisableAudioSource(audioSource, clip.length));
-        }
+        //    audioSource.transform.position = HitPoint;
+        //    audioSource.PlayOneShot(clip, SoundOffset * Random.Range(playAudioEffect.VolumeRange.x, playAudioEffect.VolumeRange.y));
+        //    StartCoroutine(DisableAudioSource(audioSource, clip.length));
+        //}
     }
 
     private IEnumerator DisableAudioSource(AudioSource AudioSource, float Time)
@@ -209,21 +210,7 @@ public class SurfaceManager : NetworkBehaviour
         public float Alpha;
         public Texture Texture;
     }
-    [ServerRpc(RequireOwnership = false, RunLocally = true)]
-    public void SpawnBulletServerRPC(GameObject prefab)
-    {
-
-        ////Instansiate Bullet
-        ServerManager.Spawn(prefab, base.Owner);
-        SetSpawnBullet(prefab, this);
-    }
-
-    [ObserversRpc(BufferLast = false, IncludeOwner = true)]
-    public void SetSpawnBullet(GameObject spawned, SurfaceManager script)
-    {
-        script.spawnedObject = spawned;
-
-    }
+    
     public static ObjectPooler SharedInstance;
     private GameObject impactTrailPool;
     public List<GameObject> pooledObjects;
@@ -237,20 +224,23 @@ public class SurfaceManager : NetworkBehaviour
         {
 
             GameObject obj = (GameObject)Instantiate(objectToPool);
-            //PlayerAction.Instance.SpawnBulletServerRPC(obj);
-            //PlayerAction.Instance.SpawnBulletServerRPC(obj);
+            
             obj.transform.parent = impactTrailPool.transform;
             //obj.AddComponent<NetworkObject>();
             //obj.AddComponent<NetworkObserver>();
-            obj.SetActive(false);
-
+            
+            //obj.SetActive(false);
             pooledObjects.Add(obj);
-            // SpawnBulletServerRPC(pooledObjects[i]);
-            //base.Despawn(obj, DespawnType.Pool);
+            
         }
-
-
+        foreach (GameObject o in pooledObjects)
+        {
+            SpawnImpactServerRPC(o);
+            base.Despawn(o, DespawnType.Pool);
+        }
     }
+
+    
     public GameObject GetPooledObject(Vector3 Position, Quaternion Rotation)
     {
         //1
@@ -273,4 +263,24 @@ public class SurfaceManager : NetworkBehaviour
         yield return new WaitForSeconds(3f);
         pooledObject.SetActive(false);
     }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void SpawnImpactServerRPC(GameObject prefab)
+    {
+
+        ////Instansiate Bullet
+        ServerManager.Spawn(prefab, base.Owner);
+        SetSpawnImpact(prefab, this);
+    }
+
+    [ObserversRpc(BufferLast = false, IncludeOwner = true)]
+    public void SetSpawnImpact(GameObject spawned, SurfaceManager script)
+    {
+        script.spawnedObject = spawned;
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void DespawnImpact(GameObject obj)
+    {
+        base.Despawn(obj, DespawnType.Pool);
+    }
+
 }
