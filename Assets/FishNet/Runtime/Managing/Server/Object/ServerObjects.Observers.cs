@@ -109,7 +109,7 @@ namespace FishNet.Managing.Server
                         {
                             everyoneWriter.Reset();
                             ownerWriter.Reset();
-                            base.SpawnWriter.WriteSpawn(nob, conn, everyoneWriter, ownerWriter);
+                            base.WriteSpawn_Server(nob, conn, everyoneWriter, ownerWriter);
                             CacheObserverChange(nob, ref cacheIndex);
                         }
                         else if (osc == ObserverStateChange.Removed)
@@ -372,7 +372,7 @@ namespace FishNet.Managing.Server
                     {
                         everyoneWriter.Reset();
                         ownerWriter.Reset();
-                        base.SpawnWriter.WriteSpawn(n, connection, everyoneWriter, ownerWriter);
+                        base.WriteSpawn_Server(n, connection, everyoneWriter, ownerWriter);
                         CacheObserverChange(n, ref observerCacheIndex);
                     }
                     else if (osc == ObserverStateChange.Removed)
@@ -428,7 +428,7 @@ namespace FishNet.Managing.Server
                 //If observer state changed then write changes.
                 ObserverStateChange osc = nob.RebuildObservers(conn, false);
                 if (osc == ObserverStateChange.Added)
-                    base.SpawnWriter.WriteSpawn(nob, conn, everyoneWriter, ownerWriter);
+                    base.WriteSpawn_Server(nob, conn, everyoneWriter, ownerWriter);
                 else if (osc == ObserverStateChange.Removed)
                     WriteDespawn(nob, nob.GetDefaultDespawnType(), everyoneWriter);
                 else
@@ -463,7 +463,7 @@ namespace FishNet.Managing.Server
         /// Rebuilds observers for all connections for a NetworkObject.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void RebuildObservers(NetworkObject nob)
+        public void RebuildObservers(NetworkObject nob)
         {
             ListCache<NetworkConnection> cache = ListCaches.GetNetworkConnectionCache();
             foreach (NetworkConnection item in NetworkManager.ServerManager.Clients.Values)

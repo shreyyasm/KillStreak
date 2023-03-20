@@ -3,7 +3,6 @@ using FishNet.Managing;
 using FishNet.Object;
 using FishNet.Transporting;
 using FishNet.Utility;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -12,6 +11,12 @@ namespace FishNet.Component.Prediction
     public partial class PredictedObject : NetworkBehaviour
     {
         #region All.
+        #region Internal.
+        /// <summary>
+        /// True if owner and implements prediction methods.
+        /// </summary>
+        internal bool IsPredictingOwner() => (base.IsOwner && _implementsPredictionMethods);
+        #endregion
         #region Private.
         /// <summary>
         /// Pauser for rigidbodies when they cannot be rolled back.
@@ -41,6 +46,10 @@ namespace FishNet.Component.Prediction
         /// Tick on the last received state.
         /// </summary>
         private uint _lastStateLocalTick;
+        /// <summary>
+        /// True if a connection is owner and prediction methods are implemented.
+        /// </summary>
+        private bool _isPredictingOwner(NetworkConnection c) => (c == base.Owner && _implementsPredictionMethods);
         #endregion
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -50,11 +59,14 @@ namespace FishNet.Component.Prediction
                 return;
             if (c == base.Owner)
                 return;
+            if (c.IsLocalClient)
+                return;
 
+            uint tick = c.LastPacketTick;
             if (_predictionType == PredictionType.Rigidbody)
-                SendRigidbodyState(base.TimeManager.LocalTick, c, true);
+                SendRigidbodyState(tick, c, true);
             else
-                SendRigidbody2DState(base.TimeManager.LocalTick, c, true);
+                SendRigidbody2DState(tick, c, true);
         }
 
         /// <summary>
@@ -154,9 +166,10 @@ namespace FishNet.Component.Prediction
         /// </summary>
         private void Rigidbodies_TimeManager_OnPreReconcile(NetworkBehaviour nb)
         {
-            /* Exit if owner because the owner should
-             * only be using CSP to rollback. */
-            if (base.IsOwner)
+            /* Exit if owner and implements prediction methods
+             * because csp would be handled by prediction methods
+             * rather than predicted object. */
+            if (IsPredictingOwner())
                 return;
             if (nb.gameObject == gameObject)
                 return;
@@ -166,6 +179,7 @@ namespace FishNet.Component.Prediction
             bool is2D = (_predictionType == PredictionType.Rigidbody2D);
             uint lastNbTick = nb.GetLastReconcileTick();
             int stateIndex = GetCachedStateIndex(lastNbTick, is2D);
+
             /* If running again on the same reconcile or state is for a different
              * tick then do make RBs kinematic. Resetting to a different state
              * could cause a desync and there's no reason to run the same
@@ -240,8 +254,6 @@ namespace FishNet.Component.Prediction
             }
         }
 
-
-
         /// <summary>
         /// Sends the rigidbodies state to Observers of a NetworkBehaviour.
         /// </summary>
@@ -268,8 +280,11 @@ namespace FishNet.Component.Prediction
             if (!IsRigidbodyPrediction)
                 return;
             NetworkConnection nbOwner = nb.Owner;
-            //No need to send to self.
-            if (nbOwner == base.Owner)
+            //No need to send to self unless doesnt implement prediction methods.
+            if (_isPredictingOwner(nbOwner))
+                return;
+            //If clientHost.
+            if (nbOwner.IsLocalClient)
                 return;
             /* Not an observer. SendTargetRpc normally
              * already checks this when ValidateTarget
@@ -587,13 +602,12 @@ namespace FishNet.Component.Prediction
         /// </summary>
         private void SendRigidbodyState(uint reconcileTick, NetworkConnection conn, bool applyImmediately)
         {
-            if (conn == base.Owner)
+            //No need to send to owner if they implement prediction methods.
+            if (_isPredictingOwner(conn))
                 return;
 
+            reconcileTick = (conn == base.NetworkObject.PredictedSpawner) ? conn.LastPacketTick : reconcileTick;
             RigidbodyState state = new RigidbodyState(_rigidbody, reconcileTick);
-            if (applyImmediately)
-                state.Velocity = Vector3.forward * 20f;
-
             TargetSendRigidbodyState(conn, state, applyImmediately);
         }
 
@@ -607,17 +621,34 @@ namespace FishNet.Component.Prediction
                 return;
 
             uint localTick = state.LocalTick;
-            if (!applyImmediately && !CanProcessReceivedState(localTick))
+            if (applyImmediately)
+            {
+                /* If PredictedSpawner is self then this client
+                 * was the one to predicted spawn this object. When that is
+                 * the case do not apply initial velocities, but so allow
+                 * regular updates/corrections. */
+                if (base.NetworkObject.PredictedSpawner.IsLocalClient)
                     return;
-
-            int index = GetCachedStateIndex(localTick, false);
-            /* Index will always be found so long as the tick is not
-             * extremely old. The buffer only holds 1000ms worth of snapshots. */
-            if (index != -1)
-                _rigidbodyStates[index] = state;
+            }
+            else
+            {
+                if (!CanProcessReceivedState(localTick))
+                    return;
+            }
 
             if (applyImmediately)
+            {
+                _rigidbodyStates.Clear();
                 ResetRigidbodyToData(state);
+            }
+            else
+            {
+                int index = GetCachedStateIndex(localTick, false);
+                if (index != -1)
+                    _rigidbodyStates[index] = state;
+                else
+                    _rigidbodyStates.Add(state);
+            }
         }
         #endregion
 
@@ -627,10 +658,6 @@ namespace FishNet.Component.Prediction
         /// Past RigidbodyStates.
         /// </summary>
         private RingBuffer<Rigidbody2DState> _rigidbody2dStates = new RingBuffer<Rigidbody2DState>();
-        /// <summary>
-        /// The last received Rigidbody2D state.
-        /// </summary>
-        private Rigidbody2DState _receivedRigidbody2DState;
         /// <summary>
         /// Velocity from previous simulation.
         /// </summary>
@@ -721,19 +748,38 @@ namespace FishNet.Component.Prediction
         {
             if (!CanPredict())
                 return;
+
             uint localTick = state.LocalTick;
-            if (!applyImmediately && !CanProcessReceivedState(localTick))
-                return;
-
-            int index = GetCachedStateIndex(localTick, true);
-            /* Index will always be found so long as the tick is not
-             * extremely old. The buffer only holds 1000ms worth of snapshots. */
-
-            if (index != -1)
-                _rigidbody2dStates[index] = state;
+            if (applyImmediately)
+            {
+                /* If PredictedSpawner is self then this client
+                 * was the one to predicted spawn this object. When that is
+                 * the case do not apply initial velocities, but so allow
+                 * regular updates/corrections. */
+                if (base.NetworkObject.PredictedSpawner.IsLocalClient)
+                    return;
+            }
+            else
+            {
+                if (!CanProcessReceivedState(localTick))
+                    return;
+            }
 
             if (applyImmediately)
+            {
+                _rigidbody2dStates.Clear();
                 ResetRigidbody2DToData(state);
+            }
+            else
+            {
+                int index = GetCachedStateIndex(localTick, true);
+                if (index != -1)
+                    _rigidbody2dStates[index] = state;
+                else
+                    _rigidbody2dStates.Add(state);
+            }
+
+
         }
 
         /// <summary>

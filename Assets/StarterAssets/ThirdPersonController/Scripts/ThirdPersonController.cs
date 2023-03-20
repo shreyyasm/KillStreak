@@ -136,11 +136,11 @@ namespace StarterAssets
         public bool isJump = false;
         public int gunType;
 
-        [field: SyncVar]
-        public bool changingGun { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+        //[field: SyncVar]
+        public bool changingGun;
 
-        [field: SyncVar]
-        public bool isReloading { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+        //[field: SyncVar]
+        public bool isReloading;
 
         float fireBulletTime = 0f;
 
@@ -771,7 +771,7 @@ namespace StarterAssets
                 _animator.SetLayerWeight(0, 0);
             }
         }
-        [ObserversRpc(BufferLast = true, IncludeOwner = true)]
+        [ObserversRpc(BufferLast = true)]
         public void SetRigObserver()
         {
 

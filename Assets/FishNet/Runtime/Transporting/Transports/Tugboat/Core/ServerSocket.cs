@@ -1,3 +1,4 @@
+using FishNet.Connection;
 using FishNet.Managing.Logging;
 using LiteNetLib;
 using LiteNetLib.Layers;
@@ -137,16 +138,29 @@ namespace FishNet.Transporting.Tugboat.Server
             //Set bind addresses.
             IPAddress ipv4;
             IPAddress ipv6;
+
             //Set ipv4
             if (!string.IsNullOrEmpty(_ipv4BindAddress))
             {
                 if (!IPAddress.TryParse(_ipv4BindAddress, out ipv4))
                     ipv4 = null;
+
+                //If unable to parse try to get address another way.
+                if (ipv4 == null)
+                {
+                    IPHostEntry hostEntry = Dns.GetHostEntry(_ipv4BindAddress);
+                    if (hostEntry.AddressList.Length > 0)
+                    {
+                        ipv4 = hostEntry.AddressList[0];
+                        base.Transport.NetworkManager.Log($"IPv4 could not parse correctly but was resolved to {ipv4.ToString()}");
+                    }
+                }
             }
             else
             {
                 IPAddress.TryParse("0.0.0.0", out ipv4);
             }
+
             //Set ipv6.
             if (!string.IsNullOrEmpty(_ipv6BindAddress))
             {
@@ -157,6 +171,8 @@ namespace FishNet.Transporting.Tugboat.Server
             {
                 IPAddress.TryParse("0:0:0:0:0:0:0:0", out ipv6);
             }
+
+
 
             string ipv4FailText = (ipv4 == null) ? $"IPv4 address {_ipv4BindAddress} failed to parse. " : string.Empty;
             string ipv6FailText = (ipv6 == null) ? $"IPv6 address {_ipv6BindAddress} failed to parse. " : string.Empty;
@@ -394,7 +410,7 @@ namespace FishNet.Transporting.Tugboat.Server
                     }
 
                     //Send to all clients.
-                    if (connectionId == -1)
+                    if (connectionId == NetworkConnection.UNSET_CLIENTID_VALUE)
                     {
                         _server.SendToAll(segment.Array, segment.Offset, segment.Count, dm);
                     }

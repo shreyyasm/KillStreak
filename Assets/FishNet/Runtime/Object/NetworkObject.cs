@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using FishNet.Utility.Performance;
 using System;
+using FishNet.Managing.Object;
+using FishNet.Component.Ownership;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -17,8 +19,15 @@ namespace FishNet.Object
     public sealed partial class NetworkObject : MonoBehaviour
     {
         #region Public.
+        /// <summary>
+        /// True if was nested during scene setup or within a prefab.
+        /// </summary>
         [field: SerializeField, HideInInspector]
         public bool IsNested { get; private set; }
+        /// <summary>
+        /// NetworkConnection which predicted spawned this object.
+        /// </summary>
+        public NetworkConnection PredictedSpawner { get; private set; } = NetworkManager.EmptyConnection;
         /// <summary>
         /// True if this NetworkObject was active during edit. Will be true if placed in scene during edit, and was in active state on run.
         /// </summary>
@@ -43,6 +52,11 @@ namespace FishNet.Object
         /// </summary>
         internal bool IsDeinitializing { get; private set; } = true;
         /// <summary>
+        /// PredictedSpawn component on this object. Will be null if not added manually.
+        /// </summary>
+        [field: SerializeField, HideInInspector]
+        public PredictedSpawn PredictedSpawn { get; private set; }
+        /// <summary>
         /// 
         /// </summary>
         [field: SerializeField, HideInInspector]
@@ -60,6 +74,7 @@ namespace FishNet.Object
         /// </summary>
         [field: SerializeField, HideInInspector]
         public NetworkObject ParentNetworkObject { get; private set; }
+        /// <summary>
         /// NetworkObjects nested beneath this one. Recursive NetworkObjects may exist within each entry of this field.
         /// </summary> 
         [field: SerializeField, HideInInspector]
@@ -140,14 +155,6 @@ namespace FishNet.Object
         [SerializeField]
         private sbyte _initializeOrder = 0;
         /// <summary>
-        /// Returns the predicted spawning permissions for this prefab.
-        /// </summary>
-        /// <returns>Permissions.</returns>
-        public PredictedSpawningType GetPredictedSpawningType() => _predictedSpawningType;
-        [Tooltip("True to allow this object be predicted spawned.")]
-        [SerializeField]
-        private PredictedSpawningType _predictedSpawningType = PredictedSpawningType.Disabled;
-        /// <summary>
         /// How to handle this object when it despawns. Scene objects are never destroyed when despawning.
         /// </summary>
         [SerializeField]
@@ -172,6 +179,17 @@ namespace FishNet.Object
         /// True if disabled NetworkBehaviours have been initialized.
         /// </summary>
         private bool _disabledNetworkBehavioursInitialized;
+        #endregion
+
+        #region Const.
+        /// <summary>
+        /// Value used when the ObjectId has not been set.
+        /// </summary>
+        public const int UNSET_OBJECTID_VALUE = ushort.MaxValue;
+        /// <summary>
+        /// Value used when the PrefabId has not been set.
+        /// </summary>
+        public const int UNSET_PREFABID_VALUE = ushort.MaxValue;
         #endregion
 
         #region Editor Debug.
@@ -441,6 +459,7 @@ namespace FishNet.Object
                 }
             }
 
+            PredictedSpawn = GetComponent<PredictedSpawn>();
             ComponentIndex = componentIndex;
             ParentNetworkObject = parentNob;
 
@@ -565,7 +584,7 @@ namespace FishNet.Object
             SceneManager = null;
             RollbackManager = null;
             //Misc sets.
-            ObjectId = -1;
+            ObjectId = 0;
             ClientInitialized = false;
         }
 
@@ -627,9 +646,10 @@ namespace FishNet.Object
             {
                 if (activeNewOwner)
                     newOwner.AddObject(this);
-                if (prevOwner.IsValid)
+                if (prevOwner.IsValid && prevOwner != newOwner)
                     prevOwner.RemoveObject(this);
             }
+
             //After changing owners invoke callbacks.
             InvokeOwnership(prevOwner, asServer);
 
@@ -662,6 +682,40 @@ namespace FishNet.Object
                 if (prevOwner.IsActive)
                     ServerManager.Objects.RebuildObservers(prevOwner);
             }
+        }
+
+
+        /// <summary>
+        /// Initializes a predicted object for client.
+        /// </summary>
+        internal void InitializePredictedObject_Server(NetworkManager manager, NetworkConnection predictedSpawner)
+        {
+            NetworkManager = manager;
+            PredictedSpawner = predictedSpawner;
+        }
+
+
+        /// <summary>
+        /// Initializes a predicted object for client.
+        /// </summary>
+        internal void PreinitializePredictedObject_Client(NetworkManager manager, int objectId, NetworkConnection owner, NetworkConnection predictedSpawner)
+        {
+            PredictedSpawner = predictedSpawner;
+            Preinitialize_Internal(manager, objectId, owner, false);
+        }
+
+        /// <summary>
+        /// Deinitializes this predicted spawned object.
+        /// </summary>
+        internal void DeinitializePredictedObject_Client()
+        {
+            /* For the time being we're just going to disable the object because
+             * deinitializing instead could present a lot of problems.
+             * For example: if client deinitializes rpc links are unregistered,
+             * and if server had a rpc on the way already the link would
+             * not be found. This would cause the reader length to be wrong
+             * resulting in packet corruption. */
+            gameObject.SetActive(false);
         }
 
         /// <summary>

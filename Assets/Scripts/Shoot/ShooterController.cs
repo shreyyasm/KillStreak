@@ -114,7 +114,7 @@ public class ShooterController : NetworkBehaviour
     {
         
     }
-    [ObserversRpc(BufferLast = true, IncludeOwner = false)]
+    [ObserversRpc(BufferLast = true)]
     public void AimMovementObserver()
     {
         

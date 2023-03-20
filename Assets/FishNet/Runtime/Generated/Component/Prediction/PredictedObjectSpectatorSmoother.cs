@@ -231,10 +231,6 @@ namespace FishNet.Component.Prediction
         /// </summary>
         private long _reconcileLocalTick = -1;
         /// <summary>
-        /// Number of replays which have occured for the current reconcile.
-        /// </summary>
-        private uint _replayCount;
-        /// <summary>
         /// Called when this frame receives OnPreTick.
         /// </summary>
         private bool _preTickReceived;
@@ -255,29 +251,31 @@ namespace FishNet.Component.Prediction
         /// </summary>
         private float _teleportThreshold;
         /// <summary>
-        /// NetworkBehaviour which is using this object.
+        /// PredictedObject which is using this object.
         /// </summary>
-        private NetworkBehaviour _networkBehaviour;
+        private PredictedObject _predictedObject;
         /// <summary>
         /// Cache of GoalDatas to prevent allocations.
         /// </summary>
         private static Stack<GoalData> _goalDataCache = new Stack<GoalData>();
         #endregion
 
+        private Vector3 _startPosition;
+
         /// <summary>
         /// Initializes this for use.
         /// </summary>
-        internal void Initialize(NetworkBehaviour nb, RigidbodyType rbType, Rigidbody rb, Rigidbody2D rb2d, Transform graphicalObject
+        internal void Initialize(PredictedObject po, RigidbodyType rbType, Rigidbody rb, Rigidbody2D rb2d, Transform graphicalObject
             , bool smoothPosition, bool smoothRotation, float smoothingDuration, byte interpolation, float overflowMultiplier,
             float teleportThreshold)
         {
-            _networkBehaviour = nb;
+            _predictedObject = po;
             _rigidbodyType = rbType;
 
             _rigidbody = rb;
             _rigidbody2d = rb2d;
             _graphicalObject = graphicalObject;
-
+            _startPosition = _graphicalObject.position;
             _smoothPosition = smoothPosition;
             _smoothRotation = smoothRotation;
             _smoothingDuration = smoothingDuration;
@@ -304,9 +302,12 @@ namespace FishNet.Component.Prediction
         {
             if (CanSmooth())
             {
+                if (!_preTickReceived)
+                {
+                    uint tick = _predictedObject.TimeManager.LocalTick - 1;
+                    CreateGoalData(tick, false);
+                }
                 _preTickReceived = true;
-                _replayCount = 0;
-
 
                 if (_rigidbodyType == RigidbodyType.Rigidbody)
                     _preTickTransformdata.Update(_rigidbody);
@@ -326,25 +327,73 @@ namespace FishNet.Component.Prediction
             if (CanSmooth())
             {
                 if (!_preTickReceived)
+                {
+                    /* During test the Z value for applyImmediately is 5.9.
+                     * Then increased 1 unit per tick: 6.9, 7.9.
+                     * 
+                     * When the spectator smoother initializes 5.9 is shown.
+                     * Before first starting smoothing the transform needs to be set
+                     * back to that.
+                     * 
+                     * The second issue is the first addition to goal datas seems
+                     * to occur at 7.9. This would need to be 6.9 to move from the
+                     * proper 5.9 starting point. It's probably because pretick is not received
+                     * when OnPostTick is called at the 6.9 position.
+                     * 
+                     * Have not validated the above yet but that's the most likely situation since
+                     * we know this was initialized at 5.9, which means it would be assumed pretick would
+                     * call at 6.9. Perhaps the following is happening....
+                     * 
+                     * - Pretick.
+                     * - Client gets spawn+applyImmediately.
+                     * - This also initializes this script at 5.9.
+                     * - Simulation moves object to 6.9.
+                     * - PostTick.
+                     * - This script does not run because _preTickReceived is not set yet.
+                     * 
+                     * - Pretick. Sets _preTickReceived.
+                     * - Simulation moves object to 7.9.
+                     * - PostTick.
+                     * - The first goalData is created for 7.9.
+                     * 
+                     *  In writing the theory checks out.
+                     *  Perhaps the solution could be simple as creating a goal
+                     *  during pretick if _preTickReceived is being set for
+                     *  the first time. Might need to reduce tick by 1
+                     *  when setting goalData for this; not sure yet.
+                     */
+                    _graphicalObject.SetPositionAndRotation(_startPosition, Quaternion.identity);
                     return;
+                }
 
                 _graphicalObject.SetPositionAndRotation(_graphicalStartPosition, _graphicalStartRotation);
-                CreateGoalData(_networkBehaviour.TimeManager.LocalTick, true);
+                CreateGoalData(_predictedObject.TimeManager.LocalTick, true);
+            }
+        }
+
+        public void OnPreReplay(uint tick)
+        {
+            if (!_preTickReceived)
+            {
+                if (CanSmooth())
+                {
+
+                    CreateGoalData(tick, false);
+                }
             }
         }
 
         /// <summary>
         /// Called after a reconcile runs a replay.
         /// </summary>
-        public void OnPostReplay()
+        public void OnPostReplay(uint tick)
         {
             if (CanSmooth())
             {
                 if (_reconcileLocalTick == -1)
                     return;
 
-                _replayCount++;
-                CreateGoalData((uint)_reconcileLocalTick + _replayCount, false);
+                CreateGoalData(tick, false);
             }
         }
 
@@ -356,7 +405,7 @@ namespace FishNet.Component.Prediction
         {
             if (_interpolation == 0)
                 return false;
-            if (_networkBehaviour.IsOwner || _networkBehaviour.IsServer)
+            if (_predictedObject.IsPredictingOwner() || _predictedObject.IsServer)
                 return false;
 
             return true;
@@ -580,7 +629,7 @@ namespace FishNet.Component.Prediction
                 lastTick = (nextGoalData.LocalTick - 1);
 
             uint tickDifference = (nextGoalData.LocalTick - lastTick);
-            float timePassed = (float)_networkBehaviour.TimeManager.TicksToTime(tickDifference);
+            float timePassed = (float)_predictedObject.TimeManager.TicksToTime(tickDifference);
             RateData nextRd = nextGoalData.Rates;
 
             //Distance between properties.
@@ -616,7 +665,7 @@ namespace FishNet.Component.Prediction
         /// Creates a new goal data for tick. The result will be placed into the goalDatas queue at it's proper position.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void CreateGoalData(uint tick, bool postTick)
+        public void CreateGoalData(uint tick, bool postTick)
         {
             /* It's possible a removed entry would void further
              * logic so remove excess entires first. */

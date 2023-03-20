@@ -273,7 +273,7 @@ public class PlayerGunSelector : NetworkBehaviour
         SetSpawnBullet(prefab, this);
     }
 
-    [ObserversRpc(BufferLast = false, IncludeOwner = true)]
+    [ObserversRpc(BufferLast = false)]
     public void SetSpawnBullet(GameObject spawned, PlayerGunSelector script)
     {
         script.spawnedObject = spawned;

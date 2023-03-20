@@ -47,6 +47,12 @@ namespace FishNet.Component.Prediction
 
         #region Serialized.
         /// <summary>
+        /// True if this object implements replicate and reconcile methods.
+        /// </summary>
+        [Tooltip("True if this object implements replicate and reconcile methods.")]
+        [SerializeField]
+        private bool _implementsPredictionMethods = true;
+        /// <summary>
         /// Transform which holds the graphical features of this object. This transform will be smoothed when desynchronizations occur.
         /// </summary>
         [Tooltip("Transform which holds the graphical features of this object. This transform will be smoothed when desynchronizations occur.")]
@@ -84,15 +90,27 @@ namespace FishNet.Component.Prediction
         /// Gets the value for SmoothTicks.
         /// </summary>
         /// <returns></returns>
-        [Obsolete("Use GetInterpolation. This method no longer functions.")]
+        [Obsolete("Use GetInterpolation. This method no longer functions.")]//Remove on 2023/06/01
         public bool GetSmoothTicks() => true;
         /// <summary>
         /// Sets the value for SmoothTicks.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        [Obsolete("Use SetInterpolation. This method no longer functions.")]
+        [Obsolete("Use SetInterpolation. This method no longer functions.")] //Remove on 2023/06/01
         public void SetSmoothTicks(bool value) { }
+        /// <summary>
+        /// True to smooth position on owner objects.
+        /// </summary>
+        [Tooltip("True to smooth position on owner objects.")]
+        [SerializeField]
+        private bool _ownerSmoothPosition = true;
+        /// <summary>
+        /// True to smooth rotation on owner objects.
+        /// </summary>
+        [Tooltip("True to smooth rotation on owner objects.")]
+        [SerializeField]
+        private bool _ownerSmoothRotation = true;
         /// <summary>
         /// How far in the past to keep the graphical object when owner. Using a value of 0 will disable interpolation.
         /// </summary>
@@ -153,20 +171,21 @@ namespace FishNet.Component.Prediction
         [Tooltip("True to smooth rotation on spectated objects.")]
         [SerializeField]
         private bool _spectatorSmoothRotation = true;
-        /// <summary>
-        /// Time to smooth initial velocities when an object was previously stopped.
-        /// </summary>
-        [Tooltip("Time to smooth initial velocities when an object was previously stopped.")]
-        [Range(0f, 3f)]
-        [SerializeField]
-        private float _spectatorSmoothingDuration = 0.025f;
+        ///// <summary>
+        ///// Time to smooth initial velocities when an object was previously stopped.
+        ///// </summary>
+        //[Tooltip("Time to smooth initial velocities when an object was previously stopped.")]
+        //[Range(0f, 3f)]
+        //[SerializeField]
+        //private float _spectatorSmoothingDuration = 0.025f;
+        private float _spectatorSmoothingDuration => 0f;
         /// <summary>
         /// How far in the past to keep the graphical object when not owner. Using a value of 0 will disable interpolation.
         /// </summary>
         [Tooltip("How far in the past to keep the graphical object when not owner. Using a value of 0 will disable interpolation.")]
         [Range(0, 255)]
         [SerializeField]
-        private byte _spectatorInterpolation = 1;
+        private byte _spectatorInterpolation = 4;
         /// <summary>
         /// Multiplier to apply to movement speed when buffer is over interpolation.
         /// </summary>
@@ -240,6 +259,12 @@ namespace FishNet.Component.Prediction
         {
             base.OnStartNetwork();
 
+            /* If host then initialize owner smoother.
+             * Host will use owner smoothing settings for more
+             * accurate results. */
+            if (base.IsHost)
+                InitializeSmoother(true);
+
             UpdateRigidbodiesCount(true);
             ConfigureRigidbodies();
             ConfigureNetworkTransform();
@@ -266,8 +291,10 @@ namespace FishNet.Component.Prediction
              * owner smoother. The owner smoother
              * is not predictive and is preferred
              * for more real time graphical results. */
-            if (base.IsOwner || base.IsHost)
-                InitializeSmoother(true);
+            if (base.IsOwner && !base.IsServer)
+                /* If has prediction methods implement for owner,
+                 * otherwise implement for spectator. */
+                InitializeSmoother(_implementsPredictionMethods);
             //Not owner nor server, initialize spectator smoother if using rigidbodies.
             else if (_predictionType != PredictionType.Other)
                 InitializeSmoother(false);
@@ -275,19 +302,13 @@ namespace FishNet.Component.Prediction
             Rigidbodies_OnOwnershipClient(prevOwner);
         }
 
-        public override void OnStopClient()
-        {
-            base.OnStopClient();
-            ChangeSubscriptions(false);
-        }
-
         public override void OnStopNetwork()
         {
             base.OnStopNetwork();
 
+            ChangeSubscriptions(false);
             UpdateRigidbodiesCount(false);
-            if (base.TimeManager != null)
-                base.TimeManager.OnPostTick -= TimeManager_OnPostTick;
+            base.TimeManager.OnPostTick -= TimeManager_OnPostTick;
         }
 
         /// <summary>
@@ -362,19 +383,27 @@ namespace FishNet.Component.Prediction
             {
                 base.TimeManager.OnUpdate += TimeManager_OnUpdate;
                 base.TimeManager.OnPreTick += TimeManager_OnPreTick;
-                base.PredictionManager.OnPreReplicateReplay += PredictionManager_OnPreReplicateReplay;
-                base.PredictionManager.OnPostReplicateReplay += PredictionManager_OnPostReplicateReplay;
-                base.PredictionManager.OnPreReconcile += PredictionManager_OnPreReconcile;
-                base.PredictionManager.OnPostReconcile += PredictionManager_OnPostReconcile;
+                //Only client will use these events.
+                if (!base.IsServer)
+                {
+                    base.PredictionManager.OnPreReplicateReplay += PredictionManager_OnPreReplicateReplay;
+                    base.PredictionManager.OnPostReplicateReplay += PredictionManager_OnPostReplicateReplay;
+                    base.PredictionManager.OnPreReconcile += PredictionManager_OnPreReconcile;
+                    base.PredictionManager.OnPostReconcile += PredictionManager_OnPostReconcile;
+                }
             }
             else
             {
                 base.TimeManager.OnUpdate -= TimeManager_OnUpdate;
                 base.TimeManager.OnPreTick -= TimeManager_OnPreTick;
-                base.PredictionManager.OnPreReplicateReplay -= PredictionManager_OnPreReplicateReplay;
-                base.PredictionManager.OnPostReplicateReplay -= PredictionManager_OnPostReplicateReplay;
-                base.PredictionManager.OnPreReconcile -= PredictionManager_OnPreReconcile;
-                base.PredictionManager.OnPostReconcile -= PredictionManager_OnPostReconcile;
+                //Only client will use these events.
+                if (!base.IsServer)
+                {
+                    base.PredictionManager.OnPreReplicateReplay -= PredictionManager_OnPreReplicateReplay;
+                    base.PredictionManager.OnPostReplicateReplay -= PredictionManager_OnPostReplicateReplay;
+                    base.PredictionManager.OnPreReconcile -= PredictionManager_OnPreReconcile;
+                    base.PredictionManager.OnPostReconcile -= PredictionManager_OnPostReconcile;
+                }
 
                 //Also some resets
                 _lastStateLocalTick = 0;
@@ -396,6 +425,7 @@ namespace FishNet.Component.Prediction
         /// </summary>
         protected virtual void PredictionManager_OnPreReplicateReplay(uint tick, PhysicsScene ps, PhysicsScene2D ps2d)
         {
+            _spectatorSmoother?.OnPreReplay(tick);
             Rigidbodies_PredictionManager_OnPreReplicateReplay(tick, ps, ps2d);
         }
 
@@ -405,7 +435,7 @@ namespace FishNet.Component.Prediction
         /// </summary>
         private void PredictionManager_OnPostReplicateReplay(uint tick, PhysicsScene ps, PhysicsScene2D ps2d)
         {
-            _spectatorSmoother?.OnPostReplay();
+            _spectatorSmoother?.OnPostReplay(tick);
             Rigidbodies_PredictionManager_OnPostReplicateReplay(tick, ps, ps2d);
         }
 
@@ -436,7 +466,7 @@ namespace FishNet.Component.Prediction
             {
                 _ownerSmoother = new PredictedObjectOwnerSmoother();
                 float teleportThreshold = (_enableTeleport) ? _teleportThreshold : -1f;
-                _ownerSmoother.Initialize(this, _graphicalInstantiatedOffsetPosition, _graphicalInstantiatedOffsetRotation, _graphicalObject, _spectatorSmoothPosition, _spectatorSmoothRotation, _ownerInterpolation, teleportThreshold);
+                _ownerSmoother.Initialize(this, _graphicalInstantiatedOffsetPosition, _graphicalInstantiatedOffsetRotation, _graphicalObject, _ownerSmoothPosition, _ownerSmoothRotation, _ownerInterpolation, teleportThreshold);
             }
             else
             {
@@ -454,6 +484,7 @@ namespace FishNet.Component.Prediction
             }
         }
 
+        private Vector3 _startPos;
         /// <summary>
         /// Configures RigidbodyPauser with settings.
         /// </summary>

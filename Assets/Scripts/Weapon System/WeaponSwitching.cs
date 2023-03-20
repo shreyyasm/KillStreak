@@ -175,7 +175,7 @@ public class WeaponSwitching : NetworkBehaviour
 
         }
     }
-    [ObserversRpc(BufferLast = false, IncludeOwner = true)]
+    [ObserversRpc(BufferLast = false)]
     public void ChangeGunObserver()
     {
         if (!gunChanging)
@@ -246,7 +246,7 @@ public class WeaponSwitching : NetworkBehaviour
         
     }
 
-    [ObserversRpc(BufferLast = true, IncludeOwner = true)]
+    [ObserversRpc(BufferLast = true)]
     public void GunSwapVisualTakeInObserver()
     {
 
@@ -300,7 +300,7 @@ public class WeaponSwitching : NetworkBehaviour
             }
         
     }
-    [ObserversRpc(BufferLast = true, IncludeOwner = true)]
+    [ObserversRpc(BufferLast = true)]
     public void GunSwapVisualTakeOutObserver()
     {
 

@@ -3,6 +3,7 @@ using FishNet.Component.Observing;
 using FishNet.Connection;
 using FishNet.Managing.Debugging;
 using FishNet.Managing.Logging;
+using FishNet.Managing.Predicting;
 using FishNet.Managing.Transporting;
 using FishNet.Object;
 using FishNet.Serializing;
@@ -12,8 +13,8 @@ using FishNet.Utility.Performance;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace FishNet.Managing.Server
 {
@@ -61,7 +62,7 @@ namespace FishNet.Managing.Server
         /// <summary>
         /// Authenticator for this ServerManager. May be null if not using authentication.
         /// </summary>
-        [Obsolete("Use GetAuthenticator and SetAuthenticator.")]
+        [Obsolete("Use GetAuthenticator and SetAuthenticator.")] //Remove on 2023/06/01
         public Authenticator Authenticator
         {
             get => GetAuthenticator();
@@ -84,6 +85,16 @@ namespace FishNet.Managing.Server
         [Tooltip("Authenticator for this ServerManager. May be null if not using authentication.")]
         [SerializeField]
         private Authenticator _authenticator;
+        /// <summary>
+        /// Default send rate for SyncTypes. A value of 0f will send changed values every tick.
+        /// SyncTypeRate cannot yet be changed at runtime because this would require recalculating rates on SyncBase, which is not yet implemented.
+        /// </summary>
+        /// <returns></returns>
+        internal float GetSynctypeRate() => _syncTypeRate;
+        [Tooltip("Default send rate for SyncTypes. A value of 0f will send changed values every tick.")]
+        [Range(0f, 60f)]
+        [SerializeField]
+        private float _syncTypeRate = 0.1f;
         /// <summary>
         /// How to pack object spawns.
         /// </summary>
@@ -135,13 +146,6 @@ namespace FishNet.Managing.Server
         [Tooltip("True to kick clients which send data larger than the MTU.")]
         [SerializeField]
         private bool _limitClientMTU = true;
-        /// <summary>
-        /// True to allow clients to use predicted spawning. While true, each NetworkObject prefab you wish to predicted spawn must be marked as to allow this feature.
-        /// </summary>
-        internal bool GetAllowPredictedSpawning() => _allowPredictedSpawning;
-        [Tooltip("True to allow clients to use predicted spawning and despawning. While true, each NetworkObject prefab you wish to predicted spawn must be marked as to allow this feature.")]
-        [SerializeField]
-        private bool _allowPredictedSpawning = true;
         #endregion
 
         #region Private.
@@ -324,17 +328,17 @@ namespace FishNet.Managing.Server
             if (NetworkManager == null || NetworkManager.TransportManager == null || NetworkManager.TransportManager.Transport == null)
                 return;
 
-            if (!subscribe)
-            {
-                NetworkManager.TransportManager.Transport.OnServerReceivedData -= Transport_OnServerReceivedData;
-                NetworkManager.TransportManager.Transport.OnServerConnectionState -= Transport_OnServerConnectionState;
-                NetworkManager.TransportManager.Transport.OnRemoteConnectionState -= Transport_OnRemoteConnectionState;
-            }
-            else
+            if (subscribe)
             {
                 NetworkManager.TransportManager.Transport.OnServerReceivedData += Transport_OnServerReceivedData;
                 NetworkManager.TransportManager.Transport.OnServerConnectionState += Transport_OnServerConnectionState;
                 NetworkManager.TransportManager.Transport.OnRemoteConnectionState += Transport_OnRemoteConnectionState;
+            }
+            else
+            {
+                NetworkManager.TransportManager.Transport.OnServerReceivedData -= Transport_OnServerReceivedData;
+                NetworkManager.TransportManager.Transport.OnServerConnectionState -= Transport_OnServerConnectionState;
+                NetworkManager.TransportManager.Transport.OnRemoteConnectionState -= Transport_OnRemoteConnectionState;
             }
         }
 
@@ -375,7 +379,7 @@ namespace FishNet.Managing.Server
             {
                 Transport t = NetworkManager.TransportManager.GetTransport(args.TransportIndex);
                 string tName = (t == null) ? "Unknown" : t.GetType().Name;
-                //Debug.Log($"Local server is {state.ToString().ToLower()} for {tName}.");
+                Debug.Log($"Local server is {state.ToString().ToLower()} for {tName}.");
             }
 
             NetworkManager.UpdateFramerate();
@@ -429,8 +433,12 @@ namespace FishNet.Managing.Server
                         MatchCondition.RemoveFromMatchWithoutRebuild(conn, NetworkManager);
                         Objects.ClientDisconnected(conn);
                         BroadcastClientConnectionChange(false, conn);
-                        conn.Reset();
+                        //Return predictedObjectIds.
+                        Queue<int> pqId = conn.PredictedObjectIds;
+                        while (pqId.Count > 0)
+                            Objects.CacheObjectId(pqId.Dequeue());
 
+                        conn.Reset();
                         NetworkManager.Log($"Remote connection stopped for Id {id}.");
                     }
                 }
@@ -447,6 +455,23 @@ namespace FishNet.Managing.Server
             {
                 writer.WritePacketId(PacketId.Authenticated);
                 writer.WriteNetworkConnection(conn);
+                /* If predicted spawning is enabled then also send
+                 * reserved objectIds. */
+                ;
+                PredictionManager pm = NetworkManager.PredictionManager;
+                if (pm.GetAllowPredictedSpawning())
+                {
+                    int count = Mathf.Min(Objects.GetObjectIdCache().Count, pm.GetReservedObjectIds());
+                    writer.WriteByte((byte)count);
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        ushort val = (ushort)Objects.GetNextNetworkObjectId(false);
+                        writer.WriteNetworkObjectId(val);
+                        conn.PredictedObjectIds.Enqueue(val);
+                    }
+                }
+
                 NetworkManager.TransportManager.SendToClient((byte)Channel.Reliable, writer.GetArraySegment(), conn);
             }
         }
@@ -455,6 +480,7 @@ namespace FishNet.Managing.Server
         /// </summary>
         private void Transport_OnServerReceivedData(ServerReceivedDataArgs args)
         {
+            args.Data = NetworkManager.TransportManager.ProcessIntermediateIncoming(args.Data, false);
             ParseReceived(args);
         }
 
@@ -477,7 +503,7 @@ namespace FishNet.Managing.Server
                 return;
 
             //FishNet internally splits packets so nothing should ever arrive over MTU.
-            int channelMtu = NetworkManager.TransportManager.Transport.GetMTU((byte)args.Channel);
+            int channelMtu = NetworkManager.TransportManager.GetMTU(args.TransportIndex, (byte)args.Channel);
             //If over MTU kick client immediately.
             if (segment.Count > channelMtu && !NetworkManager.TransportManager.IsLocalTransport(args.ConnectionId))
             {
@@ -563,6 +589,28 @@ namespace FishNet.Managing.Server
                     {
                         Objects.ParseServerRpc(reader, conn, args.Channel);
                     }
+                    else if (packetId == PacketId.ObjectSpawn)
+                    {
+                        if (!NetworkManager.PredictionManager.GetAllowPredictedSpawning())
+                        {
+                            conn.Kick(KickReason.ExploitAttempt, LoggingType.Common, $"ConnectionId {conn.ClientId} sent a predicted spawn while predicted spawning is not enabled. Connection will be kicked immediately.");
+                            return;
+                        }
+                        Objects.ReadPredictedSpawn(reader, conn);
+                    }
+                    else if (packetId == PacketId.ObjectDespawn)
+                    {
+                        if (!NetworkManager.PredictionManager.GetAllowPredictedSpawning())
+                        {
+                            conn.Kick(KickReason.ExploitAttempt, LoggingType.Common, $"ConnectionId {conn.ClientId} sent a predicted spawn while predicted spawning is not enabled. Connection will be kicked immediately.");
+                            return;
+                        }
+                        Objects.ReadPredictedDespawn(reader, conn);
+                    }
+                    else if (packetId == PacketId.NetworkLODUpdate)
+                    {
+                        ParseNetworkLODUpdate(reader, conn);
+                    }
                     else if (packetId == PacketId.Broadcast)
                     {
                         ParseBroadcast(reader, conn, args.Channel);
@@ -640,10 +688,8 @@ namespace FishNet.Managing.Server
         }
 
         /// <summary>
-        /// Sends a client connection state change.
+        /// Sends a client connection state change to owner and other clients if applicable.
         /// </summary>
-        /// <param name="connected"></param>
-        /// <param name="id"></param>
         private void BroadcastClientConnectionChange(bool connected, NetworkConnection conn)
         {
             //If sharing Ids then send all connected client Ids first if is a connected state.

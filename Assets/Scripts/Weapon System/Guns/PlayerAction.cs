@@ -162,7 +162,7 @@ public class PlayerAction : NetworkBehaviour
             networkAnimator.SetTrigger("Reload");
         }
     }
-    [ObserversRpc(BufferLast = true, IncludeOwner = true)]
+    [ObserversRpc(BufferLast = true)]
     public void ManualReloadObserver()
     {
         if (ShouldManualReload())
