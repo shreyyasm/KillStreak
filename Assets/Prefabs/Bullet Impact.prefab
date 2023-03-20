@@ -14,13 +14,14 @@ GameObject:
   - component: {fileID: 2441412130695158491}
   - component: {fileID: 4548605883241536490}
   - component: {fileID: 451842471546330666}
+  - component: {fileID: 7183514995402892207}
   m_Layer: 0
   m_Name: Bullet Impact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4587651611338842
 Transform:
   m_ObjectHideFlags: 0
@@ -182,7 +183,7 @@ MonoBehaviour:
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
   _networkBehaviours:
-  - {fileID: 0}
+  - {fileID: 7183514995402892207}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -212,6 +213,24 @@ MonoBehaviour:
   _overrideType: 3
   _updateHostVisibility: 1
   _observerConditions: []
+--- !u!114 &7183514995402892207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067471869909948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2b597e1828355a4d994a69cbb11ef85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 4548605883241536490}
+  _networkObjectCache: {fileID: 4548605883241536490}
+  _spawningType: 3
+  _noResponseHandling: 0
+  _responseWait: 1
 --- !u!1 &1192667920482426
 GameObject:
   m_ObjectHideFlags: 0

@@ -19116,7 +19116,8 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 2086626057564614922}
   _networkObjectCache: {fileID: 5163738861015260342}
-  spawnedObject: {fileID: 0}
+  spawnedObject:
+  - {fileID: 0}
   startGameCanvas: {fileID: 1322958509253891104}
   Surfaces:
   - Albedo: {fileID: 2800000, guid: 177e7f514292f9247aaff29e2bd7934f, type: 3}
