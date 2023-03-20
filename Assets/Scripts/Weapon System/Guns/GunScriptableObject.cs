@@ -61,7 +61,6 @@ public class GunScriptableObject : ScriptableObject
         AmmoConfig.CurrentAmmo = AmmoConfig.MaxAmmo;
    
         TrailPool = new ObjectPool<TrailRenderer>(CreateTrail);
-
         //PlayerAction.Instance.SpawnBulletServerRPC(TrailPo);
         if (!ShootConfig.IsHitscan)
         {

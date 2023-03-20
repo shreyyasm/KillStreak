@@ -105,7 +105,7 @@ public class PlayerGunSelector : NetworkBehaviour
         {
             //ActiveGun.CheckRay();
             //ActiveGun.RayCast();
-
+            
                 if (ActiveGun.ShootConfig.IsHitscan)
                     FireCondition();
 
