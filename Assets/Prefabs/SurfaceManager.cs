@@ -3,6 +3,7 @@ using FishNet.Connection;
 using FishNet.Managing.Server;
 using FishNet.Object;
 using FishNet.Observing;
+using FishNet.Utility.Performance;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,10 +18,10 @@ public class SurfaceManager : NetworkBehaviour
     public void pool()
     {
         startGameCanvas.SetActive(false);
-        if (base.IsServer)
-            StartPoolObserver();
-        else
-            StartPoolServer();
+        //if (base.IsServer)
+        //    StartPoolObserver();
+        //else
+        //    StartPoolServer();
     }
 
     [SerializeField]
@@ -164,7 +165,9 @@ public class SurfaceManager : NetworkBehaviour
             if (spawnObjectEffect.Probability > Random.value)
             {
                
-                GameObject getobject =  GetPooledObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal);
+                //GameObject getobject =  GetPooledObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal);
+                GameObject getobject = GetObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal).gameObject;
+
                 getobject.transform.forward = HitNormal;
                 StartCoroutine(DisableImpact(getobject));
                 //getobject.GetComponent<ImpactDespawn>().StartDespawn();
@@ -227,12 +230,10 @@ public class SurfaceManager : NetworkBehaviour
             GameObject obj = Instantiate(objectToPool);
 
             //obj.transform.parent = impactTrailPool.transform;
-            //obj.SetActive(false);
             pooledObjects.Add(obj);
-            //SpawnImpactServerRPC(obj);
-            InstanceFinder.ServerManager.Spawn(obj, ownerConnection);
+            InstanceFinder.ServerManager.Spawn(obj, base.Owner);
             SetSpawnImpact(obj, this);
-            StartCoroutine(DelayDespawn(obj));
+            //StartCoroutine(DelayDespawn(obj));
         }
       
     }
@@ -247,20 +248,20 @@ public class SurfaceManager : NetworkBehaviour
         {
 
             GameObject obj = Instantiate(objectToPool);
-            InstanceFinder.ServerManager.Spawn(obj, ownerConnection);
+            InstanceFinder.ServerManager.Spawn(obj, base.Owner);
             //obj.transform.parent = impactTrailPool.transform;
             //obj.SetActive(false);
             pooledObjects.Add(obj);
             //SpawnImpactServerRPC(obj);
             
             SetSpawnImpact(obj, this);
-            StartCoroutine(DelayDespawn(obj));
+            //StartCoroutine(DelayDespawn(obj));
             //InstanceFinder.ServerManager.Despawn(obj, DespawnType.Pool);
 
         }
         
     }
-    public IEnumerator DelayDespawn(GameObject obj)
+    public IEnumerator DelayDespawn(NetworkObject obj)
     {
         yield return new WaitForSeconds(0.2f);       
         InstanceFinder.ServerManager.Despawn(obj, DespawnType.Pool);
@@ -306,11 +307,7 @@ public class SurfaceManager : NetworkBehaviour
     IEnumerator DisableImpact(GameObject pooledObject)
     {
         yield return new WaitForSeconds(3f);
-        //pooledObject.SetActive(false);
-        if (base.IsServer)
-            DespawnImpactServer(pooledObject);
-        else
-            DespawnImpactObserver(pooledObject);
+        InstanceFinder.ServerManager.Despawn(pooledObject, DespawnType.Pool);
     }
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void SpawnImpactServerRPC(GameObject prefab)
@@ -328,17 +325,35 @@ public class SurfaceManager : NetworkBehaviour
         //script.spawnedObject = spawned;
         spawnedObject.Add(spawned);
     }
-    [ServerRpc(RequireOwnership = false, RunLocally = true)]
-    public void DespawnImpactServer(GameObject pooledObject)
+    
+    public GameObject spawnObject;
+    public uint SpawnInterval;
+
+    public List<NetworkObject> spawned = new List<NetworkObject>();
+
+    public override void OnStartNetwork()
     {
-        //base.Despawn(pooledObject, DespawnType.Pool);
-        pooledObject.SetActive(false);
-    }
-    [ObserversRpc(BufferLast = true)]
-    public void DespawnImpactObserver(GameObject pooledObject)
-    {
-        //base.Despawn(pooledObject, DespawnType.Pool);
-        pooledObject.SetActive(false);
+        base.OnStartNetwork();
+        // Prewarm pool
+        PrewarmPools();
     }
 
+    void PrewarmPools()
+    {
+        DefaultObjectPool pool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
+        pool.CacheObjects(spawnObject.GetComponent<NetworkObject>(), 40, IsServer);
+    }
+
+    public NetworkObject GetObject(Vector3 Position, Quaternion Rotation, Vector3 HitNormal)
+    {
+        
+        NetworkObject getobject = NetworkManager.GetPooledInstantiated(spawnObject.GetComponent<NetworkObject>(), true);
+        getobject.transform.position = Position;
+        getobject.transform.rotation = Rotation;
+        getobject.gameObject.SetActive(true);
+        InstanceFinder.ServerManager.Spawn(getobject);
+        spawned.Add(getobject);
+
+        return getobject;
+    }
 }
