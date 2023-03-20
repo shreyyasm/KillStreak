@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3536033264245447184
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17401,6 +17401,10 @@ MonoBehaviour:
   amountToPool: 5
   playerAction: {fileID: 2086626057564614924}
   spawnedObject: {fileID: 0}
+  spawnObject: {fileID: 8081663345739861187, guid: c2e6aed9ca9047c4e9e811b1a9d78ecb,
+    type: 3}
+  SpawnInterval: 1
+  spawned: []
 --- !u!114 &2086626057564614925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19131,6 +19135,7 @@ MonoBehaviour:
   spawnObject: {fileID: 1067471869909948, guid: 5e02303289b3c494e8e185be0fbbd405,
     type: 3}
   SpawnInterval: 1
+  spawned: []
 --- !u!4 &8345929633114013450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5342081945277875022, guid: c5fa1635b443eaf42a181b1a6b4425a3,

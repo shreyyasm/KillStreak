@@ -17,7 +17,7 @@ public class SurfaceManager : NetworkBehaviour
  
     public void pool()
     {
-        startGameCanvas.SetActive(false);
+        //startGameCanvas.SetActive(false);
         //if (base.IsServer)
         //    StartPoolObserver();
         //else

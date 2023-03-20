@@ -5,6 +5,8 @@ using UnityEngine;
 using FishNet.Object;
 using FishNet.Observing;
 using FishNet.Connection;
+using FishNet;
+using FishNet.Utility.Performance;
 
 [DisallowMultipleComponent]
 public class PlayerGunSelector : NetworkBehaviour
@@ -204,10 +206,11 @@ public class PlayerGunSelector : NetworkBehaviour
 
     private IEnumerator PlayTrail(Vector3 StartPoint, Vector3 EndPoint, RaycastHit Hit)
     {
-
-        TrailRenderer tail = GetPooledObject().GetComponent<TrailRenderer>();
+        //GameObject getobject = GetObject().gameObject;
+        //TrailRenderer tail = GetPooledObject().GetComponent<TrailRenderer>();
+        TrailRenderer tail = GetObject().GetComponent<TrailRenderer>();
         //TrailRenderer instance = TrailPool.Get();
-        
+
         //bulletTrail = instance.gameObject;
         //bulletTrail.AddComponent<NetworkObject>();
         //bulletTrail.AddComponent<NetworkObserver>();
@@ -242,7 +245,8 @@ public class PlayerGunSelector : NetworkBehaviour
         yield return new WaitForSeconds(ActiveGun.TrailConfig.Duration);
         yield return null;
         tail.emitting = false;
-        tail.gameObject.SetActive(false);
+        //tail.gameObject.SetActive(false);
+        InstanceFinder.ServerManager.Despawn(tail.gameObject, DespawnType.Pool);
         //TrailPool.Release(instance);
     }
     private void HandleBulletImpact(
@@ -278,5 +282,33 @@ public class PlayerGunSelector : NetworkBehaviour
     {
         script.spawnedObject = spawned;
 
+    }
+    public GameObject spawnObject;
+    public uint SpawnInterval;
+
+    public List<NetworkObject> spawned = new List<NetworkObject>();
+
+    public override void OnStartNetwork()
+    {
+        base.OnStartNetwork();
+        // Prewarm pool
+        PrewarmPools();
+    }
+
+    void PrewarmPools()
+    {
+        DefaultObjectPool pool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
+        pool.CacheObjects(spawnObject.GetComponent<NetworkObject>(), 5, IsServer);
+    }
+
+    public NetworkObject GetObject()
+    {
+
+        NetworkObject getobject = NetworkManager.GetPooledInstantiated(spawnObject.GetComponent<NetworkObject>(), true);      
+        getobject.gameObject.SetActive(true);
+        InstanceFinder.ServerManager.Spawn(getobject);
+        spawned.Add(getobject);
+
+        return getobject;
     }
 }
