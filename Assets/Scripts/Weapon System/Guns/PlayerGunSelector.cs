@@ -245,7 +245,7 @@ public class PlayerGunSelector : NetworkBehaviour
         yield return new WaitForSeconds(ActiveGun.TrailConfig.Duration);
         yield return null;
         tail.emitting = false;
-        //tail.gameObject.SetActive(false);
+        tail.gameObject.SetActive(false);
         InstanceFinder.ServerManager.Despawn(tail.gameObject, DespawnType.Pool);
         //TrailPool.Release(instance);
     }
@@ -298,7 +298,7 @@ public class PlayerGunSelector : NetworkBehaviour
     void PrewarmPools()
     {
         DefaultObjectPool pool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
-        pool.CacheObjects(spawnObject.GetComponent<NetworkObject>(), 5, IsServer);
+        pool.CacheObjects(spawnObject.GetComponent<NetworkObject>(), 10, IsServer);
     }
 
     public NetworkObject GetObject()
