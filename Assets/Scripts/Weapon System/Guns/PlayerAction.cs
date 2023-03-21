@@ -62,7 +62,11 @@ public class PlayerAction : NetworkBehaviour
             PlayerAnimator.SetLayerWeight(6, 0);
 
         if (weaponSwitch.gunChanging)
+        {
             IsReloading = false;
+            thirdPersonController.ReloadCheck(IsReloading);
+        }
+            
 
         if (ShouldAutoReload())
         {
@@ -72,11 +76,12 @@ public class PlayerAction : NetworkBehaviour
             PlayerAnimator.SetLayerWeight(6, 1);
             GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
+            thirdPersonController.ReloadCheck(IsReloading);
             networkAnimator.SetTrigger("Reload");
             //InverseKinematics.HandIKAmount = 0.25f;
             //InverseKinematics.ElbowIKAmount = 0.25f;
         }
-        thirdPersonController.ReloadCheck(IsReloading);
+        
         //if (Input.GetMouseButtonDown(1))
         //    ManualReloadServerTest();
     }
@@ -103,6 +108,7 @@ public class PlayerAction : NetworkBehaviour
             //InverseKinematics.HandIKAmount = 1f;
             //InverseKinematics.ElbowIKAmount = 1f;
             IsReloading = false;
+            thirdPersonController.ReloadCheck(IsReloading);
         }
        
     }
@@ -135,6 +141,7 @@ public class PlayerAction : NetworkBehaviour
             PlayerAnimator.SetLayerWeight(6, 1);
             GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
+            thirdPersonController.ReloadCheck(IsReloading);
             networkAnimator.SetTrigger("Reload");
         }
     }
@@ -159,6 +166,7 @@ public class PlayerAction : NetworkBehaviour
             PlayerAnimator.SetLayerWeight(6, 1);
             GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
+            thirdPersonController.ReloadCheck(IsReloading);
             networkAnimator.SetTrigger("Reload");
         }
     }
@@ -173,6 +181,7 @@ public class PlayerAction : NetworkBehaviour
             PlayerAnimator.SetLayerWeight(6, 1);
             GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
+            thirdPersonController.ReloadCheck(IsReloading);
             networkAnimator.SetTrigger("Reload");
         }
     }

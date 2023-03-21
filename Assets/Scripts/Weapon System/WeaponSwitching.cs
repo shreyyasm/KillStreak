@@ -41,7 +41,8 @@ public class WeaponSwitching : NetworkBehaviour
     //}
     // Start is called before the first frame update
     void Start()
-    {        
+    {
+        //gunChanging = false;
         realRifle = this.gameObject.transform.GetChild(0);
         realPistol = this.gameObject.transform.GetChild(1);
         SelectedWeapon();

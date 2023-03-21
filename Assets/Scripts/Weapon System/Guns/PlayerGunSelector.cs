@@ -88,9 +88,11 @@ public class PlayerGunSelector : NetworkBehaviour
     }
     private void Update()
     {
-        //if (!base.IsOwner)
-        //    return;
+        if (!base.IsOwner)
+            return;
+
         gunSelected = weaponSwitching.selectedWeapon;
+
         if (gunSelected == 0)
         {
             if(!weaponSwitching.gunChanging)
@@ -102,17 +104,11 @@ public class PlayerGunSelector : NetworkBehaviour
                 ActiveGun = gun2;
         }
         bulletTrail = ActiveGun.ReturnBullet();
-        //ActiveGun.RayCast();
         if (playerAction.IsShooting && !playerAction.IsReloading)
         {
-            //ActiveGun.CheckRay();
-            //ActiveGun.RayCast();
-            
                 if (ActiveGun.ShootConfig.IsHitscan)
                     FireCondition();
-
         }
-       
 
     }
    
@@ -153,8 +149,12 @@ public class PlayerGunSelector : NetworkBehaviour
         //3   
         return null;
     }
+
+
     public void FireCondition()
     {
+
+        //gameObject.GetComponent<NetworkObject>().GiveOwnership(newOwnerConnection);
         if (Time.time - ActiveGun.LastShootTime - ActiveGun.ShootConfig.FireRate > Time.deltaTime)
         {
             float lastDuration = Mathf.Clamp(
@@ -179,6 +179,7 @@ public class PlayerGunSelector : NetworkBehaviour
                         + ActiveCamera.transform.forward * Vector3.Distance(
                                 ActiveCamera.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
+  
             if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
             {
                 StartCoroutine(
@@ -203,35 +204,39 @@ public class PlayerGunSelector : NetworkBehaviour
         }
        
     }
-
+    //public void MoveBullet(GameObject tail)
+    //{
+    //    tail.transform.position = 
+    //}
     private IEnumerator PlayTrail(Vector3 StartPoint, Vector3 EndPoint, RaycastHit Hit)
     {
-        //GameObject getobject = GetObject().gameObject;
-        //TrailRenderer tail = GetPooledObject().GetComponent<TrailRenderer>();
         TrailRenderer tail = GetObject().GetComponent<TrailRenderer>();
-        //TrailRenderer instance = TrailPool.Get();
-
-        //bulletTrail = instance.gameObject;
-        //bulletTrail.AddComponent<NetworkObject>();
-        //bulletTrail.AddComponent<NetworkObserver>();
-        //Debug.Log(bulletTrail);
+        //tail.GetComponent<Rigidbody>().AddForce(EndPoint*ActiveGun.TrailConfig.SimulationSpeed);
+        
+        //networkObject.GiveOwnership(newOwnerConnection);
         tail.gameObject.SetActive(true);
         tail.transform.position = StartPoint;
+
         yield return null; // avoid position carry-over from last frame if reused
 
-        tail.emitting = true;
+        //tail.emitting = true;
 
         float distance = Vector3.Distance(StartPoint, EndPoint);
         float remainingDistance = distance;
         while (remainingDistance > 0)
         {
-            tail.transform.position = Vector3.Lerp(
-                StartPoint,
-                EndPoint,
-                Mathf.Clamp01(1 - (remainingDistance / distance))
-            );
-            remainingDistance -= ActiveGun.TrailConfig.SimulationSpeed * Time.deltaTime;
+            //tail.transform.position = Vector3.Lerp(
+            //    StartPoint,
+            //    EndPoint,
+            //    Mathf.Clamp01(1 - (remainingDistance / distance))
+            //);
+            //remainingDistance -= ActiveGun.TrailConfig.SimulationSpeed * Time.deltaTime;
+            if (base.IsServer)
+                HitDirectionObserver(tail.gameObject, StartPoint, EndPoint, distance, remainingDistance);
+            else
+                HitDirectionServer(tail.gameObject, StartPoint, EndPoint, distance, remainingDistance);
 
+            remainingDistance -= ActiveGun.TrailConfig.SimulationSpeed * Time.deltaTime;
             yield return null;
         }
 
@@ -244,10 +249,32 @@ public class PlayerGunSelector : NetworkBehaviour
 
         yield return new WaitForSeconds(ActiveGun.TrailConfig.Duration);
         yield return null;
-        tail.emitting = false;
+        //tail.emitting = false;
         tail.gameObject.SetActive(false);
         InstanceFinder.ServerManager.Despawn(tail.gameObject, DespawnType.Pool);
-        //TrailPool.Release(instance);
+        //gameObject.GetComponent<NetworkObject>().RemoveOwnership();
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void HitDirectionServer(GameObject tail, Vector3 StartPoint, Vector3 EndPoint, float distance, float remainingDistance)
+    {
+        Debug.Log("BulletServer");
+        tail.transform.position = Vector3.Lerp(
+                StartPoint,
+                EndPoint,
+                Mathf.Clamp01(1 - (remainingDistance / distance))
+            );
+        
+    }
+    [ObserversRpc(BufferLast = false)]
+    public void HitDirectionObserver(GameObject tail, Vector3 StartPoint, Vector3 EndPoint, float distance, float remainingDistance)
+    {
+        Debug.Log("BulletObserver");
+        tail.transform.position = Vector3.Lerp(
+                StartPoint,
+                EndPoint,
+                Mathf.Clamp01(1 - (remainingDistance / distance))
+            );
+        
     }
     private void HandleBulletImpact(
        float DistanceTraveled,
@@ -287,6 +314,7 @@ public class PlayerGunSelector : NetworkBehaviour
     public uint SpawnInterval;
 
     public List<NetworkObject> spawned = new List<NetworkObject>();
+    private NetworkConnection newOwnerConnection;
 
     public override void OnStartNetwork()
     {

@@ -1,5 +1,6 @@
 using FishNet.Managing.Object;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using FishNet.Observing;
 using System.Collections;
 using System.Collections.Generic;
