@@ -213,7 +213,7 @@ public class PlayerGunSelector : NetworkBehaviour
         TrailRenderer tail = GetObject().GetComponent<TrailRenderer>();
         //tail.GetComponent<Rigidbody>().AddForce(EndPoint*ActiveGun.TrailConfig.SimulationSpeed);
         
-        //networkObject.GiveOwnership(newOwnerConnection);
+        
         tail.gameObject.SetActive(true);
         tail.transform.position = StartPoint;
 
@@ -250,14 +250,20 @@ public class PlayerGunSelector : NetworkBehaviour
         yield return new WaitForSeconds(ActiveGun.TrailConfig.Duration);
         yield return null;
         //tail.emitting = false;
+        if (base.IsOwner)
+            DisableTrailObserver(tail.gameObject);
+        else
+            DisableTrailServer(tail.gameObject);
         tail.gameObject.SetActive(false);
+        DisableTrailServer(tail.gameObject);
         InstanceFinder.ServerManager.Despawn(tail.gameObject, DespawnType.Pool);
-        //gameObject.GetComponent<NetworkObject>().RemoveOwnership();
+       
     }
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void HitDirectionServer(GameObject tail, Vector3 StartPoint, Vector3 EndPoint, float distance, float remainingDistance)
     {
-        Debug.Log("BulletServer");
+        tail.GetComponent<TrailRenderer>().emitting = true;
+       
         tail.transform.position = Vector3.Lerp(
                 StartPoint,
                 EndPoint,
@@ -268,13 +274,24 @@ public class PlayerGunSelector : NetworkBehaviour
     [ObserversRpc(BufferLast = false)]
     public void HitDirectionObserver(GameObject tail, Vector3 StartPoint, Vector3 EndPoint, float distance, float remainingDistance)
     {
-        Debug.Log("BulletObserver");
+        tail.GetComponent<TrailRenderer>().emitting = true;
+        
         tail.transform.position = Vector3.Lerp(
                 StartPoint,
                 EndPoint,
                 Mathf.Clamp01(1 - (remainingDistance / distance))
             );
         
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void DisableTrailServer(GameObject tail)
+    {
+        tail.GetComponent<TrailRenderer>().emitting = false;
+    }
+    [ObserversRpc(BufferLast = false)]
+    public void DisableTrailObserver(GameObject tail)
+    {
+        tail.GetComponent<TrailRenderer>().emitting = false;
     }
     private void HandleBulletImpact(
        float DistanceTraveled,
