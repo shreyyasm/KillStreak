@@ -80,7 +80,7 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         gun1.Spawn(GunParent, this);
         gun2.Spawn(GunParent, this);
-        StartPool();
+        //StartPool();
         //SurfaceManager.Instance.StartPool();
         //gun1.StartPool();
         //gun2.StartPool();

@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class SurfaceManager : NetworkBehaviour
 {
-    public List<GameObject> spawnedObject;
+    List<GameObject> spawnedObject;
 
     [SerializeField] GameObject startGameCanvas; 
 
@@ -185,23 +185,26 @@ public class SurfaceManager : NetworkBehaviour
             }
         }
 
-        //foreach (PlayAudioEffect playAudioEffect in SurfaceEffect.PlayAudioEffects)
-        //{
-        //    AudioClip clip = playAudioEffect.AudioClips[Random.Range(0, playAudioEffect.AudioClips.Count)];
-        //    ObjectPool pool = ObjectPool.CreateInstance(playAudioEffect.AudioSourcePrefab.GetComponent<PoolableObject>(), DefaultPoolSizes);
-        //    AudioSource audioSource = pool.GetObject().GetComponent<AudioSource>();
+        foreach (PlayAudioEffect playAudioEffect in SurfaceEffect.PlayAudioEffects)
+        {
+            AudioClip clip = playAudioEffect.AudioClips[Random.Range(0, playAudioEffect.AudioClips.Count)];
+            //ObjectPool pool = ObjectPool.CreateInstance(playAudioEffect.AudioSourcePrefab.GetComponent<PoolableObject>(), DefaultPoolSizes);
+            //AudioSource audioSource = pool.GetObject().GetComponent<AudioSource>();
+            AudioSource audioSource = NetworkManager.GetPooledInstantiated(impactAudioPrefab.GetComponent<NetworkObject>(), true).GetComponent<AudioSource>();        
+            InstanceFinder.ServerManager.Spawn(audioSource.gameObject);
 
-        //    audioSource.transform.position = HitPoint;
-        //    audioSource.PlayOneShot(clip, SoundOffset * Random.Range(playAudioEffect.VolumeRange.x, playAudioEffect.VolumeRange.y));
-        //    StartCoroutine(DisableAudioSource(audioSource, clip.length));
-        //}
+
+            audioSource.transform.position = HitPoint;
+            audioSource.PlayOneShot(clip, SoundOffset * Random.Range(playAudioEffect.VolumeRange.x, playAudioEffect.VolumeRange.y));
+            StartCoroutine(DisableAudioSource(audioSource, clip.length));
+        }
     }
 
     private IEnumerator DisableAudioSource(AudioSource AudioSource, float Time)
     {
         yield return new WaitForSeconds(Time);
-
-        AudioSource.gameObject.SetActive(false);
+        InstanceFinder.ServerManager.Despawn(AudioSource.gameObject, DespawnType.Pool);
+        //AudioSource.gameObject.SetActive(false);
     }
 
     private class TextureAlpha
@@ -326,7 +329,8 @@ public class SurfaceManager : NetworkBehaviour
         spawnedObject.Add(spawned);
     }
     
-    public GameObject spawnObject;
+    public GameObject impactPrefab;
+    public GameObject impactAudioPrefab;
     public uint SpawnInterval;
 
     public List<NetworkObject> spawned = new List<NetworkObject>();
@@ -340,14 +344,17 @@ public class SurfaceManager : NetworkBehaviour
 
     void PrewarmPools()
     {
-        DefaultObjectPool pool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
-        pool.CacheObjects(spawnObject.GetComponent<NetworkObject>(), 40, IsServer);
+        DefaultObjectPool impactPool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
+        impactPool.CacheObjects(impactPrefab.GetComponent<NetworkObject>(), 40, IsServer);
+
+        DefaultObjectPool audioPool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
+        audioPool.CacheObjects(impactAudioPrefab.GetComponent<NetworkObject>(), 40, IsServer);
     }
 
     public NetworkObject GetObject(Vector3 Position, Quaternion Rotation, Vector3 HitNormal)
     {
         
-        NetworkObject getobject = NetworkManager.GetPooledInstantiated(spawnObject.GetComponent<NetworkObject>(), true);
+        NetworkObject getobject = NetworkManager.GetPooledInstantiated(impactPrefab.GetComponent<NetworkObject>(), true);
         getobject.transform.position = Position;
         getobject.transform.rotation = Rotation;
         getobject.gameObject.SetActive(true);
