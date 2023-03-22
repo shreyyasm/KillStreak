@@ -212,74 +212,52 @@ public class PlayerGunSelector : NetworkBehaviour
     }
     public void FireConditionManual()
     {
-        if (ActiveGun.Fired)
+        if (Time.time - ActiveGun.LastShootTime - ActiveGun.ShootConfig.FireRate > Time.deltaTime)
         {
-            if (Time.time - ActiveGun.LastShootTime - ActiveGun.ShootConfig.FireRate > Time.deltaTime)
+            float lastDuration = Mathf.Clamp(
+                0,
+                (ActiveGun.StopShootingTime - ActiveGun.InitialClickTime),
+                ActiveGun.ShootConfig.MaxSpreadTime
+            );
+            float lerpTime = (ActiveGun.ShootConfig.RecoilRecoverySpeed - (Time.time - ActiveGun.StopShootingTime))
+                / ActiveGun.ShootConfig.RecoilRecoverySpeed;
+
+            ActiveGun.InitialClickTime = Time.time - Mathf.Lerp(0, lastDuration, Mathf.Clamp01(lerpTime));
+        }
+        if (Time.time > ActiveGun.ShootConfig.FireRate + ActiveGun.LastShootTime)
+        {
+
+            ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
+            Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+            ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+
+            Vector3 shootDirection = Vector3.zero;
+            shootDirection = ActiveCamera.transform.forward + ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
+            Vector3 origin = ActiveCamera.transform.position
+                        + ActiveCamera.transform.forward * Vector3.Distance(
+                                ActiveCamera.transform.position,
+                                ActiveGun.ShootSystem.transform.position);
+            ActiveGun.Fired = false;
+            if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
             {
-                float lastDuration = Mathf.Clamp(
-                    0,
-                    (ActiveGun.StopShootingTime - ActiveGun.InitialClickTime),
-                    ActiveGun.ShootConfig.MaxSpreadTime
+                StartCoroutine(
+                    PlayTrail(
+                        ActiveGun.ShootSystem.transform.position,
+                        hit.point,
+                        hit
+                    )
                 );
-                float lerpTime = (ActiveGun.ShootConfig.RecoilRecoverySpeed - (Time.time - ActiveGun.StopShootingTime))
-                    / ActiveGun.ShootConfig.RecoilRecoverySpeed;
-
-                ActiveGun.InitialClickTime = Time.time - Mathf.Lerp(0, lastDuration, Mathf.Clamp01(lerpTime));
             }
-            if (Time.time > ActiveGun.ShootConfig.FireRate + ActiveGun.LastShootTime)
+
+            else
             {
-                ActiveGun.LastShootTime = Time.time;
-                if (ActiveGun.AmmoConfig.CurrentClipAmmo == 0)
-                {
-                    ActiveGun.AudioConfig.PlayOutOfAmmoClip(ActiveGun.ShootingAudioSource);
-                    return;
-                }
-
-                ActiveGun.ShootSystem.Play();
-
-                ActiveGun.AudioConfig.PlayShootingClip(ActiveGun.ShootingAudioSource, ActiveGun.AmmoConfig.CurrentClipAmmo == 1);
-
-                ActiveGun.spreadAmount = ActiveGun.ShootConfig.GetSpread(Time.time - ActiveGun.InitialClickTime);
-                ActiveGun.Model.transform.forward += ActiveGun.Model.transform.TransformDirection(ActiveGun.spreadAmount);
-
-                Vector3 shootDirection = ActiveGun.ShootSystem.transform.forward;
-                ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
-                Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
-                ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-
-                //Vector3 shootDirection = Vector3.zero;
-                shootDirection = ActiveCamera.transform.forward + ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
-                Vector3 origin = ActiveCamera.transform.position
-                            + ActiveCamera.transform.forward * Vector3.Distance(
-                                    ActiveCamera.transform.position,
-                                    ActiveGun.ShootSystem.transform.position);
-
-                ActiveGun.followVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
-                ActiveGun.aimVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
-                //fpsVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
-                ActiveGun.AmmoConfig.CurrentClipAmmo--;
-                ActiveGun.Fired = false;
-                if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
-                {
-                    StartCoroutine(
-                        PlayTrail(
-                            ActiveGun.ShootSystem.transform.position,
-                            hit.point,
-                            hit
-                        )
-                    );
-                }
-
-                else
-                {
-                    StartCoroutine(
-                         PlayTrail(
-                             ActiveGun.ShootSystem.transform.position,
-                             ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
-                             new RaycastHit()
-                         )
-                     );
-                }
+                StartCoroutine(
+                     PlayTrail(
+                         ActiveGun.ShootSystem.transform.position,
+                         ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                         new RaycastHit()
+                     )
+                 );
             }
         }
     }

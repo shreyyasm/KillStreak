@@ -216,62 +216,58 @@ public class GunScriptableObject : ScriptableObject
     
     private void TryToShootManual()
     {
-        Debug.Log(Fired);
-        if (Fired)
+        if (Time.time - LastShootTime - ShootConfig.FireRate > Time.deltaTime)
         {
-            Debug.Log("work");
-            if (Time.time - LastShootTime - ShootConfig.FireRate > Time.deltaTime)
-            {
-                float lastDuration = Mathf.Clamp(
-                    0,
-                    (StopShootingTime - InitialClickTime),
-                    ShootConfig.MaxSpreadTime
-                );
-                float lerpTime = (ShootConfig.RecoilRecoverySpeed - (Time.time - StopShootingTime))
-                    / ShootConfig.RecoilRecoverySpeed;
+            float lastDuration = Mathf.Clamp(
+                0,
+                (StopShootingTime - InitialClickTime),
+                ShootConfig.MaxSpreadTime
+            );
+            float lerpTime = (ShootConfig.RecoilRecoverySpeed - (Time.time - StopShootingTime))
+                / ShootConfig.RecoilRecoverySpeed;
 
-                InitialClickTime = Time.time - Mathf.Lerp(0, lastDuration, Mathf.Clamp01(lerpTime));
-            }
-
-            if (Time.time > ShootConfig.FireRate + LastShootTime)
-            {
-                LastShootTime = Time.time;
-                if (AmmoConfig.CurrentClipAmmo == 0)
-                {
-                    AudioConfig.PlayOutOfAmmoClip(ShootingAudioSource);
-                    return;
-                }
-
-                ShootSystem.Play();
-                
-                AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
-
-                spreadAmount = ShootConfig.GetSpread(Time.time - InitialClickTime);
-                Model.transform.forward += Model.transform.TransformDirection(spreadAmount);
-
-                Vector3 shootDirection = ShootSystem.transform.forward;
-
-                Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
-                Camera.main.transform.forward += Camera.main.transform.TransformDirection(spreadAmount);
-                ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-
-                followVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
-                aimVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
-                //fpsVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
-                AmmoConfig.CurrentClipAmmo--;
-                Fired = false;
-
-                if (ShootConfig.IsHitscan)
-                {
-                    DoHitscanShoot(shootDirection);
-                }
-                else
-                {
-                    DoProjectileShoot(shootDirection);
-                }
-            }
+            InitialClickTime = Time.time - Mathf.Lerp(0, lastDuration, Mathf.Clamp01(lerpTime));
         }
-  
+
+        if (Time.time > ShootConfig.FireRate + LastShootTime)
+        {
+            LastShootTime = Time.time;
+            if (AmmoConfig.CurrentClipAmmo == 0)
+            {
+                AudioConfig.PlayOutOfAmmoClip(ShootingAudioSource);
+                return;
+            }
+
+            ShootSystem.Play();
+            
+            AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
+
+            shootHoldTime = Time.time;
+            Vector3 spreadAmount = ShootConfig.GetSpread(shootHoldTime - InitialClickTime);
+            Model.transform.forward += Model.transform.TransformDirection(spreadAmount);
+
+            shootDirection = ShootSystem.transform.forward;
+
+            Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+            Camera.main.transform.forward += Camera.main.transform.TransformDirection(spreadAmount);
+            ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+
+            followVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
+            aimVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
+            //fpsVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
+            AmmoConfig.CurrentClipAmmo--;
+            Fired = false;
+
+            if (ShootConfig.IsHitscan)
+            {
+                DoHitscanShoot(shootDirection);
+            }
+            else
+            {
+                DoProjectileShoot(shootDirection);
+            }
+
+        }
     }
   
     /// <summary>
@@ -491,15 +487,7 @@ public class GunScriptableObject : ScriptableObject
     {
         return Instantiate(ShootConfig.BulletPrefab);
     }
-    public void FireCheck()
-    {
-        Fired = true;
-    }
-    public bool ReturnFireCheck()
-    {
 
-        return Fired;
-    }
     public GameObject ReturnBullet()
     {
         return bulletTrail;

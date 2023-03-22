@@ -36,6 +36,7 @@ public class PlayerAction : NetworkBehaviour
     public bool IsReloading { get; [ServerRpc(RunLocally = true)] set; }
 
     public bool IsShooting;
+    public bool resetShooting = false;
 
     private void Update()
     {
@@ -114,23 +115,46 @@ public class PlayerAction : NetworkBehaviour
     }
     public void Shoot(float input)
     {
-        if (GunSelector.ActiveGun.AmmoConfig.CurrentClipAmmo > 0)
-            GunSelector.ActiveGun.FireCheck();
+        
         if (!thirdPersonController.changingGun)
         {
-            if (input == 1)
+            if(GunSelector.ActiveGun.Automatic)
             {
-                IsShooting = true;
-                thirdPersonController.ShotFired(true);
-                thirdPersonController.FiringContinous(true);
+                if (input == 1)
+                {
+
+                    IsShooting = true;                  
+                    thirdPersonController.ShotFired(true);
+                    thirdPersonController.FiringContinous(true);
+                    //if (!GunSelector.ActiveGun.Automatic)
+                    //    IsShooting = false;
+                }
+                else
+                {
+                    IsShooting = false;
+                    thirdPersonController.FiringContinous(false);
+                }
             }
             else
             {
-                IsShooting = false;
-                thirdPersonController.FiringContinous(false);
+                if (input != 1)
+                    return;
+               IsShooting = true;             
+               thirdPersonController.ShotFired(true);
+               thirdPersonController.FiringContinous(true);
+
+                StartCoroutine(StopShooting());
+               
             }
+            
         }
         //Debug.Log(GunSelector.ActiveGun.FireCheck());
+    }
+    public IEnumerator StopShooting()
+    {
+        yield return new WaitForSeconds(0.1f);
+        IsShooting = false;
+        thirdPersonController.FiringContinous(false);
     }
     public void ManualReloadServerTest()
     {
