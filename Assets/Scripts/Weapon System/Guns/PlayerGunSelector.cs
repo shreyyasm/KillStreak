@@ -252,7 +252,7 @@ public class PlayerGunSelector : NetworkBehaviour
         yield return new WaitForSeconds(ActiveGun.TrailConfig.Duration);
         yield return null;
         //tail.emitting = false;
-        if (base.IsOwner)
+        if (base.IsServer)
             DisableTrailObserver(tail.gameObject);
         else
             DisableTrailServer(tail.gameObject);

@@ -114,8 +114,8 @@ namespace FishNet.Managing.Logging
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void LogWarning(string value)
         {
-            if (CanLog(LoggingType.Warning))
-                Debug.LogWarning(value);
+            //if (CanLog(LoggingType.Warning))
+            //    Debug.LogWarning(value);
         }
 
         /// <summary>

@@ -136,10 +136,10 @@ namespace StarterAssets
         public bool isJump = false;
         public int gunType;
 
-        [field: SyncVar]
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
         public bool changingGun { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
-        [field: SyncVar]
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
         public bool isReloading { get; [ServerRpc(RequireOwnership = false,RunLocally = true)] set; }
 
         float fireBulletTime = 0f;
@@ -207,7 +207,7 @@ namespace StarterAssets
             GroundedCheck();
             Move();
 
-
+            //if(base.IsServer)
             changingGun = weaponSwitching.GunSwaping();
 
             if (firedBullet && fireBulletTime >= 0)

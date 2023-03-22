@@ -32,7 +32,7 @@ public class PlayerAction : NetworkBehaviour
     private WeaponSwitching weaponSwitch;
   
 
-    [field: SyncVar]
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
     public bool IsReloading { get; [ServerRpc(RunLocally = true)] set; }
 
     public bool IsShooting;

@@ -10,14 +10,14 @@ using UnityEngine.Animations.Rigging;
 public class WeaponSwitching : NetworkBehaviour
 {
     //Index of selected weapon
-    [field: SyncVar]
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
     public int selectedWeapon { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
     [SerializeField] ShooterController shooterController;
     [SerializeField] WeaponInventory weaponInventory;
     bool gunChanged = false;
 
-    [field: SyncVar]
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
     public bool gunChanging { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
     public GameObject animator;
@@ -70,8 +70,8 @@ public class WeaponSwitching : NetworkBehaviour
                 checkAnimationState = false;
             }
         }
-        if (Input.GetMouseButtonDown(1))
-            ChangeGunIndex();
+        //if (Input.GetMouseButtonDown(1))
+        //    ChangeGunIndex();
 
         ManagerLayerWeights();
     }
@@ -179,6 +179,7 @@ public class WeaponSwitching : NetworkBehaviour
     [ObserversRpc(BufferLast = false)]
     public void ChangeGunObserver()
     {
+        //Debug.Log()
         if (!gunChanging)
         {
             checkAnimationState = true;
@@ -304,7 +305,7 @@ public class WeaponSwitching : NetworkBehaviour
     [ObserversRpc(BufferLast = true)]
     public void GunSwapVisualTakeOutObserver()
     {
-
+        
         if (animator.GetComponent<Animator>().GetLayerWeight(4) == 1)
         {
             gunInHand = true;
