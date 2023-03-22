@@ -68,15 +68,18 @@ public class GunScriptableObject : ScriptableObject
             BulletPool = new ObjectPool<Bullet>(CreateBullet);
         }
 
-        Model = Instantiate(ModelPrefab);     
+        Model = Instantiate(ModelPrefab);
         Model.transform.SetParent(Parent, false);
         Model.transform.localPosition = SpawnPoint;
         Model.transform.localRotation = Quaternion.Euler(SpawnRotation);
+        Model.SetActive(false);
         //ActiveMonoBehaviour.ServerManager.Spawn(Model, ActiveMonoBehaviour.Owner);
         ////Instansiate Bullet
         //GameObject projectile = Instantiate(bulletPrefab, spawnBulletPosition.position, rotation);
-         //ActiveMonoBehaviour.ServerManager.Spawn(Model, ActiveMonoBehaviour.Owner);
+        //ActiveMonoBehaviour.ServerManager.Spawn(Model, ActiveMonoBehaviour.Owner);
         //SetSpawnBullet(projectile, script);
+       // PlayerGunSelector.instance.Spawn(Model);
+        
         if (ActiveMonoBehaviour.Owner.IsLocalClient)
         {
             ShootingAudioSource = Model.GetComponent<AudioSource>();

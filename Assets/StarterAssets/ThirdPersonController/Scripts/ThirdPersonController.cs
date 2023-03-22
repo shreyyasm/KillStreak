@@ -220,10 +220,10 @@ namespace StarterAssets
                 }
             }
 
-            if (changingGun)
-                SetRigWeight();
+            //if (changingGun)
+                //SetRigWeight();
 
-            if(isReloading)
+            //if(isReloading)
                 SetRigWeight();
 
             CrouchInput();
@@ -237,15 +237,15 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            //CameraRotationOld();
-            CameraRotation();
+            CameraRotationOld();
+            //CameraRotation();
         }
         public void SetRigWeight()
         {
             if (base.IsServer)
                 SetRigObserver();
 
-            if (base.IsOwner)
+            if(base.IsOwner)
                 SetRigServer();
         }
         
@@ -704,6 +704,7 @@ namespace StarterAssets
 
             if (base.IsOwner)
                 weaponSwitching.GunSwapVisualTakeOutServer();
+
         }
         public void ReloadCheck(bool state)
         {

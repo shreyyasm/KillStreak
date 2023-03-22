@@ -7,10 +7,12 @@ using FishNet.Observing;
 using FishNet.Connection;
 using FishNet;
 using FishNet.Utility.Performance;
+using System;
 
 [DisallowMultipleComponent]
 public class PlayerGunSelector : NetworkBehaviour
 {
+    public static PlayerGunSelector instance;
     [SerializeField]
     private GunType PrimaryGun;
 
@@ -52,6 +54,7 @@ public class PlayerGunSelector : NetworkBehaviour
 
     private void Awake()
     {
+        instance = this;
         ActiveCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
     private void Start()
@@ -111,7 +114,6 @@ public class PlayerGunSelector : NetworkBehaviour
         }
 
     }
-   
 
     public void StartPool()
     {
