@@ -109,8 +109,14 @@ public class PlayerGunSelector : NetworkBehaviour
         bulletTrail = ActiveGun.ReturnBullet();
         if (playerAction.IsShooting && !playerAction.IsReloading)
         {
-                if (ActiveGun.ShootConfig.IsHitscan)
-                    FireCondition();
+            if (ActiveGun.ShootConfig.IsHitscan)
+            {                         
+                if (ActiveGun.Automatic)
+                    FireConditionAutomatic();
+                else
+                    FireConditionManual();
+            }
+
         }
 
     }
@@ -153,10 +159,8 @@ public class PlayerGunSelector : NetworkBehaviour
     }
 
 
-    public void FireCondition()
-    {
-
-        //gameObject.GetComponent<NetworkObject>().GiveOwnership(newOwnerConnection);
+    public void FireConditionAutomatic()
+    { 
         if (Time.time - ActiveGun.LastShootTime - ActiveGun.ShootConfig.FireRate > Time.deltaTime)
         {
             float lastDuration = Mathf.Clamp(
@@ -171,6 +175,7 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         if (Time.time > ActiveGun.ShootConfig.FireRate + ActiveGun.LastShootTime)
         {
+           
             ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
             ray = Camera.main.ScreenPointToRay(screenCenterPoint);
@@ -181,7 +186,7 @@ public class PlayerGunSelector : NetworkBehaviour
                         + ActiveCamera.transform.forward * Vector3.Distance(
                                 ActiveCamera.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
-  
+            ActiveGun.Fired = false;
             if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
             {
                 StartCoroutine(
@@ -203,15 +208,84 @@ public class PlayerGunSelector : NetworkBehaviour
                      )
                  );
             }
-        }
-       
+        }    
     }
-    //public void MoveBullet(GameObject tail)
-    //{
-    //    tail.transform.position = 
-    //}
+    public void FireConditionManual()
+    {
+        if (ActiveGun.Fired)
+        {
+            if (Time.time - ActiveGun.LastShootTime - ActiveGun.ShootConfig.FireRate > Time.deltaTime)
+            {
+                float lastDuration = Mathf.Clamp(
+                    0,
+                    (ActiveGun.StopShootingTime - ActiveGun.InitialClickTime),
+                    ActiveGun.ShootConfig.MaxSpreadTime
+                );
+                float lerpTime = (ActiveGun.ShootConfig.RecoilRecoverySpeed - (Time.time - ActiveGun.StopShootingTime))
+                    / ActiveGun.ShootConfig.RecoilRecoverySpeed;
+
+                ActiveGun.InitialClickTime = Time.time - Mathf.Lerp(0, lastDuration, Mathf.Clamp01(lerpTime));
+            }
+            if (Time.time > ActiveGun.ShootConfig.FireRate + ActiveGun.LastShootTime)
+            {
+                ActiveGun.LastShootTime = Time.time;
+                if (ActiveGun.AmmoConfig.CurrentClipAmmo == 0)
+                {
+                    ActiveGun.AudioConfig.PlayOutOfAmmoClip(ActiveGun.ShootingAudioSource);
+                    return;
+                }
+
+                ActiveGun.ShootSystem.Play();
+
+                ActiveGun.AudioConfig.PlayShootingClip(ActiveGun.ShootingAudioSource, ActiveGun.AmmoConfig.CurrentClipAmmo == 1);
+
+                ActiveGun.spreadAmount = ActiveGun.ShootConfig.GetSpread(Time.time - ActiveGun.InitialClickTime);
+                ActiveGun.Model.transform.forward += ActiveGun.Model.transform.TransformDirection(ActiveGun.spreadAmount);
+
+                Vector3 shootDirection = ActiveGun.ShootSystem.transform.forward;
+                ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
+                Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+                ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+
+                //Vector3 shootDirection = Vector3.zero;
+                shootDirection = ActiveCamera.transform.forward + ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
+                Vector3 origin = ActiveCamera.transform.position
+                            + ActiveCamera.transform.forward * Vector3.Distance(
+                                    ActiveCamera.transform.position,
+                                    ActiveGun.ShootSystem.transform.position);
+
+                ActiveGun.followVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
+                ActiveGun.aimVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
+                //fpsVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
+                ActiveGun.AmmoConfig.CurrentClipAmmo--;
+                ActiveGun.Fired = false;
+                if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                {
+                    StartCoroutine(
+                        PlayTrail(
+                            ActiveGun.ShootSystem.transform.position,
+                            hit.point,
+                            hit
+                        )
+                    );
+                }
+
+                else
+                {
+                    StartCoroutine(
+                         PlayTrail(
+                             ActiveGun.ShootSystem.transform.position,
+                             ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                             new RaycastHit()
+                         )
+                     );
+                }
+            }
+        }
+    }
     private IEnumerator PlayTrail(Vector3 StartPoint, Vector3 EndPoint, RaycastHit Hit)
     {
+        
         TrailRenderer tail = GetObject().GetComponent<TrailRenderer>();
         //tail.GetComponent<Rigidbody>().AddForce(EndPoint*ActiveGun.TrailConfig.SimulationSpeed);
         
@@ -219,7 +293,7 @@ public class PlayerGunSelector : NetworkBehaviour
         tail.gameObject.SetActive(true);
         tail.transform.position = StartPoint;
 
-        yield return null; // avoid position carry-over from last frame if reused
+        //yield return null; // avoid position carry-over from last frame if reused
 
         //tail.emitting = true;
 
@@ -257,10 +331,11 @@ public class PlayerGunSelector : NetworkBehaviour
         else
             DisableTrailServer(tail.gameObject);
         tail.gameObject.SetActive(false);
-        DisableTrailServer(tail.gameObject);
+        //DisableTrailServer(tail.gameObject);
         InstanceFinder.ServerManager.Despawn(tail.gameObject, DespawnType.Pool);
        
     }
+
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void HitDirectionServer(GameObject tail, Vector3 StartPoint, Vector3 EndPoint, float distance, float remainingDistance)
     {
@@ -276,6 +351,7 @@ public class PlayerGunSelector : NetworkBehaviour
     [ObserversRpc(BufferLast = false)]
     public void HitDirectionObserver(GameObject tail, Vector3 StartPoint, Vector3 EndPoint, float distance, float remainingDistance)
     {
+        
         tail.GetComponent<TrailRenderer>().emitting = true;
         
         tail.transform.position = Vector3.Lerp(
@@ -314,21 +390,7 @@ public class PlayerGunSelector : NetworkBehaviour
             damageable.TakeDamage(ActiveGun.DamageConfig.GetDamage(DistanceTraveled));
         }
     }
-    [ServerRpc(RequireOwnership = false, RunLocally = true)]
-    public void SpawnBulletServerRPC(GameObject prefab)
-    {
-
-        ////Instansiate Bullet
-        ServerManager.Spawn(prefab, base.Owner);
-        SetSpawnBullet(prefab, this);
-    }
-
-    [ObserversRpc(BufferLast = false)]
-    public void SetSpawnBullet(GameObject spawned, PlayerGunSelector script)
-    {
-        script.spawnedObject = spawned;
-
-    }
+    
     public GameObject spawnObject;
     public uint SpawnInterval;
 

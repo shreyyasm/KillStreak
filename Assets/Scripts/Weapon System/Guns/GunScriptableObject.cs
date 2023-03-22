@@ -24,8 +24,8 @@ public class GunScriptableObject : ScriptableObject
     public AudioConfigScriptableObject AudioConfig;
     public DefaultPrefabObjects fishnetSpawnList;
     private NetworkBehaviour ActiveMonoBehaviour;
-    private AudioSource ShootingAudioSource;
-    private GameObject Model;
+    public AudioSource ShootingAudioSource;
+    public GameObject Model;
     public float LastShootTime;
     public float InitialClickTime;
     public float StopShootingTime;
@@ -35,10 +35,10 @@ public class GunScriptableObject : ScriptableObject
     private ObjectPool<Bullet> BulletPool;
     private bool LastFrameWantedToShoot;
     public bool Automatic;
-    bool Fired;
+    public bool Fired = false;
     GameObject fpsVirtualCamera;
-    GameObject aimVirtualCamera;
-    GameObject followVirtualCamera;
+    public GameObject aimVirtualCamera;
+    public GameObject followVirtualCamera;
     GameObject bulletTrail;
     GameObject bulletTrailPool;
     TrailRenderer tail;
@@ -160,7 +160,7 @@ public class GunScriptableObject : ScriptableObject
     public Ray ray;
     public float shootHoldTime;
     private void TryToShoot()
-    {
+    { 
         if (Time.time - LastShootTime - ShootConfig.FireRate > Time.deltaTime)
         {
             float lastDuration = Mathf.Clamp(
@@ -184,6 +184,7 @@ public class GunScriptableObject : ScriptableObject
             }
 
             ShootSystem.Play();
+            
             AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
 
             shootHoldTime = Time.time;
@@ -215,8 +216,10 @@ public class GunScriptableObject : ScriptableObject
     
     private void TryToShootManual()
     {
-        if(Fired)
+        Debug.Log(Fired);
+        if (Fired)
         {
+            Debug.Log("work");
             if (Time.time - LastShootTime - ShootConfig.FireRate > Time.deltaTime)
             {
                 float lastDuration = Mathf.Clamp(
@@ -240,6 +243,7 @@ public class GunScriptableObject : ScriptableObject
                 }
 
                 ShootSystem.Play();
+                
                 AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
 
                 spreadAmount = ShootConfig.GetSpread(Time.time - InitialClickTime);

@@ -130,6 +130,7 @@ public class PlayerAction : NetworkBehaviour
                 thirdPersonController.FiringContinous(false);
             }
         }
+        //Debug.Log(GunSelector.ActiveGun.FireCheck());
     }
     public void ManualReloadServerTest()
     {

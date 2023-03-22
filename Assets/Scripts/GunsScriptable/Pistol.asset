@@ -25,7 +25,15 @@ MonoBehaviour:
   TrailConfig: {fileID: 11400000, guid: 9a197b8afa186fa42921115bb381f594, type: 2}
   AudioConfig: {fileID: 11400000, guid: bec573dcba660ed4aa492212a22ed2a4, type: 2}
   fishnetSpawnList: {fileID: 0}
+  LastShootTime: 0
+  InitialClickTime: 23.446913
+  StopShootingTime: 23.56622
+  ShootSystem: {fileID: 0}
   Automatic: 0
+  Fired: 0
+  shootDirection: {x: 0, y: 0, z: 0}
+  spreadAmount: {x: 0, y: 0, z: 0}
+  shootHoldTime: 0
   pooledObjects:
   - {fileID: 0}
   - {fileID: 0}
