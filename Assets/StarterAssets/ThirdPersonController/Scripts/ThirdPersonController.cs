@@ -195,8 +195,8 @@ namespace StarterAssets
         private void Awake()
         {
 
-            myActionAsset.bindingMask = new InputBinding { groups = "KeyboardMouse" };
-            playerInput.SwitchCurrentControlScheme(Keyboard.current, Mouse.current);
+            //myActionAsset.bindingMask = new InputBinding { groups = "KeyboardMouse" };
+            //playerInput.SwitchCurrentControlScheme(Keyboard.current, Mouse.current);
             // get a reference to our main camera
             if (_mainCamera == null)
             {
@@ -598,7 +598,7 @@ namespace StarterAssets
             if (Input.GetMouseButtonDown(1) && isGrounded)
             {
                 StartCoroutine(slide());
-                
+
             }
 
 
@@ -615,12 +615,17 @@ namespace StarterAssets
                 //value = slideTimeRemaining;
                 if (value > 0)
                 {
+                    float x = ultimateJoystick.GetHorizontalAxis();
+                    float z = ultimateJoystick.GetVerticalAxis();
+                    direction = new Vector3(x, 0f, z).normalized;
+                    
                     value -=  1 * Time.deltaTime;
-                    slideSpeed -= 5 * Time.deltaTime;
-                    //transform.Translate(Vector3.forward * slideSpeed * ultimateJoystick.GetHorizontalAxis()  * Time.deltaTime);
+                    slideSpeed -= 3 * Time.deltaTime;
+                    transform.Translate(Vector3.forward * slideSpeed  * Time.deltaTime);
+                    //Debug.Log(ultimateJoystick.GetHorizontalAxis());
                     //transform.Translate(Vector3.forward * slideSpeed * Time.deltaTime);
-                    Vector3 newpos = transform.position + new Vector3(0, 0, 5);
-                    transform.position = Vector3.MoveTowards(transform.position, newpos,  slideSpeed * Time.deltaTime);
+                    //Vector3 newpos = transform.position + new Vector3(0, 0, 5);
+                    //transform.position = Vector3.MoveTowards(transform.position, newpos,  slideSpeed * Time.deltaTime);
                     //float newPos = Mathf.SmoothDamp(1, 1, ref yVelocity, Time.deltaTime * 30f);
                     //Mathf.Lerp(Vector3.forward.z, Vector3.forward.z,  20 * Time.deltaTime);
                 }
@@ -636,17 +641,22 @@ namespace StarterAssets
                     isCrouching = false;
                     extraJump = false;
                     value = 1.8f;
-                    slideSpeed = 8;
+                    slideSpeed = 6;
                 }
             }
         }
+        public void StartSlide()
+        {
+            StartCoroutine(slide());
+        }
         IEnumerator slide()
         {
+            timerIsRunning = true;
             isSliding = true;
             isCrouching = true;
             _animator.SetBool("Slide", isSliding);
             slideTimeRemaining = 0.5f;
-            timerIsRunning = true;
+           
             // _controller.height = reducedHeight;
             yield return new WaitForSeconds(0.5f);
             // _controller.height = originalHeight;
