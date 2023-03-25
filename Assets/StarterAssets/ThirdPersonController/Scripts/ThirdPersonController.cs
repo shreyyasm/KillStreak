@@ -131,6 +131,7 @@ namespace StarterAssets
         public bool firedBullet = false;
         public bool firing = false;
         public bool isCrouching;
+        public bool isSliding;
         public bool running;
         public bool isPressedJump = false;
         public bool isJump = false;
@@ -160,6 +161,7 @@ namespace StarterAssets
 
         private CinemachineVirtualCamera m_MainCamera;
         private CinemachineVirtualCamera m_AimCamera;
+        
         public override void OnStartNetwork()
         {
             base.OnStartNetwork();
@@ -171,6 +173,24 @@ namespace StarterAssets
                 cameraRoot.AddComponent<CameraFollow>();
             
         }
+
+        //slide value
+        public float speed = 8f;
+        public float gravity = -9.81f;
+        public float value;
+        Vector3 velocity;
+        bool isGrounded;
+ 
+        public Transform groundCheck;
+        public float groundDistance = 0.4f;
+        public LayerMask groundMask;
+
+
+        public float slideTimeRemaining = 10;
+        bool timerIsRunning;
+        public float slideSpeed = 7f;
+
+        public bool extraJump;
 
         private void Awake()
         {
@@ -184,6 +204,7 @@ namespace StarterAssets
             }
             m_MainCamera = GameObject.FindWithTag("Follow Camera").GetComponent<CinemachineVirtualCamera>();
             m_AimCamera = GameObject.FindWithTag("Aim Camera").GetComponent<CinemachineVirtualCamera>();
+            //rb = GetComponent<Rigidbody>();
             isCrouching = false;
         }
 
@@ -229,16 +250,18 @@ namespace StarterAssets
             CrouchInput();
       
             JumpAndGravity();
-            //if (Input.GetMouseButtonDown(1))
-            //    Crouch();
+            if(_animationBlend > 1)
+                Slide();
+
         }
+        
 
         private void LateUpdate()
         {
             if (!base.IsOwner)
                 return;
-            CameraRotationOld();
-            //CameraRotation();
+            //CameraRotationOld();
+            CameraRotation();
         }
         public void SetRigWeight()
         {
@@ -395,7 +418,7 @@ namespace StarterAssets
 
             float targetSpeed = MoveSpeed;
     
-            if(direction == Vector3.zero)
+            if(direction == Vector3.zero && !isSliding)
             {
                 targetSpeed = 0.0f;               
                 neutralize = 0f;
@@ -491,6 +514,7 @@ namespace StarterAssets
                 isAimWalking = false;
             }                    
         }
+        
         public void CrouchInput()
         {
             float yVelocity = 0f;
@@ -498,27 +522,42 @@ namespace StarterAssets
             Vector3 cameraNewheight = new Vector3(0.6f, -0.5f, 0);
             if (!isCrouching)
             {
-                if(!weaponSwitching.gunChanging)
+                float oldPos;
+                if (!weaponSwitching.gunChanging)
                 {
-                    _animator.SetBool("Crouch", isCrouching);
-                    //m_MainCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>().ShoulderOffset = cameraOldheight;
-                    //m_AimCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>().ShoulderOffset = cameraOldheight;
-                    float oldPos = Mathf.SmoothDamp(1.375f, 1f, ref yVelocity, Time.deltaTime * 30f);
+                    if (_animationBlend < 1 && !isSliding)
+                        _animator.SetBool("Crouch", isCrouching);
+                    
+                    if(!isSliding)
+                    {
+                        oldPos = Mathf.SmoothDamp(1.375f, 1f, ref yVelocity, Time.deltaTime * 30f);
+                    }
+                    else
+                    {
+                        oldPos = Mathf.SmoothDamp(1.375f, 0.8f, ref yVelocity, Time.deltaTime * 30f);
+                    }
+                        
                     CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
                     _controller.height = 1.85f;
-                    _controller.center = new Vector3(0, 0.92f, 0);
-                    //_animator.SetLayerWeight(7, 0);
-                    // _animator.SetLayerWeight(7, Mathf.Lerp(_animator.GetLayerWeight(7), 0f, Time.deltaTime * 20f));
+                    _controller.center = new Vector3(0, 0.92f, 0);                    
                 }
             }
             else
-            {
-                if(!weaponSwitching.gunChanging)
+            {             
+                if (!weaponSwitching.gunChanging)
                 {
-                    _animator.SetBool("Crouch", isCrouching);
-                    //m_MainCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>().ShoulderOffset = cameraNewheight;
-                    //m_AimCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>().ShoulderOffset = cameraNewheight;
-                    float newPos = Mathf.SmoothDamp(1f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
+                    float newPos;
+                    if (_animationBlend < 1 && !isSliding)
+                        _animator.SetBool("Crouch", isCrouching);
+                    if (!isSliding)
+                    {
+                        newPos = Mathf.SmoothDamp(1f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
+                    }
+                    else
+                    {
+                        newPos = Mathf.SmoothDamp(0.8f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
+                    }
+                    //float newPos = Mathf.SmoothDamp(1f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
                     CinemachineCameraTarget.transform.localPosition = new Vector3(0, newPos, 0);
                     _controller.height = crouchHeight;
                     _controller.center = crouchingCenter;
@@ -526,14 +565,91 @@ namespace StarterAssets
                 
             }
             _controller.height = Mathf.Lerp(_controller.height, _controller.height, Time.deltaTime * 10f);
-            
-        }
+           
+    }
         public void Crouch()
         {
             if (!isCrouching)
                 isCrouching = true;
             else
                 isCrouching = false;
+        }
+        public void Slide()
+        {
+            
+            isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+            if (!timerIsRunning)
+            {
+                float x = ultimateJoystick.GetHorizontalAxis();
+                float z = ultimateJoystick.GetVerticalAxis();
+
+                Vector3 move = transform.right * x + transform.forward * z;
+
+                if (isGrounded)
+                {
+                    timerIsRunning = false;
+                }
+
+                //_controller.Move(move * speed * Time.deltaTime);
+            }
+
+
+
+            if (Input.GetMouseButtonDown(1) && isGrounded)
+            {
+                StartCoroutine(slide());
+                
+            }
+
+
+
+            //_controller.Move(velocity * Time.deltaTime);
+            velocity.y += gravity * Time.deltaTime;
+
+
+            
+            // This is a slidekick timer
+            if (timerIsRunning)
+            {
+                //extraJump = true;
+                //value = slideTimeRemaining;
+                if (value > 0)
+                {
+                    value -=  1 * Time.deltaTime;
+                    slideSpeed -= 5 * Time.deltaTime;
+                    //transform.Translate(Vector3.forward * slideSpeed * ultimateJoystick.GetHorizontalAxis()  * Time.deltaTime);
+                    //transform.Translate(Vector3.forward * slideSpeed * Time.deltaTime);
+                    Vector3 newpos = transform.position + new Vector3(0, 0, 5);
+                    transform.position = Vector3.MoveTowards(transform.position, newpos,  slideSpeed * Time.deltaTime);
+                    //float newPos = Mathf.SmoothDamp(1, 1, ref yVelocity, Time.deltaTime * 30f);
+                    //Mathf.Lerp(Vector3.forward.z, Vector3.forward.z,  20 * Time.deltaTime);
+                }
+
+                else
+                {
+                    value = 0;
+                    slideTimeRemaining = 0;
+                    isSliding = false;
+                    _animator.SetBool("Slide", isSliding);
+                    
+                    timerIsRunning = false;
+                    isCrouching = false;
+                    extraJump = false;
+                    value = 1.8f;
+                    slideSpeed = 8;
+                }
+            }
+        }
+        IEnumerator slide()
+        {
+            isSliding = true;
+            isCrouching = true;
+            _animator.SetBool("Slide", isSliding);
+            slideTimeRemaining = 0.5f;
+            timerIsRunning = true;
+            // _controller.height = reducedHeight;
+            yield return new WaitForSeconds(0.5f);
+            // _controller.height = originalHeight;
         }
         public void JumpAndGravity()
         {

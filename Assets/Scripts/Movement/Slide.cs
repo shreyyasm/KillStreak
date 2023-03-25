@@ -69,7 +69,6 @@ public class Slide : MonoBehaviour
     float wallJumpTimer;
     public float maxWallJumpTimer;
 
-    public Camera playerCamera;
     float normalFov;
     public float specialFov;
     public float cameraChangeTime;
@@ -81,7 +80,7 @@ public class Slide : MonoBehaviour
         controller = GetComponent<CharacterController>();
         startHeight = transform.localScale.y;
         jumpCharges = 2;
-        normalFov = playerCamera.fieldOfView;
+        //normalFov = playerCamera.fieldOfView;
     }
 
     void IncreaseSpeed(float speedIncrease)
@@ -128,7 +127,7 @@ public class Slide : MonoBehaviour
     void CameraEffects()
     {
         float fov = isWallRunning ? specialFov : isSliding ? specialFov : normalFov;
-        playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, cameraChangeTime * Time.deltaTime);
+       // playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, cameraChangeTime * Time.deltaTime);
 
         if (isWallRunning)
         {
@@ -227,9 +226,9 @@ public class Slide : MonoBehaviour
    
     void Crouch()
     {
-        controller.height = crouchHeight;
-        controller.center = crouchingCenter;
-        transform.localScale = new Vector3(transform.localScale.x, crouchHeight, transform.localScale.z);
+        //controller.height = crouchHeight;
+        //controller.center = crouchingCenter;
+        //transform.localScale = new Vector3(transform.localScale.x, crouchHeight, transform.localScale.z);
         if (speed > runSpeed)
         {
             isSliding = true;

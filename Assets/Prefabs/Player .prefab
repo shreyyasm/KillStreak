@@ -10227,12 +10227,10 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 6
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 394288251
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 9739587014981370359
-  _sceneNetworkObjects:
-  - {fileID: 2107006599189651683}
-  - {fileID: 2434153823208391393}
+  _sceneNetworkObjects: []
 --- !u!114 &8404843150804243538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10597,7 +10595,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1.8273927, y: 1.8273194}
+  m_AnchoredPosition: {x: 1.8274659, y: 1.8273194}
   m_SizeDelta: {x: 304.56, y: 304.56}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &5652508383201248744
@@ -13063,6 +13061,7 @@ GameObject:
   - component: {fileID: 3110771867131657967}
   - component: {fileID: 7992592037397347946}
   - component: {fileID: 8180401667871906144}
+  - component: {fileID: 8273719466020865663}
   m_Layer: 8
   m_Name: 'Player '
   m_TagString: Player
@@ -13178,6 +13177,7 @@ MonoBehaviour:
   firedBullet: 0
   firing: 0
   isCrouching: 0
+  isSliding: 0
   running: 0
   isPressedJump: 0
   isJump: 0
@@ -13190,6 +13190,17 @@ MonoBehaviour:
   weaponSwitching: {fileID: 6232720320669619040}
   smoothSpeed: 100
   crouchHeight: 0.9
+  speed: 12
+  gravity: -9.81
+  value: 1.8
+  groundCheck: {fileID: 3597282549078988875}
+  groundDistance: 0.4
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4096
+  slideTimeRemaining: 40
+  slideSpeed: 8
+  extraJump: 0
 --- !u!114 &4059540525316761368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13612,14 +13623,12 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 2
+  <PrefabId>k__BackingField: 7
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 394288251
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 11647713472814863751
-  _sceneNetworkObjects:
-  - {fileID: 2107006599189651683}
-  - {fileID: 2434153823208391393}
+  _sceneNetworkObjects: []
 --- !u!114 &372409507547526593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14179,6 +14188,45 @@ MonoBehaviour:
     type: 2}
   handPoseList: []
   blendShapeList: []
+--- !u!114 &8273719466020865663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6614711819524339776}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df09fea29970ba04b9cd61396b3af254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundCheck: {fileID: 3597282549078988875}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4096
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 4096
+  speed: 6
+  runSpeed: 8
+  sprintSpeed: 10
+  crouchSpeed: 4
+  airSpeedMultiplier: 0
+  climbSpeed: 0
+  normalGravity: -9.8
+  wallRunGravity: 0
+  jumpHeight: 0
+  slideSpeedIncrease: 1
+  wallRunSpeedIncrease: 0
+  slideSpeedDecrease: 1
+  wallRunSpeedDecrease: 0
+  maxSlideTimer: 2
+  maxClimbTimer: 2
+  maxWallJumpTimer: 0
+  specialFov: 0
+  cameraChangeTime: 0
+  wallRunTilt: 0
+  tilt: 0
 --- !u!1 &6652195985162122418
 GameObject:
   m_ObjectHideFlags: 0
