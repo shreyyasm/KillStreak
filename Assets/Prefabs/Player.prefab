@@ -13062,7 +13062,7 @@ GameObject:
   - component: {fileID: 7992592037397347946}
   - component: {fileID: 8180401667871906144}
   m_Layer: 8
-  m_Name: 'Player '
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13188,7 +13188,7 @@ MonoBehaviour:
   shooterController: {fileID: 4059540525316761368}
   weaponSwitching: {fileID: 6232720320669619040}
   smoothSpeed: 100
-  crouchHeight: 0.9
+  crouchHeight: 1.2
   speed: 12
   gravity: -9.81
   value: 1.8
@@ -13198,7 +13198,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   slideTimeRemaining: 40
-  slideSpeed: 6
+  slideSpeed: 10
   extraJump: 0
 --- !u!114 &4059540525316761368
 MonoBehaviour:
@@ -13622,11 +13622,11 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 7
+  <PrefabId>k__BackingField: 5
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 11647713472814863751
+  <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects: []
 --- !u!114 &372409507547526593
 MonoBehaviour:

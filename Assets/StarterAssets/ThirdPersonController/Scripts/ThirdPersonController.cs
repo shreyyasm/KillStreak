@@ -260,8 +260,8 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            //CameraRotationOld();
-            CameraRotation();
+            CameraRotationOld();
+            //CameraRotation();
         }
         public void SetRigWeight()
         {
@@ -471,10 +471,13 @@ namespace StarterAssets
             }
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-
+            if(!isSliding)
+            {
                 // move the player
                 _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) * neutralize +
                                  new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            }
+               
             
 
             // update animator if using character
@@ -615,19 +618,16 @@ namespace StarterAssets
                 //value = slideTimeRemaining;
                 if (value > 0)
                 {
-                    float x = ultimateJoystick.GetHorizontalAxis();
-                    float z = ultimateJoystick.GetVerticalAxis();
-                    direction = new Vector3(x, 0f, z).normalized;
+                    Debug.Log(direction.z);
                     
-                    value -=  1 * Time.deltaTime;
-                    slideSpeed -= 3 * Time.deltaTime;
-                    transform.Translate(Vector3.forward * slideSpeed  * Time.deltaTime);
-                    //Debug.Log(ultimateJoystick.GetHorizontalAxis());
-                    //transform.Translate(Vector3.forward * slideSpeed * Time.deltaTime);
-                    //Vector3 newpos = transform.position + new Vector3(0, 0, 5);
-                    //transform.position = Vector3.MoveTowards(transform.position, newpos,  slideSpeed * Time.deltaTime);
-                    //float newPos = Mathf.SmoothDamp(1, 1, ref yVelocity, Time.deltaTime * 30f);
-                    //Mathf.Lerp(Vector3.forward.z, Vector3.forward.z,  20 * Time.deltaTime);
+                        value -= 1 * Time.deltaTime;
+                        slideSpeed -= 3 * Time.deltaTime;
+
+                        transform.Translate(Vector3.forward * slideSpeed * Time.deltaTime);
+                        //Vector3 forwardVector = transform.forward
+                        //Vector3 forwardSlide = transform.localPosition + Vector3.forward;
+                        //transform.localPosition = Vector3.MoveTowards(transform.localPosition, forwardSlide, slideSpeed * Time.deltaTime);
+                    
                 }
 
                 else
@@ -641,7 +641,7 @@ namespace StarterAssets
                     isCrouching = false;
                     extraJump = false;
                     value = 1.8f;
-                    slideSpeed = 6;
+                    slideSpeed = 10;
                 }
             }
         }
@@ -651,11 +651,15 @@ namespace StarterAssets
         }
         IEnumerator slide()
         {
-            timerIsRunning = true;
-            isSliding = true;
-            isCrouching = true;
-            _animator.SetBool("Slide", isSliding);
-            slideTimeRemaining = 0.5f;
+            if (direction.z > 0.2f)
+            {
+                timerIsRunning = true;
+                isSliding = true;
+                isCrouching = true;
+                _animator.SetBool("Slide", isSliding);
+                slideTimeRemaining = 0.5f;
+            }
+     
            
             // _controller.height = reducedHeight;
             yield return new WaitForSeconds(0.5f);
