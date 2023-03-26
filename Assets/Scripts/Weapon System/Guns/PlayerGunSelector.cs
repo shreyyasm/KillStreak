@@ -12,6 +12,7 @@ using System;
 [DisallowMultipleComponent]
 public class PlayerGunSelector : NetworkBehaviour
 {
+
     public static PlayerGunSelector instance;
     [SerializeField]
     private GunType PrimaryGun;
@@ -189,6 +190,7 @@ public class PlayerGunSelector : NetworkBehaviour
             ActiveGun.Fired = false;
             if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
             {
+                Debug.Log(hit.collider);
                 StartCoroutine(
                     PlayTrail(
                         ActiveGun.ShootSystem.transform.position,

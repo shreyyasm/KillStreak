@@ -58,7 +58,7 @@ public class CameraSwitch : NetworkBehaviour
             inFPSMode = true;
             shooterController.FPSModeCheck(cameraSwitched);
             thirdPersonController.FPSMode(inFPSMode);
-            MainCamera.cullingMask = LayerMask.GetMask("Default", "TransparentFX", "Ignore Raycast", "PostProcessing", "Water", "UI", "Player", "Ground and Walls", "PhysicalAmmo", "FirstPersonWeapon", "Projectile", "OtherPlayers", "Buildings");
+            //MainCamera.cullingMask = LayerMask.GetMask("Default", "TransparentFX", "Ignore Raycast", "PostProcessing", "Water", "UI", "Player", "Ground and Walls", "PhysicalAmmo", "FirstPersonWeapon", "Projectile", "OtherPlayers", "Buildings");
             //fpsCamera.enabled = true;
             FPSplayer.SetActive(true);
             //m_FollowCamera.enabled = false;
@@ -73,7 +73,7 @@ public class CameraSwitch : NetworkBehaviour
             thirdPersonController.FPSMode(inFPSMode);
             shooterController.FPSModeCheck(cameraSwitched);
 
-            MainCamera.cullingMask = LayerMask.GetMask("Default", "TransparentFX", "Ignore Raycast", "HideItself", "PostProcessing", "Water", "UI", "Player", "Ground and Walls", "PhysicalAmmo", "FirstPersonWeapon", "Projectile", "OtherPlayers", "Buildings");
+           // MainCamera.cullingMask = LayerMask.GetMask("Default", "TransparentFX", "Ignore Raycast", "HideItself", "PostProcessing", "Water", "UI", "Player", "Ground and Walls", "PhysicalAmmo", "FirstPersonWeapon", "Projectile", "OtherPlayers", "Buildings");
 
             //fpsCamera.enabled = false;
             FPSplayer.SetActive(false);

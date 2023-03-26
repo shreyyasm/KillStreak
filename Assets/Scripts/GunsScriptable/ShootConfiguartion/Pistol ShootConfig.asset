@@ -18,7 +18,7 @@ MonoBehaviour:
   BulletSpawnForce: 1000
   HitMask:
     serializedVersion: 2
-    m_Bits: 462848
+    m_Bits: 487424
   FireRate: 0.2
   SpreadType: 1
   RecoilRecoverySpeed: 1.5
