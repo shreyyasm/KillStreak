@@ -191,7 +191,7 @@ namespace StarterAssets
         public float slideSpeed = 7f;
 
         public bool extraJump;
-
+        float z;
         private void Awake()
         {
 
@@ -228,7 +228,7 @@ namespace StarterAssets
             
             GroundedCheck();
             Move();
-
+            z = ultimateJoystick.GetVerticalAxis();
             //if(base.IsServer)
             changingGun = weaponSwitching.GunSwaping();
 
@@ -242,18 +242,14 @@ namespace StarterAssets
                 }
             }
 
-            //if (changingGun)
-                //SetRigWeight();
-
-            //if(isReloading)
-                SetRigWeight();
-
-            CrouchInput();
-      
+  
+            SetRigWeight();
             JumpAndGravity();
+
             if(_animationBlend > 1)
                 Slide();
-
+            if (Input.GetMouseButtonDown(1))
+                Crouch();
         }
         
 
@@ -369,7 +365,7 @@ namespace StarterAssets
             _animator.SetFloat("MoveZ", z);
 
         
-            if (direction.z > 0.2f && !isAiming && !firedBullet && !changingGun && !isCrouching)
+            if (direction.z > 0.2f && !isAiming && !firedBullet && !changingGun && !isCrouching && !isSliding)
                 MoveSpeed = 7f;               
 
             else
@@ -489,7 +485,7 @@ namespace StarterAssets
             //}
 
 
-
+            
 
             // update animator if using character
             if (_hasAnimator)
@@ -500,8 +496,12 @@ namespace StarterAssets
                 if(targetSpeed > 5f && !isAiming)
                 {
                     running = true;
-                    pistolRig.weight = 0f;
-                    rifleRig.weight = 0f;
+                    if(!isSliding)
+                    {
+                        pistolRig.weight = 0f;
+                        rifleRig.weight = 0f;
+                    }
+                    
                    
                 }
                 else
@@ -531,18 +531,25 @@ namespace StarterAssets
         
         public void CrouchInput()
         {
-            float yVelocity = 0f;
-            Vector3 cameraOldheight = new Vector3(0.6f, 0, 0);
-            Vector3 cameraNewheight = new Vector3(0.6f, -0.5f, 0);
             if (!isCrouching)
+                isCrouching = true;
+            else
+                isCrouching = false;
+            ControllerChanges();
+            _animator.SetBool("Crouch", isCrouching);
+        }
+        
+        public void ControllerChanges()
+        {
+            float yVelocity = 0f;
+            if (!isCrouching && !isSliding)
             {
+
                 float oldPos;
                 if (!weaponSwitching.gunChanging)
                 {
-                    if (_animationBlend < 1 && !isSliding)
-                        _animator.SetBool("Crouch", isCrouching);
-                    
-                    if(!isSliding)
+
+                    if (!isSliding)
                     {
                         oldPos = Mathf.SmoothDamp(1.375f, 1f, ref yVelocity, Time.deltaTime * 30f);
                     }
@@ -550,19 +557,19 @@ namespace StarterAssets
                     {
                         oldPos = Mathf.SmoothDamp(1.375f, 0.8f, ref yVelocity, Time.deltaTime * 30f);
                     }
-                        
+
                     CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
                     _controller.height = 1.85f;
-                    _controller.center = new Vector3(0, 0.92f, 0);                    
+                    _controller.center = new Vector3(0, 0.92f, 0);
                 }
             }
             else
-            {             
+            {
+
                 if (!weaponSwitching.gunChanging)
                 {
+
                     float newPos;
-                    if (_animationBlend < 1 && !isSliding)
-                        _animator.SetBool("Crouch", isCrouching);
                     if (!isSliding)
                     {
                         newPos = Mathf.SmoothDamp(1f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
@@ -576,17 +583,17 @@ namespace StarterAssets
                     _controller.height = crouchHeight;
                     _controller.center = crouchingCenter;
                 }
-                
+
             }
             _controller.height = Mathf.Lerp(_controller.height, _controller.height, Time.deltaTime * 10f);
-           
-    }
+        }
         public void Crouch()
         {
-            if (!isCrouching)
-                isCrouching = true;
+            if (z > 0.6f && !isAiming && !isCrouching)
+                StartSlide();
             else
-                isCrouching = false;
+                CrouchInput();
+            
         }
         public void Slide()
         {
@@ -594,34 +601,12 @@ namespace StarterAssets
             isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
             if (!timerIsRunning)
             {
-                float x = ultimateJoystick.GetHorizontalAxis();
-                float z = ultimateJoystick.GetVerticalAxis();
-
-                Vector3 move = transform.right * x + transform.forward * z;
-
+            
                 if (isGrounded)
                 {
                     timerIsRunning = false;
                 }
-
-                //_controller.Move(move * speed * Time.deltaTime);
             }
-
-
-
-            if (Input.GetMouseButtonDown(1) && isGrounded)
-            {
-                StartCoroutine(slide());
-
-            }
-
-
-
-            //_controller.Move(velocity * Time.deltaTime);
-            velocity.y += gravity * Time.deltaTime;
-
-
-            
             // This is a slidekick timer
             if (timerIsRunning)
             {
@@ -633,25 +618,18 @@ namespace StarterAssets
                     
                     value -= 1 * Time.deltaTime;
                     slideSpeed -= 3 * Time.deltaTime;
-
-                   // transform.position = transform.localPosition;
-                    //  transform.Translate(Vector3.forward * slideSpeed * Time.deltaTime);
                     _controller.Move(transform.forward * slideSpeed * Time.deltaTime);
-                                 
-                    //Vector3 forwardVector = transform.forward
-                    //Vector3 forwardSlide = transform.localPosition + Vector3.forward;
-                    //transform.localPosition = Vector3.MoveTowards(transform.localPosition, forwardSlide, slideSpeed * Time.deltaTime);
-
+                 
                 }
 
                 else
                 {
                     value = 0;
                     slideTimeRemaining = 0;
-                    isCrouching = false;
+                    //isCrouching = false;
                     isSliding = false;
                     _animator.SetBool("Slide", isSliding);
-                    
+                    ControllerChanges();
                     timerIsRunning = false;
                     
                     extraJump = false;
@@ -666,20 +644,13 @@ namespace StarterAssets
         }
         IEnumerator slide()
         {
-            if (direction.z > 0.2f)
-            {
-                if(!isCrouching)
-                {
-                    timerIsRunning = true;
-                    isSliding = true;
-                    isCrouching = true;
-                    _animator.SetBool("Slide", isSliding);
-                    slideTimeRemaining = 0.5f;
-                }
-               
-            }
-     
-           
+            firedBullet = false;
+            timerIsRunning = true;
+            isSliding = true;
+            ControllerChanges();
+
+            _animator.SetBool("Slide", isSliding);
+            slideTimeRemaining = 0.5f;
             // _controller.height = reducedHeight;
             yield return new WaitForSeconds(0.5f);
             // _controller.height = originalHeight;
@@ -816,7 +787,8 @@ namespace StarterAssets
         public void ShotFired(bool state)
         {
             fireBulletTime = 1.3f;
-            firedBullet = state;
+            if(!isSliding)
+                firedBullet = state;
             if (weaponSwitching.selectedWeapon == 0)
             {               
                 _animator.SetLayerWeight(1, 1);
