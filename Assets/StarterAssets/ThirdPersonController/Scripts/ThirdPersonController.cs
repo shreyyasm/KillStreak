@@ -156,7 +156,7 @@ namespace StarterAssets
         [SerializeField] WeaponSwitching weaponSwitching;
         [SerializeField] float smoothSpeed = 80f;
         [SerializeField] float crouchHeight = 0.5f;
-        Vector3 crouchingCenter = new Vector3(0, 0.5f, 0);
+        Vector3 crouchingCenter = new Vector3(0, 0.67f, 0);
         Vector3 crouchingCenterY = new Vector3(0, 0.92f, 0);
 
         private CinemachineVirtualCamera m_MainCamera;
@@ -204,6 +204,7 @@ namespace StarterAssets
             }
             m_MainCamera = GameObject.FindWithTag("Follow Camera").GetComponent<CinemachineVirtualCamera>();
             m_AimCamera = GameObject.FindWithTag("Aim Camera").GetComponent<CinemachineVirtualCamera>();
+            _controller = GetComponent<CharacterController>();
             //rb = GetComponent<Rigidbody>();
             isCrouching = false;
         }
@@ -357,6 +358,7 @@ namespace StarterAssets
         }
         public void Move()
         {
+            //_controller.detectCollisions = false;
             float x = ultimateJoystick.GetHorizontalAxis();
             float z = ultimateJoystick.GetVerticalAxis();
             direction = new Vector3(x, 0f, z).normalized;
@@ -473,12 +475,21 @@ namespace StarterAssets
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
             if(!isSliding)
             {
+               // _controller.enabled = true;
                 // move the player
                 _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) * neutralize +
                                  new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
             }
-               
-            
+            //else
+            //{
+            //    // move the player
+            //    // _controller.enabled = false;
+            //    // _controller.detectCollisions = true;
+            //    _controller.Move(targetDirection.normalized * 0);
+            //}
+
+
+
 
             // update animator if using character
             if (_hasAnimator)
@@ -620,25 +631,29 @@ namespace StarterAssets
                 {
                     Debug.Log(direction.z);
                     
-                        value -= 1 * Time.deltaTime;
-                        slideSpeed -= 3 * Time.deltaTime;
+                    value -= 1 * Time.deltaTime;
+                    slideSpeed -= 3 * Time.deltaTime;
 
-                        transform.Translate(Vector3.forward * slideSpeed * Time.deltaTime);
-                        //Vector3 forwardVector = transform.forward
-                        //Vector3 forwardSlide = transform.localPosition + Vector3.forward;
-                        //transform.localPosition = Vector3.MoveTowards(transform.localPosition, forwardSlide, slideSpeed * Time.deltaTime);
-                    
+                   // transform.position = transform.localPosition;
+                    //  transform.Translate(Vector3.forward * slideSpeed * Time.deltaTime);
+                    _controller.Move(transform.forward * slideSpeed * Time.deltaTime);
+                                 
+                    //Vector3 forwardVector = transform.forward
+                    //Vector3 forwardSlide = transform.localPosition + Vector3.forward;
+                    //transform.localPosition = Vector3.MoveTowards(transform.localPosition, forwardSlide, slideSpeed * Time.deltaTime);
+
                 }
 
                 else
                 {
                     value = 0;
                     slideTimeRemaining = 0;
+                    isCrouching = false;
                     isSliding = false;
                     _animator.SetBool("Slide", isSliding);
                     
                     timerIsRunning = false;
-                    isCrouching = false;
+                    
                     extraJump = false;
                     value = 1.8f;
                     slideSpeed = 10;
@@ -653,11 +668,15 @@ namespace StarterAssets
         {
             if (direction.z > 0.2f)
             {
-                timerIsRunning = true;
-                isSliding = true;
-                isCrouching = true;
-                _animator.SetBool("Slide", isSliding);
-                slideTimeRemaining = 0.5f;
+                if(!isCrouching)
+                {
+                    timerIsRunning = true;
+                    isSliding = true;
+                    isCrouching = true;
+                    _animator.SetBool("Slide", isSliding);
+                    slideTimeRemaining = 0.5f;
+                }
+               
             }
      
            

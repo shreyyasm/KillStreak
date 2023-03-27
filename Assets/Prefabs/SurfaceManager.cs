@@ -35,6 +35,7 @@ public class SurfaceManager : NetworkBehaviour
     {
         if (HitObject.TryGetComponent<Terrain>(out Terrain terrain))
         {
+            
             List<TextureAlpha> activeTextures = GetActiveTexturesFromTerrain(terrain, HitPoint);
             foreach (TextureAlpha activeTexture in activeTextures)
             {
@@ -45,7 +46,9 @@ public class SurfaceManager : NetworkBehaviour
                     {
                         if (typeEffect.ImpactType == Impact)
                         {
+                            
                             PlayEffects(HitPoint, HitNormal, typeEffect.SurfaceEffect, activeTexture.Alpha);
+                            
                         }
                     }
                 }
@@ -61,10 +64,11 @@ public class SurfaceManager : NetworkBehaviour
                 }
             }
         }
-        else if (HitObject.TryGetComponent<Renderer>(out Renderer renderer))
+        else
         {
             //Texture activeTexture = GetActiveTextureFromRenderer(renderer, TriangleIndex);
-
+            HitObject.TryGetComponent<Renderer>(out Renderer renderer);
+            Debug.Log("work");
             SurfaceType surfaceType = Surfaces.Find(surface => renderer);
             if (surfaceType != null)
             {
@@ -73,6 +77,7 @@ public class SurfaceManager : NetworkBehaviour
                     if (typeEffect.ImpactType == Impact)
                     {
                         PlayEffects(HitPoint, HitNormal, typeEffect.SurfaceEffect, 1);
+                       
                     }
                 }
             }

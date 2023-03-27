@@ -190,7 +190,7 @@ public class PlayerGunSelector : NetworkBehaviour
             ActiveGun.Fired = false;
             if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
             {
-                Debug.Log(hit.collider);
+                //Debug.Log(hit.collider);
                 StartCoroutine(
                     PlayTrail(
                         ActiveGun.ShootSystem.transform.position,
@@ -297,7 +297,7 @@ public class PlayerGunSelector : NetworkBehaviour
         }
 
         tail.transform.position = EndPoint;
-
+        Debug.Log(Hit.collider);
         if (Hit.collider != null)
         {
             HandleBulletImpact(distance, EndPoint, Hit.normal, Hit.collider);
@@ -357,6 +357,7 @@ public class PlayerGunSelector : NetworkBehaviour
        Vector3 HitNormal,
        Collider HitCollider)
     {
+        
         surfaceManager.HandleImpact(
                 HitCollider.gameObject,
                 HitLocation,
