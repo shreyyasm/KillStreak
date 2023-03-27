@@ -297,7 +297,7 @@ public class PlayerGunSelector : NetworkBehaviour
         }
 
         tail.transform.position = EndPoint;
-        Debug.Log(Hit.collider);
+        //Debug.Log(Hit.collider);
         if (Hit.collider != null)
         {
             HandleBulletImpact(distance, EndPoint, Hit.normal, Hit.collider);

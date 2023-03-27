@@ -9698,10 +9698,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5160217124503287476}
-  m_LocalRotation: {x: 0.018573297, y: 0.70828265, z: 0.10206873, w: 0.6982642}
+  m_LocalRotation: {x: 0.018573295, y: 0.7082826, z: 0.102068715, w: 0.6982641}
   m_LocalPosition: {x: -0.364, y: 0.16100001, z: 0.185}
-  m_LocalScale: {x: 0.59999996, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6712102394196544401}
   - {fileID: 4055413118138898833}
@@ -9898,19 +9898,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1002605172991057417}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8362280977526959495}
-        m_TargetAssemblyTypeName: StarterAssets.ThirdPersonController, Assembly-CSharp
-        m_MethodName: StartSlide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &5258176491381363881
 GameObject:
   m_ObjectHideFlags: 0
@@ -10228,9 +10216,7 @@ MonoBehaviour:
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 9739587014981370359
-  _sceneNetworkObjects:
-  - {fileID: 2107006599189651683}
-  - {fileID: 2434153823208391393}
+  _sceneNetworkObjects: []
 --- !u!114 &8404843150804243538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12005,7 +11991,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9220268794178349695}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0.023058414, y: -0.43873444, z: -0.03658283}
+  m_LocalEulerAnglesHint: {x: 0.023057934, y: -0.43873474, z: -0.036581315}
 --- !u!114 &6232720320669619040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13063,7 +13049,7 @@ GameObject:
   - component: {fileID: 6734246657098736321}
   - component: {fileID: 3110771867131657967}
   - component: {fileID: 7992592037397347946}
-  - component: {fileID: 1220711310}
+  - component: {fileID: 292308279}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -13630,9 +13616,7 @@ MonoBehaviour:
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
-  _sceneNetworkObjects:
-  - {fileID: 2107006599189651683}
-  - {fileID: 2434153823208391393}
+  _sceneNetworkObjects: []
 --- !u!114 &372409507547526593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13794,7 +13778,7 @@ MonoBehaviour:
   <IsReloading>k__BackingField: 0
   IsShooting: 0
   resetShooting: 0
---- !u!114 &1220711310
+--- !u!114 &292308279
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13812,23 +13796,6 @@ MonoBehaviour:
   - Root
   - Root/Hips
   - Root/Hips/Spine_01
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/SM_Wep_Rifle_Assault_04
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Flash_04
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Mag_04
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Slide_04
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Stock_04
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Trigger_04
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/SM_Wep_Rifle_Assault_04/Spawn Bullet Position
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/SM_Wep_Rifle_Assault_04/TPP SpawnPosition
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/Pistol
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/Pistol/SM_Wep_Pistol_Heavy_Mag_01
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/Pistol/SM_Wep_Pistol_Heavy_Slide_01
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/Pistol/SM_Wep_Pistol_Heavy_Slide_01/SM_Wep_Pistol_Heavy_Hammer_01
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/Pistol/SM_Wep_Pistol_Heavy_Trigger_01
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/Pistol/SpawnBulletPosition
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/Pistol/GameObject
-  - Root/Hips/Spine_01/SM_PickUp_Bag_02/Pistol/TPP SpawnPosition
   - Root/Hips/Spine_01/Spine_02
   - Root/Hips/Spine_01/Spine_02/Spine_03
   - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L
@@ -13894,6 +13861,23 @@ MonoBehaviour:
   - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/Eyes
   - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/SM_Chr_Attach_Earmuffs_01
   - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/SM_Chr_Attach_Female_Hair_01
+  - Root/Hips/Spine_01/Spine_02/SM_PickUp_Bag_02
+  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04
+  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Flash_04
+  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Mag_04
+  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Slide_04
+  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Stock_04
+  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Trigger_04
+  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/Spawn Bullet Position
+  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/TPP SpawnPosition
+  - Root/Hips/Spine_01/Pistol
+  - Root/Hips/Spine_01/Pistol/SM_Wep_Pistol_Heavy_Mag_01
+  - Root/Hips/Spine_01/Pistol/SM_Wep_Pistol_Heavy_Slide_01
+  - Root/Hips/Spine_01/Pistol/SM_Wep_Pistol_Heavy_Slide_01/SM_Wep_Pistol_Heavy_Hammer_01
+  - Root/Hips/Spine_01/Pistol/SM_Wep_Pistol_Heavy_Trigger_01
+  - Root/Hips/Spine_01/Pistol/SpawnBulletPosition
+  - Root/Hips/Spine_01/Pistol/GameObject
+  - Root/Hips/Spine_01/Pistol/TPP SpawnPosition
   - Root/Hips/UpperLeg_L
   - Root/Hips/UpperLeg_L/LowerLeg_L
   - Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L
@@ -14134,9 +14118,9 @@ MonoBehaviour:
   - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (3)/Text (2)
   - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (3)/Text (3)
   - Surface Manager (1)
-  showBones: 0000000004000000160000001700000018000000190000001a0000001b0000002700000028000000290000002a0000003f00000040000000450000004600000047000000480000004a0000004b0000004c0000004d000000
-  foldoutBones: ee000000ec000000eb000000e8000000e6000000e5000000e3000000e2000000e1000000e0000000dc000000db000000d9000000d8000000d6000000d5000000d3000000d2000000d0000000cf000000ce000000cd000000cc000000cb000000c6000000c5000000c3000000c2000000c0000000bf000000bd000000bc000000ba000000b9000000b8000000b7000000b6000000b5000000b4000000b3000000b2000000b1000000ad000000ab000000a8000000a7000000a6000000a20000009f0000009e0000009c0000009b0000009900000098000000970000009300000092000000910000008d0000008b000000890000008800000086000000850000008400000083000000810000007f0000007e0000007d0000007a000000790000007800000077000000760000004d0000004c0000004b0000004a00000048000000470000004600000045000000400000003f000000340000003300000031000000300000002f0000002d0000002c0000002b0000002a00000029000000280000002700000025000000240000002200000021000000200000001e0000001d0000001c0000001b0000001a0000001900000018000000170000001600000004000000030000000200000000000000
-  mirrorBones: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff2700000028000000290000002a0000002b0000002c0000002d000000ffffffff2f0000003000000031000000ffffffff33000000340000003500000018000000190000001a0000001b0000001c0000001d0000001e000000ffffffff200000002100000022000000ffffffff240000002500000026000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4a0000004b0000004c0000004d0000004e0000004500000046000000470000004800000049000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7c0000007b000000ffffffffffffffff81000000820000007f00000080000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffcb000000cc000000cd000000ce000000cf000000d0000000d1000000d2000000d3000000d4000000d5000000d6000000d7000000d8000000d9000000da000000db000000dc000000dd000000ffffffffde000000df000000b5000000b6000000b7000000b8000000b9000000ba000000bb000000bc000000bd000000be000000bf000000c0000000c1000000c2000000c3000000c4000000c5000000c6000000c7000000c9000000ca000000ffffffffffffffffffffffffffffffffffffffffeb000000ec000000ed000000ee000000ef000000f0000000e5000000e6000000e7000000e8000000e9000000ea000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  showBones: 000000000400000005000000060000000700000008000000090000000a000000160000001700000018000000190000002e0000002f000000450000004600000047000000480000004a0000004b0000004c0000004d000000
+  foldoutBones: ee000000ec000000eb000000e8000000e6000000e5000000e3000000e2000000e1000000e0000000dc000000db000000d9000000d8000000d6000000d5000000d3000000d2000000d0000000cf000000ce000000cd000000cc000000cb000000c6000000c5000000c3000000c2000000c0000000bf000000bd000000bc000000ba000000b9000000b8000000b7000000b6000000b5000000b4000000b3000000b2000000b1000000ad000000ab000000a8000000a7000000a6000000a20000009f0000009e0000009c0000009b0000009900000098000000970000009300000092000000910000008d0000008b000000890000008800000086000000850000008400000083000000810000007f0000007e0000007d0000007a000000790000007800000077000000760000004d0000004c0000004b0000004a000000480000004700000046000000450000002f0000002e0000002300000022000000200000001f0000001e0000001c0000001b0000001a00000019000000180000001700000016000000140000001300000011000000100000000f0000000d0000000c0000000b0000000a000000090000000800000007000000060000000500000004000000030000000200000000000000
+  mirrorBones: ffffffffffffffffffffffffffffffffffffffffffffffffffffffff160000001700000018000000190000001a0000001b0000001c000000ffffffff1e0000001f00000020000000ffffffff2200000023000000240000000700000008000000090000000a0000000b0000000c0000000d000000ffffffff0f0000001000000011000000ffffffff130000001400000015000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4a0000004b0000004c0000004d0000004e0000004500000046000000470000004800000049000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7c0000007b000000ffffffffffffffff81000000820000007f00000080000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffcb000000cc000000cd000000ce000000cf000000d0000000d1000000d2000000d3000000d4000000d5000000d6000000d7000000d8000000d9000000da000000db000000dc000000dd000000ffffffffde000000df000000b5000000b6000000b7000000b8000000b9000000ba000000bb000000bc000000bd000000be000000bf000000c0000000c1000000c2000000c3000000c4000000c5000000c6000000c7000000c9000000ca000000ffffffffffffffffffffffffffffffffffffffffeb000000ec000000ed000000ee000000ef000000f0000000e5000000e6000000e7000000e8000000e9000000ea000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
   mirrorBlendShape: []
   animatorIkData:
   - enable: 0
@@ -14201,7 +14185,7 @@ MonoBehaviour:
     parentPath: 
   originalIkData: []
   selectionData: []
-  lastSelectAnimationClip: {fileID: 7400000, guid: a3c879262560c334f8c69c1045c04d8f,
+  lastSelectAnimationClip: {fileID: 7400000, guid: 22a3360801f59624082dcb9bfc3051ef,
     type: 2}
   handPoseList: []
   blendShapeList: []

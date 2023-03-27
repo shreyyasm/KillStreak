@@ -248,8 +248,10 @@ namespace StarterAssets
 
             if(_animationBlend > 1)
                 Slide();
-            if (Input.GetMouseButtonDown(1))
-                Crouch();
+            //if (Input.GetMouseButtonDown(1))
+            //    Crouch();
+
+            ControllerChanges();
         }
         
 
@@ -257,8 +259,8 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            CameraRotationOld();
-            //CameraRotation();
+            //CameraRotationOld();
+            CameraRotation();
         }
         public void SetRigWeight()
         {
@@ -535,7 +537,7 @@ namespace StarterAssets
                 isCrouching = true;
             else
                 isCrouching = false;
-            ControllerChanges();
+           
             _animator.SetBool("Crouch", isCrouching);
         }
         
@@ -647,7 +649,7 @@ namespace StarterAssets
             firedBullet = false;
             timerIsRunning = true;
             isSliding = true;
-            ControllerChanges();
+            
 
             _animator.SetBool("Slide", isSliding);
             slideTimeRemaining = 0.5f;

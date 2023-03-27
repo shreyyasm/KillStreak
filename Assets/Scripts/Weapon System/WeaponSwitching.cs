@@ -69,8 +69,13 @@ public class WeaponSwitching : NetworkBehaviour
                 gunChanging = false;
                 checkAnimationState = false;
             }
+            if (anim.GetCurrentAnimatorStateInfo(4).IsName("Slide change gun") && anim.GetCurrentAnimatorStateInfo(4).normalizedTime > 1f)
+            {
+                gunChanging = false;
+                checkAnimationState = false;
+            }
         }
-        //if (Input.GetMouseButtonDown(1))
+        //if (Input.GetMouseButtonDown(2))
         //    ChangeGunIndex();
 
         ManagerLayerWeights();
