@@ -12,7 +12,7 @@ using System;
 [DisallowMultipleComponent]
 public class PlayerGunSelector : NetworkBehaviour
 {
-
+    public LayerMask IdentifyEnemy;
     public static PlayerGunSelector instance;
     [SerializeField]
     private GunType PrimaryGun;
@@ -58,8 +58,12 @@ public class PlayerGunSelector : NetworkBehaviour
         instance = this;
         ActiveCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
+    [SerializeField] bool aimAssist;
+    [SerializeField] float aimAssistSize = 1f;
+
     private void Start()
     {
+       
         //gun1 = Guns.Find(gun => gun.Type == PrimaryGun);
         //gun2 = Guns.Find(gun => gun.Type == SecondaryGun);
         gun1 = Guns[0];
@@ -90,13 +94,18 @@ public class PlayerGunSelector : NetworkBehaviour
         //gun2.StartPool();
         //ActiveGun.StartPool();
     }
+    [Range(0.1f, 1f)] public float sphereCastRadius;
+    [Range(1f, 100f)] public float range;
+    
     private void Update()
     {
         if (!base.IsOwner)
             return;
-
+        Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+        ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+       
         gunSelected = weaponSwitching.selectedWeapon;
-
+       
         if (gunSelected == 0)
         {
             if(!weaponSwitching.gunChanging)
@@ -188,30 +197,71 @@ public class PlayerGunSelector : NetworkBehaviour
                                 ActiveCamera.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
             ActiveGun.Fired = false;
-            if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+            if (!aimAssist)
             {
-                //Debug.Log(hit.collider);
-                StartCoroutine(
-                    PlayTrail(
-                        ActiveGun.ShootSystem.transform.position,
-                        hit.point,
-                        hit
-                    )
-                );
-            }
+                if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                {
+                    //Debug.Log(hit.collider);
+                    StartCoroutine(
+                        PlayTrail(
+                            ActiveGun.ShootSystem.transform.position,
+                            hit.point,
+                            hit
+                        )
+                    );
+                }
 
+                else
+                {
+                    StartCoroutine(
+                         PlayTrail(
+                             ActiveGun.ShootSystem.transform.position,
+                             ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                             new RaycastHit()
+                         )
+                     );
+                }
+            }
             else
             {
-                StartCoroutine(
-                     PlayTrail(
-                         ActiveGun.ShootSystem.transform.position,
-                         ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
-                         new RaycastHit()
-                     )
-                 );
+                if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hitnew, float.MaxValue, IdentifyEnemy))
+                {
+                    //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+                    Debug.Log("Aim Assist: Hit");
+                    //Gizmos.color = Color.green;
+                    Vector3 sphereCastMidpoint = hitnew.point;
+                    //Debug.Log(hit.transform);
+                    //Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
+                    //Gizmos.DrawSphere(hitnew.point, 0.1f);
+                    Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
+                    Vector3 hitpoint =  hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                    //float yVelocity = 0f;
+                    //float oldPos;
+                    StartCoroutine(
+                        PlayTrail(
+                            ActiveGun.ShootSystem.transform.position,
+                            hitpoint,
+                            hitnew
+                        )
+                    );
+
+                }
+                else
+                {
+                    StartCoroutine(
+                         PlayTrail(
+                             ActiveGun.ShootSystem.transform.position,
+                             ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                             new RaycastHit()
+                         )
+                     );
+                }
             }
+
+
         }    
     }
+    
     public void FireConditionManual()
     {
         if (Time.time - ActiveGun.LastShootTime - ActiveGun.ShootConfig.FireRate > Time.deltaTime)
@@ -262,6 +312,53 @@ public class PlayerGunSelector : NetworkBehaviour
                  );
             }
         }
+    }
+    [SerializeField] GameObject sphere;
+    public GameObject CinemachineCameraTarget;
+    private void OnDrawGizmos()
+    {
+
+
+
+        
+        //RaycastHit hit;
+        if (aimAssist)
+        {
+            //Debug.DrawRay(transform.position, transform.forward * 100f, Color.green);
+            //Physics.SphereCast(ActiveCamera.transform.position, sphereCastRadius, sphere.transform.position, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask)
+            if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hit, float.MaxValue, IdentifyEnemy))
+            {
+                //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+                Debug.Log("Aim Assist: Hit");
+                Gizmos.color = Color.green; 
+                Vector3 sphereCastMidpoint = hit.point;
+                //Debug.Log(hit.transform);
+                Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
+                Gizmos.DrawSphere(hit.point, 0.1f);
+                Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
+                //float yVelocity = 0f;
+                //float oldPos;
+                
+               // oldPos = Mathf.SmoothDamp, 1f, ref yVelocity, Time.deltaTime * 30f);
+                 
+                
+
+                //CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
+            }
+        }
+        //else
+        //{
+        //    //Debug.DrawRay(transform.position, transform.forward * 100f, Color.red);
+
+        //    if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+        //    {
+        //        Debug.Log("No Aim Assist: Hit");
+        //        Gizmos.color = Color.red;
+        //        Vector3 sphereCastMidpoint = transform.position + (transform.forward * (range - sphereCastRadius));
+        //        Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
+        //        //Debug.DrawLine(screenCenterPoint, sphereCastMidpoint, Color.red);
+        //    }
+        //}
     }
     private IEnumerator PlayTrail(Vector3 StartPoint, Vector3 EndPoint, RaycastHit Hit)
     {

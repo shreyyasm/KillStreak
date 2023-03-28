@@ -259,8 +259,8 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            //CameraRotationOld();
-            CameraRotation();
+            CameraRotationOld();
+            //CameraRotation();
         }
         public void SetRigWeight()
         {
@@ -560,7 +560,7 @@ namespace StarterAssets
                         oldPos = Mathf.SmoothDamp(1.375f, 0.8f, ref yVelocity, Time.deltaTime * 30f);
                     }
 
-                    CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
+                   // CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
                     _controller.height = 1.85f;
                     _controller.center = new Vector3(0, 0.92f, 0);
                 }
@@ -581,7 +581,7 @@ namespace StarterAssets
                         newPos = Mathf.SmoothDamp(0.8f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
                     }
                     //float newPos = Mathf.SmoothDamp(1f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
-                    CinemachineCameraTarget.transform.localPosition = new Vector3(0, newPos, 0);
+                    //CinemachineCameraTarget.transform.localPosition = new Vector3(0, newPos, 0);
                     _controller.height = crouchHeight;
                     _controller.center = crouchingCenter;
                 }

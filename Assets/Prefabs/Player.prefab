@@ -13709,6 +13709,9 @@ MonoBehaviour:
   _componentIndexCache: 5
   _addedNetworkObject: {fileID: 2434153823208391393}
   _networkObjectCache: {fileID: 2434153823208391393}
+  IdentifyEnemy:
+    serializedVersion: 2
+    m_Bits: 262144
   PrimaryGun: 0
   SecondaryGun: 1
   GunParent: {fileID: 1938294273271845211}
@@ -13726,6 +13729,12 @@ MonoBehaviour:
   amountToPool: 5
   playerAction: {fileID: 7992592037397347946}
   spawnedObject: {fileID: 0}
+  aimAssist: 1
+  aimAssistSize: 1
+  sphereCastRadius: 0.2
+  range: 100
+  sphere: {fileID: 3343054101245674735}
+  CinemachineCameraTarget: {fileID: 0}
   spawnObject: {fileID: 8081663345739861187, guid: c2e6aed9ca9047c4e9e811b1a9d78ecb,
     type: 3}
   SpawnInterval: 1

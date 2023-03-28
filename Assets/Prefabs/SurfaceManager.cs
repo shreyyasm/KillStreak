@@ -68,7 +68,7 @@ public class SurfaceManager : NetworkBehaviour
         {
             //Texture activeTexture = GetActiveTextureFromRenderer(renderer, TriangleIndex);
             HitObject.TryGetComponent<Renderer>(out Renderer renderer);
-            Debug.Log("work");
+            //Debug.Log("work");
             SurfaceType surfaceType = Surfaces.Find(surface => renderer);
             if (surfaceType != null)
             {
