@@ -258,8 +258,8 @@ namespace StarterAssets
                 }
             }
 
-            //playerGunSelector.SetLookInput(look.x, look.y);
-            playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
+            playerGunSelector.SetLookInput(look.x, look.y, x, z);
+            //playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
             SetRigWeight();
             JumpAndGravity();
@@ -301,17 +301,12 @@ namespace StarterAssets
 
         private void GroundedCheck()
         {
-           
-            if(isPressedJump)
-            {
-                // set sphere position, with offset
-                Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
-                    transform.position.z);
-                Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
+            // set sphere position, with offset
+            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
+                transform.position.z);
+            Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
                 QueryTriggerInteraction.Ignore);
-            }
 
-            //isJump = Grounded;
             // update animator if using character
             if (_hasAnimator)
             {
@@ -730,7 +725,7 @@ namespace StarterAssets
                         oldPos = Mathf.SmoothDamp(1.375f, 0.8f, ref yVelocity, Time.deltaTime * 30f);
                     }
 
-                   // CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
+                    CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
                     _controller.height = 1.85f;
                     _controller.center = new Vector3(0, 0.92f, 0);
                 }
@@ -751,7 +746,7 @@ namespace StarterAssets
                         newPos = Mathf.SmoothDamp(0.8f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
                     }
                     //float newPos = Mathf.SmoothDamp(1f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
-                    //CinemachineCameraTarget.transform.localPosition = new Vector3(0, newPos, 0);
+                    CinemachineCameraTarget.transform.localPosition = new Vector3(0, newPos, 0);
                     _controller.height = crouchHeight;
                     _controller.center = crouchingCenter;
                 }
@@ -829,11 +824,8 @@ namespace StarterAssets
         }
         public void JumpAndGravity()
         {
-            if(_input.jump && isCrouching)
-            {
-                isCrouching = false;
-            }
-            else if(Grounded && !isCrouching)
+           
+            if(Grounded)
             {
                 // reset the fall timeout timer
                 _fallTimeoutDelta = FallTimeout;

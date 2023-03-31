@@ -1192,7 +1192,7 @@ RectTransform:
   m_Children:
   - {fileID: 1077555484913165935}
   m_Father: {fileID: 5808650679672390861}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1437,7 +1437,7 @@ RectTransform:
   m_Children:
   - {fileID: 327134629141836225}
   m_Father: {fileID: 5808650679672390861}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7161,18 +7161,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3496541367055880244}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5808650679672390861}
-  m_RootOrder: 1
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 401.57166, y: 0}
-  m_SizeDelta: {x: -803.1432, y: 0}
+  m_AnchoredPosition: {x: 401.57153, y: 0}
+  m_SizeDelta: {x: -803.1433, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5841223302593890563
 CanvasRenderer:
@@ -7768,7 +7768,7 @@ RectTransform:
   m_Children:
   - {fileID: 7225936494923357962}
   m_Father: {fileID: 5808650679672390861}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -10348,7 +10348,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 6
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 394288251
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 9739587014981370359
   _sceneNetworkObjects: []
@@ -10718,7 +10718,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1.8273927, y: 1.8273194}
+  m_AnchoredPosition: {x: 1.8274659, y: 1.8273194}
   m_SizeDelta: {x: 304.56, y: 304.56}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &5652508383201248744
@@ -13184,7 +13184,7 @@ GameObject:
   - component: {fileID: 6734246657098736321}
   - component: {fileID: 3110771867131657967}
   - component: {fileID: 7992592037397347946}
-  - component: {fileID: 292308279}
+  - component: {fileID: 880415759}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -13350,7 +13350,7 @@ MonoBehaviour:
   aimSensitivity: 50
   aimcolliderLayerMask:
     serializedVersion: 2
-    m_Bits: 12288
+    m_Bits: 4096
   debugTransform: {fileID: 4773960741598643382}
   aimRigWeight: 0
   fPSController: {fileID: 6502691108668243368}
@@ -13755,7 +13755,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 5
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 394288251
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects: []
@@ -13851,9 +13851,6 @@ MonoBehaviour:
   _componentIndexCache: 5
   _addedNetworkObject: {fileID: 2434153823208391393}
   _networkObjectCache: {fileID: 2434153823208391393}
-  IdentifyEnemy:
-    serializedVersion: 2
-    m_Bits: 262144
   PrimaryGun: 0
   SecondaryGun: 1
   GunParent: {fileID: 1938294273271845211}
@@ -13934,7 +13931,7 @@ MonoBehaviour:
   <IsReloading>k__BackingField: 0
   IsShooting: 0
   resetShooting: 0
---- !u!114 &292308279
+--- !u!114 &880415759
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14221,7 +14218,6 @@ MonoBehaviour:
   - UI_Canvas_StarterAssetsInputs_Joysticks/Start Game
   - UI_Canvas_StarterAssetsInputs_Joysticks/Start Game/Button
   - UI_Canvas_StarterAssetsInputs_Joysticks/Start Game/Button/Text (TMP)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/TouchZone
   - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_TouchZone
   - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_TouchZone/Image_Handle
   - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_TouchZone/Image_Handle/Image_Icon
@@ -14231,6 +14227,7 @@ MonoBehaviour:
   - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Look
   - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Look/Image_Handle
   - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Look/Image_Handle/Image_Icon
+  - UI_Canvas_StarterAssetsInputs_Joysticks/TouchZone
   - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Button_Jump
   - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Button_Jump/Image_Icon
   - UI_Canvas_StarterAssetsInputs_Joysticks/Aim
@@ -14273,10 +14270,13 @@ MonoBehaviour:
   - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (3)/Image
   - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (3)/Text (2)
   - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (3)/Text (3)
+  - UI_Canvas_StarterAssetsInputs_Joysticks/AimAssist
+  - UI_Canvas_StarterAssetsInputs_Joysticks/AimAssist/Text (TMP)
+  - UI_Canvas_StarterAssetsInputs_Joysticks/AimAssist/On and Off
   - Surface Manager (1)
   showBones: 000000000400000005000000060000000700000008000000090000000a000000160000001700000018000000190000002e0000002f000000450000004600000047000000480000004a0000004b0000004c0000004d000000
   foldoutBones: ee000000ec000000eb000000e8000000e6000000e5000000e3000000e2000000e1000000e0000000dc000000db000000d9000000d8000000d6000000d5000000d3000000d2000000d0000000cf000000ce000000cd000000cc000000cb000000c6000000c5000000c3000000c2000000c0000000bf000000bd000000bc000000ba000000b9000000b8000000b7000000b6000000b5000000b4000000b3000000b2000000b1000000ad000000ab000000a8000000a7000000a6000000a20000009f0000009e0000009c0000009b0000009900000098000000970000009300000092000000910000008d0000008b000000890000008800000086000000850000008400000083000000810000007f0000007e0000007d0000007a000000790000007800000077000000760000004d0000004c0000004b0000004a000000480000004700000046000000450000002f0000002e0000002300000022000000200000001f0000001e0000001c0000001b0000001a00000019000000180000001700000016000000140000001300000011000000100000000f0000000d0000000c0000000b0000000a000000090000000800000007000000060000000500000004000000030000000200000000000000
-  mirrorBones: ffffffffffffffffffffffffffffffffffffffffffffffffffffffff160000001700000018000000190000001a0000001b0000001c000000ffffffff1e0000001f00000020000000ffffffff2200000023000000240000000700000008000000090000000a0000000b0000000c0000000d000000ffffffff0f0000001000000011000000ffffffff130000001400000015000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4a0000004b0000004c0000004d0000004e0000004500000046000000470000004800000049000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7c0000007b000000ffffffffffffffff81000000820000007f00000080000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffcb000000cc000000cd000000ce000000cf000000d0000000d1000000d2000000d3000000d4000000d5000000d6000000d7000000d8000000d9000000da000000db000000dc000000dd000000ffffffffde000000df000000b5000000b6000000b7000000b8000000b9000000ba000000bb000000bc000000bd000000be000000bf000000c0000000c1000000c2000000c3000000c4000000c5000000c6000000c7000000c9000000ca000000ffffffffffffffffffffffffffffffffffffffffeb000000ec000000ed000000ee000000ef000000f0000000e5000000e6000000e7000000e8000000e9000000ea000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  mirrorBones: ffffffffffffffffffffffffffffffffffffffffffffffffffffffff160000001700000018000000190000001a0000001b0000001c000000ffffffff1e0000001f00000020000000ffffffff2200000023000000240000000700000008000000090000000a0000000b0000000c0000000d000000ffffffff0f0000001000000011000000ffffffff130000001400000015000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4a0000004b0000004c0000004d0000004e0000004500000046000000470000004800000049000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7c0000007b000000ffffffffffffffff81000000820000007f00000080000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffcb000000cc000000cd000000ce000000cf000000d0000000d1000000d2000000d3000000d4000000d5000000d6000000d7000000d8000000d9000000da000000db000000dc000000dd000000ffffffffde000000df000000b5000000b6000000b7000000b8000000b9000000ba000000bb000000bc000000bd000000be000000bf000000c0000000c1000000c2000000c3000000c4000000c5000000c6000000c7000000c9000000ca000000ffffffffffffffffffffffffffffffffffffffffeb000000ec000000ed000000ee000000ef000000f0000000e5000000e6000000e7000000e8000000e9000000ea000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
   mirrorBlendShape: []
   animatorIkData:
   - enable: 0
@@ -14341,7 +14341,7 @@ MonoBehaviour:
     parentPath: 
   originalIkData: []
   selectionData: []
-  lastSelectAnimationClip: {fileID: 7400000, guid: 22a3360801f59624082dcb9bfc3051ef,
+  lastSelectAnimationClip: {fileID: 7400000, guid: 3e9dcc23428ff1748b32f2f1ef297da7,
     type: 2}
   handPoseList: []
   blendShapeList: []
@@ -16000,10 +16000,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 229258307739435912}
-  - {fileID: 5166238594879843990}
   - {fileID: 4152712676966391661}
   - {fileID: 7088532675394843289}
   - {fileID: 4925398523492781175}
+  - {fileID: 5166238594879843990}
   - {fileID: 9056850914814531544}
   - {fileID: 3590734240502456222}
   - {fileID: 3152157930413351704}

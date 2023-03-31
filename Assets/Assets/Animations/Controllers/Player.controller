@@ -21,8 +21,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 70235c966b8a9eb458402101fce20396,
-    type: 3}
+  m_Motion: {fileID: 7400000, guid: 3e9dcc23428ff1748b32f2f1ef297da7, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1586,7 +1585,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 2220e4e789cafcf4ab518d29d115bcfe, type: 2}
+  m_Motion: {fileID: -4630721597672038732, guid: 9a89dcf2e111d0d47ab5600346f39040,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1845,7 +1845,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: a72f4296d8e3c194a848d4f6dfaefe18,
+  m_Motion: {fileID: -4630721597672038732, guid: 9a89dcf2e111d0d47ab5600346f39040,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -2404,8 +2404,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 70235c966b8a9eb458402101fce20396,
-    type: 3}
+  m_Motion: {fileID: 7400000, guid: 3e9dcc23428ff1748b32f2f1ef297da7, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -3063,9 +3062,6 @@ AnimatorStateMachine:
     m_State: {fileID: -9050666044772420735}
     m_Position: {x: 360, y: 230, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 5832420441899016853}
-    m_Position: {x: 385.1529, y: 89.80583, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: -8927585323611434038}
     m_Position: {x: 380, y: 320, z: 0}
   m_ChildStateMachines: []
@@ -3605,32 +3601,6 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 0}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
---- !u!1102 &5832420441899016853
-AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Crouch Pistol Idle
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 9cfa6c222cdfaf540b9bdb49f224b30e, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
