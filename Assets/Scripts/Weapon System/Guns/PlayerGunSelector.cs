@@ -53,6 +53,7 @@ public class PlayerGunSelector : NetworkBehaviour
     public GameObject spawnedObject;
     private NetworkConnection ownerConnection;
 
+    public float mouseX,mouseY;
     private void Awake()
     {
         instance = this;
@@ -169,6 +170,9 @@ public class PlayerGunSelector : NetworkBehaviour
     }
 
 
+    Vector3 hitpoint;
+    Vector3 rayHitPoint;
+    RaycastHit aimAssistHit;
     public void FireConditionAutomatic()
     { 
         if (Time.time - ActiveGun.LastShootTime - ActiveGun.ShootConfig.FireRate > Time.deltaTime)
@@ -233,15 +237,30 @@ public class PlayerGunSelector : NetworkBehaviour
                     //Debug.Log(hit.transform);
                     //Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
                     //Gizmos.DrawSphere(hitnew.point, 0.1f);
+                    
+                    if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                    {
+                        rayHitPoint = hit.point;
+                    }
+                    if (mouseX != 0 && mouseY != 0)
+                    {
+                        hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                        aimAssistHit = hitnew;
+                    }
+                    else
+                    {
+                        hitpoint = rayHitPoint;
+                        aimAssistHit = hit;
+                    }
                     Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
-                    Vector3 hitpoint =  hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                    
                     //float yVelocity = 0f;
                     //float oldPos;
                     StartCoroutine(
                         PlayTrail(
                             ActiveGun.ShootSystem.transform.position,
                             hitpoint,
-                            hitnew
+                            aimAssistHit
                         )
                     );
 
@@ -497,5 +516,10 @@ public class PlayerGunSelector : NetworkBehaviour
         spawned.Add(getobject);
 
         return getobject;
+    }
+    public void SetLookInput(float lookX, float lookY)
+    {
+        mouseX = lookX;
+        mouseY = lookY;
     }
 }

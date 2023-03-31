@@ -13160,6 +13160,7 @@ MonoBehaviour:
   playerInput: {fileID: 7647137002014933846}
   myActionAsset: {fileID: -944628639613478452, guid: 4419d82f33d36e848b3ed5af4c8da37e,
     type: 3}
+  playerGunSelector: {fileID: 6734246657098736321}
   cameraRoot: {fileID: 1799965718957584979}
   ultimateJoystick: {fileID: 8172873695556467834}
   firedBullet: 0
@@ -13189,6 +13190,13 @@ MonoBehaviour:
   slideTimeRemaining: 40
   slideSpeed: 10
   extraJump: 0
+  lookAtPlayer: 1
+  look: {x: 0, y: 0}
+  x: 0
+  z: 0
+  IdentifyEnemy:
+    serializedVersion: 2
+    m_Bits: 262144
 --- !u!114 &4059540525316761368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13729,9 +13737,11 @@ MonoBehaviour:
   amountToPool: 5
   playerAction: {fileID: 7992592037397347946}
   spawnedObject: {fileID: 0}
+  mouseX: 0
+  mouseY: 0
   aimAssist: 1
   aimAssistSize: 1
-  sphereCastRadius: 0.2
+  sphereCastRadius: 0.25
   range: 100
   sphere: {fileID: 3343054101245674735}
   CinemachineCameraTarget: {fileID: 0}

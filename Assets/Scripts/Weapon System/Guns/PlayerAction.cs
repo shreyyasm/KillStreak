@@ -82,9 +82,11 @@ public class PlayerAction : NetworkBehaviour
             //InverseKinematics.HandIKAmount = 0.25f;
             //InverseKinematics.ElbowIKAmount = 0.25f;
         }
-        
-        //if (Input.GetMouseButtonDown(1))
-        //    ManualReloadServerTest();
+
+        if (Input.GetMouseButton(0))
+            Shoot(1);
+        else
+            Shoot(0);
     }
     
     public bool ShouldManualReload()

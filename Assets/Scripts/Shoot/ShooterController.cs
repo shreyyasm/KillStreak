@@ -73,7 +73,7 @@ public class ShooterController : NetworkBehaviour
             if (!FPSMode)
             {
                 aimVirtualCamera.enabled = false;
-                thirdPersonController.SetSensitivity(normalSensitivity);
+                //thirdPersonController.SetSensitivity(normalSensitivity);
             }
         }
     }
@@ -81,7 +81,7 @@ public class ShooterController : NetworkBehaviour
     public void AimMovenment()
     {
         //aimVirtualCamera.transform.position = followVirtualCamera.transform.position;
-        mouseWorldPosition = Vector3.zero;
+        //mouseWorldPosition = Vector3.zero;
 
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
@@ -97,13 +97,14 @@ public class ShooterController : NetworkBehaviour
             //if (base.IsOwner)
             //    AimMovementServer();
             mouseWorldPosition = raycastHit.point;
-        }
-        if (!FPSMode)
-        {
             Vector3 worldAimTarget = mouseWorldPosition;
             worldAimTarget.y = transform.position.y;
             Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
             transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 10f);
+        }
+        if (!FPSMode)
+        {
+            
         }
 
         
