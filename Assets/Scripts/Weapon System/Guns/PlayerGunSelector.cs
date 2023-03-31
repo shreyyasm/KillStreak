@@ -8,6 +8,7 @@ using FishNet.Connection;
 using FishNet;
 using FishNet.Utility.Performance;
 using System;
+using TMPro;
 
 [DisallowMultipleComponent]
 public class PlayerGunSelector : NetworkBehaviour
@@ -54,6 +55,7 @@ public class PlayerGunSelector : NetworkBehaviour
     private NetworkConnection ownerConnection;
 
     public float mouseX,mouseY;
+    public float moveX, moveZ;
     private void Awake()
     {
         instance = this;
@@ -243,6 +245,11 @@ public class PlayerGunSelector : NetworkBehaviour
                         rayHitPoint = hit.point;
                     }
                     if (mouseX != 0 && mouseY != 0)
+                    {
+                        hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                        aimAssistHit = hitnew;
+                    }
+                    else if(moveX != 0 && moveZ != 0)
                     {
                         hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
                         aimAssistHit = hitnew;
@@ -517,9 +524,26 @@ public class PlayerGunSelector : NetworkBehaviour
 
         return getobject;
     }
-    public void SetLookInput(float lookX, float lookY)
+    public void SetLookInput(float lookX, float lookY,float movex, float movez)
     {
         mouseX = lookX;
         mouseY = lookY;
+        moveX = movex;
+        moveZ = movez;
+    }
+    public TextMeshProUGUI aimAssistText;
+    public void AimAssistOption()
+    {
+        if (aimAssist)
+        {
+            aimAssistText.text = "Off";
+            aimAssist = false;
+        }
+        else
+        {
+            aimAssistText.text = "On";
+            aimAssist = true;
+        }
+            
     }
 }

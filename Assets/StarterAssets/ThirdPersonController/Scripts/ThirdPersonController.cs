@@ -84,7 +84,7 @@ namespace StarterAssets
         public bool LockCameraPosition = false;
 
         public GameObject fPSController;
-        public FixedTouchField fixedTouchField;
+        //public FixedTouchField fixedTouchField;
         public ScreenTouch screenTouch;
         [SerializeField] private Rig pistolRig;
         [SerializeField] private Rig rifleRig;
@@ -258,8 +258,9 @@ namespace StarterAssets
                 }
             }
 
-            playerGunSelector.SetLookInput(look.x, look.y);
-            //playerGunSelector.SetLookInput(mouseX, mouseY);
+            //playerGunSelector.SetLookInput(look.x, look.y);
+            playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
+           
             SetRigWeight();
             JumpAndGravity();
 
@@ -276,8 +277,8 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            CameraRotationOld();
-            //CameraRotation();
+            //CameraRotationOld();
+            CameraRotation();
         }
         public void SetRigWeight()
         {
@@ -353,24 +354,44 @@ namespace StarterAssets
 
                 //
                 //CinemachineCameraTarget.transform.rotation 
-                //Vector3 targetDirection = hitpoint - CinemachineCameraTarget.transform.position;
+                //Vector3 targetDirection = hitpoint - CinemachineCameraTarget.transform.localPosition;
                 //Vector3 lookDirection = Vector3.RotateTowards(CinemachineCameraTarget.transform.forward, targetDirection, 1f, 0.0f);
-                //CinemachineCameraTarget.transform.rotation = Quaternion.LookRotation(lookDirection);
-                //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(1,1,0);
+                //CinemachineCameraTarget.transform.localRotation = Quaternion.LookRotation(lookDirection);
                 sensitivity = 70f;
-                //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(hitpoint.x,hitpoint.y,hitpoint.z);
+                screenTouch.SetSensitivity(6);
+                //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(lookDirection.x, lookDirection.z, 0.0f);
+                //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
+                // _cinemachineTargetYaw, 0.0f);
                 //Debug.Log("work");
+                // CinemachineCameraTarget.transform.rotation = Quaternion.Euler(hitpoint.x , targetDirection.y, 0.0f);
+                Debug.DrawLine(_mainCamera.transform.position, hitpoint, Color.red);
+                Vector3 enemyPoint = hitpoint;
+                lookAtPlayer = true;
+                //Vector3 aimAssistPoint = ray.GetPoint(Vector3.Distance(enemyPoint, CinemachineCameraTarget.transform.position));
+                //if (Vector3.Distance(aimAssistPoint, enemyPoint) <= 1.5f)
+                //{
+                //StartCoroutine(ToggleMouseLook(0.5f));
+                //CinemachineCameraTarget.transform.LookAt(hitpoint);
+
+                //}
+
             }
             else
             {
-                // Cinemachine will follow this target
-                if(!isAiming)
+                if (!isAiming)
+                {
+                    screenTouch.SetSensitivity(8);
                     sensitivity = 100f;
-                
-            }
+                }
 
+                //Cinemachine will follow this target
+
+            }
+            //if(lookAtPlayer)
+            //{
             CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
-                     _cinemachineTargetYaw, 0.0f);
+                _cinemachineTargetYaw, 0.0f);
+            //}
 
         }
 
@@ -400,6 +421,7 @@ namespace StarterAssets
                  //Vector3 lookDirection = Vector3.RotateTowards(CinemachineCameraTarget.transform.forward, targetDirection, 1f, 0.0f);
                  //CinemachineCameraTarget.transform.localRotation = Quaternion.LookRotation(lookDirection);
                 sensitivity = 70f;
+                screenTouch.SetSensitivity(6);
                 //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(lookDirection.x, lookDirection.z, 0.0f);
                 //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
                 // _cinemachineTargetYaw, 0.0f);
@@ -420,7 +442,11 @@ namespace StarterAssets
             else
             {
                 if (!isAiming)
+                {
+                    screenTouch.SetSensitivity(8);
                     sensitivity = 100f;
+                }
+                    
                 //Cinemachine will follow this target
 
             }
