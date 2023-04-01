@@ -38,7 +38,7 @@ TagManager:
   - Player
   - HideItself
   - Projectile
-  - OtherPlayers
+  - OtherPlayersRoot
   - Buildings
   - Enemy
   - Bullets

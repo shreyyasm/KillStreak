@@ -162,7 +162,7 @@ namespace StarterAssets
 
         private CinemachineVirtualCamera m_MainCamera;
         private CinemachineVirtualCamera m_AimCamera;
-        
+        [SerializeField] Transform[] Root;
         public override void OnStartNetwork()
         {
             base.OnStartNetwork();
@@ -171,7 +171,20 @@ namespace StarterAssets
             * the code below instead. This difference exist
             * to support a clientHost condition. */
             if (base.Owner.IsLocalClient)
+            {
                 cameraRoot.AddComponent<CameraFollow>();
+                foreach (Transform gears in Root)
+                {
+                    var childGameObjects = gears.GetComponentsInChildren<Transform>();
+                    foreach (Transform allObjects in childGameObjects)
+                    {
+                        allObjects.gameObject.layer = LayerMask.NameToLayer("Player Root");
+                    }
+                }
+
+
+            }
+            
             
         }
 
@@ -221,6 +234,9 @@ namespace StarterAssets
             m_AimCamera = GameObject.FindWithTag("Aim Camera").GetComponent<CinemachineVirtualCamera>();
             _controller = GetComponent<CharacterController>();
             //rb = GetComponent<Rigidbody>();
+            //Root = GetComponentInChildren<Transform>();
+            //Root.layer = LayerMask.NameToLayer("Player Root");
+            
             isCrouching = false;
         }
 
@@ -258,8 +274,8 @@ namespace StarterAssets
                 }
             }
 
-            playerGunSelector.SetLookInput(look.x, look.y, x, z);
-            //playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
+            //playerGunSelector.SetLookInput(look.x, look.y, x, z);
+            playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
             SetRigWeight();
             JumpAndGravity();
@@ -763,6 +779,7 @@ namespace StarterAssets
             if(_input.jump && isCrouching)
             {
                 isCrouching = false;
+                _animator.SetBool("Crouch", isCrouching);
             }
             else if(Grounded && !isCrouching)
             {

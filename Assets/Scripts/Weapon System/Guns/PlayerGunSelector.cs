@@ -244,15 +244,16 @@ public class PlayerGunSelector : NetworkBehaviour
                     {
                         rayHitPoint = hit.point;
                     }
-                    if (mouseX != 0 && mouseY != 0 && moveX != 0 && moveZ != 0)
-                    {
-                        hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
-                        aimAssistHit = hitnew;
-                    }                  
-                    else
+                    if (mouseX == 0 && mouseY == 0 && moveX == 0 && moveZ == 0)
                     {
                         hitpoint = rayHitPoint;
                         aimAssistHit = hit;
+                    }                  
+                    else
+                    {
+                        
+                        hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                        aimAssistHit = hitnew;
                     }
                     Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
                     
@@ -351,15 +352,16 @@ public class PlayerGunSelector : NetworkBehaviour
                     {
                         rayHitPoint = hit.point;
                     }
-                    if (mouseX != 0 && mouseY != 0 && moveX != 0 && moveZ != 0)
-                    {
-                        hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
-                        aimAssistHit = hitnew;
-                    }                 
-                    else
+                    if (mouseX == 0 && mouseY == 0 && moveX == 0 && moveZ == 0)
                     {
                         hitpoint = rayHitPoint;
                         aimAssistHit = hit;
+                    }
+                    else
+                    {
+
+                        hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                        aimAssistHit = hitnew;
                     }
                     Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
 
