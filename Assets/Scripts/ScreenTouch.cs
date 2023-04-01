@@ -41,14 +41,11 @@ public class ScreenTouch : MonoBehaviour
                     }
                     break;
 
-                case TouchPhase.Canceled:
-                    lookInput = Vector2.zero;
-                    break;
-
+                case TouchPhase.Canceled:   
                 case TouchPhase.Ended:
                     if (t.fingerId == rightFingerID)
                         rightFingerID = -1;
-                        lookInput = Vector2.zero;
+                        //lookInput = Vector2.zero;
                     break;
 
                 case TouchPhase.Moved:

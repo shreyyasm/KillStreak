@@ -13,7 +13,7 @@ using TMPro;
 [DisallowMultipleComponent]
 public class PlayerGunSelector : NetworkBehaviour
 {
-    //public LayerMask IdentifyEnemy;
+    public LayerMask IdentifyEnemy;
     public static PlayerGunSelector instance;
     [SerializeField]
     private GunType PrimaryGun;
@@ -239,21 +239,29 @@ public class PlayerGunSelector : NetworkBehaviour
                     //Debug.Log(hit.transform);
                     //Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
                     //Gizmos.DrawSphere(hitnew.point, 0.1f);
-                    
                     if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                     {
                         rayHitPoint = hit.point;
                     }
-                    if (mouseX == 0 && mouseY == 0 && moveX == 0 && moveZ == 0)
-                    {
-                        hitpoint = rayHitPoint;
-                        aimAssistHit = hit;
-                    }                  
+                    if (hitnew.collider.gameObject.layer != 18)
+                    { 
+
+                            hitpoint = rayHitPoint;
+                            aimAssistHit = hit;
+                    }                              
                     else
                     {
-                        
-                        hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
-                        aimAssistHit = hitnew;
+                        if (mouseX == 0 && mouseY == 0)
+                        {
+                            hitpoint = rayHitPoint;
+                            aimAssistHit = hit;
+                        }
+                        else
+                        {
+                            hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                            aimAssistHit = hitnew;
+                        }
+                            
                     }
                     Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
                     
@@ -352,16 +360,25 @@ public class PlayerGunSelector : NetworkBehaviour
                     {
                         rayHitPoint = hit.point;
                     }
-                    if (mouseX == 0 && mouseY == 0 && moveX == 0 && moveZ == 0)
+                    if (hitnew.collider.gameObject.layer != 18)
                     {
+
                         hitpoint = rayHitPoint;
                         aimAssistHit = hit;
                     }
                     else
                     {
+                        if (mouseX == 0 && mouseY == 0)
+                        {
+                            hitpoint = rayHitPoint;
+                            aimAssistHit = hit;
+                        }
+                        else
+                        {
+                            hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                            aimAssistHit = hitnew;
+                        }
 
-                        hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
-                        aimAssistHit = hitnew;
                     }
                     Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
 

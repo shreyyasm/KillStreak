@@ -293,8 +293,9 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            //CameraRotationOld();
-            CameraRotation();
+            CameraRotationOld();
+            // CameraRotation();
+            
         }
         public void SetRigWeight()
         {
@@ -338,72 +339,82 @@ namespace StarterAssets
 
         public void CameraRotation()
         {
+           
             mouseX = screenTouch.lookInput.x;
             mouseY = screenTouch.lookInput.y;
-            //float h = UltimateTouchpad.GetHorizontalAxis("Look");
-            //float v = UltimateTouchpad.GetVerticalAxis("Look");
-            //Vector3 direction = new Vector3(h, v, 0f).normalized;
-            //Debug.Log(direction.x);
-            // if there is an input and camera position is not fixed
-            if (screenTouch.lookInput.sqrMagnitude >= _threshold && !LockCameraPosition)
+            if (screenTouch.rightFingerID == -1)
             {
-                //Don't multiply mouse input by Time.deltaTime;
-                //float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-
-                //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
-                //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
-                _cinemachineTargetYaw += mouseX * Time.deltaTime * 100;
-                _cinemachineTargetPitch -= mouseY * Time.deltaTime * 100;
+                mouseX = 0;
+                mouseY = 0;
             }
-
-            // clamp our rotations so our values are limited 360 degrees
-            _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-            _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
-            if (Physics.SphereCast(ray, 0.2f, out RaycastHit hitnew, float.MaxValue, IdentifyEnemy))
+            if (screenTouch.rightFingerID != -1)
             {
-                Vector3 hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
-
-                //
-                //CinemachineCameraTarget.transform.rotation 
-                //Vector3 targetDirection = hitpoint - CinemachineCameraTarget.transform.localPosition;
-                //Vector3 lookDirection = Vector3.RotateTowards(CinemachineCameraTarget.transform.forward, targetDirection, 1f, 0.0f);
-                //CinemachineCameraTarget.transform.localRotation = Quaternion.LookRotation(lookDirection);
-                sensitivity = 70f;
-                screenTouch.SetSensitivity(6);
-                //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(lookDirection.x, lookDirection.z, 0.0f);
-                //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
-                // _cinemachineTargetYaw, 0.0f);
-                //Debug.Log("work");
-                // CinemachineCameraTarget.transform.rotation = Quaternion.Euler(hitpoint.x , targetDirection.y, 0.0f);
-                Debug.DrawLine(_mainCamera.transform.position, hitpoint, Color.red);
-                Vector3 enemyPoint = hitpoint;
-                lookAtPlayer = true;
-                //Vector3 aimAssistPoint = ray.GetPoint(Vector3.Distance(enemyPoint, CinemachineCameraTarget.transform.position));
-                //if (Vector3.Distance(aimAssistPoint, enemyPoint) <= 1.5f)
-                //{
-                //StartCoroutine(ToggleMouseLook(0.5f));
-                //CinemachineCameraTarget.transform.LookAt(hitpoint);
-
-                //}
-
-            }
-            else
-            {
-                if (!isAiming)
+                //float h = UltimateTouchpad.GetHorizontalAxis("Look");
+                //float v = UltimateTouchpad.GetVerticalAxis("Look");
+                //Vector3 direction = new Vector3(h, v, 0f).normalized;
+                //Debug.Log(direction.x);
+                // if there is an input and camera position is not fixed
+                if (screenTouch.lookInput.sqrMagnitude >= _threshold && !LockCameraPosition)
                 {
-                    screenTouch.SetSensitivity(8);
-                    sensitivity = 100f;
+                    //Don't multiply mouse input by Time.deltaTime;
+                    //float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+
+                    //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
+                    //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
+                    _cinemachineTargetYaw += mouseX * Time.deltaTime * 100;
+                    _cinemachineTargetPitch -= mouseY * Time.deltaTime * 100;
                 }
 
-                //Cinemachine will follow this target
+                // clamp our rotations so our values are limited 360 degrees
+                _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
+                _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+                if (Physics.SphereCast(ray, 0.2f, out RaycastHit hitnew, float.MaxValue, IdentifyEnemy))
+                {
+                    Vector3 hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+
+                    //
+                    //CinemachineCameraTarget.transform.rotation 
+                    //Vector3 targetDirection = hitpoint - CinemachineCameraTarget.transform.localPosition;
+                    //Vector3 lookDirection = Vector3.RotateTowards(CinemachineCameraTarget.transform.forward, targetDirection, 1f, 0.0f);
+                    //CinemachineCameraTarget.transform.localRotation = Quaternion.LookRotation(lookDirection);
+                    sensitivity = 70f;
+                    screenTouch.SetSensitivity(6);
+                    //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(lookDirection.x, lookDirection.z, 0.0f);
+                    //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
+                    // _cinemachineTargetYaw, 0.0f);
+                    //Debug.Log("work");
+                    // CinemachineCameraTarget.transform.rotation = Quaternion.Euler(hitpoint.x , targetDirection.y, 0.0f);
+                    Debug.DrawLine(_mainCamera.transform.position, hitpoint, Color.red);
+                    Vector3 enemyPoint = hitpoint;
+                    lookAtPlayer = true;
+                    //Vector3 aimAssistPoint = ray.GetPoint(Vector3.Distance(enemyPoint, CinemachineCameraTarget.transform.position));
+                    //if (Vector3.Distance(aimAssistPoint, enemyPoint) <= 1.5f)
+                    //{
+                    //StartCoroutine(ToggleMouseLook(0.5f));
+                    //CinemachineCameraTarget.transform.LookAt(hitpoint);
+
+                    }
 
             }
-            //if(lookAtPlayer)
-            //{
-            CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
-                _cinemachineTargetYaw, 0.0f);
-            //}
+                else
+                {
+                    if (!isAiming)
+                    {
+                        screenTouch.SetSensitivity(8);
+                        sensitivity = 100f;
+                    }
 
+                    //Cinemachine will follow this target
+
+                }
+                //if(lookAtPlayer)
+                //{
+                
+                //}
+           // }
+
+            CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
+                    _cinemachineTargetYaw, 0.0f);
         }
 
         private void CameraRotationOld()
