@@ -247,7 +247,7 @@ namespace StarterAssets
             z = ultimateJoystick.GetVerticalAxis();
             //if(base.IsServer)
             changingGun = weaponSwitching.GunSwaping();
-
+            //Jump();
             if (firedBullet && fireBulletTime >= 0)
             {
                 if (!firing)
@@ -453,72 +453,7 @@ namespace StarterAssets
             
 
         }
-        IEnumerator ToggleMouseLook(float delay)
-        {
-            //Disables the player’s ability to look for delay seconds so that the targeting is not disrupted
-            lookAtPlayer = false;
-            yield return new WaitForSeconds(delay);
-            lookAtPlayer = true;
-
-            //targetEnemy = enemy;  //Assigns the enemy passed in to the targetEnemy var to end targeting
-
-        }
-        //public void AimAssit()
-        //{
-        //    Enemy targetEnemy; //Stores the current enemy the aim assist script is targeting
-        //    MouseLook camera = _mainCamera.camera.GetComponent<MouseLook>();  //holds a variable of class MouseLook, which handles how the player can look around
-        //    Ray ray =  .ScreenPointToRay(player.cursor.position);  //Raycasts from the cursor on the player's camera forward
-
-
-
-        //    foreach (Enemy enemy in GameSingleton.instance.allEnemies)
-        //    {
-        //        if (Vector.Distance(player.transform.position, enemy.transform.position) <= accuracyRange) //Limits the range of enemies to only those who are near enough
-        //        {
-        //            if (Vector3.Angle(camera.transform.forward, enemy.transform.position - player.transform.position) <= 25f) //If the enemy is essentially in front of the player…
-        //            {
-        //                //This is basically the enemy’s position shifted upward so that, in this case, the neck is targeted
-        //                Vector3 enemyPoint = enemy.transform.position + enemy.transform.up * 2.88f;
-
-        //                /*
-        //                    Gets one point from a set of points equidistant from the player/camera. Because the distance is based on the distance between the player
-        //                    and the enemy, the closer the cursor is to an enemy, the more likely it is for the enemy to be “in range” of the point.
-        //                */
-        //                Vector3 aimAssistPoint = ray.GetPoint(Vector3.Distance(enemyPoint, camera.transform.position));
-
-        //                //If the enemy is within 1.5 units from the point the player is looking at. In other words, if the cursor is close enough to the enemy…
-        //                if (Vector3.Distance(aimAssistPoint, enemyPoint) <= 1.5f)
-        //                {
-        //                    if (targetEnemy == null)
-        //                    {
-        //                        //Fix cursor on enemy for one second
-        //                        StartCoroutine(ToggleMouseLook(1f, camera, enemy);  //See: ToggleMouseLook
-        //                        camera.transform.LookAt(enemyPoint);
-        //                    }
-        //                }
-        //            }
-        //            else
-        //            {
-        //                //Once the player looks away from the target enemy or the target enemy is dead, reset the targetEnemy var to null so that an enemy can be targeted again
-        //                if (enemy == targetEnemy || (targetEnemy && targetEnemy.IsDead())
-        //                    {
-        //                    targetEnemy = null;
-        //                }
-        //            }
-        //        }
-
-        //    }
-        //}
-        //IEnumerator ToggleMouseLook(float delay, MouseLook mouseLook, Enemy enemy)
-        //{
-        //    //Disables the player’s ability to look for delay seconds so that the targeting is not disrupted
-        //    mouseLook.enabled = false;
-        //    yield return new WaitForSeconds(delay);
-        //    mouseLook.enable = true;
-
-        //    targetEnemy = enemy;  //Assigns the enemy passed in to the targetEnemy var to end targeting
-
-        //}
+      
         public void Move()
         {
             //_controller.detectCollisions = false;
@@ -822,10 +757,14 @@ namespace StarterAssets
             yield return new WaitForSeconds(0.5f);
             // _controller.height = originalHeight;
         }
+           
         public void JumpAndGravity()
         {
-           
-            if(Grounded)
+            if(_input.jump && isCrouching)
+            {
+                isCrouching = false;
+            }
+            else if(Grounded && !isCrouching)
             {
                 // reset the fall timeout timer
                 _fallTimeoutDelta = FallTimeout;

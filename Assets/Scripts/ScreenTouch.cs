@@ -62,9 +62,6 @@ public class ScreenTouch : MonoBehaviour
 
 
             }
-
-
-
         }
     }
     public void SetSensitivity(float Newsensitivity)

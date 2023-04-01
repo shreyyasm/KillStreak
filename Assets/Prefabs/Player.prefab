@@ -10351,7 +10351,9 @@ MonoBehaviour:
   _scenePathHash: 394288251
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 9739587014981370359
-  _sceneNetworkObjects: []
+  _sceneNetworkObjects:
+  - {fileID: 2107006599189651683}
+  - {fileID: 2434153823208391393}
 --- !u!114 &8404843150804243538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10718,7 +10720,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1.8274659, y: 1.8273194}
+  m_AnchoredPosition: {x: 1.8273927, y: 1.8273194}
   m_SizeDelta: {x: 304.56, y: 304.56}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &5652508383201248744
@@ -13184,7 +13186,7 @@ GameObject:
   - component: {fileID: 6734246657098736321}
   - component: {fileID: 3110771867131657967}
   - component: {fileID: 7992592037397347946}
-  - component: {fileID: 880415759}
+  - component: {fileID: 2120068751}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -13758,7 +13760,9 @@ MonoBehaviour:
   _scenePathHash: 394288251
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
-  _sceneNetworkObjects: []
+  _sceneNetworkObjects:
+  - {fileID: 2107006599189651683}
+  - {fileID: 2434153823208391393}
 --- !u!114 &372409507547526593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13931,7 +13935,7 @@ MonoBehaviour:
   <IsReloading>k__BackingField: 0
   IsShooting: 0
   resetShooting: 0
---- !u!114 &880415759
+--- !u!114 &2120068751
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14341,7 +14345,7 @@ MonoBehaviour:
     parentPath: 
   originalIkData: []
   selectionData: []
-  lastSelectAnimationClip: {fileID: 7400000, guid: 3e9dcc23428ff1748b32f2f1ef297da7,
+  lastSelectAnimationClip: {fileID: 7400000, guid: 7b93ef927aef9214da66f3a5d3edb9f6,
     type: 2}
   handPoseList: []
   blendShapeList: []
