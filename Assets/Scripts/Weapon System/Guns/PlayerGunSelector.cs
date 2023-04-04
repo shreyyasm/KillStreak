@@ -53,9 +53,10 @@ public class PlayerGunSelector : NetworkBehaviour
     public PlayerAction playerAction;
     public GameObject spawnedObject;
     private NetworkConnection ownerConnection;
-
+    public bool blocked;
     public float mouseX,mouseY;
     public float moveX, moveZ;
+     
     private void Awake()
     {
         instance = this;
@@ -131,9 +132,39 @@ public class PlayerGunSelector : NetworkBehaviour
             }
 
         }
-
+        CheckBlocked();
     }
+    public void CheckBlocked()
+    {
+        if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+        {
+            rayHitPoint = hit.point;
+        }
+       
+        float distanceObject = Vector3.Distance(ActiveCamera.transform.position, hit.transform.position);
+        float distancePlayer = Vector3.Distance(ActiveCamera.transform.position, transform.position);
 
+
+        if (distanceObject < distancePlayer)
+        {
+            //Physics.IgnoreCollision(hitnew.transform.GetComponent<Collider>(), hit.collider);
+            //objectRef = hitnew.transform.gameObject;
+            //if (hitnew.transform.gameObject.layer != 2)
+            //{
+            //    objectRef.layer = LayerMask.NameToLayer("Ignore Raycast");
+            //    objectRef = hitnew.transform.gameObject;
+            //    layer = objectRef.ToString();
+            //}
+            blocked = true;
+            Debug.Log("work");
+        }
+        else
+        {
+            //if (objectRef != null)
+            //    objectRef.layer = LayerMask.NameToLayer(layer);
+            blocked = false;
+        }
+    }
     public void StartPool()
     {
         bulletTrailPool = new GameObject("Bullet Pool");
@@ -170,13 +201,16 @@ public class PlayerGunSelector : NetworkBehaviour
         //3   
         return null;
     }
-
-
+    GameObject objectRef;
+    string layer;
     Vector3 hitpoint;
     Vector3 rayHitPoint;
     RaycastHit aimAssistHit;
+    RaycastHit hitnew;
+   
     public void FireConditionAutomatic()
     { 
+        
         if (Time.time - ActiveGun.LastShootTime - ActiveGun.ShootConfig.FireRate > Time.deltaTime)
         {
             float lastDuration = Mathf.Clamp(
@@ -194,14 +228,34 @@ public class PlayerGunSelector : NetworkBehaviour
            
             ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
-            ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 
-            Vector3 shootDirection = Vector3.zero;
-            shootDirection = ActiveCamera.transform.forward + ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
-            Vector3 origin = ActiveCamera.transform.position
-                        + ActiveCamera.transform.forward * Vector3.Distance(
-                                ActiveCamera.transform.position,
+            var heading = ActiveGun.ShootSystem.transform.position - sphere.transform.position;
+            var distance = heading.magnitude;
+            var direction = heading / distance;
+
+
+            //Vector3 dirNew = (ActiveGun.ShootSystem.transform.position - ActiveCamera.transform.position);
+            Vector3 shootDirection = direction - sphere.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
+            Vector3 origin = ActiveGun.ShootSystem.transform.position
+                        + ActiveGun.ShootSystem.transform.forward * Vector3.Distance(
+                               ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
+           
+            
+            if (!blocked)
+                ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+            else
+            {
+                
+                //Vector3 point = origin;
+                //Vector3 dir = shootDirection;
+                Ray r = new Ray(origin, -shootDirection);
+                ray = r;
+                //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+            }
+            Debug.DrawRay(origin, shootDirection, Color.black);
+
+
             ActiveGun.Fired = false;
             if (!aimAssist)
             {
@@ -230,19 +284,40 @@ public class PlayerGunSelector : NetworkBehaviour
             }
             else
             {
-                if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                if (Physics.SphereCast(ray, sphereCastRadius, out hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                 {
                     //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
                     Debug.Log("Aim Assist: Hit");
-                    //Gizmos.color = Color.green;
+                 
                     Vector3 sphereCastMidpoint = hitnew.point;
-                    //Debug.Log(hit.transform);
-                    //Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
-                    //Gizmos.DrawSphere(hitnew.point, 0.1f);
+                    
                     if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                     {
                         rayHitPoint = hit.point;
                     }
+                    float distanceObject = Vector3.Distance(ActiveCamera.transform.position, hitnew.transform.position);
+                    float distancePlayer = Vector3.Distance(ActiveCamera.transform.position, transform.position);
+
+                    
+                    //if (distanceObject < distancePlayer)
+                    //{
+                    //    //Physics.IgnoreCollision(hitnew.transform.GetComponent<Collider>(), hit.collider);
+                    //    //objectRef = hitnew.transform.gameObject;
+                    //    //if (hitnew.transform.gameObject.layer != 2)
+                    //    //{
+                    //    //    objectRef.layer = LayerMask.NameToLayer("Ignore Raycast");
+                    //    //    objectRef = hitnew.transform.gameObject;
+                    //    //    layer = objectRef.ToString();
+                    //    //}
+                    //    blocked = true;
+                    //    Debug.Log("work");
+                    //}
+                    //else
+                    //{
+                    //    //if (objectRef != null)
+                    //    //    objectRef.layer = LayerMask.NameToLayer(layer);
+                    //    blocked = false;
+                    //}
                     if (hitnew.collider.gameObject.layer != 18)
                     { 
 
@@ -405,14 +480,16 @@ public class PlayerGunSelector : NetworkBehaviour
             }
         }
     }
+
+    public void CalculateDistanceCamera()
+    {
+        
+    }
     [SerializeField] GameObject sphere;
     public GameObject CinemachineCameraTarget;
     private void OnDrawGizmos()
     {
 
-
-
-        
         //RaycastHit hit;
         if (aimAssist)
         {
@@ -421,7 +498,7 @@ public class PlayerGunSelector : NetworkBehaviour
             if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
             {
                 //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
-                Debug.Log("Aim Assist: Hit");
+                //Debug.Log("Aim Assist: Hit");
                 Gizmos.color = Color.green; 
                 Vector3 sphereCastMidpoint = hit.point;
                 //Debug.Log(hit.transform);
@@ -437,6 +514,7 @@ public class PlayerGunSelector : NetworkBehaviour
 
                 //CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
             }
+            //Debug.DrawLine(ActiveGun.Model.transform.position,r.direction, Color.blue);
         }
         //else
         //{
