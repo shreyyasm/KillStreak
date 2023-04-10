@@ -13882,11 +13882,11 @@ MonoBehaviour:
   mouseY: 0
   moveX: 0
   moveZ: 0
-  sphereTarget: {fileID: 3343054101245674735}
   aimAssist: 1
   aimAssistSize: 1
   sphereCastRadius: 0.2
   range: 100
+  timer: 5
   sphere: {fileID: 3343054101245674735}
   CinemachineCameraTarget: {fileID: 0}
   spawnObject: {fileID: 8081663345739861187, guid: c2e6aed9ca9047c4e9e811b1a9d78ecb,

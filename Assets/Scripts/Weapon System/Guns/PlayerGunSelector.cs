@@ -134,17 +134,21 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         CheckBlocked();
     }
+    RaycastHit hitCheck;
+    float distanceObject;
+    float distancePlayer;
+    public float timeLeft = 5.0f;
     public void CheckBlocked()
     {
-        if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+        if (Physics.Raycast(ray, out hitCheck, float.MaxValue, ActiveGun.ShootConfig.HitMask))
         {
-            rayHitPoint = hit.point;
+            rayHitPoint = hitCheck.point;
         }
        
-        float distanceObject = Vector3.Distance(ActiveCamera.transform.position, hit.transform.position);
-        float distancePlayer = Vector3.Distance(ActiveCamera.transform.position, transform.position);
+        distanceObject = Vector3.Distance(ActiveCamera.transform.position, hitCheck.transform.position);
+        distancePlayer = Vector3.Distance(ActiveCamera.transform.position, transform.position);
 
-
+        
         if (distanceObject < distancePlayer)
         {
             //Physics.IgnoreCollision(hitnew.transform.GetComponent<Collider>(), hit.collider);
@@ -155,13 +159,22 @@ public class PlayerGunSelector : NetworkBehaviour
             //    objectRef = hitnew.transform.gameObject;
             //    layer = objectRef.ToString();
             //}
+            timeLeft = 5.0f;
             blocked = true;
-            Debug.Log("work");
+            
         }
         else
         {
-            //if (objectRef != null)
-            //    objectRef.layer = LayerMask.NameToLayer(layer);
+            CheckBlock();
+        }
+        
+    }
+    public void CheckBlock()
+    {
+        if(timeLeft >= 0)
+            timeLeft -= Time.deltaTime;
+        if (timeLeft < 0)
+        {
             blocked = false;
         }
     }
@@ -229,7 +242,7 @@ public class PlayerGunSelector : NetworkBehaviour
             ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
 
-            var heading = ActiveGun.ShootSystem.transform.position - sphere.transform.position;
+            var heading = sphere.transform.position - ActiveGun.ShootSystem.transform.position;
             var distance = heading.magnitude;
             var direction = heading / distance;
 
@@ -247,14 +260,15 @@ public class PlayerGunSelector : NetworkBehaviour
             else
             {
                 
-                //Vector3 point = origin;
-                //Vector3 dir = shootDirection;
-                Ray r = new Ray(origin, -shootDirection);
+                Vector3 point = ActiveGun.Model.transform.position;
+                Vector3 dir = shootDirection;
+                Ray r = new Ray(origin, shootDirection);
                 ray = r;
                 //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
             }
-            Debug.DrawRay(origin, shootDirection, Color.black);
-
+            //Debug.DrawRay(origin, shootDirection, Color.black);
+            float distanceObject = Vector3.Distance(ActiveCamera.transform.position, hitCheck.transform.position);
+            float distancePlayer = Vector3.Distance(ActiveCamera.transform.position, transform.position);
 
             ActiveGun.Fired = false;
             if (!aimAssist)
@@ -295,8 +309,8 @@ public class PlayerGunSelector : NetworkBehaviour
                     {
                         rayHitPoint = hit.point;
                     }
-                    float distanceObject = Vector3.Distance(ActiveCamera.transform.position, hitnew.transform.position);
-                    float distancePlayer = Vector3.Distance(ActiveCamera.transform.position, transform.position);
+                    float distanceObjectnew = Vector3.Distance(ActiveCamera.transform.position, hitnew.transform.position);
+                    float distancePlayernew = Vector3.Distance(ActiveCamera.transform.position, transform.position);
 
                     
                     //if (distanceObject < distancePlayer)
@@ -333,8 +347,11 @@ public class PlayerGunSelector : NetworkBehaviour
                         }
                         else
                         {
-                            hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
-                            aimAssistHit = hitnew;
+                            
+                                hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                                aimAssistHit = hitnew;
+                            
+                                
                         }
                             
                     }
@@ -455,7 +472,7 @@ public class PlayerGunSelector : NetworkBehaviour
                         }
 
                     }
-                    Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
+                    //Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
 
 
                     StartCoroutine(
@@ -505,12 +522,13 @@ public class PlayerGunSelector : NetworkBehaviour
                 Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
                 Gizmos.DrawSphere(hit.point, 0.1f);
                 Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
+                Debug.DrawLine(ActiveGun.Model.transform.position, hitCheck.point, Color.green);
                 //float yVelocity = 0f;
                 //float oldPos;
-                
-               // oldPos = Mathf.SmoothDamp, 1f, ref yVelocity, Time.deltaTime * 30f);
-                 
-                
+
+                // oldPos = Mathf.SmoothDamp, 1f, ref yVelocity, Time.deltaTime * 30f);
+
+
 
                 //CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
             }
@@ -643,7 +661,6 @@ public class PlayerGunSelector : NetworkBehaviour
     public uint SpawnInterval;
 
     public List<NetworkObject> spawned = new List<NetworkObject>();
-    private NetworkConnection newOwnerConnection;
 
     public override void OnStartNetwork()
     {
