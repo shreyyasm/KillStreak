@@ -242,7 +242,7 @@ public class PlayerGunSelector : NetworkBehaviour
             ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
 
-            var heading = sphere.transform.position - ActiveGun.ShootSystem.transform.position;
+            var heading = sphere.transform.position - transform.position + new Vector3(1.08f,-0.18f,0);
             var distance = heading.magnitude;
             var direction = heading / distance;
 
@@ -259,23 +259,17 @@ public class PlayerGunSelector : NetworkBehaviour
                 ray = Camera.main.ScreenPointToRay(screenCenterPoint);
             else
             {
-                
-                Vector3 point = ActiveGun.Model.transform.position;
-                Vector3 dir = shootDirection;
-                Ray r = new Ray(origin, shootDirection);
+                Ray r = new Ray(ActiveGun.ShootSystem.transform.position, shootDirection);
                 ray = r;
                 //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
             }
-            //Debug.DrawRay(origin, shootDirection, Color.black);
-            float distanceObject = Vector3.Distance(ActiveCamera.transform.position, hitCheck.transform.position);
-            float distancePlayer = Vector3.Distance(ActiveCamera.transform.position, transform.position);
 
             ActiveGun.Fired = false;
             if (!aimAssist)
             {
                 if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                 {
-                    //Debug.Log(hit.collider);
+                    
                     StartCoroutine(
                         PlayTrail(
                             ActiveGun.ShootSystem.transform.position,
@@ -309,7 +303,7 @@ public class PlayerGunSelector : NetworkBehaviour
                     {
                         rayHitPoint = hit.point;
                     }
-                    float distanceObjectnew = Vector3.Distance(ActiveCamera.transform.position, hitnew.transform.position);
+                    float distanceObjectnew = Vector3.Distance(ActiveCamera.transform.position, hit.transform.position);
                     float distancePlayernew = Vector3.Distance(ActiveCamera.transform.position, transform.position);
 
                     
@@ -347,9 +341,17 @@ public class PlayerGunSelector : NetworkBehaviour
                         }
                         else
                         {
-                            
+                            if (distanceObjectnew < distancePlayernew)
+                            {
                                 hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
                                 aimAssistHit = hitnew;
+                            }
+                                
+                            else
+                            {
+                                hitpoint = rayHitPoint;
+                                aimAssistHit = hit;
+                            }
                             
                                 
                         }
