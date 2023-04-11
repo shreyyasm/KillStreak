@@ -138,7 +138,8 @@ public class PlayerGunSelector : NetworkBehaviour
     RaycastHit hitCheck;
     public float distanceObject;
     public float distancePlayer;
-    public float timeLeft = 5.0f;
+    public float timeLeft = 0f;
+    public float timeLeftBlock = 0f;
     public void CheckBlocked()
     {
         if (Physics.Raycast(ray, out hitCheck, float.MaxValue, ActiveGun.ShootConfig.HitMask))
@@ -161,30 +162,24 @@ public class PlayerGunSelector : NetworkBehaviour
             //    layer = objectRef.ToString();
             //}
             blocked = true;
-            
+           
             timeLeft = 0.1f;
-            
+            timeLeftBlock = 2f;
             
         }
         else
         {
             //blocked = false;
-            
+           
             CheckBlock();
         }
-        
-        if (blocked)
+        if(blocked)
         {
-            Ray r = new Ray(ActiveGun.ShootSystem.transform.position, ActiveCamera.transform.forward);
-            ray = r;
             BlockUI.SetActive(true);
             CrosshairUI.SetActive(false);
         }
         else
         {
-            Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
-            ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-            
             BlockUI.SetActive(false);
             CrosshairUI.SetActive(true);
         }
@@ -193,6 +188,10 @@ public class PlayerGunSelector : NetworkBehaviour
     {
         if(timeLeft >= 0)
             timeLeft -= Time.deltaTime;
+
+        if (timeLeftBlock >= 0.1)
+            timeLeftBlock -= Time.deltaTime;
+
         if (timeLeft < 0)
         {
             blocked = false;
@@ -361,7 +360,7 @@ public class PlayerGunSelector : NetworkBehaviour
                         }
                         else
                         {
-                            if (!blocked)
+                            if (timeLeftBlock <= 0)
                             {
                                 hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
                                 aimAssistHit = hitnew;
