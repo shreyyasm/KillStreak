@@ -40,7 +40,7 @@ public class PlayerGunSelector : NetworkBehaviour
     int gunSelected;
     GunScriptableObject gun1;
     GunScriptableObject gun2;
-
+   
     public GameObject bulletTrail;
 
     public static ObjectPooler SharedInstance;
@@ -56,7 +56,8 @@ public class PlayerGunSelector : NetworkBehaviour
     public bool blocked;
     public float mouseX,mouseY;
     public float moveX, moveZ;
-     
+    [SerializeField] GameObject BlockUI;
+    [SerializeField] GameObject CrosshairUI;
     private void Awake()
     {
         instance = this;
@@ -135,8 +136,8 @@ public class PlayerGunSelector : NetworkBehaviour
         CheckBlocked();
     }
     RaycastHit hitCheck;
-    float distanceObject;
-    float distancePlayer;
+    public float distanceObject;
+    public float distancePlayer;
     public float timeLeft = 5.0f;
     public void CheckBlocked()
     {
@@ -145,7 +146,7 @@ public class PlayerGunSelector : NetworkBehaviour
             rayHitPoint = hitCheck.point;
         }
        
-        distanceObject = Vector3.Distance(ActiveCamera.transform.position, hitCheck.transform.position);
+        distanceObject = Vector3.Distance(ActiveCamera.transform.position, rayHitPoint);
         distancePlayer = Vector3.Distance(ActiveCamera.transform.position, transform.position);
 
         
@@ -159,15 +160,34 @@ public class PlayerGunSelector : NetworkBehaviour
             //    objectRef = hitnew.transform.gameObject;
             //    layer = objectRef.ToString();
             //}
-            timeLeft = 5.0f;
             blocked = true;
+            
+            timeLeft = 0.1f;
+            
             
         }
         else
         {
+            //blocked = false;
+            
             CheckBlock();
         }
         
+        if (blocked)
+        {
+            Ray r = new Ray(ActiveGun.ShootSystem.transform.position, ActiveCamera.transform.forward);
+            ray = r;
+            BlockUI.SetActive(true);
+            CrosshairUI.SetActive(false);
+        }
+        else
+        {
+            Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+            ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+            
+            BlockUI.SetActive(false);
+            CrosshairUI.SetActive(true);
+        }
     }
     public void CheckBlock()
     {
@@ -214,8 +234,7 @@ public class PlayerGunSelector : NetworkBehaviour
         //3   
         return null;
     }
-    GameObject objectRef;
-    string layer;
+   
     Vector3 hitpoint;
     Vector3 rayHitPoint;
     RaycastHit aimAssistHit;
@@ -242,13 +261,14 @@ public class PlayerGunSelector : NetworkBehaviour
             ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
 
-            var heading = sphere.transform.position - transform.position + new Vector3(1.08f,-0.18f,0);
+            var heading = sphere.transform.position - transform.position;
+            //heading += new Vector3(1.07f, -0.2f, 0);
             var distance = heading.magnitude;
             var direction = heading / distance;
 
 
             //Vector3 dirNew = (ActiveGun.ShootSystem.transform.position - ActiveCamera.transform.position);
-            Vector3 shootDirection = direction - sphere.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
+            Vector3 shootDirection = direction + sphere.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
             Vector3 origin = ActiveGun.ShootSystem.transform.position
                         + ActiveGun.ShootSystem.transform.forward * Vector3.Distance(
                                ActiveGun.ShootSystem.transform.position,
@@ -259,8 +279,9 @@ public class PlayerGunSelector : NetworkBehaviour
                 ray = Camera.main.ScreenPointToRay(screenCenterPoint);
             else
             {
-                Ray r = new Ray(ActiveGun.ShootSystem.transform.position, shootDirection);
+                Ray r = new Ray(ActiveGun.ShootSystem.transform.position, ActiveCamera.transform.forward );
                 ray = r;
+               
                 //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
             }
 
@@ -303,8 +324,7 @@ public class PlayerGunSelector : NetworkBehaviour
                     {
                         rayHitPoint = hit.point;
                     }
-                    float distanceObjectnew = Vector3.Distance(ActiveCamera.transform.position, hit.transform.position);
-                    float distancePlayernew = Vector3.Distance(ActiveCamera.transform.position, transform.position);
+                    
 
                     
                     //if (distanceObject < distancePlayer)
@@ -341,21 +361,20 @@ public class PlayerGunSelector : NetworkBehaviour
                         }
                         else
                         {
-                            if (distanceObjectnew < distancePlayernew)
+                            if (!blocked)
                             {
                                 hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
                                 aimAssistHit = hitnew;
                             }
-                                
+
                             else
                             {
                                 hitpoint = rayHitPoint;
                                 aimAssistHit = hit;
                             }
-                            
-                                
+
                         }
-                            
+
                     }
                     Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
                     
