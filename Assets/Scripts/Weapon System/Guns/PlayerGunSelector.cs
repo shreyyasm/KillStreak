@@ -278,8 +278,8 @@ public class PlayerGunSelector : NetworkBehaviour
                 ray = Camera.main.ScreenPointToRay(screenCenterPoint);
             else
             {
-                Ray r = new Ray(ActiveGun.ShootSystem.transform.position, ActiveCamera.transform.forward );
-                ray = r;
+                //Ray r = ;
+                ray = new Ray(ActiveGun.ShootSystem.transform.position, ActiveCamera.transform.forward);
                
                 //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
             }
@@ -323,28 +323,7 @@ public class PlayerGunSelector : NetworkBehaviour
                     {
                         rayHitPoint = hit.point;
                     }
-                    
-
-                    
-                    //if (distanceObject < distancePlayer)
-                    //{
-                    //    //Physics.IgnoreCollision(hitnew.transform.GetComponent<Collider>(), hit.collider);
-                    //    //objectRef = hitnew.transform.gameObject;
-                    //    //if (hitnew.transform.gameObject.layer != 2)
-                    //    //{
-                    //    //    objectRef.layer = LayerMask.NameToLayer("Ignore Raycast");
-                    //    //    objectRef = hitnew.transform.gameObject;
-                    //    //    layer = objectRef.ToString();
-                    //    //}
-                    //    blocked = true;
-                    //    Debug.Log("work");
-                    //}
-                    //else
-                    //{
-                    //    //if (objectRef != null)
-                    //    //    objectRef.layer = LayerMask.NameToLayer(layer);
-                    //    blocked = false;
-                    //}
+  
                     if (hitnew.collider.gameObject.layer != 18)
                     { 
 
@@ -360,8 +339,10 @@ public class PlayerGunSelector : NetworkBehaviour
                         }
                         else
                         {
-                            if (timeLeftBlock <= 0)
+                            
+                            if (timeLeftBlock < 0.1)
                             {
+                                //Debug.Log("laand");
                                 hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
                                 aimAssistHit = hitnew;
                             }
@@ -422,20 +403,37 @@ public class PlayerGunSelector : NetworkBehaviour
 
             ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
-            ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 
-            Vector3 shootDirection = Vector3.zero;
-            shootDirection = ActiveCamera.transform.forward + ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
-            Vector3 origin = ActiveCamera.transform.position
-                        + ActiveCamera.transform.forward * Vector3.Distance(
-                                ActiveCamera.transform.position,
+            var heading = sphere.transform.position - transform.position;
+            //heading += new Vector3(1.07f, -0.2f, 0);
+            var distance = heading.magnitude;
+            var direction = heading / distance;
+
+
+            //Vector3 dirNew = (ActiveGun.ShootSystem.transform.position - ActiveCamera.transform.position);
+            Vector3 shootDirection = direction + sphere.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
+            Vector3 origin = ActiveGun.ShootSystem.transform.position
+                        + ActiveGun.ShootSystem.transform.forward * Vector3.Distance(
+                               ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
+
+
+            if (!blocked)
+                ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+            else
+            {
+                //Ray r = ;
+                ray = new Ray(ActiveGun.ShootSystem.transform.position, ActiveCamera.transform.forward);
+
+                //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+            }
+
             ActiveGun.Fired = false;
             if (!aimAssist)
             {
                 if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                 {
-                    //Debug.Log(hit.collider);
+
                     StartCoroutine(
                         PlayTrail(
                             ActiveGun.ShootSystem.transform.position,
@@ -458,20 +456,18 @@ public class PlayerGunSelector : NetworkBehaviour
             }
             else
             {
-                if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                if (Physics.SphereCast(ray, sphereCastRadius, out hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                 {
                     //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
                     Debug.Log("Aim Assist: Hit");
-                    //Gizmos.color = Color.green;
+
                     Vector3 sphereCastMidpoint = hitnew.point;
-                    //Debug.Log(hit.transform);
-                    //Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
-                    //Gizmos.DrawSphere(hitnew.point, 0.1f);
 
                     if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                     {
                         rayHitPoint = hit.point;
                     }
+
                     if (hitnew.collider.gameObject.layer != 18)
                     {
 
@@ -487,8 +483,20 @@ public class PlayerGunSelector : NetworkBehaviour
                         }
                         else
                         {
-                            hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
-                            aimAssistHit = hitnew;
+
+                            if (timeLeftBlock < 0.1)
+                            {
+                                //Debug.Log("laand");
+                                hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                                aimAssistHit = hitnew;
+                            }
+
+                            else
+                            {
+                                hitpoint = rayHitPoint;
+                                aimAssistHit = hit;
+                            }
+
                         }
 
                     }

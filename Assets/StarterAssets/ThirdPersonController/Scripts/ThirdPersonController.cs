@@ -274,8 +274,8 @@ namespace StarterAssets
                 }
             }
 
-            //playerGunSelector.SetLookInput(look.x, look.y, x, z);
-            playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
+            playerGunSelector.SetLookInput(look.x, look.y, x, z);
+            //playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
             SetRigWeight();
             JumpAndGravity();
@@ -293,8 +293,8 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            //CameraRotationOld();
-            CameraRotation();
+            CameraRotationOld();
+            //CameraRotation();
             
         }
         public void SetRigWeight()
