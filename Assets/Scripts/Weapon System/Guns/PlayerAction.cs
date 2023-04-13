@@ -38,7 +38,7 @@ public class PlayerAction : NetworkBehaviour
     public bool IsShooting;
     public bool resetShooting = false;
     public bool IsChangingGun;
-
+    public Animator anim;
     private void Update()
     {
         if (!base.IsOwner)
@@ -80,8 +80,10 @@ public class PlayerAction : NetworkBehaviour
             PlayerAnimator.SetLayerWeight(6, 1);
             GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
+            
             thirdPersonController.ReloadCheck(IsReloading);
-            networkAnimator.SetTrigger("Reload");
+            anim.SetBool("Reload",true);
+            StartCoroutine(EndReload());
             //InverseKinematics.HandIKAmount = 0.25f;
             //InverseKinematics.ElbowIKAmount = 0.25f;
         }
@@ -106,14 +108,18 @@ public class PlayerAction : NetworkBehaviour
             && GunSelector.ActiveGun.CanReload();
     }
 
-    private void EndReload()
+    public IEnumerator EndReload()
     {
+        
+        yield return new WaitForSeconds(2f);
         if(base.IsOwner)
         {
+            
             GunSelector.ActiveGun.EndReload();
             //InverseKinematics.HandIKAmount = 1f;
             //InverseKinematics.ElbowIKAmount = 1f;
             IsReloading = false;
+            anim.SetBool("Reload", false);
             thirdPersonController.ReloadCheck(IsReloading);
         }
        
@@ -165,14 +171,16 @@ public class PlayerAction : NetworkBehaviour
     {
         if (ShouldManualReload())
         {
-
             if (weaponSwitch.gunChanging)
                 return;
+
             PlayerAnimator.SetLayerWeight(6, 1);
             GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
+            
             thirdPersonController.ReloadCheck(IsReloading);
-            networkAnimator.SetTrigger("Reload");
+            anim.SetBool("Reload",true);
+            StartCoroutine(EndReload());
         }
     }
     //Manual Reload - Server and observer Logic
@@ -197,7 +205,8 @@ public class PlayerAction : NetworkBehaviour
             GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
             thirdPersonController.ReloadCheck(IsReloading);
-            networkAnimator.SetTrigger("Reload");
+            anim.SetBool("Reload",true);
+            StartCoroutine(EndReload());
         }
     }
     [ObserversRpc(BufferLast = true)]
@@ -212,7 +221,8 @@ public class PlayerAction : NetworkBehaviour
             GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
             thirdPersonController.ReloadCheck(IsReloading);
-            networkAnimator.SetTrigger("Reload");
+            anim.SetBool("Reload", true);
+            StartCoroutine(EndReload());
         }
     }
     

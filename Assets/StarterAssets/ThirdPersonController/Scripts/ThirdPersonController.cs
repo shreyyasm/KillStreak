@@ -660,60 +660,65 @@ namespace StarterAssets
         
         public void CrouchInput()
         {
-            if (!isCrouching)
-                isCrouching = true;
-            else
-                isCrouching = false;
-           
+            if(Grounded)
+            {
+                if (!isCrouching)
+                    isCrouching = true;
+                else
+                    isCrouching = false;
+    
+            }
             _animator.SetBool("Crouch", isCrouching);
         }
         
         public void ControllerChanges()
         {
-            float yVelocity = 0f;
-            if (!isCrouching && !isSliding)
+            if(Grounded)
             {
+                float yVelocity = 0f;
 
-                float oldPos;
-                if (!weaponSwitching.gunChanging)
+                if (!isCrouching && !isSliding)
                 {
 
-                    if (!isSliding)
+                    float oldPos;
+                    if (!weaponSwitching.gunChanging)
                     {
-                        oldPos = Mathf.SmoothDamp(1.375f, 1f, ref yVelocity, Time.deltaTime * 30f);
-                    }
-                    else
-                    {
-                        oldPos = Mathf.SmoothDamp(1.375f, 0.8f, ref yVelocity, Time.deltaTime * 30f);
-                    }
+                        if (!isSliding)
+                        {
+                            oldPos = Mathf.SmoothDamp(1.375f, 1f, ref yVelocity, Time.deltaTime * 30f);
+                        }
+                        else
+                        {
+                            oldPos = Mathf.SmoothDamp(1.375f, 0.8f, ref yVelocity, Time.deltaTime * 30f);
+                        }
 
-                    CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
-                    _controller.height = 1.85f;
-                    _controller.center = new Vector3(0, 0.92f, 0);
+                        CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
+                        _controller.height = 1.85f;
+                        _controller.center = new Vector3(0, 0.92f, 0);
+                    }
                 }
-            }
-            else
-            {
-
-                if (!weaponSwitching.gunChanging)
+                else
                 {
 
-                    float newPos;
-                    if (!isSliding)
+                    if (!weaponSwitching.gunChanging)
                     {
-                        newPos = Mathf.SmoothDamp(1f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
+                        float newPos;
+                        if (!isSliding)
+                        {
+                            newPos = Mathf.SmoothDamp(1f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
+                        }
+                        else
+                        {
+                            newPos = Mathf.SmoothDamp(0.8f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
+                        }
+                        //float newPos = Mathf.SmoothDamp(1f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
+                        CinemachineCameraTarget.transform.localPosition = new Vector3(0, newPos, 0);
+                        _controller.height = crouchHeight;
+                        _controller.center = crouchingCenter;
                     }
-                    else
-                    {
-                        newPos = Mathf.SmoothDamp(0.8f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
-                    }
-                    //float newPos = Mathf.SmoothDamp(1f, 1.375f, ref yVelocity, Time.deltaTime * 30f);
-                    CinemachineCameraTarget.transform.localPosition = new Vector3(0, newPos, 0);
-                    _controller.height = crouchHeight;
-                    _controller.center = crouchingCenter;
                 }
-
             }
+           
             _controller.height = Mathf.Lerp(_controller.height, _controller.height, Time.deltaTime * 10f);
         }
         public void Crouch()
@@ -773,13 +778,17 @@ namespace StarterAssets
         }
         IEnumerator slide()
         {
-            //firedBullet = false;
-            timerIsRunning = true;
-            isSliding = true;
-            
+            if(Grounded)
+            {
+                //firedBullet = false;
+                timerIsRunning = true;
+                isSliding = true;
 
-            _animator.SetBool("Slide", isSliding);
-            slideTimeRemaining = 0.5f;
+
+                _animator.SetBool("Slide", isSliding);
+                slideTimeRemaining = 0.5f;
+            }
+            
             // _controller.height = reducedHeight;
             yield return new WaitForSeconds(0.5f);
             // _controller.height = originalHeight;

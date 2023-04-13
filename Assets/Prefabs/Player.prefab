@@ -10348,12 +10348,10 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 6
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 394288251
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 9739587014981370359
-  _sceneNetworkObjects:
-  - {fileID: 2107006599189651683}
-  - {fileID: 2434153823208391393}
+  _sceneNetworkObjects: []
 --- !u!114 &8404843150804243538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10720,7 +10718,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1.8274659, y: 1.8273194}
+  m_AnchoredPosition: {x: 1.8273927, y: 1.8273194}
   m_SizeDelta: {x: 304.56, y: 304.56}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &5652508383201248744
@@ -13280,7 +13278,7 @@ MonoBehaviour:
   GroundedRadius: 0.28
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 4608
+    m_Bits: 135680
   CinemachineCameraTarget: {fileID: 1799965718957584979}
   TopClamp: 60
   BottomClamp: -60
@@ -13759,12 +13757,10 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 5
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 394288251
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
-  _sceneNetworkObjects:
-  - {fileID: 2107006599189651683}
-  - {fileID: 2434153823208391393}
+  _sceneNetworkObjects: []
 --- !u!114 &372409507547526593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13947,6 +13943,8 @@ MonoBehaviour:
   <IsReloading>k__BackingField: 0
   IsShooting: 0
   resetShooting: 0
+  IsChangingGun: 0
+  anim: {fileID: 4107034083819764499}
 --- !u!114 &2120068751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14647,7 +14645,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 156.79022, y: 130.30203}
+  m_AnchoredPosition: {x: 156.79016, y: 130.30203}
   m_SizeDelta: {x: 307.6056, y: 307.6056}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &6446332075734980290
