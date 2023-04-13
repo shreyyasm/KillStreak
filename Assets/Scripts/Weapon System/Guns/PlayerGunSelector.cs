@@ -124,13 +124,17 @@ public class PlayerGunSelector : NetworkBehaviour
         bulletTrail = ActiveGun.ReturnBullet();
         if (playerAction.IsShooting && !playerAction.IsReloading)
         {
-            if (ActiveGun.ShootConfig.IsHitscan)
-            {                         
-                if (ActiveGun.Automatic)
-                    FireConditionAutomatic();
-                else
-                    FireConditionManual();
+            if(!playerAction.IsChangingGun)
+            {
+                if (ActiveGun.ShootConfig.IsHitscan)
+                {
+                    if (ActiveGun.Automatic)
+                        FireConditionAutomatic();
+                    else
+                        FireConditionManual();
+                }
             }
+            
 
         }
         CheckBlocked();

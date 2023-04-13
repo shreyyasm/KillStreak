@@ -274,8 +274,8 @@ namespace StarterAssets
                 }
             }
 
-            playerGunSelector.SetLookInput(look.x, look.y, x, z);
-            //playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
+            //playerGunSelector.SetLookInput(look.x, look.y, x, z);
+            playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
             SetRigWeight();
             JumpAndGravity();
@@ -293,8 +293,8 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            CameraRotationOld();
-            //CameraRotation();
+            //CameraRotationOld();
+            CameraRotation();
             
         }
         public void SetRigWeight()
@@ -773,7 +773,7 @@ namespace StarterAssets
         }
         IEnumerator slide()
         {
-            firedBullet = false;
+            //firedBullet = false;
             timerIsRunning = true;
             isSliding = true;
             
@@ -918,7 +918,7 @@ namespace StarterAssets
         public void ShotFired(bool state)
         {
             fireBulletTime = 1.3f;
-            if(!isSliding)
+            //if(!isSliding)
                 firedBullet = state;
             if (weaponSwitching.selectedWeapon == 0)
             {               

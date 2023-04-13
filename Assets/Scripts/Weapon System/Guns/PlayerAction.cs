@@ -37,6 +37,7 @@ public class PlayerAction : NetworkBehaviour
 
     public bool IsShooting;
     public bool resetShooting = false;
+    public bool IsChangingGun;
 
     private void Update()
     {
@@ -48,11 +49,13 @@ public class PlayerAction : NetworkBehaviour
         {
             if (!IsReloading)
             {
-                GunSelector.ActiveGun.Tick(IsShooting);
+                if(!IsChangingGun)
+                    GunSelector.ActiveGun.Tick(IsShooting);
                 //GunSelector.FireCondition(IsShooting);
             }
                 
         }
+        IsChangingGun = thirdPersonController.changingGun;
         //ManualReloadMouse();
         //GunSelector.ActiveGun.Tick(
         //    !IsReloading
@@ -118,7 +121,7 @@ public class PlayerAction : NetworkBehaviour
     public void Shoot(float input)
     {
         
-        if (!thirdPersonController.changingGun)
+        if (!IsChangingGun)
         {
             if(GunSelector.ActiveGun.Automatic)
             {

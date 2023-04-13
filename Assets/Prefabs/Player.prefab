@@ -10348,10 +10348,12 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 6
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 394288251
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 9739587014981370359
-  _sceneNetworkObjects: []
+  _sceneNetworkObjects:
+  - {fileID: 2107006599189651683}
+  - {fileID: 2434153823208391393}
 --- !u!114 &8404843150804243538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10718,7 +10720,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1.8273927, y: 1.8273194}
+  m_AnchoredPosition: {x: 1.8274659, y: 1.8273194}
   m_SizeDelta: {x: 304.56, y: 304.56}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &5652508383201248744
@@ -13757,10 +13759,12 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 5
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 394288251
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
-  _sceneNetworkObjects: []
+  _sceneNetworkObjects:
+  - {fileID: 2107006599189651683}
+  - {fileID: 2434153823208391393}
 --- !u!114 &372409507547526593
 MonoBehaviour:
   m_ObjectHideFlags: 0
