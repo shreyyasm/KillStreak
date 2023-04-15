@@ -97,7 +97,7 @@ namespace StarterAssets
         private float _animationBlend;
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;
-        private float _verticalVelocity;
+        public float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
 
         // timeout deltatime
@@ -273,7 +273,7 @@ namespace StarterAssets
                     firedBullet = false;
                 }
             }
-
+            PlayerGravity();
             //playerGunSelector.SetLookInput(look.x, look.y, x, z);
             playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
@@ -282,8 +282,8 @@ namespace StarterAssets
 
             if(_animationBlend > 1)
                 Slide();
-            //if (Input.GetMouseButtonDown(1))
-            //    Crouch();
+            if (Input.GetMouseButtonDown(1))
+                Crouch();
 
             ControllerChanges();
         }
@@ -729,18 +729,53 @@ namespace StarterAssets
                 CrouchInput();
             
         }
+        public void PlayerGravity()
+        {
+            
+        }
         public void Slide()
         {
             
-            isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+            
             if (!timerIsRunning)
             {
             
-                if (isGrounded)
+                if (Grounded)
                 {
                     timerIsRunning = false;
                 }
             }
+           
+            if (_verticalVelocity < 0.0f)
+            {               
+                _verticalVelocity = -2f;
+            }
+            //if (_jumpTimeoutDelta <= 0.0f)
+            //{
+
+            //    // the square root of H * -2 * G = how much velocity needed to reach desired height
+            //    _verticalVelocity = Mathf.Sqrt(2f * Gravity);
+         
+            //}
+            if (!Grounded)
+            {
+                // reset the jump timeout timer
+                _jumpTimeoutDelta = JumpTimeout;
+
+                // fall timeout
+                if (_fallTimeoutDelta >= 0.0f)
+                {
+                    _fallTimeoutDelta -= Time.deltaTime;
+                }
+                
+            }
+
+            // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
+            if (_verticalVelocity < _terminalVelocity)
+            {
+                _verticalVelocity += Gravity * Time.deltaTime;
+            }
+
             // This is a slidekick timer
             if (timerIsRunning)
             {
@@ -752,7 +787,9 @@ namespace StarterAssets
                     
                     value -= 1 * Time.deltaTime;
                     slideSpeed -= 3 * Time.deltaTime;
-                    _controller.Move(transform.forward * slideSpeed * Time.deltaTime);
+                    
+                    _controller.Move(transform.forward * slideSpeed * Time.deltaTime +
+                                 new Vector3(0.0f, _verticalVelocity * 2, 0.0f) * Time.deltaTime);
                  
                 }
 
@@ -771,9 +808,11 @@ namespace StarterAssets
                     slideSpeed = 10;
                 }
             }
+            
         }
         public void StartSlide()
         {
+           
             StartCoroutine(slide());
         }
         IEnumerator slide()
