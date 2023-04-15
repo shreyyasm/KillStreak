@@ -38,8 +38,8 @@ public class PlayerGunSelector : NetworkBehaviour
     [SerializeField]
     private SurfaceManager surfaceManager;
     int gunSelected;
-    GunScriptableObject gun1;
-    GunScriptableObject gun2;
+    public GunScriptableObject gun1;
+    public GunScriptableObject gun2;
    
     public GameObject bulletTrail;
 
