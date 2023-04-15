@@ -54,8 +54,8 @@ public class PlayerGunSelector : NetworkBehaviour
     public GameObject spawnedObject;
     private NetworkConnection ownerConnection;
     public bool blocked;
-    public float mouseX,mouseY;
-    public float moveX, moveZ;
+    private float mouseX,mouseY;
+    private  float moveX, moveZ;
     [SerializeField] GameObject BlockUI;
     [SerializeField] GameObject CrosshairUI;
     private void Awake()

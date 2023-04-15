@@ -282,8 +282,8 @@ namespace StarterAssets
 
             if(_animationBlend > 1)
                 Slide();
-            if (Input.GetMouseButtonDown(1))
-                Crouch();
+            //if (Input.GetMouseButtonDown(1))
+            //    Crouch();
 
             ControllerChanges();
         }
@@ -318,11 +318,7 @@ namespace StarterAssets
 
         private void GroundedCheck()
         {
-            // set sphere position, with offset
-            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
-                transform.position.z);
-            Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
-                QueryTriggerInteraction.Ignore);
+            
 
             // update animator if using character
             if (_hasAnimator)
@@ -745,37 +741,7 @@ namespace StarterAssets
                     timerIsRunning = false;
                 }
             }
-           
-            if (_verticalVelocity < 0.0f)
-            {               
-                _verticalVelocity = -2f;
-            }
-            //if (_jumpTimeoutDelta <= 0.0f)
-            //{
-
-            //    // the square root of H * -2 * G = how much velocity needed to reach desired height
-            //    _verticalVelocity = Mathf.Sqrt(2f * Gravity);
-         
-            //}
-            if (!Grounded)
-            {
-                // reset the jump timeout timer
-                _jumpTimeoutDelta = JumpTimeout;
-
-                // fall timeout
-                if (_fallTimeoutDelta >= 0.0f)
-                {
-                    _fallTimeoutDelta -= Time.deltaTime;
-                }
-                
-            }
-
-            // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
-            if (_verticalVelocity < _terminalVelocity)
-            {
-                _verticalVelocity += Gravity * Time.deltaTime;
-            }
-
+     
             // This is a slidekick timer
             if (timerIsRunning)
             {
@@ -789,7 +755,7 @@ namespace StarterAssets
                     slideSpeed -= 3 * Time.deltaTime;
                     
                     _controller.Move(transform.forward * slideSpeed * Time.deltaTime +
-                                 new Vector3(0.0f, _verticalVelocity * 2, 0.0f) * Time.deltaTime);
+                                 new Vector3(0.0f, _verticalVelocity * 1.5f, 0.0f) * Time.deltaTime);
                  
                 }
 
@@ -857,7 +823,11 @@ namespace StarterAssets
                 // Jump
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f )
                 {
-                   
+                    // set sphere position, with offset
+                    Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
+                        transform.position.z);
+                    Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
+                        QueryTriggerInteraction.Ignore);
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
@@ -899,7 +869,11 @@ namespace StarterAssets
                         // _animator.SetBool(_animIDFreeFall, true);
                     }
                 }
-
+                // set sphere position, with offset
+                Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
+                    transform.position.z);
+                Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
+                    QueryTriggerInteraction.Ignore);
                 // if we are not grounded, do not jump
                 _input.jump = false;
             }
