@@ -1,5 +1,22 @@
 {
   "dependencies": {
+    "com.etdofresh.fishyeos": {
+      "version": "https://github.com/ETdoFresh/FishyEOS.git?path=/FishNet/Plugins/FishyEOS",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "25d980b294a856b3bdcd3a1bfa42465a486839d1"
+    },
+    "com.playeveryware.eos": {
+      "version": "https://github.com/PlayEveryWare/eos_plugin_for_unity_upm.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.editorcoroutines": "1.0.0"
+      },
+      "hash": "a4404cc7d9128fd11f1abfb167623765f91f7cc1"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
