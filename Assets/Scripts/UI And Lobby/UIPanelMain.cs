@@ -34,9 +34,11 @@ namespace EOSLobbyTest
 
         private void Start()
         {
+            //Debug.Log(Settings.Instance.CurrentPlayerName);
             inputFieldPlayerName.onValueChanged.AddListener(delegate
             {
                 Settings.Instance.CurrentPlayerName = inputFieldPlayerName.text;
+                Debug.Log(Settings.Instance.CurrentPlayerName);
             });
 
             VivoxManager.Instance.OnInitialized += Vivox_OnAuthenticated;
