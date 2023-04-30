@@ -32,9 +32,11 @@ namespace EOSLobbyTest
         [SerializeField]
         private Button buttonSettings;
 
+
         private void Start()
         {
-            //Debug.Log(Settings.Instance.CurrentPlayerName);
+            Settings.Instance.Load();
+            Debug.Log(Settings.Instance.CurrentPlayerName);
             inputFieldPlayerName.onValueChanged.AddListener(delegate
             {
                 Settings.Instance.CurrentPlayerName = inputFieldPlayerName.text;

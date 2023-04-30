@@ -37,7 +37,10 @@ namespace EOSLobbyTest
             get => textLobbyName.text;
             set => textLobbyName.text = value;
         }
-
+        private void Update()
+        {
+            textLobbyName.text = UIPanelHostDetails.Instance.inputFieldLobbyName.text;
+        }
         // EOS lobby info about room
         public string LobbyId { get; set; }
 

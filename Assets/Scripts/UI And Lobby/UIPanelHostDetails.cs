@@ -9,7 +9,7 @@ namespace EOSLobbyTest
     public class UIPanelHostDetails : UIPanel<UIPanelHostDetails>, IUIPanel
     {
         [SerializeField]
-        private InputField inputFieldLobbyName;
+        public InputField inputFieldLobbyName;
 
         [SerializeField]
         private Button buttonSave;
