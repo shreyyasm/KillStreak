@@ -21,6 +21,11 @@ TagManager:
   - Metal
   - FX
   - World
+  - Head
+  - Body
+  - Hand
+  - Leg
+  - Joint
   layers:
   - Default
   - TransparentFX

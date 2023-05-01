@@ -1150,7 +1150,7 @@ GameObject:
   - component: {fileID: 4325103133214441937}
   m_Layer: 16
   m_Name: LowerLeg_R
-  m_TagString: Player
+  m_TagString: Leg
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2641,7 +2641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4eccd0b9cf3eed409616a314b8d58df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 10
+  _componentIndexCache: 9
   _addedNetworkObject: {fileID: 2434153823208391393}
   _networkObjectCache: {fileID: 2434153823208391393}
   mouseSensitivity: 100
@@ -3216,7 +3216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 13
+  _componentIndexCache: 12
   _addedNetworkObject: {fileID: 2434153823208391393}
   _networkObjectCache: {fileID: 2434153823208391393}
   GunSelector: {fileID: 6734246657098736321}
@@ -3672,7 +3672,7 @@ GameObject:
   - component: {fileID: 3394737969946511651}
   m_Layer: 16
   m_Name: UpperLeg_L
-  m_TagString: Player
+  m_TagString: Leg
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3877,9 +3877,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 206442385580196426}
+  - component: {fileID: 4196513273856991592}
   m_Layer: 16
   m_Name: Hand_L
-  m_TagString: Untagged
+  m_TagString: Joint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3902,6 +3903,19 @@ Transform:
   m_Father: {fileID: 86312315366520618}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4196513273856991592
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527307252516413617}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.04, z: 0.1}
+  m_Center: {x: -0.06, y: -0.01, z: 0}
 --- !u!1 &1541257813311133047
 GameObject:
   m_ObjectHideFlags: 0
@@ -5261,7 +5275,7 @@ GameObject:
   - component: {fileID: 9050277612301639779}
   m_Layer: 16
   m_Name: Shoulder_L
-  m_TagString: Player
+  m_TagString: Hand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5841,7 +5855,7 @@ GameObject:
   - component: {fileID: 3091511342913235104}
   m_Layer: 16
   m_Name: Head
-  m_TagString: Player
+  m_TagString: Head
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7102,7 +7116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 9
+  _componentIndexCache: 8
   _addedNetworkObject: {fileID: 2434153823208391393}
   _networkObjectCache: {fileID: 2434153823208391393}
   _synchronizeParent: 0
@@ -8317,7 +8331,7 @@ GameObject:
   - component: {fileID: 5427148157331440873}
   m_Layer: 16
   m_Name: Ball_R
-  m_TagString: Player
+  m_TagString: Joint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11354,7 +11368,7 @@ GameObject:
   - component: {fileID: 4312826720745290659}
   m_Layer: 16
   m_Name: LowerLeg_L
-  m_TagString: Player
+  m_TagString: Leg
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11518,7 +11532,7 @@ GameObject:
   - component: {fileID: 5881554449571416007}
   m_Layer: 16
   m_Name: Ball_L
-  m_TagString: Player
+  m_TagString: Joint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12277,7 +12291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f544f2f09089d5e46a3d4724a3d2589e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 14
+  _componentIndexCache: 13
   _addedNetworkObject: {fileID: 2434153823208391393}
   _networkObjectCache: {fileID: 2434153823208391393}
   <selectedWeapon>k__BackingField: 0
@@ -13323,6 +13337,8 @@ GameObject:
   - component: {fileID: 3110771867131657967}
   - component: {fileID: 7992592037397347946}
   - component: {fileID: 2120068751}
+  - component: {fileID: 1580205771603226434}
+  - component: {fileID: 416793857974808245}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -13881,7 +13897,6 @@ MonoBehaviour:
   - {fileID: 6734246657098736321}
   - {fileID: 3110771867131657967}
   - {fileID: 7992592037397347946}
-  - {fileID: 0}
   - {fileID: 3965403554028082614}
   - {fileID: 7032895917253097683}
   - {fileID: 854184475197580430}
@@ -14500,6 +14515,33 @@ MonoBehaviour:
     type: 2}
   handPoseList: []
   blendShapeList: []
+--- !u!114 &1580205771603226434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6614711819524339776}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcdcc649a9a355e46a377e7cfb8a3578, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: {fileID: 416793857974808245}
+--- !u!114 &416793857974808245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6614711819524339776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fab7ea1cab679cc4ca035231193345cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _MaxHealth: 100
+  _Health: 0
 --- !u!1 &6652195985162122418
 GameObject:
   m_ObjectHideFlags: 0
@@ -15414,7 +15456,7 @@ GameObject:
   - component: {fileID: 2626147378674012007}
   m_Layer: 16
   m_Name: Elbow_L
-  m_TagString: Player
+  m_TagString: Hand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15737,7 +15779,7 @@ GameObject:
   - component: {fileID: 4089246657258400316}
   m_Layer: 16
   m_Name: UpperLeg_R
-  m_TagString: Player
+  m_TagString: Leg
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15930,7 +15972,7 @@ GameObject:
   - component: {fileID: 4885357754548134134}
   m_Layer: 16
   m_Name: Spine_01
-  m_TagString: Untagged
+  m_TagString: Body
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15979,7 +16021,7 @@ GameObject:
   - component: {fileID: 8728676363768080805}
   m_Layer: 16
   m_Name: Shoulder_R
-  m_TagString: Player
+  m_TagString: Hand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16416,7 +16458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 11
+  _componentIndexCache: 10
   _addedNetworkObject: {fileID: 2434153823208391393}
   _networkObjectCache: {fileID: 2434153823208391393}
 --- !u!114 &3667473894355865836
@@ -16431,7 +16473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 12
+  _componentIndexCache: 11
   _addedNetworkObject: {fileID: 2434153823208391393}
   _networkObjectCache: {fileID: 2434153823208391393}
   GunSelector: {fileID: 6734246657098736321}
@@ -18546,9 +18588,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9220268794178349695}
+  - component: {fileID: 8049374822854051697}
   m_Layer: 16
   m_Name: Hand_R
-  m_TagString: Untagged
+  m_TagString: Joint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18580,6 +18623,19 @@ Transform:
   m_Father: {fileID: 4453852525724706523}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8049374822854051697
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8456435980466733366}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.04, z: 0.1}
+  m_Center: {x: 0.06, y: -0.01, z: 0}
 --- !u!1 &8462126628566404224
 GameObject:
   m_ObjectHideFlags: 0
@@ -19900,7 +19956,7 @@ GameObject:
   - component: {fileID: 6987551381402549188}
   m_Layer: 16
   m_Name: Elbow_R
-  m_TagString: Player
+  m_TagString: Hand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

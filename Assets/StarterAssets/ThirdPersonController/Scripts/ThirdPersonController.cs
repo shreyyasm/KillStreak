@@ -184,6 +184,11 @@ namespace StarterAssets
 
 
             }
+            else
+            {
+                //gameObject.AddComponent<Enemy>();
+               // gameObject.AddComponent<EnemyHealth>(); 
+            }
             
             
         }
@@ -274,16 +279,16 @@ namespace StarterAssets
                 }
             }
             PlayerGravity();
-            //playerGunSelector.SetLookInput(look.x, look.y, x, z);
-            playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
+            playerGunSelector.SetLookInput(look.x, look.y, x, z);
+            //playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
             SetRigWeight();
             JumpAndGravity();
 
             if(_animationBlend > 1)
                 Slide();
-            //if (Input.GetMouseButtonDown(1))
-            //    Crouch();
+            if (Input.GetMouseButtonDown(1))
+                Crouch();
 
             ControllerChanges();
         }
@@ -293,8 +298,8 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            //CameraRotationOld();
-            CameraRotation();
+            CameraRotationOld();
+            //CameraRotation();
             
         }
         public void SetRigWeight()

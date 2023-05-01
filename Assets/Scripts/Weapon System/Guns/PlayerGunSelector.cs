@@ -680,9 +680,14 @@ public class PlayerGunSelector : NetworkBehaviour
                 0
             );
 
-        if (HitCollider.TryGetComponent(out IDamageable damageable))
-        {
-            damageable.TakeDamage(ActiveGun.DamageConfig.GetDamage(DistanceTraveled));
+        //if (HitCollider.TryGetComponent(out IDamageable damageable))
+        //{
+        //    damageable.TakeDamage(ActiveGun.DamageConfig.GetDamage(DistanceTraveled));
+        //}
+        IDamageable Damage = HitCollider.GetComponentInParent<IDamageable>();      
+        if (Damage != null)
+        {         
+            Damage.TakeDamage(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));   
         }
     }
     

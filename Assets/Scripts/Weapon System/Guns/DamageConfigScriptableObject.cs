@@ -7,14 +7,39 @@ using static UnityEngine.ParticleSystem;
 public class DamageConfigScriptableObject : ScriptableObject
 {
     public MinMaxCurve DamageCurve;
-
+    public int HeadDamage;
+    public int BodyDamage;
+    public int HandDamage;
+    public int LegDamage;
+    public int otherDamage;
     private void Reset()
     {
         DamageCurve.mode = ParticleSystemCurveMode.Curve;
     }
 
-    public int GetDamage(float Distance = 0)
+    public int GetDamage(GameObject playerPart)
     {
-        return Mathf.CeilToInt(DamageCurve.Evaluate(Distance, Random.value)); 
+        if(playerPart.CompareTag("Head"))
+        {
+            return HeadDamage;
+        }
+        else if(playerPart.CompareTag("Body"))
+        {
+            return BodyDamage;
+        }
+        else if (playerPart.CompareTag("Hand"))
+        {
+            return HandDamage;
+        }
+        else if (playerPart.CompareTag("Leg"))
+        {
+            return LegDamage;
+        }
+        else if (playerPart.CompareTag("Joint"))
+        {
+            return otherDamage;
+        }
+        return 0;
+       // return Mathf.CeilToInt(DamageCurve.Evaluate(Distance, Random.value)); 
     }
 }

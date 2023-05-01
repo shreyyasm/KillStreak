@@ -454,7 +454,7 @@ public class GunScriptableObject : ScriptableObject
 
         if (HitCollider.TryGetComponent(out IDamageable damageable))
         {
-            damageable.TakeDamage(DamageConfig.GetDamage(DistanceTraveled));
+           // damageable.TakeDamage(DamageConfig.GetDamage(DistanceTraveled));
         }
     }
 
