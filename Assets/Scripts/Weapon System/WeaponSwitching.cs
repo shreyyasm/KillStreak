@@ -12,7 +12,8 @@ public class WeaponSwitching : NetworkBehaviour
     //Index of selected weapon
     [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
     public int selectedWeapon { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
-
+    [SerializeField]
+    private PlayerHealth playerHealth;
     [SerializeField] ShooterController shooterController;
     [SerializeField] WeaponInventory weaponInventory;
     bool gunChanged = false;
@@ -56,6 +57,9 @@ public class WeaponSwitching : NetworkBehaviour
     void Update()
     {
         if (!base.IsOwner)
+            return;
+
+        if (playerHealth.PlayerDeathState())
             return;
         if (checkAnimationState)
         {

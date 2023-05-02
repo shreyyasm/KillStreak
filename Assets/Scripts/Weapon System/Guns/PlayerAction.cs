@@ -29,6 +29,8 @@ public class PlayerAction : NetworkBehaviour
     [SerializeField]
     private ShooterController shooterController;
     [SerializeField]
+    private PlayerHealth playerHealth;
+    [SerializeField]
     private WeaponSwitching weaponSwitch;
   
 
@@ -45,6 +47,10 @@ public class PlayerAction : NetworkBehaviour
             return;
         if(Instance == null)
             Instance = this;
+
+        if (playerHealth.PlayerDeathState())
+            return;
+        
         if (GunSelector.ActiveGun != null)
         {
             if (!IsReloading)
@@ -186,7 +192,8 @@ public class PlayerAction : NetworkBehaviour
     //Manual Reload - Server and observer Logic
     public void ManualReload()
     {
-
+        if (playerHealth.PlayerDeathState())
+            return;
         if (base.IsClient)
             ManualReloadServer();
 
@@ -196,9 +203,9 @@ public class PlayerAction : NetworkBehaviour
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void ManualReloadServer()
     {
+       
         if (ShouldManualReload())
         {
-
             if (weaponSwitch.gunChanging)
                 return;
             PlayerAnimator.SetLayerWeight(6, 1);

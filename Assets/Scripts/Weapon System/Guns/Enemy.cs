@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public EnemyHealth Health;
+    public PlayerHealth Health;
     //enemyMovement
     //somekind of damageHurt
 

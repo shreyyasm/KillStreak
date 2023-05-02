@@ -37,6 +37,8 @@ public class PlayerGunSelector : NetworkBehaviour
     private WeaponSwitching weaponSwitching;
     [SerializeField]
     private SurfaceManager surfaceManager;
+    [SerializeField]
+    private PlayerHealth playerHealth;
     int gunSelected;
     public GunScriptableObject gun1;
     public GunScriptableObject gun2;
@@ -105,6 +107,8 @@ public class PlayerGunSelector : NetworkBehaviour
     private void Update()
     {
         if (!base.IsOwner)
+            return;
+        if (playerHealth.PlayerDeathState())
             return;
         Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
         ray = Camera.main.ScreenPointToRay(screenCenterPoint);
@@ -687,7 +691,7 @@ public class PlayerGunSelector : NetworkBehaviour
         IDamageable Damage = HitCollider.GetComponentInParent<IDamageable>();      
         if (Damage != null)
         {         
-            Damage.TakeDamage(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));   
+            Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));   
         }
     }
     

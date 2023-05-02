@@ -86,6 +86,7 @@ namespace StarterAssets
         public GameObject fPSController;
         //public FixedTouchField fixedTouchField;
         public ScreenTouch screenTouch;
+        [SerializeField] private Rig MainRig;
         [SerializeField] private Rig pistolRig;
         [SerializeField] private Rig rifleRig;
         // cinemachine
@@ -124,6 +125,7 @@ namespace StarterAssets
         public PlayerInput playerInput;
         public InputActionAsset myActionAsset;
         public PlayerGunSelector playerGunSelector;
+        public PlayerHealth playerHealth;
         [SerializeField] GameObject cameraRoot;
         public UltimateJoystick ultimateJoystick;
         bool isAiming = false;
@@ -136,8 +138,9 @@ namespace StarterAssets
         public bool running;
         public bool isPressedJump = false;
         public bool isJump = false;
+        
         public int gunType;
-
+        
         [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
         public bool changingGun { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
@@ -279,6 +282,7 @@ namespace StarterAssets
                 }
             }
             PlayerGravity();
+            SetPlayerDeathState();
             playerGunSelector.SetLookInput(look.x, look.y, x, z);
             //playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
@@ -304,7 +308,7 @@ namespace StarterAssets
         }
         public void SetRigWeight()
         {
-            if (base.IsServer)
+            if(base.IsServer)
                 SetRigObserver();
 
             if(base.IsOwner)
@@ -340,7 +344,8 @@ namespace StarterAssets
 
         public void CameraRotation()
         {
-           
+            if (playerHealth.PlayerDeathState())
+                return;
             mouseX = screenTouch.lookInput.x;
             mouseY = screenTouch.lookInput.y;
             if (screenTouch.rightFingerID == -1)
@@ -420,6 +425,8 @@ namespace StarterAssets
 
         private void CameraRotationOld()
         {
+            if (playerHealth.PlayerDeathState())
+                return;
             // if there is an input and camera position is not fixed
             if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
             {
@@ -484,6 +491,8 @@ namespace StarterAssets
       
         public void Move()
         {
+            if (playerHealth.PlayerDeathState())
+                return;
             //_controller.detectCollisions = false;
             x = ultimateJoystick.GetHorizontalAxis();
             z = ultimateJoystick.GetVerticalAxis();
@@ -674,7 +683,9 @@ namespace StarterAssets
         
         public void ControllerChanges()
         {
-            if(Grounded)
+            if (playerHealth.PlayerDeathState())
+                return;
+            if (Grounded)
             {
                 float yVelocity = 0f;
 
@@ -724,6 +735,8 @@ namespace StarterAssets
         }
         public void Crouch()
         {
+            if (playerHealth.PlayerDeathState())
+                return;
             if (z > 0.6f && !isAiming && !isCrouching)
                 StartSlide();
             else
@@ -942,6 +955,14 @@ namespace StarterAssets
         {
             inFPSMode = state;
         }
+        public void SetPlayerDeathState()
+        {
+            if(playerHealth.PlayerDeathState())
+            {
+                pistolRig.weight = 0f;
+                rifleRig.weight = 0f;
+            }
+        }
         public void ShotFired(bool state)
         {
             fireBulletTime = 1.3f;
@@ -992,7 +1013,13 @@ namespace StarterAssets
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void SetRigServer()
         {
-
+            if (playerHealth.PlayerDeathState())
+            {
+                MainRig.weight = 0f;
+                pistolRig.weight = 0f;
+                rifleRig.weight = 0f;
+                return;
+            }
             if (weaponSwitching.selectedWeapon == 0)
             {
                 if (!running)
@@ -1056,7 +1083,13 @@ namespace StarterAssets
         [ObserversRpc(BufferLast = true)]
         public void SetRigObserver()
         {
-
+            if (playerHealth.PlayerDeathState())
+            {
+                pistolRig.weight = 0f;
+                rifleRig.weight = 0f;
+                MainRig.weight = 0f;
+                return;
+            }
             if (weaponSwitching.selectedWeapon == 0)
             {
                 if (!running)
