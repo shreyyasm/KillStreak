@@ -26,6 +26,7 @@ public class GunScriptableObject : ScriptableObject
     private NetworkBehaviour ActiveMonoBehaviour;
     public AudioSource ShootingAudioSource;
     public GameObject Model;
+    public List<GameObject> GunModels;
     public float LastShootTime;
     public float InitialClickTime;
     public float StopShootingTime;
@@ -73,6 +74,7 @@ public class GunScriptableObject : ScriptableObject
         Model.transform.localPosition = SpawnPoint;
         Model.transform.localRotation = Quaternion.Euler(SpawnRotation);
         Model.SetActive(false);
+        GunModels.Add(Model); 
         //ActiveMonoBehaviour.ServerManager.Spawn(Model, ActiveMonoBehaviour.Owner);
         ////Instansiate Bullet
         //GameObject projectile = Instantiate(bulletPrefab, spawnBulletPosition.position, rotation);
@@ -103,11 +105,11 @@ public class GunScriptableObject : ScriptableObject
 
         //}
         
-        Model.transform.localRotation = Quaternion.Lerp(
-            Model.transform.localRotation,
-            Quaternion.Euler(SpawnRotation),
-            Time.deltaTime * ShootConfig.RecoilRecoverySpeed
-        );
+        //Model.transform.localRotation = Quaternion.Lerp(
+        //    Model.transform.localRotation,
+        //    Quaternion.Euler(SpawnRotation),
+        //    Time.deltaTime * ShootConfig.RecoilRecoverySpeed
+        //);
 
         if (WantsToShoot)
         {

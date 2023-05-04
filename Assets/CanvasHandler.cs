@@ -6,6 +6,7 @@ using UnityEngine;
 public class CanvasHandler : NetworkBehaviour
 {
     public static CanvasHandler instance;
+    public GameObject PlayerCheck;
     public override void OnStartNetwork()
     {
         base.OnStartNetwork();
@@ -15,19 +16,31 @@ public class CanvasHandler : NetworkBehaviour
         * to support a clientHost condition. */
         if (!base.Owner.IsLocalClient)
         {
+           // Destroy(gameObject);
+        }
+
+    }
+
+    private void Start()
+    {
+        //if (instance != null)
+        //    Destroy(gameObject);
+        if(!PlayerCheck.GetComponent<CameraFollow>())
+        {
             Destroy(gameObject);
         }
 
 
-
     }
-    private void Awake()
+    private void Update()
     {
-        //if (instance != null)
+        //if (!PlayerCheck.GetComponent<CameraFollow>())
         //{
-
-        //}
         //    Destroy(gameObject);
-        //instance
+        //}
+        //if(!base.Owner.IsLocalClient)
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 }

@@ -3760,7 +3760,7 @@ Canvas:
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
-  m_OverrideSorting: 0
+  m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
@@ -13373,6 +13373,7 @@ MonoBehaviour:
   crouchHeight: 1.2
   Root:
   - {fileID: 4613750347113586759}
+  UICanvas: {fileID: 7269272656302591452}
   speed: 12
   gravity: -9.81
   value: 1.8
@@ -13821,7 +13822,8 @@ MonoBehaviour:
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
-  _sceneNetworkObjects: []
+  _sceneNetworkObjects:
+  - {fileID: 2434153823208391393}
 --- !u!114 &372409507547526593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16410,6 +16412,7 @@ MonoBehaviour:
   _componentIndexCache: 13
   _addedNetworkObject: {fileID: 2434153823208391393}
   _networkObjectCache: {fileID: 2434153823208391393}
+  PlayerCheck: {fileID: 1799965718957584979}
 --- !u!114 &3667473894355865836
 MonoBehaviour:
   m_ObjectHideFlags: 0

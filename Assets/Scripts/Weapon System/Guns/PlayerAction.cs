@@ -48,8 +48,7 @@ public class PlayerAction : NetworkBehaviour
         if(Instance == null)
             Instance = this;
 
-        if (playerHealth.PlayerDeathState())
-            return;
+
         
         if (GunSelector.ActiveGun != null)
         {
@@ -192,8 +191,7 @@ public class PlayerAction : NetworkBehaviour
     //Manual Reload - Server and observer Logic
     public void ManualReload()
     {
-        if (playerHealth.PlayerDeathState())
-            return;
+       
         if (base.IsClient)
             ManualReloadServer();
 

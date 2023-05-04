@@ -136,6 +136,7 @@ namespace StarterAssets
         public bool isCrouching;
         public bool isSliding;
         public bool running;
+        public bool playerDead;
         public bool isPressedJump = false;
         public bool isJump = false;
         
@@ -166,6 +167,7 @@ namespace StarterAssets
         private CinemachineVirtualCamera m_MainCamera;
         private CinemachineVirtualCamera m_AimCamera;
         [SerializeField] Transform[] Root;
+        public GameObject UICanvas;
         public override void OnStartNetwork()
         {
             base.OnStartNetwork();
@@ -189,8 +191,10 @@ namespace StarterAssets
             }
             else
             {
+
+                // UICanvas.SetActive(false);
                 //gameObject.AddComponent<Enemy>();
-               // gameObject.AddComponent<EnemyHealth>(); 
+                // gameObject.AddComponent<EnemyHealth>(); 
             }
             
             
@@ -281,7 +285,8 @@ namespace StarterAssets
                     firedBullet = false;
                 }
             }
-            PlayerGravity();
+            
+           
             SetPlayerDeathState();
             playerGunSelector.SetLookInput(look.x, look.y, x, z);
             //playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
@@ -312,7 +317,7 @@ namespace StarterAssets
                 SetRigObserver();
 
             if(base.IsOwner)
-                SetRigServer();
+                SetRigServer(); 
         }
         
         private void AssignAnimationIDs()
@@ -344,8 +349,8 @@ namespace StarterAssets
 
         public void CameraRotation()
         {
-            if (playerHealth.PlayerDeathState())
-                return;
+            //if (playerHealth.PlayerDeathState())
+            //    return;
             mouseX = screenTouch.lookInput.x;
             mouseY = screenTouch.lookInput.y;
             if (screenTouch.rightFingerID == -1)
@@ -425,8 +430,8 @@ namespace StarterAssets
 
         private void CameraRotationOld()
         {
-            if (playerHealth.PlayerDeathState())
-                return;
+            //if (playerHealth.PlayerDeathState())
+            //    return;
             // if there is an input and camera position is not fixed
             if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
             {
@@ -491,8 +496,8 @@ namespace StarterAssets
       
         public void Move()
         {
-            if (playerHealth.PlayerDeathState())
-                return;
+            //if (playerHealth.PlayerDeathState())
+            //    return;
             //_controller.detectCollisions = false;
             x = ultimateJoystick.GetHorizontalAxis();
             z = ultimateJoystick.GetVerticalAxis();
@@ -683,8 +688,8 @@ namespace StarterAssets
         
         public void ControllerChanges()
         {
-            if (playerHealth.PlayerDeathState())
-                return;
+            //if (playerHealth.PlayerDeathState())
+            //    return;
             if (Grounded)
             {
                 float yVelocity = 0f;
@@ -735,18 +740,15 @@ namespace StarterAssets
         }
         public void Crouch()
         {
-            if (playerHealth.PlayerDeathState())
-                return;
+            //if (playerHealth.PlayerDeathState())
+            //    return;
             if (z > 0.6f && !isAiming && !isCrouching)
                 StartSlide();
             else
                 CrouchInput();
             
         }
-        public void PlayerGravity()
-        {
-            
-        }
+       
         public void Slide()
         {
             

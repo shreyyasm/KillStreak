@@ -60,6 +60,7 @@ public class PlayerGunSelector : NetworkBehaviour
     private  float moveX, moveZ;
     [SerializeField] GameObject BlockUI;
     [SerializeField] GameObject CrosshairUI;
+    Transform[] Model;
     private void Awake()
     {
         instance = this;
@@ -95,11 +96,18 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         gun1.Spawn(GunParent, this);
         gun2.Spawn(GunParent, this);
+
         //StartPool();
         //SurfaceManager.Instance.StartPool();
         //gun1.StartPool();
         //gun2.StartPool();
         //ActiveGun.StartPool();
+        StartCoroutine(GetModelFromParent());
+    }
+    IEnumerator GetModelFromParent()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Model = GunParent.GetComponentsInChildren<Transform>();
     }
     [Range(0.1f, 1f)] public float sphereCastRadius;
     [Range(1f, 100f)] public float range;
@@ -108,8 +116,7 @@ public class PlayerGunSelector : NetworkBehaviour
     {
         if (!base.IsOwner)
             return;
-        if (playerHealth.PlayerDeathState())
-            return;
+       
         Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
         ray = Camera.main.ScreenPointToRay(screenCenterPoint);
        
@@ -126,20 +133,24 @@ public class PlayerGunSelector : NetworkBehaviour
                 ActiveGun = gun2;
         }
         bulletTrail = ActiveGun.ReturnBullet();
-        if (playerAction.IsShooting && !playerAction.IsReloading)
+        if (playerAction.IsShooting )
         {
-            if(!playerAction.IsChangingGun)
+            GunModelRecoil();
+
+            if(!playerAction.IsReloading)
             {
-                if (ActiveGun.ShootConfig.IsHitscan)
+                if (!playerAction.IsChangingGun)
                 {
-                    if (ActiveGun.Automatic)
-                        FireConditionAutomatic();
-                    else
-                        FireConditionManual();
+                    if (ActiveGun.ShootConfig.IsHitscan)
+                    {
+
+                        if (ActiveGun.Automatic)
+                            FireConditionAutomatic();
+                        else
+                            FireConditionManual();
+                    }
                 }
             }
-            
-
         }
         CheckBlocked();
     }
@@ -148,6 +159,19 @@ public class PlayerGunSelector : NetworkBehaviour
     public float distancePlayer;
     public float timeLeft = 0f;
     public float timeLeftBlock = 0f;
+    public void GunModelRecoil()
+    {
+       
+        Model[0].transform.localRotation = Quaternion.Lerp(
+           Model[0].transform.localRotation,
+           Quaternion.Euler(ActiveGun.SpawnRotation),
+           Time.deltaTime * ActiveGun.ShootConfig.RecoilRecoverySpeed);
+
+        Model[1].transform.localRotation = Quaternion.Lerp(
+           Model[1].transform.localRotation,
+           Quaternion.Euler(ActiveGun.SpawnRotation),
+           Time.deltaTime * ActiveGun.ShootConfig.RecoilRecoverySpeed);
+    }
     public void CheckBlocked()
     {
         if (Physics.Raycast(ray, out hitCheck, float.MaxValue, ActiveGun.ShootConfig.HitMask))

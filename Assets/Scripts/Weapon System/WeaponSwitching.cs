@@ -59,8 +59,7 @@ public class WeaponSwitching : NetworkBehaviour
         if (!base.IsOwner)
             return;
 
-        if (playerHealth.PlayerDeathState())
-            return;
+        
         if (checkAnimationState)
         {
             if (anim.GetCurrentAnimatorStateInfo(4).IsName("Rifle To Pistol Locomotions") && anim.GetCurrentAnimatorStateInfo(4).normalizedTime > 1f)

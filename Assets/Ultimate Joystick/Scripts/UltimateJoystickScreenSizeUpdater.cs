@@ -8,7 +8,7 @@ public class UltimateJoystickScreenSizeUpdater : UIBehaviour
 {
 	protected override void OnRectTransformDimensionsChange ()
 	{
-		StartCoroutine( "YieldPositioning" );
+		//StartCoroutine( "YieldPositioning" );
 	}
 
 	IEnumerator YieldPositioning ()

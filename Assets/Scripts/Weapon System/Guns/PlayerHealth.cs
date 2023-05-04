@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerHealth : NetworkBehaviour, IDamageable
 {
     public GameObject PlayerCanvas;
+    
     [SerializeField]
     private int _MaxHealth = 100;
     [SerializeField]
@@ -19,10 +20,20 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     public event IDamageable.TakeDamageEvent OnTakeDamage;
     public event IDamageable.DeathEvent OnDeath;
     Animator anim;
-
+    NetworkObject player;
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        player = GetComponent<NetworkObject>();
+
+        playerDead = false;
+    }
+    public override void OnStartNetwork()
+    {
+        base.OnStartNetwork();
+        if (PlayerCanvas != null)
+            PlayerCanvas.SetActive(true);
+        playerDead = false;
     }
     private void OnEnable()
     {
@@ -70,15 +81,17 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     private void Update()
     {
         PlayerDeath();
+        
     }
     public void PlayerDeath()
     {
         if(CurrentHealth <= 0)
         {
-            if(PlayerCanvas != null)
+            if (PlayerCanvas != null)
                 PlayerCanvas.SetActive(false);
 
             StartCoroutine(DespawnPlayer());
+            PlayerRespawn.Instance.Respawn(player.gameObject);
             playerDead = true;
             anim.SetLayerWeight(7, 1);
             anim.SetInteger("DeadIndex", Random.Range(0, 4));
@@ -93,6 +106,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     IEnumerator DespawnPlayer()
     {
         yield return new WaitForSeconds(5f);
-        InstanceFinder.ServerManager.Despawn(gameObject);
+   
+        InstanceFinder.ServerManager.Despawn(player.gameObject, DespawnType.Pool);   
     }   
+
 }
