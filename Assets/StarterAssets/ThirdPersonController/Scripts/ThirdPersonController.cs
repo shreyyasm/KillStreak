@@ -285,9 +285,9 @@ namespace StarterAssets
                     firedBullet = false;
                 }
             }
+
+            playerDead = playerHealth.PlayerDeathState();
             
-           
-            SetPlayerDeathState();
             playerGunSelector.SetLookInput(look.x, look.y, x, z);
             //playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
@@ -957,14 +957,7 @@ namespace StarterAssets
         {
             inFPSMode = state;
         }
-        public void SetPlayerDeathState()
-        {
-            if(playerHealth.PlayerDeathState())
-            {
-                pistolRig.weight = 0f;
-                rifleRig.weight = 0f;
-            }
-        }
+       
         public void ShotFired(bool state)
         {
             fireBulletTime = 1.3f;
@@ -1015,15 +1008,10 @@ namespace StarterAssets
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void SetRigServer()
         {
-            if (playerHealth.PlayerDeathState())
-            {
-                MainRig.weight = 0f;
-                pistolRig.weight = 0f;
-                rifleRig.weight = 0f;
-                return;
-            }
+           
             if (weaponSwitching.selectedWeapon == 0)
             {
+                //MainRig.weight = 1f;
                 if (!running)
                 {
                     if (!changingGun)
@@ -1049,6 +1037,7 @@ namespace StarterAssets
 
             else
             {
+                //MainRig.weight = 1f;
                 if (!running)
                 {
                     if (!changingGun)
@@ -1085,15 +1074,10 @@ namespace StarterAssets
         [ObserversRpc(BufferLast = true)]
         public void SetRigObserver()
         {
-            if (playerHealth.PlayerDeathState())
-            {
-                pistolRig.weight = 0f;
-                rifleRig.weight = 0f;
-                MainRig.weight = 0f;
-                return;
-            }
+            
             if (weaponSwitching.selectedWeapon == 0)
             {
+               // MainRig.weight = 1f;
                 if (!running)
                 {
                     if (!changingGun)
@@ -1119,6 +1103,7 @@ namespace StarterAssets
 
             else
             {
+                //MainRig.weight = 1f;
                 if (!running)
                 {
                     if (!changingGun)

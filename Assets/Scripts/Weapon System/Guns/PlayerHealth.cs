@@ -3,6 +3,7 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerHealth : NetworkBehaviour, IDamageable
 {
@@ -13,6 +14,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     [SerializeField]
     private int _Health;
     public bool playerDead;
+    public RigBuilder RigController;
     public int CurrentHealth { get => _Health; private set => _Health = value;}
 
     public int Maxhealth { get => _MaxHealth; private set => _MaxHealth = value; }
@@ -25,7 +27,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         anim = GetComponent<Animator>();
         player = GetComponent<NetworkObject>();
-
+        PlayerCanvas.SetActive(true);
         playerDead = false;
     }
     public override void OnStartNetwork()
@@ -81,7 +83,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     private void Update()
     {
         PlayerDeath();
-        
+        if (CurrentHealth > 0)
+            RigController.enabled = true;
     }
     public void PlayerDeath()
     {
@@ -89,9 +92,9 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         {
             if (PlayerCanvas != null)
                 PlayerCanvas.SetActive(false);
-
+            RigController.enabled = false;
             StartCoroutine(DespawnPlayer());
-            PlayerRespawn.Instance.Respawn(player.gameObject);
+            PlayerRespawn.Instance.Respawn(player.gameObject , PlayerCanvas);
             playerDead = true;
             anim.SetLayerWeight(7, 1);
             anim.SetInteger("DeadIndex", Random.Range(0, 4));
@@ -106,8 +109,9 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     IEnumerator DespawnPlayer()
     {
         yield return new WaitForSeconds(5f);
+        gameObject.SetActive(false);
+       
+        //InstanceFinder.ServerManager.Despawn(player.gameObject, DespawnType.Pool);   
+    }
    
-        InstanceFinder.ServerManager.Despawn(player.gameObject, DespawnType.Pool);   
-    }   
-
 }

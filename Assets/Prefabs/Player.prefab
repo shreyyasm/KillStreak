@@ -3539,7 +3539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70b342d8ce5c2fd48b8fa3147d48d1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 1
+  m_Weight: 0.7
   m_Effectors: []
 --- !u!1 &1387960393912134631
 GameObject:
@@ -13360,6 +13360,7 @@ MonoBehaviour:
   isCrouching: 0
   isSliding: 0
   running: 0
+  playerDead: 0
   isPressedJump: 0
   isJump: 0
   gunType: 0
@@ -14441,6 +14442,7 @@ MonoBehaviour:
   _MaxHealth: 100
   _Health: 0
   playerDead: 0
+  RigController: {fileID: 2697803188812500148}
 --- !u!114 &-2959754523322967354
 MonoBehaviour:
   m_ObjectHideFlags: 0
