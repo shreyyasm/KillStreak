@@ -38,6 +38,8 @@ public class PlayerGunSelector : NetworkBehaviour
     [SerializeField]
     private SurfaceManager surfaceManager;
     [SerializeField]
+    private FloatingDamage floatingDamage;
+    [SerializeField]
     private PlayerHealth playerHealth;
     int gunSelected;
     public GunScriptableObject gun1;
@@ -65,7 +67,9 @@ public class PlayerGunSelector : NetworkBehaviour
     {
         instance = this;
         ActiveCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+       
     }
+    
     [SerializeField] bool aimAssist;
     [SerializeField] float aimAssistSize = 1f;
 
@@ -642,7 +646,8 @@ public class PlayerGunSelector : NetworkBehaviour
         //Debug.Log(Hit.collider);
         if (Hit.collider != null)
         {
-            HandleBulletImpact(distance, EndPoint, Hit.normal, Hit.collider);
+            HandleBulletImpact(distance, EndPoint, Hit.normal, Hit.collider,Hit.transform);
+
         }
 
         yield return new WaitForSeconds(ActiveGun.TrailConfig.Duration);
@@ -697,7 +702,7 @@ public class PlayerGunSelector : NetworkBehaviour
        float DistanceTraveled,
        Vector3 HitLocation,
        Vector3 HitNormal,
-       Collider HitCollider)
+       Collider HitCollider,Transform enemyPos)
     {
         
         surfaceManager.HandleImpact(
@@ -715,7 +720,10 @@ public class PlayerGunSelector : NetworkBehaviour
         IDamageable Damage = HitCollider.GetComponentInParent<IDamageable>();      
         if (Damage != null)
         {         
-            Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));   
+            Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+
+            floatingDamage.GetPosition(enemyPos, ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+            //floatingDamage.CallStartAnimation();
         }
     }
     

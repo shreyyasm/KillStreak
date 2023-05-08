@@ -21,23 +21,28 @@ public class DamageConfigScriptableObject : ScriptableObject
     {
         if(playerPart.CompareTag("Head"))
         {
-            return HeadDamage;
+            return Random.Range(40, 50);
+            //return HeadDamage;
         }
         else if(playerPart.CompareTag("Body"))
         {
-            return BodyDamage;
+            return Random.Range(20, 40);
+            //return BodyDamage;
         }
         else if (playerPart.CompareTag("Hand"))
         {
-            return HandDamage;
+            return Random.Range(10, 20);
+            //return HandDamage;
         }
         else if (playerPart.CompareTag("Leg"))
         {
-            return LegDamage;
+            return Random.Range(10, 20);
+            //return LegDamage;
         }
         else if (playerPart.CompareTag("Joint"))
         {
-            return otherDamage;
+            return Random.Range(1, 10);
+            //return otherDamage;
         }
         return 0;
        // return Mathf.CeilToInt(DamageCurve.Evaluate(Distance, Random.value)); 

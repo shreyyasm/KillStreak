@@ -37,7 +37,8 @@ public class PlayerRespawn : NetworkBehaviour
         //InstanceFinder.ServerManager.Spawn(player,base.Owner);
         //playerObj.GiveOwnership(ownerConnection);      
         player.SetActive(true);
-        playerCanvas.SetActive(true);
+        if(playerCanvas!= null)
+            playerCanvas.SetActive(true);
         player.GetComponent<PlayerHealth>().playerDead = false;
 
         

@@ -81,7 +81,10 @@ public class PlayerAction : NetworkBehaviour
         {
             if (weaponSwitch.gunChanging)
                 return;
+            
+            //IsShooting = false;
 
+            
             PlayerAnimator.SetLayerWeight(6, 1);
             GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
@@ -97,6 +100,7 @@ public class PlayerAction : NetworkBehaviour
         //    Shoot(1);
         //else
         //    Shoot(0);
+        
     }
     
     public bool ShouldManualReload()
