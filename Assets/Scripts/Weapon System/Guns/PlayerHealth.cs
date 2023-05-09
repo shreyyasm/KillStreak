@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.UI;
 
 public class PlayerHealth : NetworkBehaviour, IDamageable
 {
@@ -40,6 +41,26 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     private void OnEnable()
     {
         CurrentHealth = Maxhealth;
+        SetMaxHealth(CurrentHealth);
+    }
+    public Slider slider;
+    public Gradient gradient;
+    public Image fill;
+    
+   
+    public void SetMaxHealth(int health)
+    {
+        slider.maxValue = health;
+        slider.value = health;
+
+        fill.color = gradient.Evaluate(1f);
+    }
+
+    public void SetHealth(int health)
+    {
+        slider.value = health;
+
+        fill.color = gradient.Evaluate(slider.normalizedValue);
     }
     public void SetPlayerHealth(int damage)
     {
@@ -56,7 +77,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         Debug.Log("server");
         int damageTaken = Mathf.Clamp(Damage, 0, CurrentHealth);
         CurrentHealth -= damageTaken;
-        if(damageTaken != 0)
+        SetHealth(CurrentHealth);
+        if (damageTaken != 0)
         {
             OnTakeDamage?.Invoke(damageTaken);
         }
@@ -85,6 +107,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         PlayerDeath();
         if (CurrentHealth > 0)
             RigController.enabled = true;
+        SetHealth(CurrentHealth);
     }
     public void PlayerDeath()
     {
