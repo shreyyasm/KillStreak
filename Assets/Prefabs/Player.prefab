@@ -629,6 +629,7 @@ MonoBehaviour:
   worldSpaceCanvas: {fileID: 888637566}
   offset: {x: 0, y: 0, z: 0}
   anim: {fileID: 238017751}
+  playerAction: {fileID: 0}
 --- !u!1 &1036698896
 GameObject:
   m_ObjectHideFlags: 0
@@ -14098,7 +14099,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 6
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 774665742
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects:
@@ -14225,7 +14226,7 @@ MonoBehaviour:
   CrosshairUI: {fileID: 7847124182309189933}
   aimAssist: 1
   aimAssistSize: 1
-  sphereCastRadius: 0.2
+  sphereCastRadius: 0.15
   range: 100
   distanceObject: 0
   distancePlayer: 0

@@ -271,7 +271,8 @@ namespace StarterAssets
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
             ray = Camera.main.ScreenPointToRay(screenCenterPoint);
             GroundedCheck();
-            Move();
+            MoveOld();
+            //Move();
             z = ultimateJoystick.GetVerticalAxis();
             //if(base.IsServer)
             changingGun = weaponSwitching.GunSwaping();
@@ -296,7 +297,7 @@ namespace StarterAssets
 
             if(_animationBlend > 1)
                 Slide();
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(2))
                 Crouch();
 
             ControllerChanges();
@@ -493,7 +494,170 @@ namespace StarterAssets
             
 
         }
-      
+        private void MoveOld()
+        {
+            _animator.SetFloat("MoveX", _input.move.x);
+            _animator.SetFloat("MoveZ", _input.move.y);
+            Vector2 directionNew = new Vector2(_input.move.x, _input.move.y);
+            if (directionNew.y > 0.2f && !isAiming && !firedBullet && !changingGun && !isCrouching && !isSliding)
+                MoveSpeed = 7f;
+
+            else
+                MoveSpeed = 5;
+
+            if (weaponSwitching.selectedWeapon == 0)
+            {
+                if (!isAiming)
+                {
+                    if (!firedBullet)
+                    {
+
+                        _animator.SetLayerWeight(1, 0);
+                        _animator.SetLayerWeight(3, 0);
+                    }
+
+                }
+                else
+                {
+
+                    _animator.SetLayerWeight(1, 1);
+                    _animator.SetLayerWeight(3, 0);
+                }
+
+            }
+            else
+            {
+                if (!isAiming)
+                {
+                    if (!firedBullet)
+                    {
+
+                        _animator.SetLayerWeight(1, 0);
+                        _animator.SetLayerWeight(3, 0);
+                    }
+
+                }
+                else
+                {
+
+                    _animator.SetLayerWeight(3, 1);
+                    _animator.SetLayerWeight(1, 0);
+
+                }
+
+            }
+
+
+            
+          
+
+            // set target speed based on move speed, sprint speed and if sprint is pressed
+            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            if (_input.move == Vector2.zero && !isSliding)
+            {
+                targetSpeed = 0.0f;
+
+            }
+            //targetSpeed = MoveSpeed;
+            // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
+
+            // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+            // if there is no input, set the target speed to 0
+            if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+
+            // a reference to the players current horizontal velocity
+            float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
+
+            float speedOffset = 0.1f;
+            float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+
+            // accelerate or decelerate to target speed
+            if (currentHorizontalSpeed < targetSpeed - speedOffset ||
+                currentHorizontalSpeed > targetSpeed + speedOffset)
+            {
+                // creates curved result rather than a linear one giving a more organic speed change
+                // note T in Lerp is clamped, so we don't need to clamp our speed
+                _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
+                    Time.deltaTime * SpeedChangeRate);
+
+                // round speed to 3 decimal places
+                _speed = Mathf.Round(_speed * 1000f) / 1000f;
+            }
+            else
+            {
+                _speed = targetSpeed;
+            }
+
+            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
+            if (_animationBlend < 0.01f) _animationBlend = 0f;
+
+            // normalise input direction
+            Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+
+            // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+            // if there is a move input rotate player when the player is moving
+            if (_input.move != Vector2.zero)
+            {
+                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
+                                  _mainCamera.transform.eulerAngles.y;
+                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
+                    RotationSmoothTime);
+
+                // rotate to face input direction relative to camera position
+               // transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            }
+
+
+            Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+
+            if (!isSliding)
+            {
+                // move the player
+                _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            }
+           
+
+            // update animator if using character
+            if (_hasAnimator)
+            {
+                //Animations State
+                _animator.SetFloat(_animIDSpeed, _animationBlend);
+                _animator.SetBool("Aim Walk", isAimWalking);
+                if (targetSpeed > 5f && !isAiming)
+                {
+                    running = true;
+                    if (!isSliding)
+                    {
+                        pistolRig.weight = 0f;
+                        rifleRig.weight = 0f;
+                    }
+
+
+                }
+                else
+                {
+                    running = false;
+
+                    if (weaponSwitching.selectedWeapon == 0)
+                        rifleRig.weight = 1f;
+
+                    else
+                        pistolRig.weight = 1f;
+                }
+
+                //fPSController.GetComponent<FPSController>().SetMovementSpeed(_animationBlend);            
+            }
+            //Aim and Walking
+            if (isAiming && _animationBlend > 1)
+            {
+                isAimWalking = true;
+            }
+            else
+            {
+                isAimWalking = false;
+            }
+        }
         public void Move()
         {
             //if (playerHealth.PlayerDeathState())
@@ -744,6 +908,11 @@ namespace StarterAssets
             //    return;
             if (z > 0.6f && !isAiming && !isCrouching)
                 StartSlide();
+
+            //ForPcControls
+            if (_input.move.y > 0.6f && !isAiming && !isCrouching)
+                StartSlide();
+            
             else
                 CrouchInput();
             
@@ -776,7 +945,8 @@ namespace StarterAssets
                     
                     _controller.Move(transform.forward * slideSpeed * Time.deltaTime +
                                  new Vector3(0.0f, _verticalVelocity * 1.5f, 0.0f) * Time.deltaTime);
-                 
+                   
+
                 }
 
                 else
