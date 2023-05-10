@@ -26,6 +26,7 @@ TagManager:
   - Hand
   - Leg
   - Joint
+  - HealthAmmoAddOn
   layers:
   - Default
   - TransparentFX

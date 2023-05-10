@@ -1,8 +1,10 @@
+using FishNet;
+using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthAmmoPickup : MonoBehaviour
+public class HealthAmmoPickup : NetworkBehaviour
 {
     public float rotSpeed = 60;
     public float maxSize;
@@ -19,13 +21,23 @@ public class HealthAmmoPickup : MonoBehaviour
     {
         transform.Rotate(0, rotSpeed * Time.deltaTime, 0, Space.World);
     }
+    private void OnTriggerEnter(Collider collision)
+    {
+        //Debug.Log("work");
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("work");
+            InstanceFinder.ServerManager.Despawn(gameObject, DespawnType.Pool);
+            collision.gameObject.GetComponent<PlayerHealth>().RestoreHealth();
+            collision.gameObject.GetComponent<PlayerGunSelector>().gun1.AmmoConfig.RefillAmmo();
+            collision.gameObject.GetComponent<PlayerGunSelector>().gun2.AmmoConfig.RefillAmmo();
+            //CarGun.instance.AddAmmo(50);
+            //gameObject.SetActive(false);
+        }
+    }
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
-        {
-            //CarGun.instance.AddAmmo(50);
-            gameObject.SetActive(false);
-        }
+        
     }
     
     IEnumerator Scale()

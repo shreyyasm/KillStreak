@@ -25,4 +25,9 @@ public class AmmoConfigScriptableObject : ScriptableObject
     {
         return CurrentClipAmmo < ClipSize && CurrentAmmo > 0;
     }
+    public void RefillAmmo()
+    {
+        CurrentAmmo = MaxAmmo;
+        CurrentClipAmmo = ClipSize;
+    }
 }
