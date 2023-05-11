@@ -31,7 +31,7 @@ namespace StarterAssets
 
 		private void Awake()
         {
-			Cursor.visible = false;
+			//Cursor.visible = false;
 		}
         public void OnMove(InputValue value)
 		{
@@ -132,12 +132,12 @@ namespace StarterAssets
 
 		private void OnApplicationFocus(bool hasFocus)
 		{
-			SetCursorState(cursorLocked);
+			//SetCursorState(cursorLocked);
 		}
 
 		private void SetCursorState(bool newState)
 		{
-			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+			//Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 		}
 	}
 	
