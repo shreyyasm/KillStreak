@@ -5,21 +5,22 @@ using UnityEngine;
 
 public class LoadOutManager : NetworkBehaviour
 {
+    [SerializeField] PlayerGunSelector playerGunSelector;
     [SerializeField] GameObject LoadOutMenu;
 
     [SerializeField] List<GameObject> loadOutsUI;
     [SerializeField] List<GameObject> selectedHighlightUI;
 
-    [SerializeField] List<ScriptableObject> Loadout1;
-    [SerializeField] List<ScriptableObject> Loadout2;
-    [SerializeField] List<ScriptableObject> Loadout3;
-    [SerializeField] List<ScriptableObject> Loadout4;
-    [SerializeField] List<ScriptableObject> Loadout5;
+    [SerializeField] List<GunScriptableObject> PrimaryGuns;
+    [SerializeField] List<GunScriptableObject> SecondaryGuns;
+
 
     [SerializeField]
     private Transform GunParent;
     public GunScriptableObject gun1;
     public GunScriptableObject gun2;
+
+    int loadNumber;
     private void Awake()
     {
         loadOutsUI[0].SetActive(true);
@@ -45,8 +46,12 @@ public class LoadOutManager : NetworkBehaviour
             selectedLoadOut.SetActive(false);
         }
     }
+
     public void GetLoadOutInput(int loadOutNumber)
     {
+        loadNumber = loadOutNumber;
+        GetGunLoadOut(loadOutNumber);
+        //UI Part
         loadOutsUI[loadOutNumber].SetActive(true);
         selectedHighlightUI[loadOutNumber].SetActive(true);
         foreach (GameObject number in loadOutsUI) //   <--- go back to here --------+
@@ -69,12 +74,28 @@ public class LoadOutManager : NetworkBehaviour
             // do work
             selectedLoadOut.SetActive(false);
         }
+        //GetGunLoadOut(loadOutNumber);
+    }
+    public void GetGunLoadOut(int LoadOutNumber)
+    {
+        //DestroyPreviousGuns();
+        Debug.Log("work");
+        PrimaryGuns[LoadOutNumber].Spawn(GunParent, this);
+        SecondaryGuns[LoadOutNumber].Spawn(GunParent, this);
 
     }
-    public void GetGunLoadOut(GunScriptableObject PrimaryGun, GunScriptableObject SecondayGun)
+    public void DestroyPreviousGuns()
     {
-        gun1.Spawn(GunParent, this);
-        gun2.Spawn(GunParent, this);
+        Transform[] OldGuns = GunParent.GetComponentsInChildren<Transform>();
+        foreach (Transform transform in OldGuns)
+        {
+            DestroyImmediate(transform, true);
+        }
+
+        //DestroyImmediate(playerGunSelector.gun1,true);
+        //DestroyImmediate(playerGunSelector.gun2, true);
+
+
     }
     public void OpenLoadOut()
     {

@@ -1395,7 +1395,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &445602711
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2459,7 +2459,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &865686685
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3091,7 +3091,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: c14b6f9cda30b704c9360f0ccb15adac, type: 3}
-    m_FontSize: 35
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -5638,7 +5638,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1556695569
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5676,7 +5676,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1614263595
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7149,7 +7149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f544f2f09089d5e46a3d4724a3d2589e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 16
+  _componentIndexCache: 17
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   <selectedWeapon>k__BackingField: 0
@@ -10325,6 +10325,7 @@ MonoBehaviour:
   - {fileID: 3977011766980961940}
   - {fileID: 6733548792866847433}
   - {fileID: 7227589802432990891}
+  - {fileID: 8254068294341867751}
   - {fileID: 7301760394231692212}
   - {fileID: 60764137881832743}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
@@ -10340,9 +10341,9 @@ MonoBehaviour:
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects:
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 8606142165491801254}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &6017902892697103238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12069,19 +12070,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b5abb0959acec741b217709b183c3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 15
+  _addedNetworkObject: {fileID: 8606142165491801254}
+  _networkObjectCache: {fileID: 8606142165491801254}
+  playerGunSelector: {fileID: 854605398997728390}
   LoadOutMenu: {fileID: 331713654}
-  loadOuts:
+  loadOutsUI:
   - {fileID: 1614263594}
   - {fileID: 445602710}
   - {fileID: 865686684}
   - {fileID: 182798775}
   - {fileID: 1556695568}
-  selectedHighlight:
+  selectedHighlightUI:
   - {fileID: 6830573710695311011}
   - {fileID: 3291975285411241315}
   - {fileID: 2879468737673519125}
   - {fileID: 4170740447635417196}
   - {fileID: 4175396403559761796}
+  PrimaryGuns:
+  - {fileID: 11400000, guid: 7451cd110834bbb4ca758fc1ba0f7a61, type: 2}
+  - {fileID: 11400000, guid: b30e75d3eacdd694cb15c43aec7ce044, type: 2}
+  - {fileID: 11400000, guid: 4d71330ce0e491e45bc98bf3f255dc65, type: 2}
+  - {fileID: 11400000, guid: 2d592cb931342384d8685d121b2d9cd2, type: 2}
+  - {fileID: 11400000, guid: 7b71aef9f8b7b924882d6d4fa333a07f, type: 2}
+  SecondaryGuns:
+  - {fileID: 11400000, guid: 54474d457e00a4b488efedd7e1752d10, type: 2}
+  - {fileID: 11400000, guid: 53c8ef0f3cc9e4d47bb696f286fc2aba, type: 2}
+  - {fileID: 11400000, guid: 91ccadfdf101cd8468ea07ec3cb8e75e, type: 2}
+  - {fileID: 11400000, guid: f2909b98d51e94c42959d34ee776f8c3, type: 2}
+  - {fileID: 11400000, guid: f2909b98d51e94c42959d34ee776f8c3, type: 2}
+  GunParent: {fileID: 5498550918705205020}
+  gun1: {fileID: 0}
+  gun2: {fileID: 0}
 --- !u!1 &1666263702744754938
 GameObject:
   m_ObjectHideFlags: 0
@@ -20695,7 +20715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 15
+  _componentIndexCache: 16
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   GunSelector: {fileID: 854605398997728390}
