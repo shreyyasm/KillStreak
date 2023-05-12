@@ -1,20 +1,32 @@
+using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LoadOutManager : MonoBehaviour
+public class LoadOutManager : NetworkBehaviour
 {
     [SerializeField] GameObject LoadOutMenu;
 
-    [SerializeField] List<GameObject> loadOuts;
-    [SerializeField] List<GameObject> selectedHighlight;
+    [SerializeField] List<GameObject> loadOutsUI;
+    [SerializeField] List<GameObject> selectedHighlightUI;
+
+    [SerializeField] List<ScriptableObject> Loadout1;
+    [SerializeField] List<ScriptableObject> Loadout2;
+    [SerializeField] List<ScriptableObject> Loadout3;
+    [SerializeField] List<ScriptableObject> Loadout4;
+    [SerializeField] List<ScriptableObject> Loadout5;
+
+    [SerializeField]
+    private Transform GunParent;
+    public GunScriptableObject gun1;
+    public GunScriptableObject gun2;
     private void Awake()
     {
-        loadOuts[0].SetActive(true);
-        selectedHighlight[0].SetActive(true);
-        foreach (GameObject number in loadOuts) //   <--- go back to here --------+
+        loadOutsUI[0].SetActive(true);
+        selectedHighlightUI[0].SetActive(true);
+        foreach (GameObject number in loadOutsUI) //   <--- go back to here --------+
         {                               //                                |
-            if (number == loadOuts[0])             //                                |
+            if (number == loadOutsUI[0])             //                                |
             {                           //                                |
                 continue;   // Skip the remainder of this iteration. -----+
             }
@@ -22,9 +34,9 @@ public class LoadOutManager : MonoBehaviour
             // do work
             number.SetActive(false);
         }
-        foreach (GameObject selectedLoadOut in selectedHighlight) //   <--- go back to here --------+
+        foreach (GameObject selectedLoadOut in selectedHighlightUI) //   <--- go back to here --------+
         {                               //                                |
-            if (selectedLoadOut == selectedHighlight[0])             //                                |
+            if (selectedLoadOut == selectedHighlightUI[0])             //                                |
             {                           //                                |
                 continue;   // Skip the remainder of this iteration. -----+
             }
@@ -35,11 +47,11 @@ public class LoadOutManager : MonoBehaviour
     }
     public void GetLoadOutInput(int loadOutNumber)
     {
-        loadOuts[loadOutNumber].SetActive(true);
-        selectedHighlight[loadOutNumber].SetActive(true);
-        foreach (GameObject number in loadOuts) //   <--- go back to here --------+
+        loadOutsUI[loadOutNumber].SetActive(true);
+        selectedHighlightUI[loadOutNumber].SetActive(true);
+        foreach (GameObject number in loadOutsUI) //   <--- go back to here --------+
         {                               //                                |
-            if (number == loadOuts[loadOutNumber])             //                                |
+            if (number == loadOutsUI[loadOutNumber])             //                                |
             {                           //                                |
                 continue;   // Skip the remainder of this iteration. -----+
             }
@@ -47,9 +59,9 @@ public class LoadOutManager : MonoBehaviour
             // do work
             number.SetActive(false);
         }
-        foreach (GameObject selectedLoadOut in selectedHighlight) //   <--- go back to here --------+
+        foreach (GameObject selectedLoadOut in selectedHighlightUI) //   <--- go back to here --------+
         {                               //                                |
-            if (selectedLoadOut == selectedHighlight[loadOutNumber])             //                                |
+            if (selectedLoadOut == selectedHighlightUI[loadOutNumber])             //                                |
             {                           //                                |
                 continue;   // Skip the remainder of this iteration. -----+
             }
@@ -58,6 +70,11 @@ public class LoadOutManager : MonoBehaviour
             selectedLoadOut.SetActive(false);
         }
 
+    }
+    public void GetGunLoadOut(GunScriptableObject PrimaryGun, GunScriptableObject SecondayGun)
+    {
+        gun1.Spawn(GunParent, this);
+        gun2.Spawn(GunParent, this);
     }
     public void OpenLoadOut()
     {
