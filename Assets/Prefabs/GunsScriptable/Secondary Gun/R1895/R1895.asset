@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43eeabcab19880a4786fb6358d2d558f, type: 3}
+  m_Name: R1895
+  m_EditorClassIdentifier: 
+  ImpactType: {fileID: 11400000, guid: f7eef5de491260746a3abff1060f655c, type: 2}
+  Type: 1
+  Name: Pistol
+  ModelPrefab: {fileID: 1508934165754910, guid: 68317e2c4c57a6e45be7063240f91cbb,
+    type: 3}
+  SpawnPoint: {x: 0.09, y: 0.05, z: -0.04}
+  SpawnRotation: {x: -16.4, y: 66.6, z: -99}
+  DamageConfig: {fileID: 11400000, guid: f43b31d453b191f4caa731fd63989354, type: 2}
+  ShootConfig: {fileID: 11400000, guid: 4220b94e96d090f44a2b8ef5a9c944e0, type: 2}
+  AmmoConfig: {fileID: 11400000, guid: f5b95d77ad5be244eb49c45c7c832d29, type: 2}
+  TrailConfig: {fileID: 11400000, guid: d26ff00d4f314004990aabf566a64276, type: 2}
+  AudioConfig: {fileID: 11400000, guid: 868cc42eacb91a248ad4d19e47108413, type: 2}
+  fishnetSpawnList: {fileID: 0}
+  ShootingAudioSource: {fileID: 0}
+  Model: {fileID: 0}
+  GunModels:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  LastShootTime: 0
+  InitialClickTime: 23.446913
+  StopShootingTime: 23.56622
+  ShootSystem: {fileID: 0}
+  Automatic: 0
+  Fired: 0
+  aimVirtualCamera: {fileID: 0}
+  followVirtualCamera: {fileID: 0}
+  shootDirection: {x: 0, y: 0, z: 0}
+  spreadAmount: {x: 0, y: 0, z: 0}
+  shootHoldTime: 0
+  pooledObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  objectToPool: {fileID: 8081663345739861187, guid: c2e6aed9ca9047c4e9e811b1a9d78ecb,
+    type: 3}
+  amountToPool: 5

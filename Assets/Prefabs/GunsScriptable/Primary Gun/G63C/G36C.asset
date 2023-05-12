@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43eeabcab19880a4786fb6358d2d558f, type: 3}
+  m_Name: G36C
+  m_EditorClassIdentifier: 
+  ImpactType: {fileID: 11400000, guid: f7eef5de491260746a3abff1060f655c, type: 2}
+  Type: 0
+  Name: Rifle
+  ModelPrefab: {fileID: 1209897356567904, guid: dc24a25ae7542b44ba62b25047680a54,
+    type: 3}
+  SpawnPoint: {x: 0.1083164, y: 0.02904889, z: -0.03634661}
+  SpawnRotation: {x: 0.23, y: 54.6, z: -93.196}
+  DamageConfig: {fileID: 11400000, guid: 1b124100ffe318147adfc3e50e3fb322, type: 2}
+  ShootConfig: {fileID: 11400000, guid: 5d4a5f4a3ace86b48a3e61249a8717d4, type: 2}
+  AmmoConfig: {fileID: 11400000, guid: 92206e180190e8e49bd4d688847bdd38, type: 2}
+  TrailConfig: {fileID: 11400000, guid: d212a906b2dbb1647a6e8de776e53693, type: 2}
+  AudioConfig: {fileID: 11400000, guid: 10b2f3d58845e3a4392852870a40bd1b, type: 2}
+  fishnetSpawnList: {fileID: 0}
+  LastShootTime: 0
+  InitialClickTime: 0
+  StopShootingTime: 0
+  ShootSystem: {fileID: 0}
+  Automatic: 1
+  Fired: 0
+  shootDirection: {x: 0.17124148, y: -0.0011355281, z: 0.9852284}
+  spreadAmount: {x: 0, y: 0, z: 0}
+  shootHoldTime: 3.4756768
+  pooledObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  objectToPool: {fileID: 8081663345739861187, guid: c2e6aed9ca9047c4e9e811b1a9d78ecb,
+    type: 3}
+  amountToPool: 5
