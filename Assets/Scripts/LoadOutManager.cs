@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LoadOutManager : MonoBehaviour
 {
+    [SerializeField] GameObject LoadOutMenu;
+
     [SerializeField] List<GameObject> loadOuts;
     [SerializeField] List<GameObject> selectedHighlight;
     private void Awake()
@@ -56,5 +58,13 @@ public class LoadOutManager : MonoBehaviour
             selectedLoadOut.SetActive(false);
         }
 
+    }
+    public void OpenLoadOut()
+    {
+        LoadOutMenu.SetActive(true);
+    }
+    public void CloseLoadOut()
+    {
+        LoadOutMenu.SetActive(false);
     }
 }
