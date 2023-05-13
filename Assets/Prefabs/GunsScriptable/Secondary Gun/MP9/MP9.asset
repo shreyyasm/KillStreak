@@ -15,7 +15,7 @@ MonoBehaviour:
   ImpactType: {fileID: 11400000, guid: f7eef5de491260746a3abff1060f655c, type: 2}
   Type: 1
   Name: Pistol
-  ModelPrefab: {fileID: 1508934165754910, guid: 68317e2c4c57a6e45be7063240f91cbb,
+  ModelPrefab: {fileID: 1540458763532602, guid: e4b5e619f4a1e5844b32eec0d702d1b6,
     type: 3}
   SpawnPoint: {x: 0.09, y: 0.05, z: -0.04}
   SpawnRotation: {x: -16.4, y: 66.6, z: -99}
@@ -39,9 +39,35 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   LastShootTime: 0
-  InitialClickTime: 23.446913
-  StopShootingTime: 23.56622
+  InitialClickTime: 0
+  StopShootingTime: 0
   ShootSystem: {fileID: 0}
   Automatic: 0
   Fired: 0

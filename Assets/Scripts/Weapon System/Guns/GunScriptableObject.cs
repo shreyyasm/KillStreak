@@ -52,7 +52,7 @@ public class GunScriptableObject : ScriptableObject
     /// <param name="ActiveMonoBehaviour">An Active MonoBehaviour that can have Coroutines attached to them.
     /// The input handling script is a good candidate for this.
     /// </param>
-    public void Spawn(Transform Parent, NetworkBehaviour ActiveMonoBehaviour)
+    public GameObject Spawn(Transform Parent, NetworkBehaviour ActiveMonoBehaviour)
     {
         this.ActiveMonoBehaviour = ActiveMonoBehaviour;
         // in editor these will not be properly reset, in build it's fine
@@ -91,6 +91,7 @@ public class GunScriptableObject : ScriptableObject
             followVirtualCamera = GameObject.FindWithTag("Follow Camera");
             //fpsVirtualCamera = GameObject.FindWithTag("FPS Camera");
         }
+        return Model;
         //StartPool();
     }
 

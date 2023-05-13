@@ -3023,6 +3023,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &969761346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 969761347}
+  m_Layer: 16
+  m_Name: Primary FakeGuns
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &969761347
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969761346}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4374371431324039461}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &977961023
 GameObject:
   m_ObjectHideFlags: 0
@@ -3616,6 +3647,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1077282125
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1077282126}
+  m_Layer: 16
+  m_Name: PrimaryGuns
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1077282126
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077282125}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5498550918705205020}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1125557681
 GameObject:
   m_ObjectHideFlags: 0
@@ -5315,6 +5377,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1433869571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1433869572}
+  m_Layer: 16
+  m_Name: SecondaryGuns
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1433869572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433869571}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5498550918705205020}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1437696756
 GameObject:
   m_ObjectHideFlags: 0
@@ -5699,6 +5792,37 @@ RectTransform:
   m_AnchoredPosition: {x: -75.41222, y: 1.1641}
   m_SizeDelta: {x: 648.2679, y: 577.5617}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1642745290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1642745291}
+  m_Layer: 16
+  m_Name: Secondary FakeGuns
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1642745291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642745290}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4374371431324039461}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1655054582
 GameObject:
   m_ObjectHideFlags: 0
@@ -7133,7 +7257,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1077282126}
+  - {fileID: 1433869572}
   m_Father: {fileID: 2980269339951117368}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0.023057934, y: -0.43873474, z: -0.036581315}
@@ -7155,6 +7281,8 @@ MonoBehaviour:
   <selectedWeapon>k__BackingField: 0
   playerHealth: {fileID: 6007887100391698674}
   shooterController: {fileID: 7997988506348976479}
+  playerGunSelector: {fileID: 854605398997728390}
+  loadOutManager: {fileID: 8254068294341867751}
   weaponInventory: {fileID: 295116042294921611}
   <gunChanging>k__BackingField: 0
   animator: {fileID: 965142408394958343}
@@ -10343,7 +10471,6 @@ MonoBehaviour:
   _sceneNetworkObjects:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 8606142165491801254}
 --- !u!114 &6017902892697103238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10439,8 +10566,6 @@ MonoBehaviour:
   IdentifyEnemy:
     serializedVersion: 2
     m_Bits: 0
-  PrimaryGun: 0
-  SecondaryGun: 1
   GunParent: {fileID: 5498550918705205020}
   Guns:
   - {fileID: 11400000, guid: 7451cd110834bbb4ca758fc1ba0f7a61, type: 2}
@@ -10463,6 +10588,23 @@ MonoBehaviour:
   blocked: 0
   BlockUI: {fileID: 635003885194124031}
   CrosshairUI: {fileID: 4201409218599855978}
+  loadOutManager: {fileID: 8254068294341867751}
+  PrimaryParent: {fileID: 1077282126}
+  SecondaryParent: {fileID: 1433869572}
+  PrimaryGuns:
+  - {fileID: 11400000, guid: 7451cd110834bbb4ca758fc1ba0f7a61, type: 2}
+  - {fileID: 11400000, guid: b30e75d3eacdd694cb15c43aec7ce044, type: 2}
+  - {fileID: 11400000, guid: 4d71330ce0e491e45bc98bf3f255dc65, type: 2}
+  - {fileID: 11400000, guid: 2d592cb931342384d8685d121b2d9cd2, type: 2}
+  - {fileID: 11400000, guid: 7b71aef9f8b7b924882d6d4fa333a07f, type: 2}
+  SecondaryGuns:
+  - {fileID: 11400000, guid: 54474d457e00a4b488efedd7e1752d10, type: 2}
+  - {fileID: 11400000, guid: 53c8ef0f3cc9e4d47bb696f286fc2aba, type: 2}
+  - {fileID: 11400000, guid: 91ccadfdf101cd8468ea07ec3cb8e75e, type: 2}
+  - {fileID: 11400000, guid: f2909b98d51e94c42959d34ee776f8c3, type: 2}
+  - {fileID: 11400000, guid: f2909b98d51e94c42959d34ee776f8c3, type: 2}
+  PrimaryGunsPrefabs: []
+  SecondaryGunsPrefabs: []
   aimAssist: 1
   aimAssistSize: 1
   sphereCastRadius: 0.2
@@ -12102,6 +12244,7 @@ MonoBehaviour:
   GunParent: {fileID: 5498550918705205020}
   gun1: {fileID: 0}
   gun2: {fileID: 0}
+  loadNumber: 0
 --- !u!1 &1666263702744754938
 GameObject:
   m_ObjectHideFlags: 0
@@ -16731,6 +16874,8 @@ Transform:
   - {fileID: 5685068981422755217}
   - {fileID: 9027259805032885449}
   - {fileID: 3717880411774626403}
+  - {fileID: 969761347}
+  - {fileID: 1642745291}
   m_Father: {fileID: 8667634275196092190}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

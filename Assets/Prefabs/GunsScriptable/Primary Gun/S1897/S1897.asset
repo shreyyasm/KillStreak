@@ -15,7 +15,7 @@ MonoBehaviour:
   ImpactType: {fileID: 11400000, guid: f7eef5de491260746a3abff1060f655c, type: 2}
   Type: 0
   Name: Rifle
-  ModelPrefab: {fileID: 1209897356567904, guid: dc24a25ae7542b44ba62b25047680a54,
+  ModelPrefab: {fileID: 1345368308290578, guid: 9ec98e8c57546a746a43196444d9c97f,
     type: 3}
   SpawnPoint: {x: 0.1083164, y: 0.02904889, z: -0.03634661}
   SpawnRotation: {x: 0.23, y: 54.6, z: -93.196}
@@ -27,7 +27,20 @@ MonoBehaviour:
   fishnetSpawnList: {fileID: 0}
   ShootingAudioSource: {fileID: 0}
   Model: {fileID: 0}
-  GunModels: []
+  GunModels:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   LastShootTime: 0
   InitialClickTime: 0
   StopShootingTime: 0

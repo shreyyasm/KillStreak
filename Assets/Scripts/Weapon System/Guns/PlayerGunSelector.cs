@@ -15,11 +15,11 @@ public class PlayerGunSelector : NetworkBehaviour
 {
     public LayerMask IdentifyEnemy;
     public static PlayerGunSelector instance;
-    [SerializeField]
-    private GunType PrimaryGun;
+    //[SerializeField]
+    //private GunType PrimaryGun;
 
-    [SerializeField]
-    private GunType SecondaryGun;
+    //[SerializeField]
+    //private GunType SecondaryGun;
 
     [SerializeField]
     private Transform GunParent;
@@ -62,7 +62,17 @@ public class PlayerGunSelector : NetworkBehaviour
     private  float moveX, moveZ;
     [SerializeField] GameObject BlockUI;
     [SerializeField] GameObject CrosshairUI;
-    Transform[] Model;
+    Transform Model1;
+    Transform Model2;
+
+    public LoadOutManager loadOutManager;
+    public Transform PrimaryParent;
+    public Transform SecondaryParent;
+    public List<GunScriptableObject> PrimaryGuns;
+    public List<GunScriptableObject> SecondaryGuns;
+
+    public List<GameObject> PrimaryGunsPrefabs;
+    public List<GameObject> SecondaryGunsPrefabs;
     private void Awake()
     {
         instance = this;
@@ -74,53 +84,47 @@ public class PlayerGunSelector : NetworkBehaviour
     [SerializeField] float aimAssistSize = 1f;
 
     private void Start()
-    {
-       
-        //gun1 = Guns.Find(gun => gun.Type == PrimaryGun);
-        //gun2 = Guns.Find(gun => gun.Type == SecondaryGun);
-        gun1 = Guns[0];
-        gun2 = Guns[1];
-        
-        if (gun1 == null)
-        {
-            Debug.Log($"No GunscriptableObject found for GunType: {gun1}");
-            return;
-        }
+    {  
+        SpawnAllGuns();
 
+        gun1 = PrimaryGuns[loadOutManager.loadNumber];
+        gun2 = SecondaryGuns[loadOutManager.loadNumber];
+
+        PrimaryGunsPrefabs[loadOutManager.loadNumber].SetActive(true);
+       
         gunSelected = weaponSwitching.selectedWeapon;
         if (gunSelected == 0)
         {
             if (!weaponSwitching.gunChanging)
-                ActiveGun = gun1;
+                ActiveGun = PrimaryGuns[loadOutManager.loadNumber];
         }
         else
         {
             if (!weaponSwitching.gunChanging)
-                ActiveGun = gun2;
+                ActiveGun = SecondaryGuns[loadOutManager.loadNumber];
         }
-        gun1.Spawn(GunParent, this);
-        gun2.Spawn(GunParent, this);
 
-        //StartPool();
-        //SurfaceManager.Instance.StartPool();
-        //gun1.StartPool();
-        //gun2.StartPool();
-        //ActiveGun.StartPool();
         StartCoroutine(GetModelFromParent());
     }
     IEnumerator GetModelFromParent()
     {
         yield return new WaitForSeconds(0.1f);
-        Model = GunParent.GetComponentsInChildren<Transform>();
+        //Model = GunParent.GetComponentsInChildren<Transform>();
+        Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
     }
     [Range(0.1f, 1f)] public float sphereCastRadius;
     [Range(1f, 100f)] public float range;
-    
+     
+
     private void Update()
     {
         if (!base.IsOwner)
             return;
-       
+
+        gun1 = PrimaryGuns[loadOutManager.loadNumber];
+        gun2 = SecondaryGuns[loadOutManager.loadNumber];
+
         Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
         ray = Camera.main.ScreenPointToRay(screenCenterPoint);
        
@@ -129,18 +133,19 @@ public class PlayerGunSelector : NetworkBehaviour
         if (gunSelected == 0)
         {
             if(!weaponSwitching.gunChanging)
-                ActiveGun = gun1;
+                ActiveGun = PrimaryGuns[loadOutManager.loadNumber];
         }
         else
         {
             if (!weaponSwitching.gunChanging)
-                ActiveGun = gun2;
+                ActiveGun = SecondaryGuns[loadOutManager.loadNumber];
         }
+
         bulletTrail = ActiveGun.ReturnBullet();
+        GunModelRecoil();
+
         if (playerAction.IsShooting )
         {
-            GunModelRecoil();
-
             if(!playerAction.IsReloading)
             {
                 if (!playerAction.IsChangingGun)
@@ -158,6 +163,49 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         CheckBlocked();
     }
+    public void SpawnAllGuns()
+    {
+        foreach (GunScriptableObject Gun in PrimaryGuns) 
+        {
+            // do work
+            
+            GameObject GunPrefab = Gun.Spawn(PrimaryParent, this);
+            PrimaryGunsPrefabs.Add(GunPrefab);
+        }
+        foreach (GunScriptableObject Gun in SecondaryGuns)
+        {
+            // do work
+            GameObject GunPrefab = Gun.Spawn(SecondaryParent, this);
+            SecondaryGunsPrefabs.Add(GunPrefab);
+        }
+
+    }
+    public void ChangeGunLoadOut(int loadout)
+    {
+        PrimaryGunsPrefabs[loadout].SetActive(true);
+        foreach (GameObject Gun in PrimaryGunsPrefabs) //   <--- go back to here --------+
+        {                               //                                |
+            if (Gun == PrimaryGunsPrefabs[loadout])             //                                |
+            {                           //                                |
+                continue;   // Skip the remainder of this iteration. -----+
+            }
+
+            // do work            
+            Gun.SetActive(false);
+        }
+        foreach (GameObject Gun in SecondaryGunsPrefabs) //   <--- go back to here --------+
+        {                               //                                |
+            if (Gun == SecondaryGunsPrefabs[loadout])             //                                |
+            {                           //                                |
+                continue;   // Skip the remainder of this iteration. -----+
+            }
+
+            // do work
+            Gun.SetActive(false);
+        }
+        Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
+    }
     RaycastHit hitCheck;
     public float distanceObject;
     public float distancePlayer;
@@ -166,15 +214,15 @@ public class PlayerGunSelector : NetworkBehaviour
     public void GunModelRecoil()
     {
        
-        Model[0].transform.localRotation = Quaternion.Lerp(
-           Model[0].transform.localRotation,
-           Quaternion.Euler(ActiveGun.SpawnRotation),
-           Time.deltaTime * ActiveGun.ShootConfig.RecoilRecoverySpeed);
+        Model1.transform.localRotation = Quaternion.Lerp(
+           Model1.transform.localRotation,
+           Quaternion.Euler(PrimaryGuns[loadOutManager.loadNumber].SpawnRotation),
+           Time.deltaTime * PrimaryGuns[loadOutManager.loadNumber].ShootConfig.RecoilRecoverySpeed);
 
-        Model[1].transform.localRotation = Quaternion.Lerp(
-           Model[1].transform.localRotation,
-           Quaternion.Euler(ActiveGun.SpawnRotation),
-           Time.deltaTime * ActiveGun.ShootConfig.RecoilRecoverySpeed);
+        Model2.transform.localRotation = Quaternion.Lerp(
+           Model2.transform.localRotation,
+           Quaternion.Euler(SecondaryGuns[loadOutManager.loadNumber].SpawnRotation),
+           Time.deltaTime * SecondaryGuns[loadOutManager.loadNumber].ShootConfig.RecoilRecoverySpeed);
     }
     public void CheckBlocked()
     {

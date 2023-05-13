@@ -15,6 +15,8 @@ public class WeaponSwitching : NetworkBehaviour
     [SerializeField]
     private PlayerHealth playerHealth;
     [SerializeField] ShooterController shooterController;
+    [SerializeField] PlayerGunSelector playerGunSelector;
+    [SerializeField] LoadOutManager loadOutManager;
     [SerializeField] WeaponInventory weaponInventory;
     bool gunChanged = false;
 
@@ -44,9 +46,11 @@ public class WeaponSwitching : NetworkBehaviour
     void Start()
     {
         //gunChanging = false;
-        realRifle = this.gameObject.transform.GetChild(0);
-        realPistol = this.gameObject.transform.GetChild(1);
-        SelectedWeapon();
+        //realRifle = this.gameObject.transform.GetChild(0);
+        //realPistol = this.gameObject.transform.GetChild(1);
+        realRifle = playerGunSelector.PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        realPistol = playerGunSelector.SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        //SelectedWeapon();
         
         //newOwnerConnection = GetComponent<NetworkConnection>();
         
@@ -232,8 +236,9 @@ public class WeaponSwitching : NetworkBehaviour
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void GunSwapVisualTakeInServer()
     {
-        
-            if (animator.GetComponent<Animator>().GetLayerWeight(4) == 1)
+        realRifle = playerGunSelector.PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        realPistol = playerGunSelector.SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        if (animator.GetComponent<Animator>().GetLayerWeight(4) == 1)
             {
                 gunInHand = false;
                 if (selectedWeapon == 1)
@@ -259,7 +264,8 @@ public class WeaponSwitching : NetworkBehaviour
     [ObserversRpc(BufferLast = true)]
     public void GunSwapVisualTakeInObserver()
     {
-
+        realRifle = playerGunSelector.PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        realPistol = playerGunSelector.SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
         if (animator.GetComponent<Animator>().GetLayerWeight(4) == 1)
         {
             gunInHand = false;

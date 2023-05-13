@@ -20,7 +20,7 @@ public class LoadOutManager : NetworkBehaviour
     public GunScriptableObject gun1;
     public GunScriptableObject gun2;
 
-    int loadNumber;
+    public int loadNumber = 0;
     private void Awake()
     {
         loadOutsUI[0].SetActive(true);
@@ -50,7 +50,7 @@ public class LoadOutManager : NetworkBehaviour
     public void GetLoadOutInput(int loadOutNumber)
     {
         loadNumber = loadOutNumber;
-        GetGunLoadOut(loadOutNumber);
+        //GetGunLoadOut(loadOutNumber);
         //UI Part
         loadOutsUI[loadOutNumber].SetActive(true);
         selectedHighlightUI[loadOutNumber].SetActive(true);
@@ -74,6 +74,7 @@ public class LoadOutManager : NetworkBehaviour
             // do work
             selectedLoadOut.SetActive(false);
         }
+        playerGunSelector.ChangeGunLoadOut(loadOutNumber);
         //GetGunLoadOut(loadOutNumber);
     }
     public void GetGunLoadOut(int LoadOutNumber)
