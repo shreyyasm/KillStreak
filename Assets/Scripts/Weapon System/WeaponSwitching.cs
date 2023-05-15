@@ -35,6 +35,8 @@ public class WeaponSwitching : NetworkBehaviour
     bool checkAnimationState;
     private readonly NetworkConnection newOwnerConnection;
 
+    public List<Transform> PrimaryGunsFakePrefabs;
+    public List<Transform> SecondaryGunsFakePrefabs;
     //public override void OnStartServer()
     //{
     //    base.OnStartServer();
@@ -87,6 +89,20 @@ public class WeaponSwitching : NetworkBehaviour
 
         ManagerLayerWeights();
     }
+    public void SetActiveGun(int loadNumber)
+    {
+        foreach (Transform fakeGun in SecondaryGunsFakePrefabs) //   <--- go back to here --------+
+        {                               //                                |
+            if (fakeGun == SecondaryGunsFakePrefabs[loadNumber])             //                                |
+            {
+                SecondaryGunsFakePrefabs[loadNumber].gameObject.SetActive(true);//                                |
+                continue;   // Skip the remainder of this iteration. -----+
+            }
+
+            // do work
+            fakeGun.gameObject.SetActive(false);
+        }
+    }
     public void ManagerLayerWeights()
     {
         if (gunChanging)
@@ -133,6 +149,50 @@ public class WeaponSwitching : NetworkBehaviour
             }
 
             i++;
+        }
+    }
+    public void ChangeLoadoutIndex()
+    {
+        if (!gunChanging)
+        {
+           
+            
+            int previousSelectedWeapon = selectedWeapon;
+            if (!gunChanged)
+            {
+                gunChanged = true;
+                if (selectedWeapon >= transform.childCount - 1)
+                {
+                    selectedWeapon = 0;
+                }
+                else
+                {
+                    selectedWeapon++;
+                }
+            }
+            else
+            {
+                gunChanged = false;
+                if (selectedWeapon <= transform.childCount - 1)
+                {
+                    selectedWeapon = 0;
+                }
+                else
+                {
+                    selectedWeapon--;
+                }
+            }
+            if (previousSelectedWeapon != selectedWeapon)
+            {
+                //SelectedWeapon();
+            }
+            shooterController.GunChanged();
+
+        }
+        foreach (Transform fakeGun in PrimaryGunsFakePrefabs) //   <--- go back to here --------+
+        {                               //                                |         
+            // do work
+            fakeGun.gameObject.SetActive(false);
         }
     }
     public void ChangeGunIndex()
@@ -238,27 +298,30 @@ public class WeaponSwitching : NetworkBehaviour
     {
         realRifle = playerGunSelector.PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
         realPistol = playerGunSelector.SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
-        if (animator.GetComponent<Animator>().GetLayerWeight(4) == 1)
+            if (animator.GetComponent<Animator>().GetLayerWeight(4) == 1)
             {
                 gunInHand = false;
                 if (selectedWeapon == 1)
                 {
                     realRifle.gameObject.SetActive(false);
-                    fakeRifle.SetActive(true);
+                    //fakeRifle.SetActive(true);
+                    PrimaryGunsFakePrefabs[loadOutManager.loadNumber].gameObject.SetActive(true);
                 }
                 else
                 {
                     realPistol.gameObject.SetActive(false);
-                    fakePistol.SetActive(true);
+                    //fakePistol.SetActive(true);
+                    SecondaryGunsFakePrefabs[loadOutManager.loadNumber].gameObject.SetActive(true);
                 }
             }
             if (animator.GetComponent<Animator>().GetLayerWeight(5) == 1)
             {
                 gunInHand = false;
-                fakeRifle.SetActive(false);
+                //fakeRifle.SetActive(false);
+                PrimaryGunsFakePrefabs[loadOutManager.loadNumber].gameObject.SetActive(false);
                 realRifle.gameObject.SetActive(true);
             }
-        
+       
     }
 
     [ObserversRpc(BufferLast = true)]
@@ -272,21 +335,23 @@ public class WeaponSwitching : NetworkBehaviour
             if (selectedWeapon == 1)
             {
                 realRifle.gameObject.SetActive(false);
-                fakeRifle.SetActive(true);
+                //fakeRifle.SetActive(true);
+                PrimaryGunsFakePrefabs[loadOutManager.loadNumber].gameObject.SetActive(true);
             }
             else
             {
                 realPistol.gameObject.SetActive(false);
-                fakePistol.SetActive(true);
+                //fakePistol.SetActive(true);
+                SecondaryGunsFakePrefabs[loadOutManager.loadNumber].gameObject.SetActive(true);
             }
         }
         if (animator.GetComponent<Animator>().GetLayerWeight(5) == 1)
         {
             gunInHand = false;
-            fakeRifle.SetActive(false);
+            //fakeRifle.SetActive(false);
+            PrimaryGunsFakePrefabs[loadOutManager.loadNumber].gameObject.SetActive(false);
             realRifle.gameObject.SetActive(true);
-        }
-
+        } 
     }
 
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
@@ -298,12 +363,14 @@ public class WeaponSwitching : NetworkBehaviour
                 gunInHand = true;
                 if (selectedWeapon == 1)
                 {
-                    fakePistol.SetActive(false);
+                    //fakePistol.SetActive(false);
+                    SecondaryGunsFakePrefabs[loadOutManager.loadNumber].gameObject.SetActive(false);
                     realPistol.gameObject.SetActive(true);
                 }
                 else
                 {
-                    fakeRifle.SetActive(false);
+                    //fakeRifle.SetActive(false);
+                    PrimaryGunsFakePrefabs[loadOutManager.loadNumber].gameObject.SetActive(false);
                     realRifle.gameObject.SetActive(true);
                 }
             }
@@ -312,8 +379,9 @@ public class WeaponSwitching : NetworkBehaviour
 
                 gunInHand = false;
                 realPistol.gameObject.SetActive(false);
-                fakePistol.SetActive(true);
-            }
+                //fakePistol.SetActive(true);
+                SecondaryGunsFakePrefabs[loadOutManager.loadNumber].gameObject.SetActive(true);
+        }
         
     }
     [ObserversRpc(BufferLast = true)]
@@ -325,12 +393,14 @@ public class WeaponSwitching : NetworkBehaviour
             gunInHand = true;
             if (selectedWeapon == 1)
             {
-                fakePistol.SetActive(false);
+                //fakePistol.SetActive(false);
+                SecondaryGunsFakePrefabs[loadOutManager.loadNumber].gameObject.SetActive(false);
                 realPistol.gameObject.SetActive(true);
             }
             else
             {
-                fakeRifle.SetActive(false);
+                //fakeRifle.SetActive(false);
+                PrimaryGunsFakePrefabs[loadOutManager.loadNumber].gameObject.SetActive(false);
                 realRifle.gameObject.SetActive(true);
             }
         }
@@ -339,9 +409,10 @@ public class WeaponSwitching : NetworkBehaviour
 
             gunInHand = false;
             realPistol.gameObject.SetActive(false);
-            fakePistol.SetActive(true);
+            // fakePistol.SetActive(true);
+            SecondaryGunsFakePrefabs[loadOutManager.loadNumber].gameObject.SetActive(true);
         }
-
+        
     }
 
 }

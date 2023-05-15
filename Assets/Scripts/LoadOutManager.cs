@@ -6,6 +6,7 @@ using UnityEngine;
 public class LoadOutManager : NetworkBehaviour
 {
     [SerializeField] PlayerGunSelector playerGunSelector;
+    [SerializeField] WeaponSwitching weaponSwitching;
     [SerializeField] GameObject LoadOutMenu;
 
     [SerializeField] List<GameObject> loadOutsUI;
@@ -49,6 +50,9 @@ public class LoadOutManager : NetworkBehaviour
 
     public void GetLoadOutInput(int loadOutNumber)
     {
+        weaponSwitching.SetActiveGun(loadOutNumber);
+        if (weaponSwitching.selectedWeapon == 1)
+            weaponSwitching.ChangeLoadoutIndex();
         loadNumber = loadOutNumber;
         //GetGunLoadOut(loadOutNumber);
         //UI Part
