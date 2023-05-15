@@ -15,6 +15,9 @@ public class LoadOutManager : NetworkBehaviour
     [SerializeField] List<GunScriptableObject> PrimaryGuns;
     [SerializeField] List<GunScriptableObject> SecondaryGuns;
 
+    [SerializeField] List<GameObject> PrimaryGunsUI;
+    [SerializeField] List<GameObject> SecondaryGunsUI;
+
 
     [SerializeField]
     private Transform GunParent;
@@ -46,13 +49,41 @@ public class LoadOutManager : NetworkBehaviour
             // do work
             selectedLoadOut.SetActive(false);
         }
+        SetGunUI(loadNumber);
     }
+    public void SetGunUI(int loadOutNumber)
+    {
+        foreach (GameObject Gun in PrimaryGunsUI) //   <--- go back to here --------+
+        {                               //                                |
+            if (Gun == PrimaryGunsUI[loadOutNumber])             //                                |
+            {      
+                //                                |
+                continue;   // Skip the remainder of this iteration. -----+
+            }
 
+            PrimaryGunsUI[loadOutNumber].SetActive(true);// do work
+            Gun.SetActive(false);
+        }
+        foreach (GameObject Gun in SecondaryGunsUI) //   <--- go back to here --------+
+        {                               //                                |
+            if (Gun == SecondaryGunsUI[loadOutNumber])             //                                |
+            {
+                //                                |
+                continue;   // Skip the remainder of this iteration. -----+
+            }
+
+            SecondaryGunsUI[loadOutNumber].SetActive(true);// do work
+            Gun.SetActive(false);
+        }
+    }
     public void GetLoadOutInput(int loadOutNumber)
     {
         weaponSwitching.SetActiveGun(loadOutNumber);
         if (weaponSwitching.selectedWeapon == 1)
+        {
             weaponSwitching.ChangeLoadoutIndex();
+        }
+            
         loadNumber = loadOutNumber;
         //GetGunLoadOut(loadOutNumber);
         //UI Part
@@ -79,6 +110,8 @@ public class LoadOutManager : NetworkBehaviour
             selectedLoadOut.SetActive(false);
         }
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
+        SetGunUI(loadOutNumber);
+        LoadOutMenu.SetActive(false);
         //GetGunLoadOut(loadOutNumber);
     }
     public void GetGunLoadOut(int LoadOutNumber)
