@@ -30,6 +30,11 @@ public class LoadOutManager : NetworkBehaviour
     public GunScriptableObject gun2;
 
     public int loadNumber = 0;
+    public AudioSource audioSource;
+    public AudioClip loadoutUISFX;
+    public AudioClip loadoutSFX;
+
+    public Animator anim;
     private void Awake()
     {
         loadOutsUI[0].SetActive(true);
@@ -59,6 +64,9 @@ public class LoadOutManager : NetworkBehaviour
     private void Update()
     {
         Countdown();
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("LoadOutChange") && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
+            anim.SetBool("LoadOutDone", false); 
+
     }
     public void SetGunUI(int loadOutNumber)
     {
@@ -120,6 +128,7 @@ public class LoadOutManager : NetworkBehaviour
             // do work
             selectedLoadOut.SetActive(false);
         }
+        audioSource.PlayOneShot(loadoutUISFX);
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
         SetGunUI(loadOutNumber);
        
@@ -129,12 +138,19 @@ public class LoadOutManager : NetworkBehaviour
     public void OpenLoadOut()
     {
         LoadOutMenu.SetActive(true);
+        audioSource.PlayOneShot(loadoutUISFX);
         countdownState = true;
         timeRemaining = 6;
+        
+        StartCoroutine(playLoadoutSound());
 
     }
     public void CloseLoadOut()
     {
+        anim.SetBool("LoadOutDone", true);
+        audioSource.PlayOneShot(loadoutSFX);
+        timeRemaining = 0;
+        StopAllCoroutines();
         LoadOutMenu.SetActive(false);
     }
     public void Countdown()
@@ -147,15 +163,26 @@ public class LoadOutManager : NetworkBehaviour
                 timeRemaining -= Time.deltaTime;
                 TimerLoadout.text = "Select your Loadout(" + (int)timeRemaining + "s)";
                 
+                    
             }
             else
                 countdownState = false;
+            
+
         }       
         else
         {
+            
             //TimerLoadout.text = "TIME'S UP!";
             LoadOutMenu.SetActive(false);
 
         }
+        
+    }
+    public IEnumerator playLoadoutSound()
+    {
+        yield return new WaitForSeconds(6f);
+        anim.SetBool("LoadOutDone", true);
+        audioSource.PlayOneShot(loadoutSFX);
     }
 }
