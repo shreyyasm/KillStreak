@@ -25,11 +25,11 @@ public class PlayerRespawn : NetworkBehaviour
     {
         //player = FindObjectOfType<CameraFollow>();
     }
-    public void Respawn(GameObject player, GameObject playerCanvas)
+    public void Respawn(GameObject player, GameObject playerCanvas, GameObject loadoutCanvas)
     {
-        StartCoroutine(StartSpawning(player, playerCanvas));
+        StartCoroutine(StartSpawning(player, playerCanvas,loadoutCanvas));
     }
-    IEnumerator StartSpawning(GameObject player, GameObject playerCanvas)
+    IEnumerator StartSpawning(GameObject player, GameObject playerCanvas, GameObject loadoutCanvas)
     {
         NetworkObject playerObj = GetComponent<NetworkObject>();
         yield return new WaitForSeconds(10f);
@@ -39,6 +39,7 @@ public class PlayerRespawn : NetworkBehaviour
         player.SetActive(true);
         if(playerCanvas!= null)
             playerCanvas.SetActive(true);
+        loadoutCanvas.SetActive(true);
         player.GetComponent<PlayerHealth>().playerDead = false;
 
         

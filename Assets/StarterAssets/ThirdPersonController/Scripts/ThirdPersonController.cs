@@ -350,8 +350,8 @@ namespace StarterAssets
 
         public void CameraRotation()
         {
-            //if (playerHealth.PlayerDeathState())
-            //    return;
+            if (playerHealth.PlayerDeathState())
+                return;
             mouseX = screenTouch.lookInput.x;
             mouseY = screenTouch.lookInput.y;
             if (screenTouch.rightFingerID == -1)
@@ -431,8 +431,8 @@ namespace StarterAssets
 
         private void CameraRotationOld()
         {
-            //if (playerHealth.PlayerDeathState())
-            //    return;
+            if (playerHealth.PlayerDeathState())
+                return;
             // if there is an input and camera position is not fixed
             if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
             {

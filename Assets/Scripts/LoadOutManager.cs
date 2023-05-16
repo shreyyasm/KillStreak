@@ -1,6 +1,7 @@
 using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LoadOutManager : NetworkBehaviour
@@ -8,6 +9,10 @@ public class LoadOutManager : NetworkBehaviour
     [SerializeField] PlayerGunSelector playerGunSelector;
     [SerializeField] WeaponSwitching weaponSwitching;
     [SerializeField] GameObject LoadOutMenu;
+
+    public TextMeshProUGUI TimerLoadout;
+    public float timeRemaining;
+    public bool countdownState;
 
     [SerializeField] List<GameObject> loadOutsUI;
     [SerializeField] List<GameObject> selectedHighlightUI;
@@ -51,8 +56,13 @@ public class LoadOutManager : NetworkBehaviour
         }
         SetGunUI(loadNumber);
     }
+    private void Update()
+    {
+        Countdown();
+    }
     public void SetGunUI(int loadOutNumber)
     {
+
         foreach (GameObject Gun in PrimaryGunsUI) //   <--- go back to here --------+
         {                               //                                |
             if (Gun == PrimaryGunsUI[loadOutNumber])             //                                |
@@ -78,6 +88,7 @@ public class LoadOutManager : NetworkBehaviour
     }
     public void GetLoadOutInput(int loadOutNumber)
     {
+        
         weaponSwitching.SetActiveGun(loadOutNumber);
         if (weaponSwitching.selectedWeapon == 1)
         {
@@ -111,36 +122,40 @@ public class LoadOutManager : NetworkBehaviour
         }
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
         SetGunUI(loadOutNumber);
-        LoadOutMenu.SetActive(false);
-        //GetGunLoadOut(loadOutNumber);
+       
+       
     }
-    public void GetGunLoadOut(int LoadOutNumber)
-    {
-        //DestroyPreviousGuns();
-        Debug.Log("work");
-        PrimaryGuns[LoadOutNumber].Spawn(GunParent, this);
-        SecondaryGuns[LoadOutNumber].Spawn(GunParent, this);
-
-    }
-    public void DestroyPreviousGuns()
-    {
-        Transform[] OldGuns = GunParent.GetComponentsInChildren<Transform>();
-        foreach (Transform transform in OldGuns)
-        {
-            DestroyImmediate(transform, true);
-        }
-
-        //DestroyImmediate(playerGunSelector.gun1,true);
-        //DestroyImmediate(playerGunSelector.gun2, true);
-
-
-    }
+    
     public void OpenLoadOut()
     {
         LoadOutMenu.SetActive(true);
+        countdownState = true;
+        timeRemaining = 6;
+
     }
     public void CloseLoadOut()
     {
         LoadOutMenu.SetActive(false);
+    }
+    public void Countdown()
+    { 
+        if(countdownState)
+        {
+            //timeRemaining = 5;
+            if (timeRemaining > 0)
+            {
+                timeRemaining -= Time.deltaTime;
+                TimerLoadout.text = "Select your Loadout(" + (int)timeRemaining + "s)";
+                
+            }
+            else
+                countdownState = false;
+        }       
+        else
+        {
+            //TimerLoadout.text = "TIME'S UP!";
+            LoadOutMenu.SetActive(false);
+
+        }
     }
 }
