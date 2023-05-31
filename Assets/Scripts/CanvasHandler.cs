@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CanvasHandler : NetworkBehaviour
 {
-    public static CanvasHandler instance;
+    
     public GameObject PlayerCheck;
     public override void OnStartNetwork()
     {

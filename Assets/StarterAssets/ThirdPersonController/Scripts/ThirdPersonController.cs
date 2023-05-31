@@ -308,8 +308,8 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            CameraRotationOld();
-            //CameraRotation();
+            //CameraRotationOld();
+            CameraRotation();
             
         }
         public void SetRigWeight()
@@ -1158,7 +1158,7 @@ namespace StarterAssets
             if(base.IsServer)           
                 weaponSwitching.GunSwapVisualTakeInObserver();
 
-            if(base.IsOwner)
+            else
                 weaponSwitching.GunSwapVisualTakeInServer();
 
         }
@@ -1167,7 +1167,8 @@ namespace StarterAssets
             if(base.IsServer)
                 weaponSwitching.GunSwapVisualTakeOutObserver();
 
-            if (base.IsOwner)
+            
+            else
                 weaponSwitching.GunSwapVisualTakeOutServer();
 
         }

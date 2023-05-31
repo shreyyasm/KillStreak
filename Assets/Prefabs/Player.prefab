@@ -1368,7 +1368,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8254068294341867751}
+      - m_Target: {fileID: 5050372454195438821}
         m_TargetAssemblyTypeName: LoadOutManager, Assembly-CSharp
         m_MethodName: OpenLoadOut
         m_Mode: 1
@@ -2873,7 +2873,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8254068294341867751}
+      - m_Target: {fileID: 5050372454195438821}
         m_TargetAssemblyTypeName: LoadOutManager, Assembly-CSharp
         m_MethodName: GetLoadOutInput
         m_Mode: 3
@@ -3444,7 +3444,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8254068294341867751}
+      - m_Target: {fileID: 5050372454195438821}
         m_TargetAssemblyTypeName: LoadOutManager, Assembly-CSharp
         m_MethodName: GetLoadOutInput
         m_Mode: 3
@@ -3988,7 +3988,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8254068294341867751}
+      - m_Target: {fileID: 5050372454195438821}
         m_TargetAssemblyTypeName: LoadOutManager, Assembly-CSharp
         m_MethodName: GetLoadOutInput
         m_Mode: 3
@@ -4867,7 +4867,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8254068294341867751}
+      - m_Target: {fileID: 5050372454195438821}
         m_TargetAssemblyTypeName: LoadOutManager, Assembly-CSharp
         m_MethodName: GetLoadOutInput
         m_Mode: 3
@@ -7373,7 +7373,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8254068294341867751}
+      - m_Target: {fileID: 5050372454195438821}
         m_TargetAssemblyTypeName: LoadOutManager, Assembly-CSharp
         m_MethodName: GetLoadOutInput
         m_Mode: 3
@@ -7800,14 +7800,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f544f2f09089d5e46a3d4724a3d2589e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 17
+  _componentIndexCache: 18
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   <selectedWeapon>k__BackingField: 0
   playerHealth: {fileID: 6007887100391698674}
   shooterController: {fileID: 7997988506348976479}
   playerGunSelector: {fileID: 854605398997728390}
-  loadOutManager: {fileID: 8254068294341867751}
+  loadOutManager: {fileID: 5050372454195438821}
   weaponInventory: {fileID: 295116042294921611}
   <gunChanging>k__BackingField: 0
   animator: {fileID: 965142408394958343}
@@ -7828,6 +7828,7 @@ MonoBehaviour:
   - {fileID: 4633972322299282439}
   - {fileID: 2246614414819906378}
   - {fileID: 2246614414819906378}
+  num: 0
 --- !u!114 &295116042294921611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10130,7 +10131,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &855129226984429814
 Transform:
   m_ObjectHideFlags: 0
@@ -11358,6 +11359,8 @@ GameObject:
   - component: {fileID: 6007887100391698674}
   - component: {fileID: 19180172534219905}
   - component: {fileID: 8730711434545529099}
+  - component: {fileID: 5050372454195438821}
+  - component: {fileID: 3706598513884092583}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -11924,11 +11927,12 @@ MonoBehaviour:
   - {fileID: 6007887100391698674}
   - {fileID: 19180172534219905}
   - {fileID: 8730711434545529099}
+  - {fileID: 5050372454195438821}
   - {fileID: 7038848279386442737}
   - {fileID: 3977011766980961940}
   - {fileID: 6733548792866847433}
   - {fileID: 7227589802432990891}
-  - {fileID: 8254068294341867751}
+  - {fileID: 8621030966821766389}
   - {fileID: 7301760394231692212}
   - {fileID: 60764137881832743}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
@@ -11940,7 +11944,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 7
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 774665742
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects:
@@ -12063,7 +12067,7 @@ MonoBehaviour:
   blocked: 0
   BlockUI: {fileID: 635003885194124031}
   CrosshairUI: {fileID: 4201409218599855978}
-  loadOutManager: {fileID: 8254068294341867751}
+  loadOutManager: {fileID: 5050372454195438821}
   PrimaryParent: {fileID: 1077282126}
   SecondaryParent: {fileID: 1433869572}
   PrimaryGuns:
@@ -12664,6 +12668,167 @@ MonoBehaviour:
     type: 3}
   SpawnInterval: 1
   spawned: []
+--- !u!114 &5050372454195438821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965142408394958343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b5abb0959acec741b217709b183c3ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 11
+  _addedNetworkObject: {fileID: 8606142165491801254}
+  _networkObjectCache: {fileID: 8606142165491801254}
+  playerGunSelector: {fileID: 854605398997728390}
+  weaponSwitching: {fileID: 60764137881832743}
+  LoadOutMenu: {fileID: 331713654}
+  TimerLoadout: {fileID: 47333535}
+  timeRemaining: 6
+  countdownState: 0
+  loadOutsUI:
+  - {fileID: 1614263594}
+  - {fileID: 445602710}
+  - {fileID: 865686684}
+  - {fileID: 182798775}
+  - {fileID: 1556695568}
+  selectedHighlightUI:
+  - {fileID: 6830573710695311011}
+  - {fileID: 3291975285411241315}
+  - {fileID: 2879468737673519125}
+  - {fileID: 4170740447635417196}
+  - {fileID: 4175396403559761796}
+  PrimaryGuns:
+  - {fileID: 11400000, guid: 7451cd110834bbb4ca758fc1ba0f7a61, type: 2}
+  - {fileID: 11400000, guid: b30e75d3eacdd694cb15c43aec7ce044, type: 2}
+  - {fileID: 11400000, guid: 4d71330ce0e491e45bc98bf3f255dc65, type: 2}
+  - {fileID: 11400000, guid: 2d592cb931342384d8685d121b2d9cd2, type: 2}
+  - {fileID: 11400000, guid: 7b71aef9f8b7b924882d6d4fa333a07f, type: 2}
+  SecondaryGuns:
+  - {fileID: 11400000, guid: 54474d457e00a4b488efedd7e1752d10, type: 2}
+  - {fileID: 11400000, guid: 53c8ef0f3cc9e4d47bb696f286fc2aba, type: 2}
+  - {fileID: 11400000, guid: 91ccadfdf101cd8468ea07ec3cb8e75e, type: 2}
+  - {fileID: 11400000, guid: f2909b98d51e94c42959d34ee776f8c3, type: 2}
+  - {fileID: 11400000, guid: f2909b98d51e94c42959d34ee776f8c3, type: 2}
+  PrimaryGunsUI:
+  - {fileID: 6244507733291319574}
+  - {fileID: 1857552009}
+  - {fileID: 1342640608}
+  - {fileID: 1139217631}
+  - {fileID: 1659712665}
+  SecondaryGunsUI:
+  - {fileID: 6244507732353755755}
+  - {fileID: 784946511}
+  - {fileID: 6038868047477343975}
+  - {fileID: 6922292498853234396}
+  - {fileID: 6922292498853234396}
+  GunParent: {fileID: 5498550918705205020}
+  gun1: {fileID: 0}
+  gun2: {fileID: 0}
+  <loadNumber>k__BackingField: 0
+  audioSource: {fileID: 3706598513884092583}
+  loadoutUISFX: {fileID: 8300000, guid: 19fc9987a41cfb440ac6d82e3ee8c88a, type: 3}
+  loadoutSFX: {fileID: 8300000, guid: 033305f054f7232438c6a0a55dbbcf94, type: 3}
+  anim: {fileID: 710114101}
+--- !u!82 &3706598513884092583
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965142408394958343}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.7
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &974142427121186176
 GameObject:
   m_ObjectHideFlags: 0
@@ -13585,8 +13750,7 @@ GameObject:
   - component: {fileID: 7405425347939363949}
   - component: {fileID: 3727826132594294374}
   - component: {fileID: 3270410362324332320}
-  - component: {fileID: 8254068294341867751}
-  - component: {fileID: 6948716238269235882}
+  - component: {fileID: 8621030966821766389}
   m_Layer: 13
   m_Name: LoadOut Canvas
   m_TagString: Untagged
@@ -13677,7 +13841,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8254068294341867751
+--- !u!114 &8621030966821766389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13686,158 +13850,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1623649567896198000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b5abb0959acec741b217709b183c3ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 15
+  _componentIndexCache: 16
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
-  playerGunSelector: {fileID: 854605398997728390}
-  weaponSwitching: {fileID: 60764137881832743}
-  LoadOutMenu: {fileID: 331713654}
-  TimerLoadout: {fileID: 47333535}
-  timeRemaining: 6
-  countdownState: 0
-  loadOutsUI:
-  - {fileID: 1614263594}
-  - {fileID: 445602710}
-  - {fileID: 865686684}
-  - {fileID: 182798775}
-  - {fileID: 1556695568}
-  selectedHighlightUI:
-  - {fileID: 6830573710695311011}
-  - {fileID: 3291975285411241315}
-  - {fileID: 2879468737673519125}
-  - {fileID: 4170740447635417196}
-  - {fileID: 4175396403559761796}
-  PrimaryGuns:
-  - {fileID: 11400000, guid: 7451cd110834bbb4ca758fc1ba0f7a61, type: 2}
-  - {fileID: 11400000, guid: b30e75d3eacdd694cb15c43aec7ce044, type: 2}
-  - {fileID: 11400000, guid: 4d71330ce0e491e45bc98bf3f255dc65, type: 2}
-  - {fileID: 11400000, guid: 2d592cb931342384d8685d121b2d9cd2, type: 2}
-  - {fileID: 11400000, guid: 7b71aef9f8b7b924882d6d4fa333a07f, type: 2}
-  SecondaryGuns:
-  - {fileID: 11400000, guid: 54474d457e00a4b488efedd7e1752d10, type: 2}
-  - {fileID: 11400000, guid: 53c8ef0f3cc9e4d47bb696f286fc2aba, type: 2}
-  - {fileID: 11400000, guid: 91ccadfdf101cd8468ea07ec3cb8e75e, type: 2}
-  - {fileID: 11400000, guid: f2909b98d51e94c42959d34ee776f8c3, type: 2}
-  - {fileID: 11400000, guid: f2909b98d51e94c42959d34ee776f8c3, type: 2}
-  PrimaryGunsUI:
-  - {fileID: 6244507733291319574}
-  - {fileID: 1857552009}
-  - {fileID: 1342640608}
-  - {fileID: 1139217631}
-  - {fileID: 1659712665}
-  SecondaryGunsUI:
-  - {fileID: 6244507732353755755}
-  - {fileID: 784946511}
-  - {fileID: 6038868047477343975}
-  - {fileID: 6922292498853234396}
-  - {fileID: 6922292498853234396}
-  GunParent: {fileID: 5498550918705205020}
-  gun1: {fileID: 0}
-  gun2: {fileID: 0}
-  loadNumber: 0
-  audioSource: {fileID: 6948716238269235882}
-  loadoutUISFX: {fileID: 8300000, guid: 19fc9987a41cfb440ac6d82e3ee8c88a, type: 3}
-  loadoutSFX: {fileID: 8300000, guid: 033305f054f7232438c6a0a55dbbcf94, type: 3}
-  anim: {fileID: 710114101}
---- !u!82 &6948716238269235882
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1623649567896198000}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 0.7
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  PlayerCheck: {fileID: 5643628234101779476}
 --- !u!1 &1666263702744754938
 GameObject:
   m_ObjectHideFlags: 0
@@ -14455,7 +14474,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1.8274659, y: 1.8273194}
+  m_AnchoredPosition: {x: 1.8273927, y: 1.8273194}
   m_SizeDelta: {x: 304.56, y: 304.56}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &1982171406297234843
@@ -19716,7 +19735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 13
+  _componentIndexCache: 14
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   PlayerCheck: {fileID: 5643628234101779476}
@@ -19732,7 +19751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 14
+  _componentIndexCache: 15
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   GunSelector: {fileID: 854605398997728390}
@@ -24255,7 +24274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4eccd0b9cf3eed409616a314b8d58df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 12
+  _componentIndexCache: 13
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   mouseSensitivity: 100
@@ -24796,7 +24815,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 16
+  _componentIndexCache: 17
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   GunSelector: {fileID: 854605398997728390}
@@ -26910,7 +26929,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8254068294341867751}
+      - m_Target: {fileID: 5050372454195438821}
         m_TargetAssemblyTypeName: LoadOutManager, Assembly-CSharp
         m_MethodName: CloseLoadOut
         m_Mode: 1
@@ -32979,7 +32998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 11
+  _componentIndexCache: 12
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   _synchronizeParent: 0

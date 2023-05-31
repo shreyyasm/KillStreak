@@ -104,24 +104,25 @@ public class PlayerGunSelector : NetworkBehaviour
                 ActiveGun = SecondaryGuns[loadOutManager.loadNumber];
         }
 
-        StartCoroutine(GetModelFromParent());
+        GetModelFromParent();
     }
-    IEnumerator GetModelFromParent()
+    
+    public void GetModelFromParent()
     {
-        yield return new WaitForSeconds(0.1f);
+        //yield return new WaitForSeconds(0.1f);
         //Model = GunParent.GetComponentsInChildren<Transform>();
         Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
         Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
     }
     [Range(0.1f, 1f)] public float sphereCastRadius;
     [Range(1f, 100f)] public float range;
-     
 
+   
     private void Update()
     {
         if (!base.IsOwner)
             return;
-
+        
         gun1 = PrimaryGuns[loadOutManager.loadNumber];
         gun2 = SecondaryGuns[loadOutManager.loadNumber];
 
@@ -180,8 +181,19 @@ public class PlayerGunSelector : NetworkBehaviour
         }
 
     }
-    public void ChangeGunLoadOut(int loadout)
+    public void ChangeGunLoadOut(int loadNumber)
     {
+        
+        if (base.IsServer)
+            ChangeGunLoadOutObserver(loadNumber);
+
+        if (base.IsOwner)
+            ChangeGunLoadOutServer(loadNumber);
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void ChangeGunLoadOutServer(int loadout)
+    {
+        
         PrimaryGunsPrefabs[loadout].SetActive(true);
         foreach (GameObject Gun in PrimaryGunsPrefabs) //   <--- go back to here --------+
         {                               //                                |
@@ -206,6 +218,35 @@ public class PlayerGunSelector : NetworkBehaviour
         Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
         Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
     }
+    [ObserversRpc(BufferLast = true)]
+    public void ChangeGunLoadOutObserver(int loadout)
+    {
+        
+        PrimaryGunsPrefabs[loadout].SetActive(true);
+        foreach (GameObject Gun in PrimaryGunsPrefabs) //   <--- go back to here --------+
+        {                               //                                |
+            if (Gun == PrimaryGunsPrefabs[loadout])             //                                |
+            {                           //                                |
+                continue;   // Skip the remainder of this iteration. -----+
+            }
+
+            // do work            
+            Gun.SetActive(false);
+        }
+        foreach (GameObject Gun in SecondaryGunsPrefabs) //   <--- go back to here --------+
+        {                               //                                |
+            if (Gun == SecondaryGunsPrefabs[loadout])             //                                |
+            {                           //                                |
+                continue;   // Skip the remainder of this iteration. -----+
+            }
+
+            // do work
+            Gun.SetActive(false);
+        }
+        Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
+    }
+
     RaycastHit hitCheck;
     public float distanceObject;
     public float distancePlayer;
