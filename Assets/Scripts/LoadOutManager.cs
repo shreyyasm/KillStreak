@@ -229,7 +229,7 @@ public class LoadOutManager : NetworkBehaviour
         LoadOutMenu.SetActive(true);
         audioSource.PlayOneShot(loadoutUISFX);
         countdownState = true;
-        timeRemaining = 6;
+        timeRemaining = 100;
         
         StartCoroutine(playLoadoutSound());
 
