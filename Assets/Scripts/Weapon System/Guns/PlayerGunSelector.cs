@@ -300,13 +300,14 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         if(blocked)
         {
-            BlockUI.SetActive(true);
-            CrosshairUI.SetActive(false);
+            BlockUI.SetActive(true);         
+             CrosshairUI.SetActive(false);
         }
         else
         {
             BlockUI.SetActive(false);
-            CrosshairUI.SetActive(true);
+            if (loadOutManager.loadNumber != 3)
+                CrosshairUI.SetActive(true);
         }
     }
     public void CheckBlock()

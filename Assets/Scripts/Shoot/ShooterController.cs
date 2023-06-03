@@ -46,7 +46,9 @@ public class ShooterController : NetworkBehaviour
     float lastShotTime;
     private WeaponManager equippedWeapon;
 
-
+    [SerializeField] LoadOutManager loadOutManager;
+    [SerializeField] GameObject sniperScopeUI;
+    [SerializeField] GameObject crosshairUI;
     private void Awake()
     {
         //References       
@@ -132,6 +134,16 @@ public class ShooterController : NetworkBehaviour
                     thirdPersonController.SetSensitivity(aimSensitivity);
                     screenTouch.SetSensitivity(4);
                 }
+                if(loadOutManager.loadNumber == 3)
+                {
+                    crosshairUI.SetActive(false);
+                    sniperScopeUI.SetActive(true);
+                    var componentBase = aimVirtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
+                    if (componentBase is Cinemachine3rdPersonFollow)
+                    {
+                        (componentBase as Cinemachine3rdPersonFollow).CameraDistance = 0;
+                    }
+                }
                 if (FPSMode)
                 {
                     //socket.transform.localPosition = vfxSpawnOffset;
@@ -151,6 +163,14 @@ public class ShooterController : NetworkBehaviour
                     aimVirtualCamera.GetComponent<CinemachineVirtualCamera>().enabled = false;
                     thirdPersonController.SetSensitivity(normalSensitivity);
                 }
+                crosshairUI.SetActive(true);
+                sniperScopeUI.SetActive(false);
+                var componentBase = aimVirtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
+                if (componentBase is Cinemachine3rdPersonFollow)
+                {
+                    (componentBase as Cinemachine3rdPersonFollow).CameraDistance = 3.06f;
+                }
+                
                 if (gunType == 0)
                     animator.SetLayerWeight(1, 0);
                 else
@@ -230,6 +250,8 @@ public class ShooterController : NetworkBehaviour
         animator.SetLayerWeight(3, 0);
         animator.SetLayerWeight(1, 0);
     }
+    
+
     
 
 }
