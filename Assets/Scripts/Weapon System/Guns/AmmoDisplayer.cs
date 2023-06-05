@@ -6,6 +6,8 @@ public class AmmoDisplayer : NetworkBehaviour
 {
     [SerializeField]
     private PlayerGunSelector GunSelector;
+    [SerializeField]
+    private LoadOutManager loadOutManager;
     [SerializeField] GameObject PrimaryGunHighlight;
     [SerializeField] GameObject SecondaryGunHighlight;
     [SerializeField] TextMeshProUGUI AmmoTextGunPrimary;
@@ -27,20 +29,26 @@ public class AmmoDisplayer : NetworkBehaviour
         if (!base.IsOwner)
             return;
         
-        if(GunSelector.ActiveGun.Automatic)
-        {
+        
             AmmoTextGunPrimary.SetText
            ($"{ GunSelector.gun1.AmmoConfig.CurrentClipAmmo} / "
            + $"{GunSelector.gun1.AmmoConfig.CurrentAmmo}");
-
-            PrimaryGunHighlight.SetActive(true);
-            SecondaryGunHighlight.SetActive(false);
-        }
-        if (!GunSelector.ActiveGun.Automatic)
-        {
+        
+        
             AmmoTextGunSecondary.SetText
            ($"{ GunSelector.gun2.AmmoConfig.CurrentClipAmmo} / "
            + $"{GunSelector.gun2.AmmoConfig.CurrentAmmo}");
+        
+    }
+    public void ChangeGunSelectedUI(int index)
+    {
+        if(index == 0)
+        {
+            PrimaryGunHighlight.SetActive(true);
+            SecondaryGunHighlight.SetActive(false);
+        }
+        else
+        {          
             PrimaryGunHighlight.SetActive(false);
             SecondaryGunHighlight.SetActive(true);
         }

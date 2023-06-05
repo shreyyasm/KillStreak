@@ -260,14 +260,17 @@ public class WeaponSwitching : NetworkBehaviour
             fakeGun.gameObject.SetActive(false);
         }
     }
-    public void ChangeGunIndex()
+    public void ChangeGunIndex(int index)
     {
+        if(selectedWeapon != index)
+        {
+            if (base.IsClient)
+                ChangeGunServer();
 
-        if(base.IsClient)
-            ChangeGunServer();
-
-        if (base.IsServer)
-            ChangeGunObserver();
+            if (base.IsServer)
+                ChangeGunObserver();
+        }
+        
 
     }
     [ServerRpc(RequireOwnership = false , RunLocally = true)]

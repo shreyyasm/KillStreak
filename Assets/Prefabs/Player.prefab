@@ -12201,7 +12201,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 7
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 774665742
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects:
@@ -20090,6 +20090,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   GunSelector: {fileID: 854605398997728390}
+  loadOutManager: {fileID: 5050372454195438821}
   PrimaryGunHighlight: {fileID: 8252717096137253363}
   SecondaryGunHighlight: {fileID: 1982171406297234843}
   AmmoTextGunPrimary: {fileID: 2571795871527664365}
@@ -25156,6 +25157,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   GunSelector: {fileID: 854605398997728390}
+  loadOutManager: {fileID: 0}
   PrimaryGunHighlight: {fileID: 0}
   SecondaryGunHighlight: {fileID: 0}
   AmmoTextGunPrimary: {fileID: 0}
@@ -28322,7 +28324,19 @@ MonoBehaviour:
       - m_Target: {fileID: 60764137881832743}
         m_TargetAssemblyTypeName: WeaponSwitching, Assembly-CSharp
         m_MethodName: ChangeGunIndex
-        m_Mode: 1
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7227589802432990891}
+        m_TargetAssemblyTypeName: AmmoDisplayer, Assembly-CSharp
+        m_MethodName: ChangeGunSelectedUI
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -28462,11 +28476,23 @@ MonoBehaviour:
       - m_Target: {fileID: 60764137881832743}
         m_TargetAssemblyTypeName: WeaponSwitching, Assembly-CSharp
         m_MethodName: ChangeGunIndex
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7227589802432990891}
+        m_TargetAssemblyTypeName: AmmoDisplayer, Assembly-CSharp
+        m_MethodName: ChangeGunSelectedUI
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
