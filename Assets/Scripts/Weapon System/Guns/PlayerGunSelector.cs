@@ -9,12 +9,13 @@ using FishNet;
 using FishNet.Utility.Performance;
 using System;
 using TMPro;
-
+using UnityEngine.Animations.Rigging;
 [DisallowMultipleComponent]
 public class PlayerGunSelector : NetworkBehaviour
 {
     public LayerMask IdentifyEnemy;
     public static PlayerGunSelector instance;
+    
     //[SerializeField]
     //private GunType PrimaryGun;
 
@@ -33,6 +34,8 @@ public class PlayerGunSelector : NetworkBehaviour
     [Header("Runtime Filled")]
     public GunScriptableObject ActiveGun;
 
+    [SerializeField]
+    private ShooterController shooterController;
     [SerializeField]
     private WeaponSwitching weaponSwitching;
     [SerializeField]
@@ -73,15 +76,20 @@ public class PlayerGunSelector : NetworkBehaviour
 
     public List<GameObject> PrimaryGunsPrefabs;
     public List<GameObject> SecondaryGunsPrefabs;
+
+    public List<GameObject> HideUI;
+    Animator anim;
     private void Awake()
     {
         instance = this;
         ActiveCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        anim = GetComponent<Animator>();
        
     }
     
     [SerializeField] bool aimAssist;
     [SerializeField] float aimAssistSize = 1f;
+    public TwoBoneIKConstraint SniperRig;
 
     private void Start()
     {  
@@ -144,7 +152,13 @@ public class PlayerGunSelector : NetworkBehaviour
 
         bulletTrail = ActiveGun.ReturnBullet();
         GunModelRecoil();
+        if (anim.GetCurrentAnimatorStateInfo(8).IsName("Sniper Idle Reload") && anim.GetCurrentAnimatorStateInfo(8).normalizedTime > 1f)
+        {
+            anim.SetBool("SniperReload", false);
+            anim.SetLayerWeight(8, 0);
+            SniperRig.weight = 1;
 
+        }
         if (playerAction.IsShooting )
         {
             if(!playerAction.IsReloading)
@@ -523,10 +537,12 @@ public class PlayerGunSelector : NetworkBehaviour
                 / ActiveGun.ShootConfig.RecoilRecoverySpeed;
 
             ActiveGun.InitialClickTime = Time.time - Mathf.Lerp(0, lastDuration, Mathf.Clamp01(lerpTime));
+            
         }
+       
         if (Time.time > ActiveGun.ShootConfig.FireRate + ActiveGun.LastShootTime)
         {
-
+            
             ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
 
@@ -543,7 +559,7 @@ public class PlayerGunSelector : NetworkBehaviour
                                ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
 
-
+            
             if (!blocked)
                 ray = Camera.main.ScreenPointToRay(screenCenterPoint);
             else
@@ -649,10 +665,40 @@ public class PlayerGunSelector : NetworkBehaviour
                      );
                 }
             }
+            if(loadOutManager.loadNumber == 3)
+            {
+                if(ActiveGun.AmmoConfig.CurrentClipAmmo != 1)
+                {
+                    SniperRig.weight = 0;
+                    anim.SetLayerWeight(8, 1);
+                    anim.SetBool("SniperReload", true);
+                    
+                }
+                if (shooterController.Aiming)
+                    StartCoroutine(CallAim());
+            }
         }
     }
-
-    
+    public void HideUIScope()
+    {
+        foreach (GameObject i in HideUI)
+        {
+            i.SetActive(false);
+        }
+    }
+    public void ShowUIScope()
+    {
+        foreach (GameObject i in HideUI)
+        {
+            i.SetActive(true);
+        }
+    }
+    public IEnumerator CallAim()
+    {
+        
+        yield return new WaitForSeconds(0.1f);
+        shooterController.Aim();
+    }
     [SerializeField] GameObject sphere;
     public GameObject CinemachineCameraTarget;
     //private void OnDrawGizmos()

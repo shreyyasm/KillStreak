@@ -36,6 +36,7 @@ public class GunScriptableObject : ScriptableObject
     private ObjectPool<Bullet> BulletPool;
     private bool LastFrameWantedToShoot;
     public bool Automatic;
+    public bool sniper;
     public bool Fired = false;
     GameObject fpsVirtualCamera;
     public GameObject aimVirtualCamera;
@@ -199,7 +200,7 @@ public class GunScriptableObject : ScriptableObject
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
             Camera.main.transform.forward += Camera.main.transform.TransformDirection(spreadAmount);
             ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-
+            
             followVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
             aimVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
             //fpsVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
@@ -255,8 +256,18 @@ public class GunScriptableObject : ScriptableObject
             Camera.main.transform.forward += Camera.main.transform.TransformDirection(spreadAmount);
             ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 
-            followVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
-            aimVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
+
+            
+            if(sniper)
+            {
+                aimVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(5f, 0.2f);
+                followVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(2f, 0.1f);
+            }
+            else
+            {
+                followVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
+                aimVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
+            }
             //fpsVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(1f, 0.1f);
             AmmoConfig.CurrentClipAmmo--;
             Fired = false;

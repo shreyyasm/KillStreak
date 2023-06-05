@@ -4589,7 +4589,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1202611555}
-  m_LocalRotation: {x: 0.0017699768, y: 0.9573838, z: -0.00040239032, w: -0.28881285}
+  m_LocalRotation: {x: 0.0017699769, y: 0.9573839, z: -0.00040239035, w: -0.28881288}
   m_LocalPosition: {x: 0.97, y: 1.24, z: 1.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6458,7 +6458,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1659712665}
-  m_LocalRotation: {x: -0, y: -0, z: 0.37676626, w: 0.92630833}
+  m_LocalRotation: {x: -0, y: -0, z: 0.3767663, w: 0.9263084}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9734,7 +9734,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 156.79016, y: 130.30203}
+  m_AnchoredPosition: {x: 156.79022, y: 130.30203}
   m_SizeDelta: {x: 307.6056, y: 307.6056}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1143081342787602565
@@ -11609,12 +11609,12 @@ GameObject:
   - component: {fileID: 854605398997728390}
   - component: {fileID: 9044173883987566760}
   - component: {fileID: 4054249764369702957}
-  - component: {fileID: 6244507733190848712}
   - component: {fileID: 6007887100391698674}
   - component: {fileID: 19180172534219905}
   - component: {fileID: 8730711434545529099}
   - component: {fileID: 5050372454195438821}
   - component: {fileID: 3706598513884092583}
+  - component: {fileID: 5103983383040094463}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -11794,7 +11794,13 @@ MonoBehaviour:
   fPSController: {fileID: 907125332259791855}
   screenTouch: {fileID: 851728118480952254}
   weaponSwitching: {fileID: 60764137881832743}
+  playerGunSelector: {fileID: 854605398997728390}
+  Aiming: 0
+  audioSource: {fileID: 2642229600970816704}
+  aimSFX: {fileID: 8300000, guid: 094ff0705adb9a140ae266bc4f58683a, type: 3}
   fpsVirtualCamera: {fileID: 5053357033847115765}
+  aimVirtualCamera: {fileID: 0}
+  followVirtualCamera: {fileID: 0}
   starterAssetsInputs: {fileID: 7956819663115241435}
   thirdPersonController: {fileID: 2496182270735987648}
   animator: {fileID: 7951086517301486932}
@@ -12205,6 +12211,7 @@ MonoBehaviour:
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects:
+  - {fileID: 8606142165491801254}
   - {fileID: 0}
   - {fileID: 0}
 --- !u!114 &6017902892697103238
@@ -12308,6 +12315,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 54474d457e00a4b488efedd7e1752d10, type: 2}
   InverseKinematics: {fileID: 9044173883987566760}
   ActiveGun: {fileID: 0}
+  shooterController: {fileID: 7997988506348976479}
   weaponSwitching: {fileID: 60764137881832743}
   surfaceManager: {fileID: 8730711434545529099}
   floatingDamage: {fileID: 7328555219826364907}
@@ -12341,8 +12349,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f2909b98d51e94c42959d34ee776f8c3, type: 2}
   PrimaryGunsPrefabs: []
   SecondaryGunsPrefabs: []
+  HideUI:
+  - {fileID: 6244507732844290214}
+  - {fileID: 6244507732968811321}
+  - {fileID: 1336044721}
+  - {fileID: 339498774}
   aimAssist: 1
   aimAssistSize: 1
+  SniperRig: {fileID: 7766091144930360267}
   sphereCastRadius: 0.2
   range: 100
   distanceObject: 0
@@ -12407,420 +12421,6 @@ MonoBehaviour:
   resetShooting: 0
   IsChangingGun: 0
   anim: {fileID: 7951086517301486932}
---- !u!114 &6244507733190848712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 965142408394958343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 246455474a0d74a4291b3cedc896ebdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bonePaths:
-  - 
-  - PlayerCameraRoot
-  - Root
-  - Root/Hips
-  - Root/Hips/Spine_01
-  - Root/Hips/Spine_01/Spine_02
-  - Root/Hips/Spine_01/Spine_02/Spine_03
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Finger_01
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Finger_01/Finger_02
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Finger_01/Finger_02/Finger_03
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Finger_01/Finger_02/Finger_03/Finger_04
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/IndexFinger_01
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/IndexFinger_01/IndexFinger_02
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/IndexFinger_01/IndexFinger_02/IndexFinger_03
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/IndexFinger_01/IndexFinger_02/IndexFinger_03/IndexFinger_04
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Thumb_01
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Thumb_01/Thumb_02
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Thumb_01/Thumb_02/Thumb_03
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Finger_01
-    1
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Finger_01
-    1/Finger_02 1
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Finger_01
-    1/Finger_02 1/Finger_03 1
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Finger_01
-    1/Finger_02 1/Finger_03 1/Finger_04 1
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/IndexFinger_01
-    1
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/IndexFinger_01
-    1/IndexFinger_02 1
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/IndexFinger_01
-    1/IndexFinger_02 1/IndexFinger_03 1
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/IndexFinger_01
-    1/IndexFinger_02 1/IndexFinger_03 1/IndexFinger_04 1
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Thumb_01
-    1
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Thumb_01
-    1/Thumb_02 1
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Thumb_01
-    1/Thumb_02 1/Thumb_03 1
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Secon
-    Hand Grab Weapon_target
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Secon
-    Hand Grab Weapon_hint
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/SOCKET_Muzzle
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Inventory
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Second
-    Hand Grab Weapon_target
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Second
-    Hand Grab Weapon_target 2
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Second
-    Hand Grab Weapon_hint 2
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/GunPosition
-    Unequip
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/GunPosition
-    Hand
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Neck
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/Eyebrows
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/Eyes
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/SM_Chr_Attach_Earmuffs_01
-  - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/SM_Chr_Attach_Female_Hair_01
-  - Root/Hips/Spine_01/Spine_02/SM_PickUp_Bag_02
-  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04
-  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Flash_04
-  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Mag_04
-  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Slide_04
-  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Stock_04
-  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/SM_Wep_Rifle_Assault_Trigger_04
-  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/Spawn Bullet Position
-  - Root/Hips/Spine_01/SM_Wep_Rifle_Assault_04/TPP SpawnPosition
-  - Root/Hips/Spine_01/Pistol
-  - Root/Hips/Spine_01/Pistol/SM_Wep_Pistol_Heavy_Mag_01
-  - Root/Hips/Spine_01/Pistol/SM_Wep_Pistol_Heavy_Slide_01
-  - Root/Hips/Spine_01/Pistol/SM_Wep_Pistol_Heavy_Slide_01/SM_Wep_Pistol_Heavy_Hammer_01
-  - Root/Hips/Spine_01/Pistol/SM_Wep_Pistol_Heavy_Trigger_01
-  - Root/Hips/Spine_01/Pistol/SpawnBulletPosition
-  - Root/Hips/Spine_01/Pistol/GameObject
-  - Root/Hips/Spine_01/Pistol/TPP SpawnPosition
-  - Root/Hips/UpperLeg_L
-  - Root/Hips/UpperLeg_L/LowerLeg_L
-  - Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L
-  - Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L/Ball_L
-  - Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L/Ball_L/Toes_L
-  - Root/Hips/UpperLeg_R
-  - Root/Hips/UpperLeg_R/LowerLeg_R
-  - Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R
-  - Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R/Ball_R
-  - Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R/Ball_R/Toes_R
-  - Character_70sFemale_01
-  - Character_BusinessMale_01
-  - Character_GhillieSuit_01
-  - Character_GothFemale_01
-  - Character_MercenaryFemale_01
-  - Character_MercenaryMale_01
-  - Character_MilitaryFemale_01
-  - Character_MilitaryMale_01
-  - Character_RedneckMale_01
-  - Character_SportsBraFemale_01
-  - Character_SportyFemale_01
-  - Character_SportyFemale_02
-  - Character_SportyMale_01
-  - Character_SportyMale_02
-  - Character_ToplessMale_01
-  - SM_Char_Attach_Female_Armor_01
-  - SM_Char_Attach_Female_Armor_02
-  - SM_Char_Attach_Female_Armor_03
-  - SM_Char_Attach_Male_Armor_01
-  - SM_Char_Attach_Male_Armor_02
-  - SM_Char_Attach_Male_Armor_03
-  - Sphere
-  - Rig Main
-  - Rig Main/BodyAim
-  - Rig Main/HeadRotate
-  - Rig Main/Aim
-  - Rig Pistol
-  - Rig Pistol/Aim (1)
-  - Rig Pistol/Right Hand
-  - Rig Pistol/Secon Hand Grab Weapon
-  - Rig Rifle
-  - Rig Rifle/Body Aim
-  - Rig Rifle/HeadRotate
-  - Rig Rifle/Aim
-  - Rig Rifle/Aim (1)
-  - Rig Rifle/Right Hand
-  - Rig Rifle/Second Hand Grab Weapon
-  - FPS Camera
-  - FPS Camera/cm
-  - FPS Camera/P_LPSP_FP_CH
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_foot_root
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_foot_root/ik_foot_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_foot_root/ik_foot_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/ik_hand_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/ik_hand_l/Effector
-    Hand Left
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/ik_hand_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/ik_hand_r/Effector
-    Hand Right
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/bolt
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/magazine
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/magazine/SOCKET_Magazine
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/magazine/SOCKET_Magazine/SM_AR_01_Magazine_Default
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Default
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Default/SM_AR_01_Scope_Default
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Eject
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Eject/SOCKET_Eject_C
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Grip
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Laser
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Muzzle
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Muzzle/P_LPSP_WEP_ATT_Muzzles
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Muzzle/P_LPSP_WEP_ATT_Muzzles/P_LPSP_WEP_ATT_Muzzle
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Muzzle/P_LPSP_WEP_ATT_Muzzles/P_LPSP_WEP_ATT_Muzzle/SOCKET_Muzzle
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Scope
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SM_AR_01
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/hammer
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/magazine
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/magazine/SOCKET_Magazine
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/magazine/SOCKET_Magazine/SM_Handgun_03_Magazine_Default
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/slide
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/slide/SOCKET_Default
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/slide/SOCKET_Default/SM_Handgun_03_Scope_Default
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/slide/SOCKET_Scope
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Eject
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Eject/SOCKET_Eject_C
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Grip
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Laser
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Muzzle
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Muzzle/P_LPSP_WEP_ATT_Muzzles
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Muzzle/P_LPSP_WEP_ATT_Muzzles/P_LPSP_WEP_ATT_Muzzle
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Muzzle/P_LPSP_WEP_ATT_Muzzles/P_LPSP_WEP_ATT_Muzzle/SOCKET_Muzzle
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SM_Handgun_03
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/Pistol
-    (1)
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/Pistol
-    (1)/SM_Wep_Pistol_Heavy_Mag_01
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/Pistol
-    (1)/SM_Wep_Pistol_Heavy_Slide_01
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/Pistol
-    (1)/SM_Wep_Pistol_Heavy_Slide_01/SM_Wep_Pistol_Heavy_Hammer_01
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/Pistol
-    (1)/SM_Wep_Pistol_Heavy_Trigger_01
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/Pistol
-    (1)/SpawnBulletPositionFPS
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/index_01_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/index_01_l/index_02_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/index_01_l/index_02_l/index_03_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/middle_01_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/middle_01_l/middle_02_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/middle_01_l/middle_02_l/middle_03_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/pinky_01_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/pinky_01_l/pinky_02_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/pinky_01_l/pinky_02_l/pinky_03_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/ring_01_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/ring_01_l/ring_02_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/ring_01_l/ring_02_l/ring_03_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/thumb_01_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/thumb_01_l/thumb_02_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/thumb_01_l/thumb_02_l/thumb_03_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/hand_l_holder
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/lowerarm_twist_01_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/upperarm_twist_01_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/index_01_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/index_01_r/index_02_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/index_01_r/index_02_r/index_03_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/middle_01_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/middle_01_r/middle_02_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/middle_01_r/middle_02_r/middle_03_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/pinky_01_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/pinky_01_r/pinky_02_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/pinky_01_r/pinky_02_r/pinky_03_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/ring_01_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/ring_01_r/ring_02_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/ring_01_r/ring_02_r/ring_03_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/thumb_01_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/thumb_01_r/thumb_02_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/thumb_01_r/thumb_02_r/thumb_03_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/lowerarm_twist_01_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/upperarm_twist_01_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/neck_01
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/neck_01/head
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/neck_01/head/SOCKET_Camera
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/neck_01/head/SOCKET_Camera/Camera
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/neck_01/head/SOCKET_Camera/Camera/Camera
-    Depth
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_l/calf_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_l/calf_l/calf_twist_01_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_l/calf_l/foot_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_l/calf_l/foot_l/ball_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_l/thigh_twist_01_l
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_r/calf_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_r/calf_r/calf_twist_01_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_r/calf_r/foot_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_r/calf_r/foot_r/ball_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_r/thigh_twist_01_r
-  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/SK_FP_CH_Default
-  - FPS Camera/Camera
-  - UI_Canvas_StarterAssetsInputs_Joysticks
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Start Game
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Start Game/Button
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Start Game/Button/Text (TMP)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_TouchZone
-  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_TouchZone/Image_Handle
-  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_TouchZone/Image_Handle/Image_Icon
-  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Move
-  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Move/Image_Handle
-  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Move/Image_Handle/Image_Icon
-  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Look
-  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Look/Image_Handle
-  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Look/Image_Handle/Image_Icon
-  - UI_Canvas_StarterAssetsInputs_Joysticks/TouchZone
-  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Button_Jump
-  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Button_Jump/Image_Icon
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Aim
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Aim/Image_Icon
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Aim/Image_Icon (1)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Change Gun
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Change Gun/Text (Legacy)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Fire
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Fire/Image_Icon
-  - UI_Canvas_StarterAssetsInputs_Joysticks/AR
-  - UI_Canvas_StarterAssetsInputs_Joysticks/AR/Text (Legacy)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Change Mode
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Change Mode/Text (Legacy)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/BulletShow
-  - UI_Canvas_StarterAssetsInputs_Joysticks/BulletShow/Bullets
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Reload
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Reload/Image_Icon
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Change Gun
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Change Gun/Image_Icon
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Crosshair
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/Base
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/Base/Base
-    (1)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/TensionUp
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/TensionDown
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/TensionLeft
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/TensionRight
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/Joystick
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Crouch
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Crouch/Image_Icon
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (2)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (2)/Image
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (2)/Image
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (2)/Text
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (2)/Text (1)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (3)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (3)/Image
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (3)/Text (2)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/Btn_Gun1 (3)/Text (3)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/AimAssist
-  - UI_Canvas_StarterAssetsInputs_Joysticks/AimAssist/Text (TMP)
-  - UI_Canvas_StarterAssetsInputs_Joysticks/AimAssist/On and Off
-  - Surface Manager (1)
-  showBones: 000000000400000005000000060000000700000008000000090000000a000000160000001700000018000000190000002e0000002f000000450000004600000047000000480000004a0000004b0000004c0000004d000000
-  foldoutBones: ee000000ec000000eb000000e8000000e6000000e5000000e3000000e2000000e1000000e0000000dc000000db000000d9000000d8000000d6000000d5000000d3000000d2000000d0000000cf000000ce000000cd000000cc000000cb000000c6000000c5000000c3000000c2000000c0000000bf000000bd000000bc000000ba000000b9000000b8000000b7000000b6000000b5000000b4000000b3000000b2000000b1000000ad000000ab000000a8000000a7000000a6000000a20000009f0000009e0000009c0000009b0000009900000098000000970000009300000092000000910000008d0000008b000000890000008800000086000000850000008400000083000000810000007f0000007e0000007d0000007a000000790000007800000077000000760000004d0000004c0000004b0000004a000000480000004700000046000000450000002f0000002e0000002300000022000000200000001f0000001e0000001c0000001b0000001a00000019000000180000001700000016000000140000001300000011000000100000000f0000000d0000000c0000000b0000000a000000090000000800000007000000060000000500000004000000030000000200000000000000
-  mirrorBones: ffffffffffffffffffffffffffffffffffffffffffffffffffffffff160000001700000018000000190000001a0000001b0000001c000000ffffffff1e0000001f00000020000000ffffffff2200000023000000240000000700000008000000090000000a0000000b0000000c0000000d000000ffffffff0f0000001000000011000000ffffffff130000001400000015000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4a0000004b0000004c0000004d0000004e0000004500000046000000470000004800000049000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7c0000007b000000ffffffffffffffff81000000820000007f00000080000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffcb000000cc000000cd000000ce000000cf000000d0000000d1000000d2000000d3000000d4000000d5000000d6000000d7000000d8000000d9000000da000000db000000dc000000dd000000ffffffffde000000df000000b5000000b6000000b7000000b8000000b9000000ba000000bb000000bc000000bd000000be000000bf000000c0000000c1000000c2000000c3000000c4000000c5000000c6000000c7000000c9000000ca000000ffffffffffffffffffffffffffffffffffffffffeb000000ec000000ed000000ee000000ef000000f0000000e5000000e6000000e7000000e8000000e9000000ea000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-  mirrorBlendShape: []
-  animatorIkData:
-  - enable: 0
-    _fixed: 0
-    autoRotation: 0
-    spaceType: 0
-    parent: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-    headWeight: 1
-    eyesWeight: 0
-    swivelRotation: 0
-    swivelPosition: {x: 0, y: 0, z: 0}
-    parentPath: 
-  - enable: 0
-    _fixed: 0
-    autoRotation: 0
-    spaceType: 0
-    parent: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-    headWeight: 1
-    eyesWeight: 0
-    swivelRotation: 0
-    swivelPosition: {x: 0, y: 0, z: 0}
-    parentPath: 
-  - enable: 0
-    _fixed: 0
-    autoRotation: 0
-    spaceType: 0
-    parent: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-    headWeight: 1
-    eyesWeight: 0
-    swivelRotation: 0
-    swivelPosition: {x: 0, y: 0, z: 0}
-    parentPath: 
-  - enable: 0
-    _fixed: 0
-    autoRotation: 0
-    spaceType: 0
-    parent: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-    headWeight: 1
-    eyesWeight: 0
-    swivelRotation: 0
-    swivelPosition: {x: 0, y: 0, z: 0}
-    parentPath: 
-  - enable: 0
-    _fixed: 0
-    autoRotation: 0
-    spaceType: 0
-    parent: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-    headWeight: 1
-    eyesWeight: 0
-    swivelRotation: 0
-    swivelPosition: {x: 0, y: 0, z: 0}
-    parentPath: 
-  originalIkData: []
-  selectionData: []
-  lastSelectAnimationClip: {fileID: 7400000, guid: 7b93ef927aef9214da66f3a5d3edb9f6,
-    type: 2}
-  handPoseList: []
-  blendShapeList: []
 --- !u!114 &6007887100391698674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13086,6 +12686,579 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5103983383040094463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965142408394958343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 246455474a0d74a4291b3cedc896ebdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bonePaths:
+  - 
+  - PlayerCameraRoot
+  - Root
+  - Root/Hips
+  - Root/Hips/Spine_01
+  - Root/Hips/Spine_01/Spine_02
+  - Root/Hips/Spine_01/Spine_02/Spine_03
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Finger_01
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Finger_01/Finger_02
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Finger_01/Finger_02/Finger_03
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Finger_01/Finger_02/Finger_03/Finger_04
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/IndexFinger_01
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/IndexFinger_01/IndexFinger_02
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/IndexFinger_01/IndexFinger_02/IndexFinger_03
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/IndexFinger_01/IndexFinger_02/IndexFinger_03/IndexFinger_04
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Thumb_01
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Thumb_01/Thumb_02
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Thumb_01/Thumb_02/Thumb_03
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Finger_01
+    1
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Finger_01
+    1/Finger_02 1
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Finger_01
+    1/Finger_02 1/Finger_03 1
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Finger_01
+    1/Finger_02 1/Finger_03 1/Finger_04 1
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/IndexFinger_01
+    1
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/IndexFinger_01
+    1/IndexFinger_02 1
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/IndexFinger_01
+    1/IndexFinger_02 1/IndexFinger_03 1
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/IndexFinger_01
+    1/IndexFinger_02 1/IndexFinger_03 1/IndexFinger_04 1
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Thumb_01
+    1
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Thumb_01
+    1/Thumb_02 1
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Thumb_01
+    1/Thumb_02 1/Thumb_03 1
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Secon
+    Hand Grab Weapon_target
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Secon
+    Hand Grab Weapon_hint
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/SOCKET_Muzzle
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Inventory
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Inventory/PrimaryGuns
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Inventory/SecondaryGuns
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Second
+    Hand Grab Weapon_target
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Second
+    Hand Grab Weapon_target 2
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Second
+    Hand Grab Weapon_hint 2
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/GunPosition
+    Unequip
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/GunPosition
+    Hand
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Neck
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/Eyebrows
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/Eyes
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/SM_Chr_Attach_Earmuffs_01
+  - Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/SM_Chr_Attach_Female_Hair_01
+  - Root/Hips/Spine_01/Spine_02/SM_PickUp_Bag_02
+  - Root/Hips/Spine_01/Primary FakeGuns
+  - Root/Hips/Spine_01/Primary FakeGuns/G36C
+  - Root/Hips/Spine_01/Primary FakeGuns/G36C/SM_Wep_Rifle_Assault_Flash_04
+  - Root/Hips/Spine_01/Primary FakeGuns/G36C/SM_Wep_Rifle_Assault_Mag_04
+  - Root/Hips/Spine_01/Primary FakeGuns/G36C/SM_Wep_Rifle_Assault_Slide_04
+  - Root/Hips/Spine_01/Primary FakeGuns/G36C/SM_Wep_Rifle_Assault_Stock_04
+  - Root/Hips/Spine_01/Primary FakeGuns/G36C/SM_Wep_Rifle_Assault_Trigger_04
+  - Root/Hips/Spine_01/Primary FakeGuns/G36C/Spawn Bullet Position
+  - Root/Hips/Spine_01/Primary FakeGuns/G36C/TPP SpawnPosition
+  - Root/Hips/Spine_01/Primary FakeGuns/AK47
+  - Root/Hips/Spine_01/Primary FakeGuns/AK47/SM_Wep_Rifle_Assault_Flash_03
+  - Root/Hips/Spine_01/Primary FakeGuns/AK47/SM_Wep_Rifle_Assault_Mag_03
+  - Root/Hips/Spine_01/Primary FakeGuns/AK47/SM_Wep_Rifle_Assault_Slide_03
+  - Root/Hips/Spine_01/Primary FakeGuns/AK47/SM_Wep_Rifle_Assault_Trigger_03
+  - Root/Hips/Spine_01/Primary FakeGuns/P90
+  - Root/Hips/Spine_01/Primary FakeGuns/P90/SM_Wep_SubMGun_Mag_01
+  - Root/Hips/Spine_01/Primary FakeGuns/P90/SM_Wep_SubMGun_Slide_01
+  - Root/Hips/Spine_01/Primary FakeGuns/P90/SM_Wep_SubMGun_Trigger_01
+  - Root/Hips/Spine_01/Primary FakeGuns/M24
+  - Root/Hips/Spine_01/Primary FakeGuns/M24/SM_Wep_Sniper_Mil_Bolt_01
+  - Root/Hips/Spine_01/Primary FakeGuns/M24/SM_Wep_Sniper_Mil_Scope_01
+  - Root/Hips/Spine_01/Primary FakeGuns/M24/SM_Wep_Sniper_Mil_Stock_01
+  - Root/Hips/Spine_01/Primary FakeGuns/M24/SM_Wep_Sniper_Mil_Trigger_01
+  - Root/Hips/Spine_01/Primary FakeGuns/S189
+  - Root/Hips/Spine_01/Primary FakeGuns/S189/SM_Wep_Shotgun_Pump_01
+  - Root/Hips/Spine_01/Primary FakeGuns/S189/SM_Wep_Shotgun_Slide_01
+  - Root/Hips/Spine_01/Primary FakeGuns/S189/SM_Wep_Shotgun_Stock_01
+  - Root/Hips/Spine_01/Primary FakeGuns/S189/SM_Wep_Shotgun_Stock_01/SM_Wep_Shotgun_StockPad_01
+  - Root/Hips/Spine_01/Primary FakeGuns/S189/SM_Wep_Shotgun_Trigger_01
+  - Root/Hips/Spine_01/Secondary FakeGuns
+  - Root/Hips/Spine_01/Secondary FakeGuns/R45
+  - Root/Hips/Spine_01/Secondary FakeGuns/R45/SM_Wep_Pistol_Revolver_CylinderFlip_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/R45/SM_Wep_Pistol_Revolver_CylinderFlip_01/SM_Wep_Pistol_Revolver_Cylinder_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/R45/SM_Wep_Pistol_Revolver_CylinderFlip_01/SM_Wep_Pistol_Revolver_Cylinder_01/SM_Wep_Pistol_Revolver_Bullet_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/R45/SM_Wep_Pistol_Revolver_CylinderFlip_01/SM_Wep_Pistol_Revolver_Cylinder_01/SM_Wep_Pistol_Revolver_Bullet_02
+  - Root/Hips/Spine_01/Secondary FakeGuns/R45/SM_Wep_Pistol_Revolver_CylinderFlip_01/SM_Wep_Pistol_Revolver_Cylinder_01/SM_Wep_Pistol_Revolver_Bullet_03
+  - Root/Hips/Spine_01/Secondary FakeGuns/R45/SM_Wep_Pistol_Revolver_CylinderFlip_01/SM_Wep_Pistol_Revolver_Cylinder_01/SM_Wep_Pistol_Revolver_Bullet_04
+  - Root/Hips/Spine_01/Secondary FakeGuns/R45/SM_Wep_Pistol_Revolver_CylinderFlip_01/SM_Wep_Pistol_Revolver_Cylinder_01/SM_Wep_Pistol_Revolver_Bullet_05
+  - Root/Hips/Spine_01/Secondary FakeGuns/R45/SM_Wep_Pistol_Revolver_CylinderFlip_01/SM_Wep_Pistol_Revolver_Cylinder_01/SM_Wep_Pistol_Revolver_Bullet_06
+  - Root/Hips/Spine_01/Secondary FakeGuns/R45/SM_Wep_Pistol_Revolver_Hammer_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/R45/SM_Wep_Pistol_Revolver_Trigger_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/P1911
+  - Root/Hips/Spine_01/Secondary FakeGuns/P1911/SM_Wep_Pistol_Heavy_Mag_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/P1911/SM_Wep_Pistol_Heavy_Slide_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/P1911/SM_Wep_Pistol_Heavy_Slide_01/SM_Wep_Pistol_Heavy_Hammer_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/P1911/SM_Wep_Pistol_Heavy_Trigger_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/P1911/SpawnBulletPosition
+  - Root/Hips/Spine_01/Secondary FakeGuns/P1911/GameObject
+  - Root/Hips/Spine_01/Secondary FakeGuns/P1911/TPP SpawnPosition
+  - Root/Hips/Spine_01/Secondary FakeGuns/R189
+  - Root/Hips/Spine_01/Secondary FakeGuns/R189/SM_Wep_Revolver_Snub_CylinderFlip_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/R189/SM_Wep_Revolver_Snub_CylinderFlip_01/SM_Wep_Revolver_Snub_Cylinder_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/R189/SM_Wep_Revolver_Snub_CylinderFlip_01/SM_Wep_Revolver_Snub_Cylinder_01/SM_Wep_Revolver_Snub_Bullet_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/R189/SM_Wep_Revolver_Snub_CylinderFlip_01/SM_Wep_Revolver_Snub_Cylinder_01/SM_Wep_Revolver_Snub_Bullet_02
+  - Root/Hips/Spine_01/Secondary FakeGuns/R189/SM_Wep_Revolver_Snub_CylinderFlip_01/SM_Wep_Revolver_Snub_Cylinder_01/SM_Wep_Revolver_Snub_Bullet_03
+  - Root/Hips/Spine_01/Secondary FakeGuns/R189/SM_Wep_Revolver_Snub_CylinderFlip_01/SM_Wep_Revolver_Snub_Cylinder_01/SM_Wep_Revolver_Snub_Bullet_04
+  - Root/Hips/Spine_01/Secondary FakeGuns/R189/SM_Wep_Revolver_Snub_CylinderFlip_01/SM_Wep_Revolver_Snub_Cylinder_01/SM_Wep_Revolver_Snub_Bullet_05
+  - Root/Hips/Spine_01/Secondary FakeGuns/R189/SM_Wep_Revolver_Snub_CylinderFlip_01/SM_Wep_Revolver_Snub_Cylinder_01/SM_Wep_Revolver_Snub_Bullet_06
+  - Root/Hips/Spine_01/Secondary FakeGuns/R189/SM_Wep_Revolver_Snub_Hammer_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/R189/SM_Wep_Revolver_Snub_Trigger_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/MP9
+  - Root/Hips/Spine_01/Secondary FakeGuns/MP9/SM_Wep_SubMGun_Lite_Grip_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/MP9/SM_Wep_SubMGun_Lite_Mag_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/MP9/SM_Wep_SubMGun_Lite_Slide_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/MP9/SM_Wep_SubMGun_Lite_Stock_01
+  - Root/Hips/Spine_01/Secondary FakeGuns/MP9/SM_Wep_SubMGun_Lite_Trigger_01
+  - Root/Hips/UpperLeg_L
+  - Root/Hips/UpperLeg_L/LowerLeg_L
+  - Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L
+  - Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L/Ball_L
+  - Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L/Ball_L/Toes_L
+  - Root/Hips/UpperLeg_R
+  - Root/Hips/UpperLeg_R/LowerLeg_R
+  - Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R
+  - Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R/Ball_R
+  - Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R/Ball_R/Toes_R
+  - Root/Camera
+  - Root/Spot Light
+  - Character_70sFemale_01
+  - Character_BusinessMale_01
+  - Character_GhillieSuit_01
+  - Character_GothFemale_01
+  - Character_MercenaryFemale_01
+  - Character_MercenaryMale_01
+  - Character_MilitaryFemale_01
+  - Character_MilitaryMale_01
+  - Character_RedneckMale_01
+  - Character_SportsBraFemale_01
+  - Character_SportyFemale_01
+  - Character_SportyFemale_02
+  - Character_SportyMale_01
+  - Character_SportyMale_02
+  - Character_ToplessMale_01
+  - SM_Char_Attach_Female_Armor_01
+  - SM_Char_Attach_Female_Armor_02
+  - SM_Char_Attach_Female_Armor_03
+  - SM_Char_Attach_Male_Armor_01
+  - SM_Char_Attach_Male_Armor_02
+  - SM_Char_Attach_Male_Armor_03
+  - Sphere
+  - Rig Main
+  - Rig Main/BodyAim
+  - Rig Main/HeadRotate
+  - Rig Main/Aim
+  - Rig Pistol
+  - Rig Pistol/Aim (1)
+  - Rig Pistol/Right Hand
+  - Rig Pistol/Secon Hand Grab Weapon
+  - Rig Rifle
+  - Rig Rifle/Body Aim
+  - Rig Rifle/HeadRotate
+  - Rig Rifle/Aim
+  - Rig Rifle/Aim (1)
+  - Rig Rifle/Right Hand
+  - Rig Rifle/Second Hand Grab Weapon
+  - FPS Camera
+  - FPS Camera/cm
+  - FPS Camera/P_LPSP_FP_CH
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_foot_root
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_foot_root/ik_foot_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_foot_root/ik_foot_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/ik_hand_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/ik_hand_l/Effector
+    Hand Left
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/ik_hand_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/ik_hand_r/Effector
+    Hand Right
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/bolt
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/magazine
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/magazine/SOCKET_Magazine
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/magazine/SOCKET_Magazine/SM_AR_01_Magazine_Default
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Default
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Default/SM_AR_01_Scope_Default
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Eject
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Eject/SOCKET_Eject_C
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Grip
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Laser
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Muzzle
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Muzzle/P_LPSP_WEP_ATT_Muzzles
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Muzzle/P_LPSP_WEP_ATT_Muzzles/P_LPSP_WEP_ATT_Muzzle
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Muzzle/P_LPSP_WEP_ATT_Muzzles/P_LPSP_WEP_ATT_Muzzle/SOCKET_Muzzle
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SKEL_AR_01/root/SOCKET_Scope
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_AR_01/SM_AR_01
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/hammer
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/magazine
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/magazine/SOCKET_Magazine
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/magazine/SOCKET_Magazine/SM_Handgun_03_Magazine_Default
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/slide
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/slide/SOCKET_Default
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/slide/SOCKET_Default/SM_Handgun_03_Scope_Default
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/slide/SOCKET_Scope
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Eject
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Eject/SOCKET_Eject_C
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Grip
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Laser
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Muzzle
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Muzzle/P_LPSP_WEP_ATT_Muzzles
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Muzzle/P_LPSP_WEP_ATT_Muzzles/P_LPSP_WEP_ATT_Muzzle
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SKEL_Handgun_03/root/SOCKET_Muzzle/P_LPSP_WEP_ATT_Muzzles/P_LPSP_WEP_ATT_Muzzle/SOCKET_Muzzle
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/P_LPSP_Inventory/P_LPSP_WEP_Handgun_03/SM_Handgun_03
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/Pistol
+    (1)
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/Pistol
+    (1)/SM_Wep_Pistol_Heavy_Mag_01
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/Pistol
+    (1)/SM_Wep_Pistol_Heavy_Slide_01
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/Pistol
+    (1)/SM_Wep_Pistol_Heavy_Slide_01/SM_Wep_Pistol_Heavy_Hammer_01
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/Pistol
+    (1)/SM_Wep_Pistol_Heavy_Trigger_01
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/ik_hand_root/ik_hand_gun/Pistol
+    (1)/SpawnBulletPositionFPS
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/index_01_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/index_01_l/index_02_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/index_01_l/index_02_l/index_03_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/middle_01_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/middle_01_l/middle_02_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/middle_01_l/middle_02_l/middle_03_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/pinky_01_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/pinky_01_l/pinky_02_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/pinky_01_l/pinky_02_l/pinky_03_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/ring_01_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/ring_01_l/ring_02_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/ring_01_l/ring_02_l/ring_03_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/thumb_01_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/thumb_01_l/thumb_02_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/thumb_01_l/thumb_02_l/thumb_03_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/hand_l_holder
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/lowerarm_twist_01_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/upperarm_twist_01_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/index_01_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/index_01_r/index_02_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/index_01_r/index_02_r/index_03_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/middle_01_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/middle_01_r/middle_02_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/middle_01_r/middle_02_r/middle_03_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/pinky_01_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/pinky_01_r/pinky_02_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/pinky_01_r/pinky_02_r/pinky_03_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/ring_01_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/ring_01_r/ring_02_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/ring_01_r/ring_02_r/ring_03_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/thumb_01_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/thumb_01_r/thumb_02_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/thumb_01_r/thumb_02_r/thumb_03_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/lowerarm_twist_01_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/upperarm_twist_01_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/neck_01
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/neck_01/head
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/neck_01/head/SOCKET_Camera
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/neck_01/head/SOCKET_Camera/Camera
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/spine_01/spine_02/spine_03/neck_01/head/SOCKET_Camera/Camera/Camera
+    Depth
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_l/calf_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_l/calf_l/calf_twist_01_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_l/calf_l/foot_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_l/calf_l/foot_l/ball_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_l/thigh_twist_01_l
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_r/calf_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_r/calf_r/calf_twist_01_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_r/calf_r/foot_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_r/calf_r/foot_r/ball_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/Armature/root/pelvis/thigh_r/thigh_twist_01_r
+  - FPS Camera/P_LPSP_FP_CH/SK_FP_CH_Default_Root/SK_FP_CH_Default
+  - FPS Camera/Camera
+  - UI_Canvas_StarterAssetsInputs_Joysticks
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Start Game
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Start Game/Button
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Start Game/Button/Text (TMP)
+  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_TouchZone
+  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_TouchZone/Image_Handle
+  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_TouchZone/Image_Handle/Image_Icon
+  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Move
+  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Move/Image_Handle
+  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Move/Image_Handle/Image_Icon
+  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Look
+  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Look/Image_Handle
+  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Joystick_Look/Image_Handle/Image_Icon
+  - UI_Canvas_StarterAssetsInputs_Joysticks/TouchZone
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Change Gun
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Change Gun/Text (Legacy)
+  - UI_Canvas_StarterAssetsInputs_Joysticks/AR
+  - UI_Canvas_StarterAssetsInputs_Joysticks/AR/Text (Legacy)
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Change Mode
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Change Mode/Text (Legacy)
+  - UI_Canvas_StarterAssetsInputs_Joysticks/BulletShow
+  - UI_Canvas_StarterAssetsInputs_Joysticks/BulletShow/Bullets
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Crosshair
+  - UI_Canvas_StarterAssetsInputs_Joysticks/BlockUI
+  - 'UI_Canvas_StarterAssetsInputs_Joysticks/Primary Gun '
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Primary Gun /HighlightPrimary
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Primary Gun /Text (1)
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Primary Gun /G36C UI
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Primary Gun /AK47 UI
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Primary Gun /P90 UI
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Primary Gun /M24 UI
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Primary Gun /S189 UI
+  - UI_Canvas_StarterAssetsInputs_Joysticks/SecondaryGun
+  - UI_Canvas_StarterAssetsInputs_Joysticks/SecondaryGun/Highlight Secondary
+  - UI_Canvas_StarterAssetsInputs_Joysticks/SecondaryGun/Text (3)
+  - UI_Canvas_StarterAssetsInputs_Joysticks/SecondaryGun/R45 UI
+  - UI_Canvas_StarterAssetsInputs_Joysticks/SecondaryGun/P1911 UI
+  - UI_Canvas_StarterAssetsInputs_Joysticks/SecondaryGun/R1895 UI
+  - UI_Canvas_StarterAssetsInputs_Joysticks/SecondaryGun/MP9 UI
+  - UI_Canvas_StarterAssetsInputs_Joysticks/AimAssist
+  - UI_Canvas_StarterAssetsInputs_Joysticks/AimAssist/Text (TMP)
+  - UI_Canvas_StarterAssetsInputs_Joysticks/AimAssist/On and Off
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Health Bar
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Health Bar/BG
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Health Bar/health Bar border
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Health Bar/Fill
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Scope
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Scope/Image
+  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Button_Jump
+  - UI_Canvas_StarterAssetsInputs_Joysticks/UI_Virtual_Button_Jump/Image_Icon
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/Base
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/Base/Base
+    (1)
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/TensionUp
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/TensionDown
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/TensionLeft
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/TensionRight
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Ultimate UI Canvas/Ultimate Joystick/JoystickSizeFolder/Joystick
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Fire
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Fire/Image_Icon
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Reload
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Reload/Image_Icon
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Crouch
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Crouch/Image_Icon
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Change Gun
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Change Gun/Image_Icon
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Aim
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Aim/Image_Icon
+  - UI_Canvas_StarterAssetsInputs_Joysticks/Aim/Image_Icon (1)
+  - Float Damage Canvas New
+  - Float Damage Canvas New/Text (TMP)
+  - LoadOut Canvas
+  - LoadOut Canvas/LoadOut Button
+  - LoadOut Canvas/LoadOut Button/Text (Legacy)
+  - LoadOut Canvas/LoadOut Button/Image
+  - LoadOut Canvas/Loadout
+  - LoadOut Canvas/Loadout/BG
+  - LoadOut Canvas/Loadout/BG/Text (TMP)
+  - LoadOut Canvas/Loadout/BG/Text (TMP) (1)
+  - LoadOut Canvas/Loadout/Holder
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (1)
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (1)/Bg
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (1)/Selection Img 1
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (1)/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (2)
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (2)/Bg
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (2)/Selection Img 2
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (2)/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (3)
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (3)/Bg
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (3)/Selection Img 3
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (3)/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (4)
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (4)/Bg
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (4)/Selection Img 4
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (4)/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (5)
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (5)/Bg
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (5)/Selection Img 5
+  - LoadOut Canvas/Loadout/Holder/Weapon Select (5)/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (1)/Gun Primary
+  - LoadOut Canvas/Loadout/Holder/LoadOut (1)/Gun Primary/Image Gun
+  - LoadOut Canvas/Loadout/Holder/LoadOut (1)/Gun Primary/Gun Info
+  - LoadOut Canvas/Loadout/Holder/LoadOut (1)/Gun Primary/Gun Info/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (1)/Gun Primary/Gun Info/Text (TMP) (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (1)/Gun Secondary
+  - LoadOut Canvas/Loadout/Holder/LoadOut (1)/Gun Secondary/Image Gun
+  - LoadOut Canvas/Loadout/Holder/LoadOut (1)/Gun Secondary/Gun Info (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (1)/Gun Secondary/Gun Info (1)/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (1)/Gun Secondary/Gun Info (1)/Text (TMP)
+    (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (2)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (2)/Gun Primary
+  - LoadOut Canvas/Loadout/Holder/LoadOut (2)/Gun Primary/Image Gun
+  - LoadOut Canvas/Loadout/Holder/LoadOut (2)/Gun Primary/Gun Info
+  - LoadOut Canvas/Loadout/Holder/LoadOut (2)/Gun Primary/Gun Info/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (2)/Gun Primary/Gun Info/Text (TMP) (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (2)/Gun Secondary
+  - LoadOut Canvas/Loadout/Holder/LoadOut (2)/Gun Secondary/Image Gun
+  - LoadOut Canvas/Loadout/Holder/LoadOut (2)/Gun Secondary/Gun Info (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (2)/Gun Secondary/Gun Info (1)/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (2)/Gun Secondary/Gun Info (1)/Text (TMP)
+    (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (3)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (3)/Gun Primary
+  - LoadOut Canvas/Loadout/Holder/LoadOut (3)/Gun Primary/Image Gun
+  - LoadOut Canvas/Loadout/Holder/LoadOut (3)/Gun Primary/Gun Info
+  - LoadOut Canvas/Loadout/Holder/LoadOut (3)/Gun Primary/Gun Info/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (3)/Gun Primary/Gun Info/Text (TMP) (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (3)/Gun Secondary
+  - LoadOut Canvas/Loadout/Holder/LoadOut (3)/Gun Secondary/Image Gun
+  - LoadOut Canvas/Loadout/Holder/LoadOut (3)/Gun Secondary/Gun Info (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (3)/Gun Secondary/Gun Info (1)/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (3)/Gun Secondary/Gun Info (1)/Text (TMP)
+    (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (4)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (4)/Gun Primary
+  - LoadOut Canvas/Loadout/Holder/LoadOut (4)/Gun Primary/Image Gun
+  - LoadOut Canvas/Loadout/Holder/LoadOut (4)/Gun Primary/Gun Info
+  - LoadOut Canvas/Loadout/Holder/LoadOut (4)/Gun Primary/Gun Info/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (4)/Gun Primary/Gun Info/Text (TMP) (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (4)/Gun Secondary
+  - LoadOut Canvas/Loadout/Holder/LoadOut (4)/Gun Secondary/Image Gun
+  - LoadOut Canvas/Loadout/Holder/LoadOut (4)/Gun Secondary/Gun Info (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (4)/Gun Secondary/Gun Info (1)/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (4)/Gun Secondary/Gun Info (1)/Text (TMP)
+    (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (5)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (5)/Gun Primary
+  - LoadOut Canvas/Loadout/Holder/LoadOut (5)/Gun Primary/Image Gun
+  - LoadOut Canvas/Loadout/Holder/LoadOut (5)/Gun Primary/Gun Info
+  - LoadOut Canvas/Loadout/Holder/LoadOut (5)/Gun Primary/Gun Info/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (5)/Gun Primary/Gun Info/Text (TMP) (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (5)/Gun Secondary
+  - LoadOut Canvas/Loadout/Holder/LoadOut (5)/Gun Secondary/Image Gun
+  - LoadOut Canvas/Loadout/Holder/LoadOut (5)/Gun Secondary/Gun Info (1)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (5)/Gun Secondary/Gun Info (1)/Text (TMP)
+  - LoadOut Canvas/Loadout/Holder/LoadOut (5)/Gun Secondary/Gun Info (1)/Text (TMP)
+    (1)
+  - LoadOut Canvas/Loadout/Holder/Image
+  - LoadOut Canvas/Loadout/Holder/Camera View
+  showBones: 000000000400000005000000060000000700000008000000090000000a000000160000001700000018000000190000003000000031000000790000007a0000007b0000007c0000007e0000007f0000008000000081000000
+  foldoutBones: 2401000022010000210100001e0100001c0100001b0100001901000018010000170100001601000012010000110100000f0100000e0100000c0100000b0100000901000008010000060100000501000004010000030100000201000001010000fc000000fb000000f9000000f8000000f6000000f5000000f3000000f2000000f0000000ef000000ee000000ed000000ec000000eb000000ea000000e9000000e8000000e7000000e3000000e1000000de000000dd000000dc000000d8000000d5000000d4000000d2000000d1000000cf000000ce000000cd000000c9000000c8000000c7000000c3000000c1000000bf000000be000000bc000000bb000000ba000000b9000000b7000000b5000000b4000000b3000000b0000000af000000ae000000ad000000ac00000081000000800000007f0000007e0000007c0000007b0000007a0000007900000031000000300000002300000022000000200000001f0000001e0000001c0000001b0000001a00000019000000180000001700000016000000140000001300000011000000100000000f0000000d0000000c0000000b0000000a000000090000000800000007000000060000000500000004000000030000000200000000000000
+  mirrorBones: ffffffffffffffffffffffffffffffffffffffffffffffffffffffff160000001700000018000000190000001a0000001b0000001c000000ffffffff1e0000001f00000020000000ffffffff2200000023000000240000000700000008000000090000000a0000000b0000000c0000000d000000ffffffff0f0000001000000011000000ffffffff130000001400000015000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7e0000007f000000800000008100000082000000790000007a0000007b0000007c0000007d000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffb2000000b1000000ffffffffffffffffb7000000b8000000b5000000b6000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0101000002010000030100000401000005010000060100000701000008010000090100000a0100000b0100000c0100000d0100000e0100000f01000010010000110100001201000013010000ffffffff1401000015010000eb000000ec000000ed000000ee000000ef000000f0000000f1000000f2000000f3000000f4000000f5000000f6000000f7000000f8000000f9000000fa000000fb000000fc000000fd000000ff00000000010000ffffffffffffffffffffffffffffffffffffffff2101000022010000230100002401000025010000260100001b0100001c0100001d0100001e0100001f01000020010000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  mirrorBlendShape: []
+  animatorIkData:
+  - enable: 0
+    _fixed: 0
+    autoRotation: 0
+    spaceType: 0
+    parent: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    headWeight: 1
+    eyesWeight: 0
+    swivelRotation: 0
+    swivelPosition: {x: 0, y: 0, z: 0}
+    parentPath: 
+  - enable: 0
+    _fixed: 0
+    autoRotation: 0
+    spaceType: 0
+    parent: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    headWeight: 1
+    eyesWeight: 0
+    swivelRotation: 0
+    swivelPosition: {x: 0, y: 0, z: 0}
+    parentPath: 
+  - enable: 0
+    _fixed: 0
+    autoRotation: 0
+    spaceType: 0
+    parent: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    headWeight: 1
+    eyesWeight: 0
+    swivelRotation: 0
+    swivelPosition: {x: 0, y: 0, z: 0}
+    parentPath: 
+  - enable: 0
+    _fixed: 0
+    autoRotation: 0
+    spaceType: 0
+    parent: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    headWeight: 1
+    eyesWeight: 0
+    swivelRotation: 0
+    swivelPosition: {x: 0, y: 0, z: 0}
+    parentPath: 
+  - enable: 0
+    _fixed: 0
+    autoRotation: 0
+    spaceType: 0
+    parent: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    headWeight: 1
+    eyesWeight: 0
+    swivelRotation: 0
+    swivelPosition: {x: 0, y: 0, z: 0}
+    parentPath: 
+  originalIkData: []
+  selectionData: []
+  lastSelectAnimationClip: {fileID: 7400000, guid: bf116f1c3eb7dfb4aaef97ac9746cfb2,
+    type: 2}
+  handPoseList: []
+  blendShapeList: []
 --- !u!1 &974142427121186176
 GameObject:
   m_ObjectHideFlags: 0
@@ -18981,7 +19154,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3187700301400593856}
-  m_LocalRotation: {x: 0.025754368, y: 0.011346806, z: 0.53828514, w: 0.8422927}
+  m_LocalRotation: {x: 0.02575437, y: 0.011346807, z: 0.5382852, w: 0.8422928}
   m_LocalPosition: {x: -0.04248817, y: -0.000000027837814, z: 4.9112714e-10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -20614,7 +20787,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3827492106510755930}
-  m_LocalRotation: {x: -0.043518696, y: -0.019324359, z: 0.21147588, w: 0.97622263}
+  m_LocalRotation: {x: -0.0435187, y: -0.019324359, z: 0.2114759, w: 0.97622263}
   m_LocalPosition: {x: -0.037911892, y: -0.0000000110158, z: 5.529728e-10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -20825,7 +20998,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3946342984530575173}
-  m_LocalRotation: {x: 0.021577278, y: -0.14047071, z: -0.28933373, w: -0.94661945}
+  m_LocalRotation: {x: 0.021577278, y: -0.14047073, z: -0.28933373, w: -0.9466195}
   m_LocalPosition: {x: 0.10396597, y: -0.0039899945, z: -0.02672651}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -21821,7 +21994,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4248638176373032163}
-  m_LocalRotation: {x: -0.0017947622, y: -0.023235647, z: 0.1544159, w: 0.98773104}
+  m_LocalRotation: {x: -0.0017947622, y: -0.023235649, z: 0.1544159, w: 0.9877311}
   m_LocalPosition: {x: -0.035133284, y: 0.00000003464811, z: 0.0000000012696546}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -23695,7 +23868,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4721848438466971379}
-  m_LocalRotation: {x: 0.041124124, y: 0.012242859, z: -0.34638095, w: -0.9371121}
+  m_LocalRotation: {x: 0.041124128, y: 0.01224286, z: -0.34638098, w: -0.93711215}
   m_LocalPosition: {x: 0.037912134, y: 0.0000033043325, z: -0.000000049360096}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -24024,7 +24197,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4871460380905766646}
-  m_LocalRotation: {x: -0.45057607, y: -0.0433503, z: -0.30104303, w: 0.8393301}
+  m_LocalRotation: {x: -0.4505761, y: -0.043350305, z: -0.30104306, w: 0.83933014}
   m_LocalPosition: {x: -0.27114525, y: -0.000000015257683, z: -0.00038136356}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -31016,7 +31189,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7491570748554516616}
-  m_LocalRotation: {x: -0.483506, y: 0.6575492, z: -0.43809253, w: -0.37673053}
+  m_LocalRotation: {x: -0.483506, y: 0.65754926, z: -0.43809253, w: -0.37673056}
   m_LocalPosition: {x: -0.058011733, y: -0.041914493, z: -0.07447155}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -33154,7 +33327,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8510912158159069649}
-  m_LocalRotation: {x: -0.25191045, y: 0.6136884, z: 0.2484892, w: 0.7058192}
+  m_LocalRotation: {x: -0.2519105, y: 0.6136884, z: 0.24848923, w: 0.7058192}
   m_LocalPosition: {x: -0.13197874, y: 0.000000020416337, z: 0.000000002561137}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -34547,7 +34720,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9035604863463199761}
-  m_LocalRotation: {x: -0.06868608, y: -0.059299175, z: 0.019883165, w: 0.995676}
+  m_LocalRotation: {x: -0.06868595, y: -0.059299175, z: 0.019883132, w: 0.995676}
   m_LocalPosition: {x: -0.06370214, y: -0.000000055879354, z: 0.000000008381903}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

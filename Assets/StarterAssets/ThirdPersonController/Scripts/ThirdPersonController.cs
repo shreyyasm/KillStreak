@@ -1149,9 +1149,9 @@ namespace StarterAssets
         public void FiringContinous(bool state)
         {
             firing = state;
-           
-            //if(_animationBlend <= 0)
-            //_animator.SetBool("Rifle Idle Firing", state);
+
+            if (_animationBlend <= 0)
+                _animator.SetBool("Rifle Idle Firing", state);
         }
         public void GunSwapingGunChangeIn()
        {

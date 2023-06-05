@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class LoadOutManager : NetworkBehaviour
 {
+    public static LoadOutManager Instance;
     [SerializeField] PlayerGunSelector playerGunSelector;
     [SerializeField] WeaponSwitching weaponSwitching;
     [SerializeField] GameObject LoadOutMenu;
@@ -39,6 +40,8 @@ public class LoadOutManager : NetworkBehaviour
     public Animator anim;
     private void Awake()
     {
+        if (Instance != null)
+            Instance = this;
         loadNumber = 0;
         loadOutsUI[0].SetActive(true);
         selectedHighlightUI[0].SetActive(true);

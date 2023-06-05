@@ -21,6 +21,7 @@ public class ShooterController : NetworkBehaviour
     [SerializeField] GameObject fPSController;
     [SerializeField] ScreenTouch screenTouch;
     [SerializeField] WeaponSwitching weaponSwitching;
+    [SerializeField] PlayerGunSelector playerGunSelector;
 
     //Offsets
     Vector3 aimDir;
@@ -29,12 +30,14 @@ public class ShooterController : NetworkBehaviour
 
     //Conditions
     bool FPSMode;
-    bool Aiming = false;
+    public bool Aiming = false;
+    public AudioSource audioSource;
+    public AudioClip aimSFX;
 
     //Camera's Reference
     public GameObject fpsVirtualCamera;
-    CinemachineVirtualCamera aimVirtualCamera;
-    CinemachineVirtualCamera followVirtualCamera;
+    public CinemachineVirtualCamera aimVirtualCamera;
+    public CinemachineVirtualCamera followVirtualCamera;
 
     //References
     public StarterAssetsInputs starterAssetsInputs;
@@ -78,6 +81,15 @@ public class ShooterController : NetworkBehaviour
                 //thirdPersonController.SetSensitivity(normalSensitivity);
             }
         }
+        if (!Aiming)
+        {
+            sniperScopeUI.SetActive(false);
+            var componentBase = aimVirtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
+            if (componentBase is Cinemachine3rdPersonFollow)
+            {
+                (componentBase as Cinemachine3rdPersonFollow).CameraDistance = 3.06f;
+            }
+        }
     }
     //RaycastHit raycastHit;
     public void AimMovenment()
@@ -110,16 +122,7 @@ public class ShooterController : NetworkBehaviour
         
 
     }
-    [ServerRpc(RequireOwnership = false, RunLocally = false)]
-    public void AimMovementServer()
-    {
-        
-    }
-    [ObserversRpc(BufferLast = true)]
-    public void AimMovementObserver()
-    {
-        
-    }
+   
     public void Aim()
     {
         if(!thirdPersonController.changingGun)
@@ -127,6 +130,7 @@ public class ShooterController : NetworkBehaviour
             if (!Aiming)
             {
                 Aiming = true;
+                audioSource.PlayOneShot(aimSFX);
                 thirdPersonController.Aiming(true);
                 if (!FPSMode)
                 {
@@ -136,6 +140,7 @@ public class ShooterController : NetworkBehaviour
                 }
                 if(loadOutManager.loadNumber == 3)
                 {
+                    playerGunSelector.HideUIScope();
                     crosshairUI.SetActive(false);
                     sniperScopeUI.SetActive(true);
                     var componentBase = aimVirtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
@@ -155,7 +160,10 @@ public class ShooterController : NetworkBehaviour
             }
             else
             {
+                
                 Aiming = false;
+                audioSource.PlayOneShot(aimSFX);
+                playerGunSelector.ShowUIScope();
                 thirdPersonController.Aiming(false);
                 screenTouch.SetSensitivity(8);
                 if (!FPSMode)

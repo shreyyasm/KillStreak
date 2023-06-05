@@ -59,6 +59,7 @@ MonoBehaviour:
   StopShootingTime: 0
   ShootSystem: {fileID: 0}
   Automatic: 0
+  sniper: 1
   Fired: 0
   aimVirtualCamera: {fileID: 0}
   followVirtualCamera: {fileID: 0}
