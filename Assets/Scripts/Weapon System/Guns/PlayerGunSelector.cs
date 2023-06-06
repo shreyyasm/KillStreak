@@ -152,7 +152,7 @@ public class PlayerGunSelector : NetworkBehaviour
 
         bulletTrail = ActiveGun.ReturnBullet();
         GunModelRecoil();
-        if (anim.GetCurrentAnimatorStateInfo(8).IsName("Sniper Idle Reload") && anim.GetCurrentAnimatorStateInfo(8).normalizedTime > 1f)
+        if (anim.GetCurrentAnimatorStateInfo(8).IsName("Sniper Reload") && anim.GetCurrentAnimatorStateInfo(8).normalizedTime > 1f)
         {
             anim.SetBool("SniperReload", false);
             anim.SetLayerWeight(8, 0);

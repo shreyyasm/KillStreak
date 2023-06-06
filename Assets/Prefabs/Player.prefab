@@ -7946,7 +7946,7 @@ Transform:
   - {fileID: 1433869572}
   m_Father: {fileID: 2980269339951117368}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0.023057934, y: -0.43873474, z: -0.036581315}
+  m_LocalEulerAnglesHint: {x: 0.023058414, y: -0.43873444, z: -0.03658283}
 --- !u!114 &60764137881832743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11943,7 +11943,11 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Elbow_R'\n\tTransform 'Neck'\n\tTransform 'Elbow_L'\n\tTransform
+    'Head'\n\tTransform 'Hand_L'\n\tTransform 'Shoulder_L'\n\tTransform 'Clavicle_R'\n\tTransform
+    'Shoulder_R'\n\tTransform 'Spine_01'\n\tTransform 'Hips'\n\tand more ..."
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -12211,7 +12215,6 @@ MonoBehaviour:
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects:
-  - {fileID: 8606142165491801254}
   - {fileID: 0}
   - {fileID: 0}
 --- !u!114 &6017902892697103238
@@ -13255,7 +13258,7 @@ MonoBehaviour:
     parentPath: 
   originalIkData: []
   selectionData: []
-  lastSelectAnimationClip: {fileID: 7400000, guid: bf116f1c3eb7dfb4aaef97ac9746cfb2,
+  lastSelectAnimationClip: {fileID: 7400000, guid: 8f7a311683fa7dd49b890e6d0e2a0593,
     type: 2}
   handPoseList: []
   blendShapeList: []
@@ -34720,7 +34723,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9035604863463199761}
-  m_LocalRotation: {x: -0.06868595, y: -0.059299175, z: 0.019883132, w: 0.995676}
+  m_LocalRotation: {x: -0.06868588, y: -0.059299175, z: 0.019883115, w: 0.995676}
   m_LocalPosition: {x: -0.06370214, y: -0.000000055879354, z: 0.000000008381903}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
