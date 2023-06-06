@@ -52,3 +52,4 @@ MonoBehaviour:
   HandDamage: 25
   LegDamage: 15
   otherDamage: 5
+  DamageReduction: 1

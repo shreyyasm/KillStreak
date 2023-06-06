@@ -1093,24 +1093,24 @@ public class PlayerGunSelector : NetworkBehaviour
         IDamageable Damage = HitCollider.GetComponentInParent<IDamageable>();      
         if (Damage != null)
         {
-            if (loadOutManager.loadNumber == 4)
+            if(loadOutManager.loadNumber == 4)
             {
                 if (weaponSwitching.selectedWeapon == 0)
                 {
-                    Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamageShortGun(100f));
-                    floatingDamage.GetPosition(enemyPos, ActiveGun.DamageConfig.GetDamageShortGun(100f));
-                    
+                    float distance = Vector3.Distance(transform.position, HitCollider.gameObject.transform.position);
+                    if (distance > 10)
+                        ActiveGun.DamageConfig.DamageReduction = 2;
+                    else
+                        ActiveGun.DamageConfig.DamageReduction = 1;
                 }
 
             }
             else
-            {
-                Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
-                floatingDamage.GetPosition(enemyPos, ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
-            }
-           
+                ActiveGun.DamageConfig.DamageReduction = 1;
 
-            
+
+            Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+            floatingDamage.GetPosition(enemyPos, ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
             //floatingDamage.CallStartAnimation();
         }
     }

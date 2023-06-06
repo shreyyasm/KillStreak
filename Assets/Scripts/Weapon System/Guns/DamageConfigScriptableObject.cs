@@ -6,42 +6,43 @@ using static UnityEngine.ParticleSystem;
 [CreateAssetMenu(fileName = "Damage Config", menuName = "Guns/Damage Config", order = 1)]
 public class DamageConfigScriptableObject : ScriptableObject
 {
-    public MinMaxCurve DamageCurve;
-    public int HeadDamage;
-    public int BodyDamage;
-    public int HandDamage;
-    public int LegDamage;
-    public int otherDamage;
+    public MinMaxCurve HeadDamageCurve;
+    public MinMaxCurve BodyDamageCurve;
+    public MinMaxCurve HandDamageCurve;
+    public MinMaxCurve LegDamageCurve;
+    public MinMaxCurve OtherDamageCurve;
+
+    public int DamageReduction = 1;
     private void Reset()
     {
-        DamageCurve.mode = ParticleSystemCurveMode.Curve;
+        HeadDamageCurve.mode = ParticleSystemCurveMode.Curve;
     }
 
     public int GetDamage(GameObject playerPart)
     {
         if(playerPart.CompareTag("Head"))
         {
-            return Random.Range(40, 50);
+            return  HeadGetDamage() / DamageReduction;
             //return HeadDamage;
         }
         else if(playerPart.CompareTag("Body"))
         {
-            return Random.Range(20, 40);
+            return BodyGetDamage() / DamageReduction;
             //return BodyDamage;
         }
         else if (playerPart.CompareTag("Hand"))
         {
-            return Random.Range(10, 20);
+            return HandGetDamage() / DamageReduction;
             //return HandDamage;
         }
         else if (playerPart.CompareTag("Leg"))
         {
-            return Random.Range(10, 20);
+            return LegGetDamage() / DamageReduction;
             //return LegDamage;
         }
         else if (playerPart.CompareTag("Joint"))
         {
-            return Random.Range(1, 10);
+            return OtherGetDamage() / DamageReduction;
             //return otherDamage;
         }
         return 0;
@@ -50,16 +51,32 @@ public class DamageConfigScriptableObject : ScriptableObject
    
 
 
-    public int GetDamageShortGun(float Distance = 0)
+    public int HeadGetDamage(float Distance = 0)
     {
-        return Mathf.CeilToInt(DamageCurve.Evaluate(Distance, Random.value));
+        return Mathf.CeilToInt(HeadDamageCurve.Evaluate(Distance, Random.value));
+    }
+    public int BodyGetDamage(float Distance = 0)
+    {
+        return Mathf.CeilToInt(BodyDamageCurve.Evaluate(Distance, Random.value));
+    }
+    public int HandGetDamage(float Distance = 0)
+    {
+        return Mathf.CeilToInt(HandDamageCurve.Evaluate(Distance, Random.value));
+    }
+    public int LegGetDamage(float Distance = 0)
+    {
+        return Mathf.CeilToInt(LegDamageCurve.Evaluate(Distance, Random.value));
+    }
+    public int OtherGetDamage(float Distance = 0)
+    {
+        return Mathf.CeilToInt(OtherDamageCurve.Evaluate(Distance, Random.value));
     }
 
     public object Clone()
     {
         DamageConfigScriptableObject config = CreateInstance<DamageConfigScriptableObject>();
 
-        config.DamageCurve = DamageCurve;
+        config.HeadDamageCurve = HeadDamageCurve;
         return config;
     }
 }

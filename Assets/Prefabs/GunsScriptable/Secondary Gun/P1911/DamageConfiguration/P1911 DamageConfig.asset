@@ -47,3 +47,9 @@ MonoBehaviour:
       m_RotationOrder: 4
     m_ConstantMin: 0
     m_ConstantMax: 10
+  HeadDamage: 0
+  BodyDamage: 0
+  HandDamage: 0
+  LegDamage: 0
+  otherDamage: 0
+  DamageReduction: 1
