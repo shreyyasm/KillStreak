@@ -140,14 +140,18 @@ public class ShooterController : NetworkBehaviour
                 }
                 if(loadOutManager.loadNumber == 3)
                 {
-                    playerGunSelector.HideUIScope();
-                    crosshairUI.SetActive(false);
-                    sniperScopeUI.SetActive(true);
-                    var componentBase = aimVirtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
-                    if (componentBase is Cinemachine3rdPersonFollow)
+                    if(weaponSwitching.selectedWeapon == 0)
                     {
-                        (componentBase as Cinemachine3rdPersonFollow).CameraDistance = 0;
+                        playerGunSelector.HideUIScope();
+                        crosshairUI.SetActive(false);
+                        sniperScopeUI.SetActive(true);
+                        var componentBase = aimVirtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
+                        if (componentBase is Cinemachine3rdPersonFollow)
+                        {
+                            (componentBase as Cinemachine3rdPersonFollow).CameraDistance = 0;
+                        }
                     }
+                    
                 }
                 if (FPSMode)
                 {

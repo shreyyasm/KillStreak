@@ -78,6 +78,8 @@ public class PlayerGunSelector : NetworkBehaviour
     public List<GameObject> SecondaryGunsPrefabs;
 
     public List<GameObject> HideUI;
+
+   
     Animator anim;
     private void Awake()
     {
@@ -413,110 +415,223 @@ public class PlayerGunSelector : NetworkBehaviour
                                ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
            
-            
-            if (!blocked)
-                ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-            else
+            if(ActiveGun.shotgun)
             {
-                //Ray r = ;
-                ray = new Ray(ActiveGun.ShootSystem.transform.position, ActiveCamera.transform.forward);
-               
-                //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
-            }
-
-            ActiveGun.Fired = false;
-            if (!aimAssist)
-            {
-                if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                for(int i = 0; i < ActiveGun.bulletPerShot; i++)
                 {
-                    
-                    StartCoroutine(
-                        PlayTrail(
-                            ActiveGun.ShootSystem.transform.position,
-                            hit.point,
-                            hit
-                        )
-                    );
-                }
-
-                else
-                {
-                    StartCoroutine(
-                         PlayTrail(
-                             ActiveGun.ShootSystem.transform.position,
-                             ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
-                             new RaycastHit()
-                         )
-                     );
-                }
-            }
-            else
-            {
-                if (Physics.SphereCast(ray, sphereCastRadius, out hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
-                {
-                    //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
-                    //Debug.Log("Aim Assist: Hit");
-                 
-                    Vector3 sphereCastMidpoint = hitnew.point;
-                    
-                    if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
-                    {
-                        rayHitPoint = hit.point;
-                    }
-  
-                    if (hitnew.collider.gameObject.layer != 18)
-                    { 
-
-                            hitpoint = rayHitPoint;
-                            aimAssistHit = hit;
-                    }                              
+                    if (!blocked)
+                        ray = Camera.main.ScreenPointToRay(screenCenterPoint);
                     else
                     {
-                        if (mouseX == 0 && mouseY == 0)
+                        //Ray r = ;
+                        ray = new Ray(ActiveGun.ShootSystem.transform.position, ActiveCamera.transform.forward);
+
+                        //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+                    }
+
+                    ActiveGun.Fired = false;
+                    if (!aimAssist)
+                    {
+                        if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                         {
+
+                            StartCoroutine(
+                                PlayTrail(
+                                    ActiveGun.ShootSystem.transform.position,
+                                    hit.point,
+                                    hit
+                                )
+                            );
+                        }
+
+                        else
+                        {
+                            StartCoroutine(
+                                 PlayTrail(
+                                     ActiveGun.ShootSystem.transform.position,
+                                     ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                                     new RaycastHit()
+                                 )
+                             );
+                        }
+                    }
+                    else
+                    {
+                        if (Physics.SphereCast(ray, sphereCastRadius, out hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                        {
+                            //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+                            //Debug.Log("Aim Assist: Hit");
+
+                            Vector3 sphereCastMidpoint = hitnew.point;
+
+                            if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                            {
+                                rayHitPoint = hit.point;
+                            }
+
+                            if (hitnew.collider.gameObject.layer != 18)
+                            {
+
+                                hitpoint = rayHitPoint;
+                                aimAssistHit = hit;
+                            }
+                            else
+                            {
+                                if (mouseX == 0 && mouseY == 0)
+                                {
+                                    hitpoint = rayHitPoint;
+                                    aimAssistHit = hit;
+                                }
+                                else
+                                {
+
+                                    if (timeLeftBlock < 0.1)
+                                    {
+                                        //Debug.Log("laand");
+                                        hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                                        aimAssistHit = hitnew;
+                                    }
+
+                                    else
+                                    {
+                                        hitpoint = rayHitPoint;
+                                        aimAssistHit = hit;
+                                    }
+
+                                }
+
+                            }
+                            //Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
+
+
+                            StartCoroutine(
+                                PlayTrail(
+                                    ActiveGun.ShootSystem.transform.position,
+                                    hitpoint,
+                                    aimAssistHit
+                                )
+                            );
+
+                        }
+                        else
+                        {
+                            StartCoroutine(
+                                 PlayTrail(
+                                     ActiveGun.ShootSystem.transform.position,
+                                     ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                                     new RaycastHit()
+                                 )
+                             );
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (!blocked)
+                    ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+                else
+                {
+                    //Ray r = ;
+                    ray = new Ray(ActiveGun.ShootSystem.transform.position, ActiveCamera.transform.forward);
+
+                    //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+                }
+
+                ActiveGun.Fired = false;
+                if (!aimAssist)
+                {
+                    if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                    {
+
+                        StartCoroutine(
+                            PlayTrail(
+                                ActiveGun.ShootSystem.transform.position,
+                                hit.point,
+                                hit
+                            )
+                        );
+                    }
+
+                    else
+                    {
+                        StartCoroutine(
+                             PlayTrail(
+                                 ActiveGun.ShootSystem.transform.position,
+                                 ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                                 new RaycastHit()
+                             )
+                         );
+                    }
+                }
+                else
+                {
+                    if (Physics.SphereCast(ray, sphereCastRadius, out hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                    {
+                        //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+                        //Debug.Log("Aim Assist: Hit");
+
+                        Vector3 sphereCastMidpoint = hitnew.point;
+
+                        if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                        {
+                            rayHitPoint = hit.point;
+                        }
+
+                        if (hitnew.collider.gameObject.layer != 18)
+                        {
+
                             hitpoint = rayHitPoint;
                             aimAssistHit = hit;
                         }
                         else
                         {
-                            
-                            if (timeLeftBlock < 0.1)
-                            {
-                                //Debug.Log("laand");
-                                hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
-                                aimAssistHit = hitnew;
-                            }
-
-                            else
+                            if (mouseX == 0 && mouseY == 0)
                             {
                                 hitpoint = rayHitPoint;
                                 aimAssistHit = hit;
                             }
+                            else
+                            {
+
+                                if (timeLeftBlock < 0.1)
+                                {
+                                    //Debug.Log("laand");
+                                    hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                                    aimAssistHit = hitnew;
+                                }
+
+                                else
+                                {
+                                    hitpoint = rayHitPoint;
+                                    aimAssistHit = hit;
+                                }
+
+                            }
 
                         }
+                        //Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
+
+
+                        StartCoroutine(
+                            PlayTrail(
+                                ActiveGun.ShootSystem.transform.position,
+                                hitpoint,
+                                aimAssistHit
+                            )
+                        );
 
                     }
-                    //Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
-                    
-
-                    StartCoroutine(
-                        PlayTrail(
-                            ActiveGun.ShootSystem.transform.position,
-                            hitpoint,
-                            aimAssistHit
-                        )
-                    );
-
-                }
-                else
-                {
-                    StartCoroutine(
-                         PlayTrail(
-                             ActiveGun.ShootSystem.transform.position,
-                             ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
-                             new RaycastHit()
-                         )
-                     );
+                    else
+                    {
+                        StartCoroutine(
+                             PlayTrail(
+                                 ActiveGun.ShootSystem.transform.position,
+                                 ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                                 new RaycastHit()
+                             )
+                         );
+                    }
                 }
             }
 
@@ -539,7 +654,7 @@ public class PlayerGunSelector : NetworkBehaviour
             ActiveGun.InitialClickTime = Time.time - Mathf.Lerp(0, lastDuration, Mathf.Clamp01(lerpTime));
             
         }
-       
+        
         if (Time.time > ActiveGun.ShootConfig.FireRate + ActiveGun.LastShootTime)
         {
             
@@ -559,123 +674,243 @@ public class PlayerGunSelector : NetworkBehaviour
                                ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
 
-            
-            if (!blocked)
-                ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-            else
+           
+            if (ActiveGun.shotgun)
             {
-                //Ray r = ;
-                ray = new Ray(ActiveGun.ShootSystem.transform.position, ActiveCamera.transform.forward);
-
-                //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
-            }
-
-            ActiveGun.Fired = false;
-            if (!aimAssist)
-            {
-                if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                for (int i = 0; i < ActiveGun.bulletPerShot; i++)
                 {
-
-                    StartCoroutine(
-                        PlayTrail(
-                            ActiveGun.ShootSystem.transform.position,
-                            hit.point,
-                            hit
-                        )
-                    );
-                }
-
-                else
-                {
-                    StartCoroutine(
-                         PlayTrail(
-                             ActiveGun.ShootSystem.transform.position,
-                             ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
-                             new RaycastHit()
-                         )
-                     );
-                }
-            }
-            else
-            {
-                if (Physics.SphereCast(ray, sphereCastRadius, out hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
-                {
-                    //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
-                    //Debug.Log("Aim Assist: Hit");
-
-                    Vector3 sphereCastMidpoint = hitnew.point;
-
-                    if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                    
+                    ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(UnityEngine.Random.Range(1,6)));
+                    if (!blocked)
+                        ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+                    else
                     {
-                        rayHitPoint = hit.point;
+                        //Ray r = ;
+                        ray = new Ray(ActiveGun.ShootSystem.transform.position, ActiveCamera.transform.forward);
+
+                        //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
                     }
 
-                    if (hitnew.collider.gameObject.layer != 18)
+                    ActiveGun.Fired = false;
+                    if (!aimAssist)
                     {
+                        if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                        {
 
-                        hitpoint = rayHitPoint;
-                        aimAssistHit = hit;
+                            StartCoroutine(
+                                PlayTrail(
+                                    ActiveGun.ShootSystem.transform.position,
+                                    hit.point,
+                                    hit
+                                )
+                            );
+                        }
+
+                        else
+                        {
+                            StartCoroutine(
+                                 PlayTrail(
+                                     ActiveGun.ShootSystem.transform.position,
+                                     ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                                     new RaycastHit()
+                                 )
+                             );
+                        }
                     }
                     else
                     {
-                        if (mouseX == 0 && mouseY == 0)
+                        if (Physics.SphereCast(ray, sphereCastRadius, out hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                         {
+                            //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+                            //Debug.Log("Aim Assist: Hit");
+
+                            Vector3 sphereCastMidpoint = hitnew.point;
+
+                            if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                            {
+                                rayHitPoint = hit.point;
+                            }
+
+                            if (hitnew.collider.gameObject.layer != 18)
+                            {
+
+                                hitpoint = rayHitPoint;
+                                aimAssistHit = hit;
+                            }
+                            else
+                            {
+                                if (mouseX == 0 && mouseY == 0)
+                                {
+                                    hitpoint = rayHitPoint;
+                                    aimAssistHit = hit;
+                                }
+                                else
+                                {
+
+                                    if (timeLeftBlock < 0.1)
+                                    {
+                                        //Debug.Log("laand");
+                                        hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                                        aimAssistHit = hitnew;
+                                    }
+
+                                    else
+                                    {
+                                        hitpoint = rayHitPoint;
+                                        aimAssistHit = hit;
+                                    }
+
+                                }
+
+                            }
+                            //Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
+
+
+                            StartCoroutine(
+                                PlayTrail(
+                                    ActiveGun.ShootSystem.transform.position,
+                                    hitpoint,
+                                    aimAssistHit
+                                )
+                            );
+
+                        }
+                        else
+                        {
+                            StartCoroutine(
+                                 PlayTrail(
+                                     ActiveGun.ShootSystem.transform.position,
+                                     ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                                     new RaycastHit()
+                                 )
+                             );
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (!blocked)
+                    ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+                else
+                {
+                    //Ray r = ;
+                    ray = new Ray(ActiveGun.ShootSystem.transform.position, ActiveCamera.transform.forward);
+
+                    //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+                }
+
+                ActiveGun.Fired = false;
+                if (!aimAssist)
+                {
+                    if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                    {
+
+                        StartCoroutine(
+                            PlayTrail(
+                                ActiveGun.ShootSystem.transform.position,
+                                hit.point,
+                                hit
+                            )
+                        );
+                    }
+
+                    else
+                    {
+                        StartCoroutine(
+                             PlayTrail(
+                                 ActiveGun.ShootSystem.transform.position,
+                                 ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                                 new RaycastHit()
+                             )
+                         );
+                    }
+                }
+                else
+                {
+                    if (Physics.SphereCast(ray, sphereCastRadius, out hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                    {
+                        //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+                        //Debug.Log("Aim Assist: Hit");
+
+                        Vector3 sphereCastMidpoint = hitnew.point;
+
+                        if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+                        {
+                            rayHitPoint = hit.point;
+                        }
+
+                        if (hitnew.collider.gameObject.layer != 18)
+                        {
+
                             hitpoint = rayHitPoint;
                             aimAssistHit = hit;
                         }
                         else
                         {
-
-                            if (timeLeftBlock < 0.1)
-                            {
-                                //Debug.Log("laand");
-                                hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
-                                aimAssistHit = hitnew;
-                            }
-
-                            else
+                            if (mouseX == 0 && mouseY == 0)
                             {
                                 hitpoint = rayHitPoint;
                                 aimAssistHit = hit;
                             }
+                            else
+                            {
+
+                                if (timeLeftBlock < 0.1)
+                                {
+                                    //Debug.Log("laand");
+                                    hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
+                                    aimAssistHit = hitnew;
+                                }
+
+                                else
+                                {
+                                    hitpoint = rayHitPoint;
+                                    aimAssistHit = hit;
+                                }
+
+                            }
 
                         }
+                        //Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
+
+
+                        StartCoroutine(
+                            PlayTrail(
+                                ActiveGun.ShootSystem.transform.position,
+                                hitpoint,
+                                aimAssistHit
+                            )
+                        );
 
                     }
-                    //Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
-
-
-                    StartCoroutine(
-                        PlayTrail(
-                            ActiveGun.ShootSystem.transform.position,
-                            hitpoint,
-                            aimAssistHit
-                        )
-                    );
-
-                }
-                else
-                {
-                    StartCoroutine(
-                         PlayTrail(
-                             ActiveGun.ShootSystem.transform.position,
-                             ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
-                             new RaycastHit()
-                         )
-                     );
+                    else
+                    {
+                        StartCoroutine(
+                             PlayTrail(
+                                 ActiveGun.ShootSystem.transform.position,
+                                 ActiveGun.ShootSystem.transform.position + (ActiveGun.ShootSystem.transform.forward * ActiveGun.TrailConfig.MissDistance),
+                                 new RaycastHit()
+                             )
+                         );
+                    }
                 }
             }
-            if(loadOutManager.loadNumber == 3)
+            if (loadOutManager.loadNumber == 3 || loadOutManager.loadNumber == 4)
             {
-                if(ActiveGun.AmmoConfig.CurrentClipAmmo != 1)
+                if (weaponSwitching.selectedWeapon == 0)
                 {
-                    SniperRig.weight = 0;
-                    anim.SetLayerWeight(8, 1);
-                    anim.SetBool("SniperReload", true);
-                    
+                    if (ActiveGun.AmmoConfig.CurrentClipAmmo != 1)
+                    {
+                        SniperRig.weight = 0;
+                        anim.SetLayerWeight(8, 1);
+                        anim.SetBool("SniperReload", true);
+
+                    }
+                    if (shooterController.Aiming)
+                        StartCoroutine(CallAim());
                 }
-                if (shooterController.Aiming)
-                    StartCoroutine(CallAim());
+
             }
         }
     }
@@ -701,6 +936,8 @@ public class PlayerGunSelector : NetworkBehaviour
     }
     [SerializeField] GameObject sphere;
     public GameObject CinemachineCameraTarget;
+
+   
     //private void OnDrawGizmos()
     //{
 
@@ -855,10 +1092,25 @@ public class PlayerGunSelector : NetworkBehaviour
         //}
         IDamageable Damage = HitCollider.GetComponentInParent<IDamageable>();      
         if (Damage != null)
-        {         
-            Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+        {
+            if (loadOutManager.loadNumber == 4)
+            {
+                if (weaponSwitching.selectedWeapon == 0)
+                {
+                    Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamageShortGun(100f));
+                    floatingDamage.GetPosition(enemyPos, ActiveGun.DamageConfig.GetDamageShortGun(100f));
+                    
+                }
 
-            floatingDamage.GetPosition(enemyPos, ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+            }
+            else
+            {
+                Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+                floatingDamage.GetPosition(enemyPos, ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+            }
+           
+
+            
             //floatingDamage.CallStartAnimation();
         }
     }

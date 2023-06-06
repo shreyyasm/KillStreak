@@ -37,6 +37,9 @@ public class GunScriptableObject : ScriptableObject
     private bool LastFrameWantedToShoot;
     public bool Automatic;
     public bool sniper;
+    [SerializeField] public bool shotgun = false;
+    [SerializeField] public int bulletPerShot = 6;
+    [SerializeField] public float inaccuracyDistance = 5f;
     public bool Fired = false;
     GameObject fpsVirtualCamera;
     public GameObject aimVirtualCamera;
@@ -260,8 +263,8 @@ public class GunScriptableObject : ScriptableObject
             
             if(sniper)
             {
-                aimVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(5f, 0.2f);
-                followVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(2f, 0.1f);
+                aimVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(6f, 0.3f);
+                followVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(3f, 0.1f);
             }
             else
             {

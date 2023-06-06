@@ -308,8 +308,8 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            //CameraRotationOld();
-            CameraRotation();
+            CameraRotationOld();
+            //CameraRotation();
             
         }
         public void SetRigWeight()

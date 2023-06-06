@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: M24 DamageConfig
   m_EditorClassIdentifier: 
   DamageCurve:
-    m_Mode: 0
+    m_Mode: 1
     m_CurveMultiplier: 1
     m_CurveMin:
       serializedVersion: 2

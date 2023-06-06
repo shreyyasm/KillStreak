@@ -19,11 +19,11 @@ MonoBehaviour:
   HitMask:
     serializedVersion: 2
     m_Bits: 475136
-  FireRate: 0.1
+  FireRate: 1.3
   SpreadType: 1
-  RecoilRecoverySpeed: 2
+  RecoilRecoverySpeed: 0.5
   MaxSpreadTime: 1
-  Spread: {x: 0.03, y: 0.01, z: 0.03}
-  SpreadUp: 0.05
+  Spread: {x: 0.02, y: 0.02, z: 0.02}
+  SpreadUp: 0.02
   SpreadMultiplier: 0.035
   SpreadTexture: {fileID: 2800000, guid: 73cee0f2b9968314d8279958263885a5, type: 3}

@@ -47,4 +47,19 @@ public class DamageConfigScriptableObject : ScriptableObject
         return 0;
        // return Mathf.CeilToInt(DamageCurve.Evaluate(Distance, Random.value)); 
     }
+   
+
+
+    public int GetDamageShortGun(float Distance = 0)
+    {
+        return Mathf.CeilToInt(DamageCurve.Evaluate(Distance, Random.value));
+    }
+
+    public object Clone()
+    {
+        DamageConfigScriptableObject config = CreateInstance<DamageConfigScriptableObject>();
+
+        config.DamageCurve = DamageCurve;
+        return config;
+    }
 }

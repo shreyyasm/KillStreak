@@ -84,7 +84,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void TakeDamageServer(int Damage)
     {
-        Debug.Log("server");
+        
         int damageTaken = Mathf.Clamp(Damage, 0, CurrentHealth);
         CurrentHealth -= damageTaken;
         SetHealth(CurrentHealth);
@@ -100,7 +100,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     [ObserversRpc(BufferLast = true)]
     public void TakeDamageObserver(int Damage)
     {
-        Debug.Log("observer");
+       
         int damageTaken = Mathf.Clamp(Damage, 0, CurrentHealth);
         CurrentHealth -= damageTaken;
         if (damageTaken != 0)
