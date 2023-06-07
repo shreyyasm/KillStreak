@@ -161,6 +161,20 @@ public class PlayerGunSelector : NetworkBehaviour
             SniperRig.weight = 1;
 
         }
+        if (anim.GetCurrentAnimatorStateInfo(8).IsName("Sniper Slide Reload") && anim.GetCurrentAnimatorStateInfo(8).normalizedTime > 1f)
+        {
+            anim.SetBool("SniperReload", false);
+            anim.SetLayerWeight(8, 0);
+            SniperRig.weight = 1;
+
+        }
+        if (anim.GetCurrentAnimatorStateInfo(8).IsName("Sniper Crouch Reload") && anim.GetCurrentAnimatorStateInfo(8).normalizedTime > 1f)
+        {
+            anim.SetBool("SniperReload", false);
+            anim.SetLayerWeight(8, 0);
+            SniperRig.weight = 1;
+
+        }
         if (playerAction.IsShooting )
         {
             if(!playerAction.IsReloading)

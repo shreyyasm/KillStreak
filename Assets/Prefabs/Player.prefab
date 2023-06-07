@@ -4697,12 +4697,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 0}
+  volumeTrigger: {fileID: 1202611558}
   volumeLayer:
     serializedVersion: 2
     m_Bits: 2147483647
   stopNaNPropagation: 0
-  finalBlitToCameraTarget: 0
+  finalBlitToCameraTarget: 1
   antialiasingMode: 0
   temporalAntialiasing:
     jitterSpread: 0.75
@@ -6389,10 +6389,10 @@ RectTransform:
   m_Father: {fileID: 872391978}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 744.88, y: -0.16372}
-  m_SizeDelta: {x: 559.2739, y: 640.8215}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 690, y: 339.45}
+  m_SizeDelta: {x: 1920, y: 1112}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1632522770
 CanvasRenderer:
@@ -6425,10 +6425,10 @@ MonoBehaviour:
   m_Texture: {fileID: 8400000, guid: 7873a5455d4af734d885ddc919adf749, type: 2}
   m_UVRect:
     serializedVersion: 2
-    x: 0.01
-    y: 0
+    x: 0.056
+    y: 0.012
     width: 1
-    height: 1
+    height: 1.03
 --- !u!1 &1642745290
 GameObject:
   m_ObjectHideFlags: 0
@@ -11735,7 +11735,7 @@ GameObject:
   - component: {fileID: 8730711434545529099}
   - component: {fileID: 5050372454195438821}
   - component: {fileID: 3706598513884092583}
-  - component: {fileID: 5103983383040094463}
+  - component: {fileID: 771526671}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -12064,7 +12064,11 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Elbow_R'\n\tTransform 'Neck'\n\tTransform 'Elbow_L'\n\tTransform
+    'Head'\n\tTransform 'Hand_L'\n\tTransform 'Shoulder_L'\n\tTransform 'Clavicle_R'\n\tTransform
+    'Shoulder_R'\n\tTransform 'Spine_01'\n\tTransform 'Hips'\n\tand more ..."
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -12334,7 +12338,6 @@ MonoBehaviour:
   _sceneNetworkObjects:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 8606142165491801254}
 --- !u!114 &6017902892697103238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12807,7 +12810,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5103983383040094463
+--- !u!114 &771526671
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13376,7 +13379,7 @@ MonoBehaviour:
     parentPath: 
   originalIkData: []
   selectionData: []
-  lastSelectAnimationClip: {fileID: 7400000, guid: 8f7a311683fa7dd49b890e6d0e2a0593,
+  lastSelectAnimationClip: {fileID: 7400000, guid: 41072ba86d161cf46b6f437732a77c43,
     type: 2}
   handPoseList: []
   blendShapeList: []
@@ -33582,8 +33585,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 744.88306, y: -0.1637}
-  m_SizeDelta: {x: 587.7659, y: 668.6042}
+  m_AnchoredPosition: {x: 748.2632, y: -3.5827}
+  m_SizeDelta: {x: 594.526, y: 672.0599}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8827157161285327271
 CanvasRenderer:
