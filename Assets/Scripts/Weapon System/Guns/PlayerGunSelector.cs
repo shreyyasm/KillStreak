@@ -916,6 +916,10 @@ public class PlayerGunSelector : NetworkBehaviour
                 {
                     if (ActiveGun.AmmoConfig.CurrentClipAmmo != 1)
                     {
+                        if (ActiveGun.shotgun)
+                            anim.SetFloat("AnimSpeedChange", 1.3f);
+                        else
+                            anim.SetFloat("AnimSpeedChange", 1f);
                         SniperRig.weight = 0;
                         anim.SetLayerWeight(8, 1);
                         anim.SetBool("SniperReload", true);

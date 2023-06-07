@@ -12064,11 +12064,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'Elbow_R'\n\tTransform 'Neck'\n\tTransform 'Elbow_L'\n\tTransform
-    'Head'\n\tTransform 'Hand_L'\n\tTransform 'Shoulder_L'\n\tTransform 'Clavicle_R'\n\tTransform
-    'Shoulder_R'\n\tTransform 'Spine_01'\n\tTransform 'Hips'\n\tand more ..."
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -13379,7 +13375,7 @@ MonoBehaviour:
     parentPath: 
   originalIkData: []
   selectionData: []
-  lastSelectAnimationClip: {fileID: 7400000, guid: 41072ba86d161cf46b6f437732a77c43,
+  lastSelectAnimationClip: {fileID: 7400000, guid: 48a8954bbce7c694d9c502e08d20d3f6,
     type: 2}
   handPoseList: []
   blendShapeList: []

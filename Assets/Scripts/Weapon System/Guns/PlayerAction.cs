@@ -81,10 +81,12 @@ public class PlayerAction : NetworkBehaviour
         {
             if (weaponSwitch.gunChanging)
                 return;
-            
+
             //IsShooting = false;
 
-            
+            anim.SetBool("SniperReload", false);
+            anim.SetLayerWeight(8, 0);
+
             PlayerAnimator.SetLayerWeight(6, 1);
             GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
@@ -176,22 +178,7 @@ public class PlayerAction : NetworkBehaviour
         IsShooting = false;
         thirdPersonController.FiringContinous(false);
     }
-    public void ManualReloadServerTest()
-    {
-        if (ShouldManualReload())
-        {
-            if (weaponSwitch.gunChanging)
-                return;
-
-            PlayerAnimator.SetLayerWeight(6, 1);
-            GunSelector.ActiveGun.StartReloading();
-            IsReloading = true;
-            
-            thirdPersonController.ReloadCheck(IsReloading);
-            anim.SetBool("Reload",true);
-            StartCoroutine(EndReload());
-        }
-    }
+   
     //Manual Reload - Server and observer Logic
     public void ManualReload()
     {
@@ -210,6 +197,10 @@ public class PlayerAction : NetworkBehaviour
         {
             if (weaponSwitch.gunChanging)
                 return;
+
+            anim.SetBool("SniperReload", false);
+            anim.SetLayerWeight(8, 0);
+
             PlayerAnimator.SetLayerWeight(6, 1);
             GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
@@ -226,6 +217,10 @@ public class PlayerAction : NetworkBehaviour
 
             if (weaponSwitch.gunChanging)
                 return;
+
+            anim.SetBool("SniperReload", false);
+            anim.SetLayerWeight(8, 0);
+
             PlayerAnimator.SetLayerWeight(6, 1);
             GunSelector.ActiveGun.StartReloading();
             IsReloading = true;

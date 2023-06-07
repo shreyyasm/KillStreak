@@ -279,6 +279,8 @@ public class WeaponSwitching : NetworkBehaviour
   
         if (!gunChanging)
         {
+            anim.SetBool("SniperReload", false);
+            anim.SetLayerWeight(8, 0);
             checkAnimationState = true;
             gunChanging = true;
             int previousSelectedWeapon = selectedWeapon;
@@ -319,6 +321,8 @@ public class WeaponSwitching : NetworkBehaviour
     {
         if (!gunChanging)
         {
+            anim.SetBool("SniperReload", false);
+            anim.SetLayerWeight(8, 0);
             checkAnimationState = true;
             gunChanging = true;
             int previousSelectedWeapon = selectedWeapon;
