@@ -19,4 +19,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ead9439cc21260d44b99cc5037814e27, type: 3}
   - {fileID: 8300000, guid: 26c5b6d560a62c946accc4e4207b66cc, type: 3}
   - {fileID: 8300000, guid: 37e08e3552104a248a91d21d637ef2f4, type: 3}
-  VolumeRange: {x: 0.5, y: 0.75}
+  VolumeRange: {x: 0.4, y: 0.6}

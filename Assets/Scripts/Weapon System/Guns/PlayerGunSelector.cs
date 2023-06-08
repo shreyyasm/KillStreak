@@ -79,7 +79,8 @@ public class PlayerGunSelector : NetworkBehaviour
 
     public List<GameObject> HideUI;
 
-   
+    public GameObject CrosshairPrimary;
+    public GameObject CrosshairSecondary;
     Animator anim;
     private void Awake()
     {
@@ -193,6 +194,7 @@ public class PlayerGunSelector : NetworkBehaviour
             }
         }
         CheckBlocked();
+        ChangeCrosshair();
     }
     public void SpawnAllGuns()
     {
@@ -202,7 +204,7 @@ public class PlayerGunSelector : NetworkBehaviour
             
             GameObject GunPrefab = Gun.Spawn(PrimaryParent, this);
             PrimaryGunsPrefabs.Add(GunPrefab);
-        }
+        } 
         foreach (GunScriptableObject Gun in SecondaryGuns)
         {
             // do work
@@ -210,6 +212,20 @@ public class PlayerGunSelector : NetworkBehaviour
             SecondaryGunsPrefabs.Add(GunPrefab);
         }
 
+    }
+    public void ChangeCrosshair()
+    {
+        if (!ActiveGun.shotgun)
+        {
+            CrosshairPrimary.SetActive(true);
+            CrosshairSecondary.SetActive(false);
+        }
+        else
+        {
+            CrosshairPrimary.SetActive(false);
+            CrosshairSecondary.SetActive(true);
+        }
+            
     }
     public void ChangeGunLoadOut(int loadNumber)
     {
@@ -247,6 +263,7 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
         Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        
     }
     [ObserversRpc(BufferLast = true)]
     public void ChangeGunLoadOutObserver(int loadout)
@@ -275,6 +292,7 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
         Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
+       
     }
 
     RaycastHit hitCheck;

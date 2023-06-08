@@ -79,21 +79,25 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  LastShootTime: 186.52426
-  InitialClickTime: 186.52426
-  StopShootingTime: 185.12422
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  LastShootTime: 0
+  InitialClickTime: 0
+  StopShootingTime: 0
   ShootSystem: {fileID: 0}
   Automatic: 0
   sniper: 1
   shotgun: 1
-  bulletPerShot: 6
+  bulletPerShot: 8
   inaccuracyDistance: 5
   Fired: 0
   aimVirtualCamera: {fileID: 0}
   followVirtualCamera: {fileID: 0}
-  shootDirection: {x: 0.102647826, y: 0.019719368, z: 0.9945223}
+  shootDirection: {x: 0.2930576, y: -0.042609163, z: 0.9551448}
   spreadAmount: {x: 0, y: 0, z: 0}
-  shootHoldTime: 186.52426
+  shootHoldTime: 27.021187
   pooledObjects:
   - {fileID: 0}
   - {fileID: 0}

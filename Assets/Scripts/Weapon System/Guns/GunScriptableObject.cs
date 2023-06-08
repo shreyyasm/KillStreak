@@ -49,6 +49,7 @@ public class GunScriptableObject : ScriptableObject
     TrailRenderer tail;
     public Vector3 shootDirection;
     public Vector3 spreadAmount;
+   
     /// <summary>
     /// Spawns the Gun Model into the scene
     /// </summary>

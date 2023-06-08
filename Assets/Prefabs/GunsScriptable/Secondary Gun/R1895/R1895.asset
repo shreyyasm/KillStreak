@@ -115,6 +115,19 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   LastShootTime: 0
   InitialClickTime: 0
   StopShootingTime: 0
@@ -127,9 +140,9 @@ MonoBehaviour:
   Fired: 0
   aimVirtualCamera: {fileID: 0}
   followVirtualCamera: {fileID: 0}
-  shootDirection: {x: 0, y: 0, z: 0}
+  shootDirection: {x: 0.15778653, y: -0.7369267, z: 0.6572995}
   spreadAmount: {x: 0, y: 0, z: 0}
-  shootHoldTime: 0
+  shootHoldTime: 58.510223
   pooledObjects:
   - {fileID: 0}
   - {fileID: 0}

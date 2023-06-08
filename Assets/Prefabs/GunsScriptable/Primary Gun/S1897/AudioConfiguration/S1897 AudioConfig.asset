@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40033fe72cff1bb4a80e5fb3263d63df, type: 3}
   m_Name: S1897 AudioConfig
   m_EditorClassIdentifier: 
-  Volume: 0.5
+  Volume: 1
   FireClips:
   - {fileID: 8300000, guid: d1083d82df231524fbae59efbf1fc31c, type: 3}
   EmptyClip: {fileID: 8300000, guid: 0c187ee2790c74c4e9985aa1ee1a12d5, type: 3}

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40033fe72cff1bb4a80e5fb3263d63df, type: 3}
   m_Name: MP9 AudioConfig
   m_EditorClassIdentifier: 
-  Volume: 0.4
+  Volume: 1
   FireClips:
-  - {fileID: 8300000, guid: 6618817a7164297438a10aa1b17758f4, type: 3}
+  - {fileID: 8300000, guid: 76b02b10ade6d9d4b88f8a2977bdbb02, type: 3}
   EmptyClip: {fileID: 8300000, guid: 0c187ee2790c74c4e9985aa1ee1a12d5, type: 3}
   ReloadClip: {fileID: 8300000, guid: c565065df3907944b8b58f0d27066ba8, type: 3}
-  LastBulletClip: {fileID: 8300000, guid: 6618817a7164297438a10aa1b17758f4, type: 3}
+  LastBulletClip: {fileID: 8300000, guid: 76b02b10ade6d9d4b88f8a2977bdbb02, type: 3}

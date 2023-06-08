@@ -60,11 +60,15 @@ MonoBehaviour:
   ShootSystem: {fileID: 0}
   Automatic: 0
   sniper: 1
+  shotgun: 0
+  bulletPerShot: 6
+  inaccuracyDistance: 5
   Fired: 0
   aimVirtualCamera: {fileID: 0}
   followVirtualCamera: {fileID: 0}
   shootDirection: {x: 0.020850511, y: -0.03088657, z: 0.99930537}
   spreadAmount: {x: 0, y: 0, z: 0}
+  CrosshairIndex: 1
   shootHoldTime: 12.071859
   pooledObjects:
   - {fileID: 0}

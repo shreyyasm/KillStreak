@@ -173,7 +173,7 @@ public class LoadOutManager : NetworkBehaviour
         audioSource.PlayOneShot(loadoutUISFX);
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
         SetGunUI(loadOutNumber);
-
+        //playerGunSelector.ChangeCrosshair();
 
     }
     [ObserversRpc(BufferLast = true)]
@@ -223,7 +223,7 @@ public class LoadOutManager : NetworkBehaviour
         audioSource.PlayOneShot(loadoutUISFX);
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
         SetGunUI(loadOutNumber);
-
+        //playerGunSelector.ChangeCrosshair();
 
     }
    

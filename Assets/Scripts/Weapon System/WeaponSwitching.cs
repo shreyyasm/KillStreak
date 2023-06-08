@@ -279,6 +279,7 @@ public class WeaponSwitching : NetworkBehaviour
   
         if (!gunChanging)
         {
+            
             anim.SetBool("SniperReload", false);
             anim.SetLayerWeight(8, 0);
             checkAnimationState = true;
@@ -313,7 +314,7 @@ public class WeaponSwitching : NetworkBehaviour
                 //SelectedWeapon();
             }
             shooterController.GunChanged();
-
+          
         }
     }
     [ObserversRpc(BufferLast = true)]
@@ -321,6 +322,7 @@ public class WeaponSwitching : NetworkBehaviour
     {
         if (!gunChanging)
         {
+            
             anim.SetBool("SniperReload", false);
             anim.SetLayerWeight(8, 0);
             checkAnimationState = true;
@@ -355,7 +357,7 @@ public class WeaponSwitching : NetworkBehaviour
                 //SelectedWeapon();
             }
             shooterController.GunChanged();
-
+            
         }
     }
     public bool GunSwaping()

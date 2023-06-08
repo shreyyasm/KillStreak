@@ -91,6 +91,7 @@ public class ShooterController : NetworkBehaviour
             }
         }
     }
+  
     //RaycastHit raycastHit;
     public void AimMovenment()
     {
