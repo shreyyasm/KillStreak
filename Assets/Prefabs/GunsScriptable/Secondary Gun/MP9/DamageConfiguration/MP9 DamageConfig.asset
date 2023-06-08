@@ -27,8 +27,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    m_ConstantMin: 50
-    m_ConstantMax: 40
+    m_ConstantMin: 40
+    m_ConstantMax: 30
   BodyDamageCurve:
     m_Mode: 3
     m_CurveMultiplier: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    m_ConstantMin: 40
+    m_ConstantMin: 30
     m_ConstantMax: 20
   HandDamageCurve:
     m_Mode: 3

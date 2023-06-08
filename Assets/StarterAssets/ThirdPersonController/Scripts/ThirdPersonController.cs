@@ -298,11 +298,12 @@ namespace StarterAssets
             SetRigWeight();
             JumpAndGravity();
 
-            if(_animationBlend > 1)
-                Slide();
+            //if(_animationBlend > 1)
+            //    Slide();
+            //if (Input.GetMouseButtonDown(2))
+            //    Crouch();
             if (Input.GetMouseButtonDown(2))
-                Crouch();
-
+                shooterController.Aim();
             ControllerChanges();
         }
         
@@ -311,8 +312,8 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            //CameraRotationOld();
-            CameraRotation();
+            CameraRotationOld();
+            //CameraRotation();
             
         }
         public void SetRigWeight()
