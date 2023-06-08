@@ -83,6 +83,7 @@ public class PlayerAction : NetworkBehaviour
                 return;
 
             //IsShooting = false;
+            shooterController.ExitAim();
 
             anim.SetBool("SniperReload", false);
             anim.SetLayerWeight(8, 0);
@@ -198,6 +199,8 @@ public class PlayerAction : NetworkBehaviour
             if (weaponSwitch.gunChanging)
                 return;
 
+            shooterController.ExitAim();
+
             anim.SetBool("SniperReload", false);
             anim.SetLayerWeight(8, 0);
 
@@ -217,6 +220,8 @@ public class PlayerAction : NetworkBehaviour
 
             if (weaponSwitch.gunChanging)
                 return;
+
+            shooterController.ExitAim();
 
             anim.SetBool("SniperReload", false);
             anim.SetLayerWeight(8, 0);

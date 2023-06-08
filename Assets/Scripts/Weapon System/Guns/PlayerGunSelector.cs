@@ -263,7 +263,8 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
         Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
-        
+        gun1.AmmoConfig.RefillAmmo();
+        gun2.AmmoConfig.RefillAmmo();
     }
     [ObserversRpc(BufferLast = true)]
     public void ChangeGunLoadOutObserver(int loadout)
@@ -292,7 +293,8 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
         Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
-       
+       gun1.AmmoConfig.RefillAmmo();
+       gun2.AmmoConfig.RefillAmmo();
     }
 
     RaycastHit hitCheck;
@@ -944,7 +946,11 @@ public class PlayerGunSelector : NetworkBehaviour
 
                     }
                     if (shooterController.Aiming)
-                        StartCoroutine(CallAim());
+                    {
+                        if(loadOutManager.loadNumber == 3)
+                            StartCoroutine(CallAim());
+                    }
+                        
                 }
 
             }

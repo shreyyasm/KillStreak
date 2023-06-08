@@ -91,7 +91,19 @@ public class ShooterController : NetworkBehaviour
             }
         }
     }
-  
+    public void ExitAim()
+    {
+        Aiming = false;
+        animator.SetLayerWeight(1, 0);
+        animator.SetLayerWeight(3, 0);
+        thirdPersonController.Aiming(false);
+        screenTouch.SetSensitivity(8);
+        if (!FPSMode)
+        {
+            aimVirtualCamera.enabled = false;
+            //thirdPersonController.SetSensitivity(normalSensitivity);
+        }
+    }
     //RaycastHit raycastHit;
     public void AimMovenment()
     {

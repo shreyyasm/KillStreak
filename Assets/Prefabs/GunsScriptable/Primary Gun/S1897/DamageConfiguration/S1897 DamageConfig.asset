@@ -44,8 +44,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    m_ConstantMin: 120
-    m_ConstantMax: 150
+    m_ConstantMin: 150
+    m_ConstantMax: 120
   HandDamageCurve:
     m_Mode: 3
     m_CurveMultiplier: 0
@@ -61,8 +61,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    m_ConstantMin: 60
-    m_ConstantMax: 80
+    m_ConstantMin: 80
+    m_ConstantMax: 60
   LegDamageCurve:
     m_Mode: 3
     m_CurveMultiplier: 0
@@ -78,8 +78,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    m_ConstantMin: 40
-    m_ConstantMax: 60
+    m_ConstantMin: 60
+    m_ConstantMax: 40
   OtherDamageCurve:
     m_Mode: 3
     m_CurveMultiplier: 0
@@ -95,6 +95,6 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    m_ConstantMin: 20
-    m_ConstantMax: 40
+    m_ConstantMin: 40
+    m_ConstantMax: 20
   DamageReduction: 1

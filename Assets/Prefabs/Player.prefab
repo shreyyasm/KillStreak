@@ -12480,13 +12480,12 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 7
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 774665742
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 8606142165491801254}
 --- !u!114 &6017902892697103238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12816,6 +12815,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   playerGunSelector: {fileID: 854605398997728390}
+  shooterController: {fileID: 7997988506348976479}
   weaponSwitching: {fileID: 60764137881832743}
   LoadOutMenu: {fileID: 331713654}
   TimerLoadout: {fileID: 47333535}

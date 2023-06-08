@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 519ba32d49173fe4f9489334dd9513d9, type: 3}
   m_Name: G63C AmmoConfig
   m_EditorClassIdentifier: 
-  MaxAmmo: 1000
+  MaxAmmo: 200
   ClipSize: 30
-  CurrentAmmo: 1000
+  CurrentAmmo: 200
   CurrentClipAmmo: 30

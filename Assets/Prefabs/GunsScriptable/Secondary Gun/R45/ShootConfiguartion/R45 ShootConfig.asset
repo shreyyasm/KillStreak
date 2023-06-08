@@ -21,9 +21,9 @@ MonoBehaviour:
     m_Bits: 483328
   FireRate: 1
   SpreadType: 1
-  RecoilRecoverySpeed: 1
+  RecoilRecoverySpeed: 0.4
   MaxSpreadTime: 1
-  Spread: {x: 0.03, y: 0.01, z: 0.03}
-  SpreadUp: 0.05
+  Spread: {x: 0.04, y: 0.01, z: 0.04}
+  SpreadUp: 0.04
   SpreadMultiplier: 0.03
   SpreadTexture: {fileID: 2800000, guid: 73cee0f2b9968314d8279958263885a5, type: 3}

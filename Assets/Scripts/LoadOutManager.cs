@@ -9,6 +9,7 @@ public class LoadOutManager : NetworkBehaviour
 {
     public static LoadOutManager Instance;
     [SerializeField] PlayerGunSelector playerGunSelector;
+    [SerializeField] ShooterController shooterController;
     [SerializeField] WeaponSwitching weaponSwitching;
     [SerializeField] GameObject LoadOutMenu;
 
@@ -174,7 +175,7 @@ public class LoadOutManager : NetworkBehaviour
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
         SetGunUI(loadOutNumber);
         //playerGunSelector.ChangeCrosshair();
-
+        shooterController.ExitAim();
     }
     [ObserversRpc(BufferLast = true)]
     public void GetLoadOutInputObserver(int loadOutNumber)
@@ -223,6 +224,7 @@ public class LoadOutManager : NetworkBehaviour
         audioSource.PlayOneShot(loadoutUISFX);
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
         SetGunUI(loadOutNumber);
+        shooterController.ExitAim();
         //playerGunSelector.ChangeCrosshair();
 
     }

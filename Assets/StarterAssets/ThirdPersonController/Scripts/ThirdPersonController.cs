@@ -289,7 +289,10 @@ namespace StarterAssets
 
             playerDead = playerHealth.PlayerDeathState();
             
+            //Pc input
             playerGunSelector.SetLookInput(look.x, look.y, x, z);
+
+            //touchinput 
             //playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
             SetRigWeight();
@@ -308,8 +311,8 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            CameraRotationOld();
-            //CameraRotation();
+            //CameraRotationOld();
+            CameraRotation();
             
         }
         public void SetRigWeight()

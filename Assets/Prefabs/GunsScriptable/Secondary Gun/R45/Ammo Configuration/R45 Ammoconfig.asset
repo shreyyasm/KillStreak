@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 519ba32d49173fe4f9489334dd9513d9, type: 3}
   m_Name: R45 Ammoconfig
   m_EditorClassIdentifier: 
-  MaxAmmo: 100
-  ClipSize: 20
-  CurrentAmmo: 100
-  CurrentClipAmmo: 20
+  MaxAmmo: 30
+  ClipSize: 6
+  CurrentAmmo: 30
+  CurrentClipAmmo: 6
