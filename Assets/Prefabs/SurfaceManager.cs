@@ -46,8 +46,8 @@ public class SurfaceManager : NetworkBehaviour
                     {
                         if (typeEffect.ImpactType == Impact)
                         {
-                            
-                            PlayEffects(HitPoint, HitNormal, typeEffect.SurfaceEffect, activeTexture.Alpha);
+                            surfaceEffect = typeEffect.SurfaceEffect;
+                            PlayEffects(HitPoint, HitNormal, activeTexture.Alpha);
                             
                         }
                     }
@@ -58,7 +58,8 @@ public class SurfaceManager : NetworkBehaviour
                     {
                         if (typeEffect.ImpactType == Impact)
                         {
-                            PlayEffects(HitPoint, HitNormal, typeEffect.SurfaceEffect, 1);
+                            surfaceEffect = typeEffect.SurfaceEffect;
+                            PlayEffects(HitPoint, HitNormal, 1);
                         }
                     }
                 }
@@ -76,7 +77,8 @@ public class SurfaceManager : NetworkBehaviour
                 {
                     if (typeEffect.ImpactType == Impact)
                     {
-                        PlayEffects(HitPoint, HitNormal, typeEffect.SurfaceEffect, 1);
+                        surfaceEffect = typeEffect.SurfaceEffect;
+                        PlayEffects(HitPoint, HitNormal, 1);
                        
                     }
                 }
@@ -87,7 +89,8 @@ public class SurfaceManager : NetworkBehaviour
                 {
                     if (typeEffect.ImpactType == Impact)
                     {
-                        PlayEffects(HitPoint, HitNormal, typeEffect.SurfaceEffect, 1);
+                        surfaceEffect = typeEffect.SurfaceEffect;
+                        PlayEffects(HitPoint, HitNormal, 1);
                     }
                 }
             }
@@ -162,10 +165,19 @@ public class SurfaceManager : NetworkBehaviour
         Debug.LogError($"{Renderer.name} has no MeshFilter! Using default impact effect instead of texture-specific one because we'll be unable to find the correct texture!");
         return null;
     }
-
-    private void PlayEffects(Vector3 HitPoint, Vector3 HitNormal, SurfaceEffect SurfaceEffect, float SoundOffset)
+    public SurfaceEffect surfaceEffect;
+    public void PlayEffects(Vector3 HitPoint, Vector3 HitNormal, float SoundOffset)
     {
-        foreach (SpawnObjectEffect spawnObjectEffect in SurfaceEffect.SpawnObjectEffects)
+        if (base.IsServer)
+            PlayEffectsObserver(HitPoint, HitNormal, SoundOffset);
+
+        else
+            PlayEffectsServer(HitPoint, HitNormal, SoundOffset);
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    private void PlayEffectsServer(Vector3 HitPoint, Vector3 HitNormal, float SoundOffset)
+    {
+        foreach (SpawnObjectEffect spawnObjectEffect in surfaceEffect.SpawnObjectEffects)
         {
             if (spawnObjectEffect.Probability > Random.value)
             {
@@ -190,7 +202,7 @@ public class SurfaceManager : NetworkBehaviour
             }
         }
 
-        foreach (PlayAudioEffect playAudioEffect in SurfaceEffect.PlayAudioEffects)
+        foreach (PlayAudioEffect playAudioEffect in surfaceEffect.PlayAudioEffects)
         {
             AudioClip clip = playAudioEffect.AudioClips[Random.Range(0, playAudioEffect.AudioClips.Count)];
             //ObjectPool pool = ObjectPool.CreateInstance(playAudioEffect.AudioSourcePrefab.GetComponent<PoolableObject>(), DefaultPoolSizes);
@@ -204,6 +216,49 @@ public class SurfaceManager : NetworkBehaviour
             StartCoroutine(DisableAudioSource(audioSource, clip.length));
         }
     }
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
+    private void PlayEffectsObserver(Vector3 HitPoint, Vector3 HitNormal, float SoundOffset)
+    {
+        foreach (SpawnObjectEffect spawnObjectEffect in surfaceEffect.SpawnObjectEffects)
+        {
+            if (spawnObjectEffect.Probability > Random.value)
+            {
+
+                //GameObject getobject =  GetPooledObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal);
+                GameObject getobject = GetObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal).gameObject;
+
+                getobject.transform.forward = HitNormal;
+                StartCoroutine(DisableImpact(getobject));
+                //getobject.GetComponent<ImpactDespawn>().StartDespawn();
+                if (spawnObjectEffect.RandomizeRotation)
+                {
+                    Vector3 offset = new Vector3(
+                        Random.Range(0, 180 * spawnObjectEffect.RandomizedRotationMultiplier.x),
+                        Random.Range(0, 180 * spawnObjectEffect.RandomizedRotationMultiplier.y),
+                        Random.Range(0, 180 * spawnObjectEffect.RandomizedRotationMultiplier.z)
+                    );
+
+                    getobject.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + offset);
+                }
+
+            }
+        }
+
+        foreach (PlayAudioEffect playAudioEffect in surfaceEffect.PlayAudioEffects)
+        {
+            AudioClip clip = playAudioEffect.AudioClips[Random.Range(0, playAudioEffect.AudioClips.Count)];
+            //ObjectPool pool = ObjectPool.CreateInstance(playAudioEffect.AudioSourcePrefab.GetComponent<PoolableObject>(), DefaultPoolSizes);
+            //AudioSource audioSource = pool.GetObject().GetComponent<AudioSource>();
+            AudioSource audioSource = NetworkManager.GetPooledInstantiated(impactAudioPrefab.GetComponent<NetworkObject>(), true).GetComponent<AudioSource>();
+            InstanceFinder.ServerManager.Spawn(audioSource.gameObject);
+
+
+            audioSource.transform.position = HitPoint;
+            audioSource.PlayOneShot(clip, SoundOffset * Random.Range(playAudioEffect.VolumeRange.x, playAudioEffect.VolumeRange.y));
+            StartCoroutine(DisableAudioSource(audioSource, clip.length));
+        }
+    }
+    
 
     private IEnumerator DisableAudioSource(AudioSource AudioSource, float Time)
     {
