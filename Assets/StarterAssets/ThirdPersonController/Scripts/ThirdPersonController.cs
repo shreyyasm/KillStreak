@@ -168,6 +168,7 @@ namespace StarterAssets
         private CinemachineVirtualCamera m_AimCamera;
         [SerializeField] Transform[] Root;
         public GameObject UICanvas;
+        public AudioListener audioListener;
         public override void OnStartNetwork()
         {
             base.OnStartNetwork();
@@ -178,6 +179,7 @@ namespace StarterAssets
             if (base.Owner.IsLocalClient)
             {
                 cameraRoot.AddComponent<CameraFollow>();
+               // gameObject.AddComponent<AudioListener>();
                 foreach (Transform gears in Root)
                 {
                     var childGameObjects = gears.GetComponentsInChildren<Transform>();
@@ -191,7 +193,7 @@ namespace StarterAssets
             }
             else
             {
-
+                //audioListener.enabled = false;
                 // UICanvas.SetActive(false);
                 //gameObject.AddComponent<Enemy>();
                 // gameObject.AddComponent<EnemyHealth>(); 

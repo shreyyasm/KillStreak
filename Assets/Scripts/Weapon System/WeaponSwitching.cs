@@ -221,7 +221,9 @@ public class WeaponSwitching : NetworkBehaviour
             //    //SelectedWeapon();
             //}
             shooterController.GunChanged();
-
+            
+            //playerGunSelector.ActiveGunPrefab = playerGunSelector.PrimaryGunsPrefabs[loadOutManager.loadNumber];
+            
         }
         foreach (Transform fakeGun in PrimaryGunsFakePrefabs) //   <--- go back to here --------+
         {                               //                                |         
@@ -252,7 +254,10 @@ public class WeaponSwitching : NetworkBehaviour
             //    //SelectedWeapon();
             //}
             shooterController.GunChanged();
-
+            
+            //playerGunSelector.ActiveGunPrefab = playerGunSelector.PrimaryGunsPrefabs[loadOutManager.loadNumber];
+            
+           
         }
         foreach (Transform fakeGun in PrimaryGunsFakePrefabs) //   <--- go back to here --------+
         {                               //                                |         
@@ -314,7 +319,14 @@ public class WeaponSwitching : NetworkBehaviour
                 //SelectedWeapon();
             }
             shooterController.GunChanged();
-          
+            if (selectedWeapon == 0)
+            {
+                playerGunSelector.ActiveGunPrefab = playerGunSelector.PrimaryGunsPrefabs[loadOutManager.loadNumber];
+            }
+            else
+            {
+                playerGunSelector.ActiveGunPrefab = playerGunSelector.SecondaryGunsPrefabs[loadOutManager.loadNumber];
+            }
         }
     }
     [ObserversRpc(BufferLast = true)]
@@ -357,7 +369,14 @@ public class WeaponSwitching : NetworkBehaviour
                 //SelectedWeapon();
             }
             shooterController.GunChanged();
-            
+            if (selectedWeapon == 0)
+            {
+                playerGunSelector.ActiveGunPrefab = playerGunSelector.PrimaryGunsPrefabs[loadOutManager.loadNumber];
+            }
+            else
+            {
+                playerGunSelector.ActiveGunPrefab = playerGunSelector.SecondaryGunsPrefabs[loadOutManager.loadNumber];
+            }
         }
     }
     public bool GunSwaping()

@@ -38,6 +38,10 @@ public class PlayerGunSelector : NetworkBehaviour
     private ShooterController shooterController;
     [SerializeField]
     private WeaponSwitching weaponSwitching;
+
+    [SerializeField]
+    PlayerSoundManager playerSoundManager;
+
     [SerializeField]
     private SurfaceManager surfaceManager;
     [SerializeField]
@@ -82,6 +86,8 @@ public class PlayerGunSelector : NetworkBehaviour
     public GameObject CrosshairPrimary;
     public GameObject CrosshairSecondary;
     Animator anim;
+
+    public GameObject ActiveGunPrefab;
     private void Awake()
     {
         instance = this;
@@ -102,17 +108,19 @@ public class PlayerGunSelector : NetworkBehaviour
         gun2 = SecondaryGuns[loadOutManager.loadNumber];
 
         PrimaryGunsPrefabs[loadOutManager.loadNumber].SetActive(true);
-       
+      
         gunSelected = weaponSwitching.selectedWeapon;
         if (gunSelected == 0)
         {
             if (!weaponSwitching.gunChanging)
                 ActiveGun = PrimaryGuns[loadOutManager.loadNumber];
+            ActiveGunPrefab = PrimaryGunsPrefabs[loadOutManager.loadNumber];
         }
         else
         {
             if (!weaponSwitching.gunChanging)
                 ActiveGun = SecondaryGuns[loadOutManager.loadNumber];
+            ActiveGunPrefab = SecondaryGunsPrefabs[loadOutManager.loadNumber];
         }
 
         GetModelFromParent();
@@ -146,11 +154,13 @@ public class PlayerGunSelector : NetworkBehaviour
         {
             if(!weaponSwitching.gunChanging)
                 ActiveGun = PrimaryGuns[loadOutManager.loadNumber];
+           
         }
         else
         {
             if (!weaponSwitching.gunChanging)
                 ActiveGun = SecondaryGuns[loadOutManager.loadNumber];
+            
         }
 
         bulletTrail = ActiveGun.ReturnBullet();
@@ -263,6 +273,14 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
         Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        if (weaponSwitching.selectedWeapon == 0)
+        {        
+            ActiveGunPrefab = PrimaryGunsPrefabs[loadOutManager.loadNumber];
+        }
+        else
+        {          
+            ActiveGunPrefab = SecondaryGunsPrefabs[loadOutManager.loadNumber];
+        }
         gun1.AmmoConfig.RefillAmmo();
         gun2.AmmoConfig.RefillAmmo();
     }
@@ -293,7 +311,15 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
         Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
-       gun1.AmmoConfig.RefillAmmo();
+        if (weaponSwitching.selectedWeapon == 0)
+        {
+            ActiveGunPrefab = PrimaryGunsPrefabs[loadOutManager.loadNumber];
+        }
+        else
+        {
+            ActiveGunPrefab = SecondaryGunsPrefabs[loadOutManager.loadNumber];
+        }
+        gun1.AmmoConfig.RefillAmmo();
        gun2.AmmoConfig.RefillAmmo();
     }
 
@@ -414,7 +440,8 @@ public class PlayerGunSelector : NetworkBehaviour
     Vector3 rayHitPoint;
     RaycastHit aimAssistHit;
     RaycastHit hitnew;
-   
+
+    
     public void FireConditionAutomatic()
     { 
         
@@ -441,15 +468,18 @@ public class PlayerGunSelector : NetworkBehaviour
             var distance = heading.magnitude;
             var direction = heading / distance;
 
-
+            
             //Vector3 dirNew = (ActiveGun.ShootSystem.transform.position - ActiveCamera.transform.position);
             Vector3 shootDirection = direction + sphere.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
             Vector3 origin = ActiveGun.ShootSystem.transform.position
                         + ActiveGun.ShootSystem.transform.forward * Vector3.Distance(
                                ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
-           
-            if(ActiveGun.shotgun)
+
+            
+            playerSoundManager.PlayShootingClip(transform.position, ActiveGun.AmmoConfig.CurrentClipAmmo == 1);
+            
+            if (ActiveGun.shotgun)
             {
                 for(int i = 0; i < ActiveGun.bulletPerShot; i++)
                 {
@@ -468,7 +498,7 @@ public class PlayerGunSelector : NetworkBehaviour
                     {
                         if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                         {
-
+                            
                             StartCoroutine(
                                 PlayTrail(
                                     ActiveGun.ShootSystem.transform.position,
@@ -708,7 +738,7 @@ public class PlayerGunSelector : NetworkBehaviour
                                ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
 
-           
+            playerSoundManager.PlayShootingClip(transform.position,ActiveGun.AmmoConfig.CurrentClipAmmo == 1);
             if (ActiveGun.shotgun)
             {
                 for (int i = 0; i < ActiveGun.bulletPerShot; i++)
@@ -1150,7 +1180,7 @@ public class PlayerGunSelector : NetworkBehaviour
             else
                 ActiveGun.DamageConfig.DamageReduction = 1;
 
-
+            
             Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
             floatingDamage.GetPosition(enemyPos, ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
             //floatingDamage.CallStartAnimation();

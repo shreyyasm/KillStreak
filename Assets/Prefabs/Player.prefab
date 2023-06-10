@@ -4762,7 +4762,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1202611558}
   - component: {fileID: 1202611557}
-  - component: {fileID: 1202611556}
   - component: {fileID: 8185841937566356668}
   m_Layer: 0
   m_Name: Camera
@@ -4829,14 +4828,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1202611556
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1202611555}
-  m_Enabled: 1
 --- !u!114 &8185841937566356668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8232,7 +8223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f544f2f09089d5e46a3d4724a3d2589e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 18
+  _componentIndexCache: 19
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   <selectedWeapon>k__BackingField: 0
@@ -11888,6 +11879,7 @@ GameObject:
   - component: {fileID: 5050372454195438821}
   - component: {fileID: 3706598513884092583}
   - component: {fileID: 771526671}
+  - component: {fileID: 1612136636}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -12024,6 +12016,7 @@ MonoBehaviour:
   Root:
   - {fileID: 1634709685822225920}
   UICanvas: {fileID: 3623522233210164123}
+  audioListener: {fileID: 0}
   speed: 12
   gravity: -9.81
   value: 1.8
@@ -12464,6 +12457,7 @@ MonoBehaviour:
   - {fileID: 19180172534219905}
   - {fileID: 8730711434545529099}
   - {fileID: 5050372454195438821}
+  - {fileID: 1612136636}
   - {fileID: 7038848279386442737}
   - {fileID: 3977011766980961940}
   - {fileID: 6733548792866847433}
@@ -12589,6 +12583,7 @@ MonoBehaviour:
   ActiveGun: {fileID: 0}
   shooterController: {fileID: 7997988506348976479}
   weaponSwitching: {fileID: 60764137881832743}
+  playerSoundManager: {fileID: 1612136636}
   surfaceManager: {fileID: 8730711434545529099}
   floatingDamage: {fileID: 7328555219826364907}
   playerHealth: {fileID: 6007887100391698674}
@@ -13534,6 +13529,22 @@ MonoBehaviour:
     type: 2}
   handPoseList: []
   blendShapeList: []
+--- !u!114 &1612136636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965142408394958343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e15cabf6073857468162822699cff45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 12
+  _addedNetworkObject: {fileID: 8606142165491801254}
+  _networkObjectCache: {fileID: 8606142165491801254}
+  playerGunSelector: {fileID: 854605398997728390}
 --- !u!1 &974142427121186176
 GameObject:
   m_ObjectHideFlags: 0
@@ -14558,7 +14569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 16
+  _componentIndexCache: 17
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   PlayerCheck: {fileID: 5643628234101779476}
@@ -20518,7 +20529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 14
+  _componentIndexCache: 15
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   PlayerCheck: {fileID: 5643628234101779476}
@@ -20534,7 +20545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 15
+  _componentIndexCache: 16
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   GunSelector: {fileID: 854605398997728390}
@@ -25031,7 +25042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4eccd0b9cf3eed409616a314b8d58df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 13
+  _componentIndexCache: 14
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   mouseSensitivity: 100
@@ -25572,7 +25583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 17
+  _componentIndexCache: 18
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   GunSelector: {fileID: 854605398997728390}
@@ -34009,7 +34020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 12
+  _componentIndexCache: 13
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   _synchronizeParent: 0

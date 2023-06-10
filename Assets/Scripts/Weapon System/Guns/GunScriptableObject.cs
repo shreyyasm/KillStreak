@@ -193,7 +193,7 @@ public class GunScriptableObject : ScriptableObject
 
             ShootSystem.Play();
             
-            AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
+            //AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
 
             shootHoldTime = Time.time;
             Vector3 spreadAmount = ShootConfig.GetSpread(shootHoldTime - InitialClickTime);
@@ -248,7 +248,7 @@ public class GunScriptableObject : ScriptableObject
 
             ShootSystem.Play();
             
-            AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
+            //AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
 
             shootHoldTime = Time.time;
             Vector3 spreadAmount = ShootConfig.GetSpread(shootHoldTime - InitialClickTime);
