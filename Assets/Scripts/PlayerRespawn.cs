@@ -39,7 +39,8 @@ public class PlayerRespawn : NetworkBehaviour
         player.SetActive(true);
         if(playerCanvas!= null)
             playerCanvas.SetActive(true);
-        loadoutCanvas.SetActive(true);
+        if (loadoutCanvas != null)
+            loadoutCanvas.SetActive(true);
         player.GetComponent<PlayerHealth>().playerDead = false;
 
         

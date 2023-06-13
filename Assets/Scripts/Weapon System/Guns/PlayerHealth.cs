@@ -125,7 +125,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         {
             if (PlayerCanvas != null)
                 PlayerCanvas.SetActive(false);
-            LoadOutCanvas.SetActive(false);
+            if (LoadOutCanvas != null)
+                LoadOutCanvas.SetActive(false);
             RigController.enabled = false;
             StartCoroutine(DespawnPlayer());
             PlayerRespawn.Instance.Respawn(player.gameObject , PlayerCanvas, LoadOutCanvas);

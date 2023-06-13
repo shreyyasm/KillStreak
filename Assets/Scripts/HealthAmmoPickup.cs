@@ -26,7 +26,7 @@ public class HealthAmmoPickup : NetworkBehaviour
         //Debug.Log("work");
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("work");
+            
             InstanceFinder.ServerManager.Despawn(gameObject, DespawnType.Pool);
             collision.gameObject.GetComponent<PlayerHealth>().RestoreHealth();
             collision.gameObject.GetComponent<PlayerGunSelector>().gun1.AmmoConfig.RefillAmmo();

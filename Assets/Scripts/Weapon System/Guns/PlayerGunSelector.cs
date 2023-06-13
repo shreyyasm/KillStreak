@@ -69,8 +69,8 @@ public class PlayerGunSelector : NetworkBehaviour
     private  float moveX, moveZ;
     [SerializeField] GameObject BlockUI;
     [SerializeField] GameObject CrosshairUI;
-    Transform Model1;
-    Transform Model2;
+    Transform GunModel;
+   
 
     public LoadOutManager loadOutManager;
     public Transform PrimaryParent;
@@ -130,8 +130,8 @@ public class PlayerGunSelector : NetworkBehaviour
     {
         //yield return new WaitForSeconds(0.1f);
         //Model = GunParent.GetComponentsInChildren<Transform>();
-        Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
-        Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        GunModel = ActiveGunPrefab.transform;
+        
     }
     [Range(0.1f, 1f)] public float sphereCastRadius;
     [Range(1f, 100f)] public float range;
@@ -271,8 +271,7 @@ public class PlayerGunSelector : NetworkBehaviour
             // do work
             Gun.SetActive(false);
         }
-        Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
-        Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        
         if (weaponSwitching.selectedWeapon == 0)
         {        
             ActiveGunPrefab = PrimaryGunsPrefabs[loadOutManager.loadNumber];
@@ -281,6 +280,7 @@ public class PlayerGunSelector : NetworkBehaviour
         {          
             ActiveGunPrefab = SecondaryGunsPrefabs[loadOutManager.loadNumber];
         }
+        GunModel = ActiveGunPrefab.transform;
         gun1.AmmoConfig.RefillAmmo();
         gun2.AmmoConfig.RefillAmmo();
     }
@@ -309,8 +309,7 @@ public class PlayerGunSelector : NetworkBehaviour
             // do work
             Gun.SetActive(false);
         }
-        Model1 = PrimaryGunsPrefabs[loadOutManager.loadNumber].transform;
-        Model2 = SecondaryGunsPrefabs[loadOutManager.loadNumber].transform;
+        
         if (weaponSwitching.selectedWeapon == 0)
         {
             ActiveGunPrefab = PrimaryGunsPrefabs[loadOutManager.loadNumber];
@@ -319,6 +318,7 @@ public class PlayerGunSelector : NetworkBehaviour
         {
             ActiveGunPrefab = SecondaryGunsPrefabs[loadOutManager.loadNumber];
         }
+        GunModel = ActiveGunPrefab.transform;
         gun1.AmmoConfig.RefillAmmo();
        gun2.AmmoConfig.RefillAmmo();
     }
@@ -330,16 +330,15 @@ public class PlayerGunSelector : NetworkBehaviour
     public float timeLeftBlock = 0f;
     public void GunModelRecoil()
     {
-       
-        Model1.transform.localRotation = Quaternion.Lerp(
-           Model1.transform.localRotation,
-           Quaternion.Euler(PrimaryGuns[loadOutManager.loadNumber].SpawnRotation),
-           Time.deltaTime * PrimaryGuns[loadOutManager.loadNumber].ShootConfig.RecoilRecoverySpeed);
 
-        Model2.transform.localRotation = Quaternion.Lerp(
-           Model2.transform.localRotation,
-           Quaternion.Euler(SecondaryGuns[loadOutManager.loadNumber].SpawnRotation),
-           Time.deltaTime * SecondaryGuns[loadOutManager.loadNumber].ShootConfig.RecoilRecoverySpeed);
+        GunModel.transform.localRotation = Quaternion.Lerp(
+           GunModel.transform.localRotation,
+           Quaternion.Euler(ActiveGun.SpawnRotation),
+           Time.deltaTime * ActiveGun.ShootConfig.RecoilRecoverySpeed);
+
+        //GunModel.transform.forward += GunModel.transform.TransformDirection(spreadAmount);
+
+
     }
     public void CheckBlocked()
     {
@@ -399,43 +398,8 @@ public class PlayerGunSelector : NetworkBehaviour
             blocked = false;
         }
     }
-    public void StartPool()
-    {
-        bulletTrailPool = new GameObject("Bullet Pool");
-        pooledObjects = new List<GameObject>();
-        for (int i = 0; i < amountToPool; i++)
-        {
-
-            GameObject obj = (GameObject)Instantiate(objectToPool);
-            //PlayerAction.Instance.SpawnBulletServerRPC(obj);
-            //PlayerAction.Instance.SpawnBulletServerRPC(obj);
-            obj.transform.parent = bulletTrailPool.transform;
-            //obj.AddComponent<NetworkObject>();
-            //obj.AddComponent<NetworkObserver>();
-            obj.SetActive(false);
-            
-            pooledObjects.Add(obj);
-           // SpawnBulletServerRPC(pooledObjects[i]);
-           //base.Despawn(obj, DespawnType.Pool);
-        }
-
-
-    }
-    public GameObject GetPooledObject()
-    {
-        //1
-        for (int i = 0; i < pooledObjects.Count; i++)
-        {
-            //2
-            if (!pooledObjects[i].activeInHierarchy)
-            {
-                return pooledObjects[i];
-            }
-        }
-        //3   
-        return null;
-    }
    
+  
     Vector3 hitpoint;
     Vector3 rayHitPoint;
     RaycastHit aimAssistHit;
@@ -476,7 +440,8 @@ public class PlayerGunSelector : NetworkBehaviour
                                ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
 
-            
+            GunModel.transform.forward += GunModel.transform.TransformDirection(ActiveGun.spreadAmount);
+            //GunModelRecoil(ActiveGun.spreadAmount);
             playerSoundManager.PlayShootingClip(transform.position, ActiveGun.AmmoConfig.CurrentClipAmmo == 1);
             
             if (ActiveGun.shotgun)
@@ -737,7 +702,7 @@ public class PlayerGunSelector : NetworkBehaviour
                         + ActiveGun.ShootSystem.transform.forward * Vector3.Distance(
                                ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
-
+            GunModel.transform.forward += GunModel.transform.TransformDirection(ActiveGun.spreadAmount);
             playerSoundManager.PlayShootingClip(transform.position,ActiveGun.AmmoConfig.CurrentClipAmmo == 1);
             if (ActiveGun.shotgun)
             {

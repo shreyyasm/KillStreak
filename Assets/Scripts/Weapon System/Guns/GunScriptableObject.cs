@@ -167,6 +167,7 @@ public class GunScriptableObject : ScriptableObject
     /// </summary>
     public Ray ray;
     public float shootHoldTime;
+
     private void TryToShoot()
     { 
         if (Time.time - LastShootTime - ShootConfig.FireRate > Time.deltaTime)
@@ -196,8 +197,8 @@ public class GunScriptableObject : ScriptableObject
             //AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
 
             shootHoldTime = Time.time;
-            Vector3 spreadAmount = ShootConfig.GetSpread(shootHoldTime - InitialClickTime);
-            Model.transform.forward += Model.transform.TransformDirection(spreadAmount);
+            spreadAmount = ShootConfig.GetSpread(shootHoldTime - InitialClickTime);
+            //Model.transform.forward += Model.transform.TransformDirection(spreadAmount);
 
             shootDirection = ShootSystem.transform.forward;
 
@@ -251,8 +252,8 @@ public class GunScriptableObject : ScriptableObject
             //AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
 
             shootHoldTime = Time.time;
-            Vector3 spreadAmount = ShootConfig.GetSpread(shootHoldTime - InitialClickTime);
-            Model.transform.forward += Model.transform.TransformDirection(spreadAmount);
+            spreadAmount = ShootConfig.GetSpread(shootHoldTime - InitialClickTime);
+            //Model.transform.forward += Model.transform.TransformDirection(spreadAmount);
 
             shootDirection = ShootSystem.transform.forward;
 
@@ -266,6 +267,11 @@ public class GunScriptableObject : ScriptableObject
             {
                 aimVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(6f, 0.3f);
                 followVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(3f, 0.1f);
+            }
+            else if(shotgun)
+            {
+                followVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(3f, 0.1f);
+                aimVirtualCamera.GetComponent<CinemachineShake>().ShakeCamera(4f, 0.1f);
             }
             else
             {

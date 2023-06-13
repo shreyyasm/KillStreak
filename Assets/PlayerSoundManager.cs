@@ -33,7 +33,7 @@ public class PlayerSoundManager : NetworkBehaviour
             playerGunSelector.ActiveGunPrefab.GetComponent<AudioSource>().PlayOneShot(playerGunSelector.ActiveGun.AudioConfig.FireClips[Random.Range(0, playerGunSelector.ActiveGun.AudioConfig.FireClips.Length)], playerGunSelector.ActiveGun.AudioConfig.Volume);
         }
     }
-    [ObserversRpc(BufferLast = true,RunLocally = true)]
+    [ObserversRpc(BufferLast = false,RunLocally = true)]
     public void PlayShootingClipObserver(Vector3 ImpactPos, bool IsLastBullet = false)
     {
         
