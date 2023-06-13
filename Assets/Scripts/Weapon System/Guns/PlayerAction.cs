@@ -32,7 +32,9 @@ public class PlayerAction : NetworkBehaviour
     private PlayerHealth playerHealth;
     [SerializeField]
     private WeaponSwitching weaponSwitch;
-  
+    [SerializeField]
+    private PlayerSoundManager playerSoundManager;
+
 
     [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
     public bool IsReloading { get; [ServerRpc(RunLocally = true)] set; }
@@ -89,7 +91,8 @@ public class PlayerAction : NetworkBehaviour
             anim.SetLayerWeight(8, 0);
 
             PlayerAnimator.SetLayerWeight(6, 1);
-            GunSelector.ActiveGun.StartReloading();
+            //GunSelector.ActiveGun.StartReloading();
+            playerSoundManager.PlayReloadClip();
             IsReloading = true;
             
             thirdPersonController.ReloadCheck(IsReloading);
@@ -205,7 +208,8 @@ public class PlayerAction : NetworkBehaviour
             anim.SetLayerWeight(8, 0);
 
             PlayerAnimator.SetLayerWeight(6, 1);
-            GunSelector.ActiveGun.StartReloading();
+            playerSoundManager.PlayReloadClip();
+            //GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
             thirdPersonController.ReloadCheck(IsReloading);
             anim.SetBool("Reload",true);
@@ -227,7 +231,8 @@ public class PlayerAction : NetworkBehaviour
             anim.SetLayerWeight(8, 0);
 
             PlayerAnimator.SetLayerWeight(6, 1);
-            GunSelector.ActiveGun.StartReloading();
+            playerSoundManager.PlayReloadClip();
+            //GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
             thirdPersonController.ReloadCheck(IsReloading);
             anim.SetBool("Reload", true);

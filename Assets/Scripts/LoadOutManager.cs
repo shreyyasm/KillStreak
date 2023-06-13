@@ -119,7 +119,7 @@ public class LoadOutManager : NetworkBehaviour
     }
     public void GetLoadOutInput(int loadOutNumber)
     {
-        
+        audioSource.PlayOneShot(loadoutUISFX);
         if (base.IsServer)
             GetLoadOutInputObserver(loadOutNumber);
 
@@ -171,7 +171,7 @@ public class LoadOutManager : NetworkBehaviour
                 selectedLoadOut.SetActive(false);
             }
         }
-        audioSource.PlayOneShot(loadoutUISFX);
+        
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
         SetGunUI(loadOutNumber);
         //playerGunSelector.ChangeCrosshair();
@@ -221,7 +221,7 @@ public class LoadOutManager : NetworkBehaviour
             }
         }
         
-        audioSource.PlayOneShot(loadoutUISFX);
+       
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
         SetGunUI(loadOutNumber);
         shooterController.ExitAim();

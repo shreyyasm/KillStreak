@@ -12686,6 +12686,7 @@ MonoBehaviour:
   shooterController: {fileID: 7997988506348976479}
   playerHealth: {fileID: 6007887100391698674}
   weaponSwitch: {fileID: 60764137881832743}
+  playerSoundManager: {fileID: 1612136636}
   <IsReloading>k__BackingField: 0
   IsShooting: 0
   resetShooting: 0

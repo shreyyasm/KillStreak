@@ -49,7 +49,7 @@ public class PlayerSoundManager : NetworkBehaviour
         }
     }
 
-    public void  PlayReloadClip()
+    public void PlayReloadClip()
     {
         if (base.IsServer)
             PlayReloadClipObserver();
@@ -63,16 +63,16 @@ public class PlayerSoundManager : NetworkBehaviour
     {
         if (playerGunSelector.ActiveGun.AudioConfig.ReloadClip != null)
         {
-            playerGunSelector.ActiveGun.ShootingAudioSource.PlayOneShot(playerGunSelector.ActiveGun.AudioConfig.ReloadClip, playerGunSelector.ActiveGun.AudioConfig.Volume);
+            playerGunSelector.ActiveGunPrefab.GetComponent<AudioSource>().PlayOneShot(playerGunSelector.ActiveGun.AudioConfig.ReloadClip, playerGunSelector.ActiveGun.AudioConfig.Volume);
         }
     }
 
-    [ObserversRpc]
+    [ObserversRpc(BufferLast = false, RunLocally = true)]
     public void PlayReloadClipObserver()
     {
         if (playerGunSelector.ActiveGun.AudioConfig.ReloadClip != null)
         {
-            playerGunSelector.ActiveGun.ShootingAudioSource.PlayOneShot(playerGunSelector.ActiveGun.AudioConfig.ReloadClip, playerGunSelector.ActiveGun.AudioConfig.Volume);
+            playerGunSelector.ActiveGunPrefab.GetComponent<AudioSource>().PlayOneShot(playerGunSelector.ActiveGun.AudioConfig.ReloadClip, playerGunSelector.ActiveGun.AudioConfig.Volume);
         }
     }
 }

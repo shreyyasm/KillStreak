@@ -69,7 +69,7 @@ public class PlayerGunSelector : NetworkBehaviour
     private  float moveX, moveZ;
     [SerializeField] GameObject BlockUI;
     [SerializeField] GameObject CrosshairUI;
-    Transform GunModel;
+    GameObject GunModel;
    
 
     public LoadOutManager loadOutManager;
@@ -130,7 +130,7 @@ public class PlayerGunSelector : NetworkBehaviour
     {
         //yield return new WaitForSeconds(0.1f);
         //Model = GunParent.GetComponentsInChildren<Transform>();
-        GunModel = ActiveGunPrefab.transform;
+        GunModel = ActiveGunPrefab;
         
     }
     [Range(0.1f, 1f)] public float sphereCastRadius;
@@ -280,7 +280,7 @@ public class PlayerGunSelector : NetworkBehaviour
         {          
             ActiveGunPrefab = SecondaryGunsPrefabs[loadOutManager.loadNumber];
         }
-        GunModel = ActiveGunPrefab.transform;
+        GunModel = ActiveGunPrefab;
         gun1.AmmoConfig.RefillAmmo();
         gun2.AmmoConfig.RefillAmmo();
     }
@@ -318,7 +318,7 @@ public class PlayerGunSelector : NetworkBehaviour
         {
             ActiveGunPrefab = SecondaryGunsPrefabs[loadOutManager.loadNumber];
         }
-        GunModel = ActiveGunPrefab.transform;
+        GunModel = ActiveGunPrefab;
         gun1.AmmoConfig.RefillAmmo();
        gun2.AmmoConfig.RefillAmmo();
     }
@@ -330,7 +330,10 @@ public class PlayerGunSelector : NetworkBehaviour
     public float timeLeftBlock = 0f;
     public void GunModelRecoil()
     {
-
+        if(!playerAction.IsShooting)
+        {
+            GunModel.transform.localRotation = Quaternion.Euler(ActiveGun.SpawnRotation);
+        }
         GunModel.transform.localRotation = Quaternion.Lerp(
            GunModel.transform.localRotation,
            Quaternion.Euler(ActiveGun.SpawnRotation),
@@ -340,6 +343,7 @@ public class PlayerGunSelector : NetworkBehaviour
 
 
     }
+ 
     public void CheckBlocked()
     {
         if (Physics.Raycast(ray, out hitCheck, float.MaxValue, ActiveGun.ShootConfig.HitMask))
@@ -439,7 +443,7 @@ public class PlayerGunSelector : NetworkBehaviour
                         + ActiveGun.ShootSystem.transform.forward * Vector3.Distance(
                                ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
-
+           
             GunModel.transform.forward += GunModel.transform.TransformDirection(ActiveGun.spreadAmount);
             //GunModelRecoil(ActiveGun.spreadAmount);
             playerSoundManager.PlayShootingClip(transform.position, ActiveGun.AmmoConfig.CurrentClipAmmo == 1);
@@ -702,6 +706,8 @@ public class PlayerGunSelector : NetworkBehaviour
                         + ActiveGun.ShootSystem.transform.forward * Vector3.Distance(
                                ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
+
+            
             GunModel.transform.forward += GunModel.transform.TransformDirection(ActiveGun.spreadAmount);
             playerSoundManager.PlayShootingClip(transform.position,ActiveGun.AmmoConfig.CurrentClipAmmo == 1);
             if (ActiveGun.shotgun)

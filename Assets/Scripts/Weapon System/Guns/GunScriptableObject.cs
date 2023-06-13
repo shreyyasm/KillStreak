@@ -140,6 +140,7 @@ public class GunScriptableObject : ScriptableObject
     /// </summary>
     public void StartReloading()
     {
+
         AudioConfig.PlayReloadClip(ShootingAudioSource);
     }
 
