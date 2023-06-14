@@ -16,7 +16,6 @@ MonoBehaviour:
     type: 3}
   AudioClips:
   - {fileID: 8300000, guid: 46e5038b8e50f1b4fbef6c547966b436, type: 3}
-  - {fileID: 8300000, guid: ea3b29bcd1a393f4590afe2a99727731, type: 3}
   - {fileID: 8300000, guid: 05eac58368cda5949aee9599becf997a, type: 3}
   - {fileID: 8300000, guid: d2866b225639c2b4292accc5ef640e66, type: 3}
-  VolumeRange: {x: 0.4, y: 0.6}
+  VolumeRange: {x: 0.2, y: 0.3}

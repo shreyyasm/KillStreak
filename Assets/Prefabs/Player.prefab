@@ -9325,7 +9325,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3557510179236781782}
-  - {fileID: 2986779043555554284}
   m_Father: {fileID: 4374371431324039461}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12474,7 +12473,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 7
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 774665742
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects:
@@ -12783,6 +12782,7 @@ MonoBehaviour:
   DefaultSurface: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
   Concrete: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
   Blood: {fileID: 11400000, guid: 2d66184d113051d4cb6f79a69840eb0e, type: 2}
+  ActiveSurfaceEffect: {fileID: 0}
   surfaceEffectConcrete: {fileID: 11400000, guid: 7396e40f1b31cb74bbd09efcc3642375,
     type: 2}
   surfaceEffectBlood: {fileID: 11400000, guid: cdec85157b58aa74ba3a9dd85d9cbcb1, type: 2}
@@ -21261,6 +21261,7 @@ Transform:
   - {fileID: 8182194688201358527}
   - {fileID: 1517822271602147526}
   - {fileID: 7356333345334436248}
+  - {fileID: 2986779043555554284}
   m_Father: {fileID: 5685068981422755217}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -29461,13 +29462,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6607333767178437730}
-  m_LocalRotation: {x: -0.7017045, y: -0.032001134, z: -0.71104145, w: 0.031731237}
-  m_LocalPosition: {x: -0.08217661, y: -0.11887795, z: 0.0038896664}
+  m_LocalRotation: {x: -0.20991564, y: -0.6846989, z: 0.20751275, w: -0.6663794}
+  m_LocalPosition: {x: 0.14246175, y: 0.05660847, z: -0.005403777}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5685068981422755217}
-  m_RootOrder: 1
+  m_Father: {fileID: 3557510179236781782}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!33 &1599911353459086551
 MeshFilter:
