@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 226ed3745f09497468b2953f52d847ed, type: 3}
+  m_Name: Spawn Blood Audio Effect
+  m_EditorClassIdentifier: 
+  AudioSourcePrefab: {fileID: 1872884312836795532, guid: b53742d29eb6df947b849b7ffcfdf0e5,
+    type: 3}
+  AudioClips:
+  - {fileID: 8300000, guid: 46e5038b8e50f1b4fbef6c547966b436, type: 3}
+  - {fileID: 8300000, guid: ea3b29bcd1a393f4590afe2a99727731, type: 3}
+  - {fileID: 8300000, guid: 05eac58368cda5949aee9599becf997a, type: 3}
+  - {fileID: 8300000, guid: d2866b225639c2b4292accc5ef640e66, type: 3}
+  VolumeRange: {x: 0.4, y: 0.6}

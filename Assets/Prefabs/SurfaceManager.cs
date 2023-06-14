@@ -28,11 +28,21 @@ public class SurfaceManager : NetworkBehaviour
     private List<SurfaceType> Surfaces = new List<SurfaceType>();
     [SerializeField]
     private int DefaultPoolSizes = 10;
+
     [SerializeField]
     private Surface DefaultSurface;
+    public Surface Concrete;
+    public Surface Blood;
 
+    public SurfaceEffect ActiveSurfaceEffect;
+    public SurfaceEffect surfaceEffectConcrete;
+    public SurfaceEffect surfaceEffectBlood;
     public void HandleImpact(GameObject HitObject, Vector3 HitPoint, Vector3 HitNormal, ImpactType Impact, int TriangleIndex)
     {
+        if (HitObject.CompareTag("Player"))
+            DefaultSurface = Blood;
+        else
+            DefaultSurface = Concrete;
         if (HitObject.TryGetComponent<Terrain>(out Terrain terrain))
         {
             
@@ -46,8 +56,13 @@ public class SurfaceManager : NetworkBehaviour
                     {
                         if (typeEffect.ImpactType == Impact)
                         {
-                            surfaceEffect = typeEffect.SurfaceEffect;
-                            PlayEffects(HitPoint, HitNormal, activeTexture.Alpha);
+                            if(HitObject.CompareTag("Player"))
+                                ActiveSurfaceEffect = surfaceEffectBlood;
+                                                      
+                            else
+                                ActiveSurfaceEffect = surfaceEffectConcrete;
+      
+                            PlayEffects(HitObject, HitPoint, HitNormal, activeTexture.Alpha);
                             
                         }
                     }
@@ -58,8 +73,13 @@ public class SurfaceManager : NetworkBehaviour
                     {
                         if (typeEffect.ImpactType == Impact)
                         {
-                            surfaceEffect = typeEffect.SurfaceEffect;
-                            PlayEffects(HitPoint, HitNormal, 1);
+                            if (HitObject.CompareTag("Player"))
+                                ActiveSurfaceEffect = surfaceEffectBlood;
+
+                            else
+                                ActiveSurfaceEffect = surfaceEffectConcrete;
+
+                            PlayEffects(HitObject, HitPoint, HitNormal, 1);
                         }
                     }
                 }
@@ -77,8 +97,13 @@ public class SurfaceManager : NetworkBehaviour
                 {
                     if (typeEffect.ImpactType == Impact)
                     {
-                        surfaceEffect = typeEffect.SurfaceEffect;
-                        PlayEffects(HitPoint, HitNormal, 1);
+                        if (HitObject.CompareTag("Player"))
+                            ActiveSurfaceEffect = surfaceEffectBlood;
+
+                        else
+                            ActiveSurfaceEffect = surfaceEffectConcrete;
+
+                        PlayEffects(HitObject, HitPoint, HitNormal, 1);
                        
                     }
                 }
@@ -89,8 +114,13 @@ public class SurfaceManager : NetworkBehaviour
                 {
                     if (typeEffect.ImpactType == Impact)
                     {
-                        surfaceEffect = typeEffect.SurfaceEffect;
-                        PlayEffects(HitPoint, HitNormal, 1);
+                        if (HitObject.CompareTag("Player"))
+                            ActiveSurfaceEffect = surfaceEffectBlood;
+
+                        else
+                            ActiveSurfaceEffect = surfaceEffectConcrete;
+
+                        PlayEffects(HitObject,HitPoint, HitNormal, 1);
                     }
                 }
             }
@@ -127,63 +157,31 @@ public class SurfaceManager : NetworkBehaviour
         return activeTextures;
     }
 
-    private Texture GetActiveTextureFromRenderer(Renderer Renderer, int TriangleIndex)
-    {
-        if (Renderer.TryGetComponent<MeshFilter>(out MeshFilter meshFilter))
-        {
-            Mesh mesh = meshFilter.mesh;
-
-            if (mesh.subMeshCount > 1)
-            {
-                int[] hitTriangleIndices = new int[]
-                {
-                    mesh.triangles[TriangleIndex * 3],
-                    mesh.triangles[TriangleIndex * 3 + 1],
-                    mesh.triangles[TriangleIndex * 3 + 2]
-                };
-
-                for (int i = 0; i < mesh.subMeshCount; i++)
-                {
-                    int[] submeshTriangles = mesh.GetTriangles(i);
-                    for (int j = 0; j < submeshTriangles.Length; j += 3)
-                    {
-                        if (submeshTriangles[j] == hitTriangleIndices[0]
-                            && submeshTriangles[j + 1] == hitTriangleIndices[1]
-                            && submeshTriangles[j + 2] == hitTriangleIndices[2])
-                        {
-                            return Renderer.sharedMaterials[i].mainTexture;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                return Renderer.sharedMaterial.mainTexture;
-            }
-        }
-
-        Debug.LogError($"{Renderer.name} has no MeshFilter! Using default impact effect instead of texture-specific one because we'll be unable to find the correct texture!");
-        return null;
-    }
-    public SurfaceEffect surfaceEffect;
-    public void PlayEffects(Vector3 HitPoint, Vector3 HitNormal, float SoundOffset)
+    
+    
+    public void PlayEffects(GameObject HitObject, Vector3 HitPoint, Vector3 HitNormal, float SoundOffset)
     {
         if (base.IsServer)
-            PlayEffectsObserver(HitPoint, HitNormal, SoundOffset);
+            PlayEffectsObserver(HitObject,HitPoint, HitNormal, SoundOffset);
 
         else
-            PlayEffectsServer(HitPoint, HitNormal, SoundOffset);
+            PlayEffectsServer(HitObject,HitPoint, HitNormal, SoundOffset);
     }
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
-    private void PlayEffectsServer(Vector3 HitPoint, Vector3 HitNormal, float SoundOffset)
+    private void PlayEffectsServer(GameObject HitObject,Vector3 HitPoint, Vector3 HitNormal, float SoundOffset)
     {
-        foreach (SpawnObjectEffect spawnObjectEffect in surfaceEffect.SpawnObjectEffects)
+        foreach (SpawnObjectEffect spawnObjectEffect in ActiveSurfaceEffect.SpawnObjectEffects)
         {
             if (spawnObjectEffect.Probability > Random.value)
             {
+                GameObject getobject;
+
+                if (HitObject.CompareTag("Player"))
+                    getobject = GetObjectBlood(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal).gameObject;
+                else
+                    getobject = GetObjectConrete(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal).gameObject;
                
-                //GameObject getobject =  GetPooledObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal);
-                GameObject getobject = GetObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal).gameObject;
+
 
                 getobject.transform.forward = HitNormal;
                 StartCoroutine(DisableImpact(getobject));
@@ -202,11 +200,12 @@ public class SurfaceManager : NetworkBehaviour
             }
         }
 
-        foreach (PlayAudioEffect playAudioEffect in surfaceEffect.PlayAudioEffects)
+        foreach (PlayAudioEffect playAudioEffect in ActiveSurfaceEffect.PlayAudioEffects)
         {
             AudioClip clip = playAudioEffect.AudioClips[Random.Range(0, playAudioEffect.AudioClips.Count)];
             //ObjectPool pool = ObjectPool.CreateInstance(playAudioEffect.AudioSourcePrefab.GetComponent<PoolableObject>(), DefaultPoolSizes);
             //AudioSource audioSource = pool.GetObject().GetComponent<AudioSource>();
+
             AudioSource audioSource = NetworkManager.GetPooledInstantiated(impactAudioPrefab.GetComponent<NetworkObject>(), true).GetComponent<AudioSource>();        
             InstanceFinder.ServerManager.Spawn(audioSource.gameObject);
 
@@ -217,15 +216,19 @@ public class SurfaceManager : NetworkBehaviour
         }
     }
     [ObserversRpc(BufferLast = true, RunLocally = true)]
-    private void PlayEffectsObserver(Vector3 HitPoint, Vector3 HitNormal, float SoundOffset)
+    private void PlayEffectsObserver(GameObject HitObject, Vector3 HitPoint, Vector3 HitNormal, float SoundOffset)
     {
-        foreach (SpawnObjectEffect spawnObjectEffect in surfaceEffect.SpawnObjectEffects)
+        foreach (SpawnObjectEffect spawnObjectEffect in ActiveSurfaceEffect.SpawnObjectEffects)
         {
             if (spawnObjectEffect.Probability > Random.value)
             {
 
-                //GameObject getobject =  GetPooledObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal);
-                GameObject getobject = GetObject(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal).gameObject;
+                GameObject getobject;
+
+                if (HitObject.CompareTag("Player"))
+                    getobject = GetObjectBlood(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal).gameObject;
+                else
+                    getobject = GetObjectConrete(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal).gameObject;
 
                 getobject.transform.forward = HitNormal;
                 StartCoroutine(DisableImpact(getobject));
@@ -244,7 +247,7 @@ public class SurfaceManager : NetworkBehaviour
             }
         }
 
-        foreach (PlayAudioEffect playAudioEffect in surfaceEffect.PlayAudioEffects)
+        foreach (PlayAudioEffect playAudioEffect in ActiveSurfaceEffect.PlayAudioEffects)
         {
             AudioClip clip = playAudioEffect.AudioClips[Random.Range(0, playAudioEffect.AudioClips.Count)];
             //ObjectPool pool = ObjectPool.CreateInstance(playAudioEffect.AudioSourcePrefab.GetComponent<PoolableObject>(), DefaultPoolSizes);
@@ -280,106 +283,12 @@ public class SurfaceManager : NetworkBehaviour
     public int amountToPool;
     private NetworkConnection ownerConnection;
 
-    [ServerRpc(RequireOwnership = false, RunLocally = true)]
-    public void StartPoolServer()
-    {
-        Debug.Log("Pool Server");
-        //impactTrailPool = new GameObject("Imapct Pool");
-        pooledObjects = new List<GameObject>();
-        spawnedObject = new List<GameObject>();
-        for (int i = 0; i < amountToPool; i++)
-        {
-
-            GameObject obj = Instantiate(objectToPool);
-
-            //obj.transform.parent = impactTrailPool.transform;
-            pooledObjects.Add(obj);
-            InstanceFinder.ServerManager.Spawn(obj, base.Owner);
-            SetSpawnImpact(obj, this);
-            //StartCoroutine(DelayDespawn(obj));
-        }
-      
-    }
-    [ObserversRpc(BufferLast = true)]
-    public void StartPoolObserver()
-    {
-        Debug.Log("Pool Observer");
-        //impactTrailPool = new GameObject("Imapct Pool");
-        pooledObjects = new List<GameObject>();
-        spawnedObject = new List<GameObject>();
-        for (int i = 0; i < amountToPool; i++)
-        {
-
-            GameObject obj = Instantiate(objectToPool);
-            InstanceFinder.ServerManager.Spawn(obj, base.Owner);
-            //obj.transform.parent = impactTrailPool.transform;
-            //obj.SetActive(false);
-            pooledObjects.Add(obj);
-            //SpawnImpactServerRPC(obj);
-            
-            SetSpawnImpact(obj, this);
-            //StartCoroutine(DelayDespawn(obj));
-            //InstanceFinder.ServerManager.Despawn(obj, DespawnType.Pool);
-
-        }
-        
-    }
-    public IEnumerator DelayDespawn(NetworkObject obj)
-    {
-        yield return new WaitForSeconds(0.2f);       
-        InstanceFinder.ServerManager.Despawn(obj, DespawnType.Pool);
-        
-    }
-    [ServerRpc(RequireOwnership = false, RunLocally = true)]
-    public void GetPoolObjectServerRPC(int i, Vector3 Position, Quaternion Rotation, Vector3 HitNormal)
-    {
-        pooledObjects[i].transform.position = Position;
-        pooledObjects[i].transform.rotation = Rotation;
-        pooledObjects[i].gameObject.SetActive(true);
-       // pooledObjects[i].transform.forward = HitNormal;
-    }
-    [ObserversRpc(BufferLast = true)]
-    public void GetPoolObjectObserverRPC(int i,Vector3 Position, Quaternion Rotation, Vector3 HitNormal)
-    {
-        pooledObjects[i].transform.position = Position;
-        pooledObjects[i].transform.rotation = Rotation;
-        pooledObjects[i].gameObject.SetActive(true);
-       // pooledObjects[i].transform.forward = HitNormal;
-    }
-
-    public GameObject GetPooledObject(Vector3 Position, Quaternion Rotation, Vector3 HitNormal)
-    {
-        //1
-        for (int i = 0; i < pooledObjects.Count; i++)
-        {
-            //2
-            if (!pooledObjects[i].activeInHierarchy)
-            {
-                if (base.IsServer)
-                    GetPoolObjectObserverRPC(i,Position, Rotation, HitNormal);
-
-                else
-                    GetPoolObjectServerRPC(i, Position, Rotation, HitNormal);
-
-                return pooledObjects[i];
-            }
-        }
-        //3   
-        return null;
-    }
     IEnumerator DisableImpact(GameObject pooledObject)
     {
         yield return new WaitForSeconds(3f);
         InstanceFinder.ServerManager.Despawn(pooledObject, DespawnType.Pool);
     }
-    [ServerRpc(RequireOwnership = false, RunLocally = true)]
-    public void SpawnImpactServerRPC(GameObject prefab)
-    {
-        ////Instansiate Bullet
-        InstanceFinder.ServerManager.Spawn(prefab, base.Owner);       
-        SetSpawnImpact(prefab, this);
-        
-    }
+   
 
     [ObserversRpc(BufferLast = true)]
     public void SetSpawnImpact(GameObject spawned, SurfaceManager script)
@@ -389,7 +298,8 @@ public class SurfaceManager : NetworkBehaviour
         spawnedObject.Add(spawned);
     }
     
-    public GameObject impactPrefab;
+    public GameObject concreteImpactPrefab;
+    public GameObject bloodImpactPrefab;
     public GameObject impactAudioPrefab;
     public uint SpawnInterval;
 
@@ -405,16 +315,31 @@ public class SurfaceManager : NetworkBehaviour
     void PrewarmPools()
     {
         DefaultObjectPool impactPool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
-        impactPool.CacheObjects(impactPrefab.GetComponent<NetworkObject>(), 40, IsServer);
+        impactPool.CacheObjects(concreteImpactPrefab.GetComponent<NetworkObject>(), 40, IsServer);
 
         DefaultObjectPool audioPool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
         audioPool.CacheObjects(impactAudioPrefab.GetComponent<NetworkObject>(), 40, IsServer);
+
+            DefaultObjectPool bloodPool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
+        audioPool.CacheObjects(bloodImpactPrefab.GetComponent<NetworkObject>(), 20, IsServer);
     }
 
-    public NetworkObject GetObject(Vector3 Position, Quaternion Rotation, Vector3 HitNormal)
+    public NetworkObject GetObjectConrete(Vector3 Position, Quaternion Rotation, Vector3 HitNormal)
     {
         
-        NetworkObject getobject = NetworkManager.GetPooledInstantiated(impactPrefab.GetComponent<NetworkObject>(), true);
+        NetworkObject getobject = NetworkManager.GetPooledInstantiated(concreteImpactPrefab.GetComponent<NetworkObject>(), true);
+        getobject.transform.position = Position;
+        getobject.transform.rotation = Rotation;
+        getobject.gameObject.SetActive(true);
+        InstanceFinder.ServerManager.Spawn(getobject);
+        spawned.Add(getobject);
+
+        return getobject;
+    }
+    public NetworkObject GetObjectBlood(Vector3 Position, Quaternion Rotation, Vector3 HitNormal)
+    {
+
+        NetworkObject getobject = NetworkManager.GetPooledInstantiated(bloodImpactPrefab.GetComponent<NetworkObject>(), true);
         getobject.transform.position = Position;
         getobject.transform.rotation = Rotation;
         getobject.gameObject.SetActive(true);
