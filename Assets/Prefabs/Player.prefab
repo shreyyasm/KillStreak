@@ -12780,19 +12780,13 @@ MonoBehaviour:
   Surfaces: []
   DefaultPoolSizes: 10
   DefaultSurface: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
-  Concrete: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
-  Blood: {fileID: 11400000, guid: 2d66184d113051d4cb6f79a69840eb0e, type: 2}
-  ActiveSurfaceEffect: {fileID: 0}
-  surfaceEffectConcrete: {fileID: 11400000, guid: 7396e40f1b31cb74bbd09efcc3642375,
-    type: 2}
-  surfaceEffectBlood: {fileID: 11400000, guid: cdec85157b58aa74ba3a9dd85d9cbcb1, type: 2}
+  surfaceEffect: {fileID: 11400000, guid: 7396e40f1b31cb74bbd09efcc3642375, type: 2}
   pooledObjects: []
   objectToPool: {fileID: 1067471869909948, guid: 5e02303289b3c494e8e185be0fbbd405,
     type: 3}
   amountToPool: 40
-  concreteImpactPrefab: {fileID: 1067471869909948, guid: 5e02303289b3c494e8e185be0fbbd405,
+  impactPrefab: {fileID: 1067471869909948, guid: 5e02303289b3c494e8e185be0fbbd405,
     type: 3}
-  bloodImpactPrefab: {fileID: 166404, guid: ecdafb27396ac3f4cbf24e6c76a1f363, type: 3}
   impactAudioPrefab: {fileID: 1482256750713985944, guid: b53742d29eb6df947b849b7ffcfdf0e5,
     type: 3}
   SpawnInterval: 1
