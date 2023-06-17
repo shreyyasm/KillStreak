@@ -13,10 +13,10 @@ public class PlayerCustomization : MonoBehaviour
         public string Gender;
         public List<GameObject> MainBody;
         public List<GameObject> Hairs;
-        public List<GameObject> HeadGear;
-        public List<GameObject> FaceGear;
+        public List<GameObject> HeadGear;      
         public List<GameObject> Beard;
         public List<GameObject> Vest;
+        public List<GameObject> Bag;
 
     }
     [Serializable]
@@ -28,16 +28,13 @@ public class PlayerCustomization : MonoBehaviour
         public int MainBodyIndex;
         public int HairsIndex;
         public int HeadGearIndex;
-        public int FaceGearIndex;
         public int BeardIndex;
         public int VestIndex;
+        public int BagIndex;
     }
 
     public List<Character> Characters = new List<Character>();
     public List<CharacterIndex> characterIndex = new List<CharacterIndex>();
-
-    public List<GameObject> MaleCustoms = new List<GameObject>();
-    public List<GameObject> FemaleCustoms = new List<GameObject>();
 
     public int GenderIndex;
 
@@ -64,23 +61,10 @@ public class PlayerCustomization : MonoBehaviour
             if (body == Characters[GenderIndex].MainBody[characterIndex[GenderIndex].MainBodyIndex])
             {
                 Characters[GenderIndex].MainBody[characterIndex[GenderIndex].MainBodyIndex].SetActive(true);
-
-                if (GenderIndex == 0)
-                    MaleCustoms.Add(Characters[GenderIndex].MainBody[characterIndex[GenderIndex].MainBodyIndex]);
-                else
-                    FemaleCustoms.Add(Characters[GenderIndex].MainBody[characterIndex[GenderIndex].MainBodyIndex]);
-
                 continue;   // Skip the remainder of this iteration. -----+
             }
-
-            if (GenderIndex == 0)
-                MaleCustoms.Remove(body);
-            else
-                FemaleCustoms.Remove(body);
-
             // do work
             body.SetActive(false);
-
         }
     }
     public void SelectGender(int index)
@@ -97,44 +81,61 @@ public class PlayerCustomization : MonoBehaviour
         if (GenderIndex == 0)
         {
             Characters[0].MainBody[0].SetActive(false);
+
+            //MainBody
             Characters[0].MainBody[characterIndex[0].MainBodyIndex].SetActive(true);           
             Characters[1].MainBody[characterIndex[1].MainBodyIndex].SetActive(false);
+
+            //Hairs
+            Characters[0].Hairs[characterIndex[0].HairsIndex].SetActive(true);
+            Characters[1].Hairs[characterIndex[1].HairsIndex].SetActive(false);
+
+            //HeadGear
+            Characters[0].HeadGear[characterIndex[0].HeadGearIndex].SetActive(true);
+            Characters[1].HeadGear[characterIndex[1].HeadGearIndex].SetActive(false);
+
+            //Beard
+            Characters[0].Beard[characterIndex[0].BeardIndex].SetActive(true);
+            Characters[1].Beard[characterIndex[1].BeardIndex].SetActive(false);
+
+            //Vest
+            Characters[0].Vest[characterIndex[0].VestIndex].SetActive(true);
+            Characters[1].Vest[characterIndex[1].VestIndex].SetActive(false);
+
+            //Bag
+            Characters[0].Bag[characterIndex[0].BagIndex].SetActive(true);
+            Characters[1].Bag[characterIndex[1].BagIndex].SetActive(false);
         }
 
 
         else
         {
             Characters[0].MainBody[0].SetActive(false);
+
+            //MainBody
             Characters[0].MainBody[characterIndex[0].MainBodyIndex].SetActive(false);
             Characters[1].MainBody[characterIndex[1].MainBodyIndex].SetActive(true);
-        }
-        //if (GenderIndex == 0)
-        //{
-        //    foreach (GameObject body in MaleCustoms) //   <--- go back to here --------+
-        //    {
-        //        // do work
-        //        body.SetActive(true);
-        //    }
-        //    foreach (GameObject body in FemaleCustoms) //   <--- go back to here --------+
-        //    {
-        //        // do work
-        //        body.SetActive(false);
-        //    }
-        //}
-        //else
-        //{
-        //    foreach (GameObject body in MaleCustoms) //   <--- go back to here --------+
-        //    {
-        //        // do work
-        //        body.SetActive(false);
-        //    }
-        //    foreach (GameObject body in FemaleCustoms) //   <--- go back to here --------+
-        //    {
-        //        // do work
-        //        body.SetActive(true);
-        //    }
-        //}
 
+            //Hairs
+            Characters[0].Hairs[characterIndex[0].HairsIndex].SetActive(false);
+            Characters[1].Hairs[characterIndex[1].HairsIndex ].SetActive(true);
+
+            //HeadGear
+            Characters[0].HeadGear[characterIndex[0].HeadGearIndex].SetActive(false);
+            Characters[1].HeadGear[characterIndex[1].HeadGearIndex].SetActive(true);
+
+            //Beard
+            Characters[0].Beard[characterIndex[0].BeardIndex].SetActive(false);
+            Characters[1].Beard[characterIndex[1].BeardIndex].SetActive(true);
+
+            //Vest
+            Characters[0].Vest[characterIndex[0].VestIndex].SetActive(false);
+            Characters[1].Vest[characterIndex[1].VestIndex].SetActive(true);
+
+            //Bag
+            Characters[0].Bag[characterIndex[0].BagIndex].SetActive(false);
+            Characters[1].Bag[characterIndex[1].BagIndex].SetActive(true);
+        }
 
     }
 
@@ -158,23 +159,177 @@ public class PlayerCustomization : MonoBehaviour
         {
             if (body == Characters[GenderIndex].MainBody[characterIndex[GenderIndex].MainBodyIndex])
             {
-                Characters[GenderIndex].MainBody[characterIndex[GenderIndex].MainBodyIndex].SetActive(true);
-
-                if (GenderIndex == 0)
-                    MaleCustoms.Add(Characters[GenderIndex].MainBody[characterIndex[GenderIndex].MainBodyIndex]);
-                else
-                    FemaleCustoms.Add(Characters[GenderIndex].MainBody[characterIndex[GenderIndex].MainBodyIndex]);
-
+                Characters[GenderIndex].MainBody[characterIndex[GenderIndex].MainBodyIndex].SetActive(true);             
                 continue;   // Skip the remainder of this iteration. -----+
             }
 
-            if (GenderIndex == 0)
-                MaleCustoms.Remove(body);
-            else
-                FemaleCustoms.Remove(body);
             // do work
             body.SetActive(false);
-            //characterIndex[GenderIndex].MainBodyIndex = 4;
+
+            //SavingData
+            playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);
+
+        }
+
+    }
+    public void SelectHairs(int index)
+    {
+        if (characterIndex[GenderIndex].HairsIndex < Characters[GenderIndex].Hairs.Count - 1)
+        {
+            characterIndex[GenderIndex].HairsIndex += index;
+
+            if (characterIndex[GenderIndex].HairsIndex == -1)
+                characterIndex[GenderIndex].HairsIndex = Characters[GenderIndex].Hairs.Count - 1;
+        }
+        else
+        {
+            if (index == 1)
+                characterIndex[GenderIndex].HairsIndex = 0;
+            else
+                characterIndex[GenderIndex].HairsIndex += index;
+        }
+        foreach (GameObject body in Characters[GenderIndex].Hairs) //   <--- go back to here --------+
+        {
+            if (body == Characters[GenderIndex].Hairs[characterIndex[GenderIndex].HairsIndex])
+            {
+                Characters[GenderIndex].Hairs[characterIndex[GenderIndex].HairsIndex].SetActive(true);
+                continue;   // Skip the remainder of this iteration. -----+
+            }
+
+            // do work
+            body.SetActive(false);
+
+            //SavingData
+            playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);
+
+        }
+
+    }
+    public void SelectHeadGear(int index)
+    {
+        if (characterIndex[GenderIndex].HeadGearIndex < Characters[GenderIndex].HeadGear.Count - 1)
+        {
+            characterIndex[GenderIndex].HeadGearIndex += index;
+
+            if (characterIndex[GenderIndex].HeadGearIndex == -1)
+                characterIndex[GenderIndex].HeadGearIndex = Characters[GenderIndex].HeadGear.Count - 1;
+        }
+        else
+        {
+            if (index == 1)
+                characterIndex[GenderIndex].HeadGearIndex = 0;
+            else
+                characterIndex[GenderIndex].HeadGearIndex += index;
+        }
+        foreach (GameObject body in Characters[GenderIndex].HeadGear) //   <--- go back to here --------+
+        {
+            if (body == Characters[GenderIndex].HeadGear[characterIndex[GenderIndex].HeadGearIndex])
+            {
+                Characters[GenderIndex].HeadGear[characterIndex[GenderIndex].HeadGearIndex].SetActive(true);
+                continue;   // Skip the remainder of this iteration. -----+
+            }
+
+            // do work
+            body.SetActive(false);
+
+            //SavingData
+            playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);
+
+        }
+
+    }
+    public void SelectBeard(int index)
+    {
+        if (characterIndex[GenderIndex].BeardIndex < Characters[GenderIndex].Beard.Count - 1)
+        {
+            characterIndex[GenderIndex].BeardIndex += index;
+
+            if (characterIndex[GenderIndex].BeardIndex == -1)
+                characterIndex[GenderIndex].BeardIndex = Characters[GenderIndex].Beard.Count - 1;
+        }
+        else
+        {
+            if (index == 1)
+                characterIndex[GenderIndex].BeardIndex = 0;
+            else
+                characterIndex[GenderIndex].BeardIndex += index;
+        }
+        foreach (GameObject body in Characters[GenderIndex].Beard) //   <--- go back to here --------+
+        {
+            if (body == Characters[GenderIndex].Beard[characterIndex[GenderIndex].BeardIndex])
+            {
+                Characters[GenderIndex].Beard[characterIndex[GenderIndex].BeardIndex].SetActive(true);
+                continue;   // Skip the remainder of this iteration. -----+
+            }
+
+            // do work
+            body.SetActive(false);
+
+            //SavingData
+            playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);
+
+        }
+
+    }
+    public void SelectVest(int index)
+    {
+        if (characterIndex[GenderIndex].VestIndex < Characters[GenderIndex].Vest.Count - 1)
+        {
+            characterIndex[GenderIndex].VestIndex += index;
+
+            if (characterIndex[GenderIndex].VestIndex == -1)
+                characterIndex[GenderIndex].VestIndex = Characters[GenderIndex].Vest.Count - 1;
+        }
+        else
+        {
+            if (index == 1)
+                characterIndex[GenderIndex].VestIndex = 0;
+            else
+                characterIndex[GenderIndex].VestIndex += index;
+        }
+        foreach (GameObject body in Characters[GenderIndex].Vest) //   <--- go back to here --------+
+        {
+            if (body == Characters[GenderIndex].Vest[characterIndex[GenderIndex].VestIndex])
+            {
+                Characters[GenderIndex].Vest[characterIndex[GenderIndex].VestIndex].SetActive(true);
+                continue;   // Skip the remainder of this iteration. -----+
+            }
+
+            // do work
+            body.SetActive(false);
+
+            //SavingData
+            playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);
+
+        }
+
+    }
+    public void SelectBag(int index)
+    {
+        if (characterIndex[GenderIndex].BagIndex < Characters[GenderIndex].Bag.Count - 1)
+        {
+            characterIndex[GenderIndex].BagIndex += index;
+
+            if (characterIndex[GenderIndex].BagIndex == -1)
+                characterIndex[GenderIndex].BagIndex = Characters[GenderIndex].Bag.Count - 1;
+        }
+        else
+        {
+            if (index == 1)
+                characterIndex[GenderIndex].BagIndex = 0;
+            else
+                characterIndex[GenderIndex].BagIndex += index;
+        }
+        foreach (GameObject body in Characters[GenderIndex].Bag) //   <--- go back to here --------+
+        {
+            if (body == Characters[GenderIndex].Bag[characterIndex[GenderIndex].BagIndex])
+            {
+                Characters[GenderIndex].Bag[characterIndex[GenderIndex].BagIndex].SetActive(true);
+                continue;   // Skip the remainder of this iteration. -----+
+            }
+
+            // do work
+            body.SetActive(false);
 
             //SavingData
             playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);

@@ -42,7 +42,11 @@ namespace EOSLobbyTest
             HideAllPanels();
             ShowPanel(initialPanel);
         }
-
+        public void ShowPanelback()
+        {
+            //HideAllPanels();
+            ShowPanel(initialPanel);
+        }
         private void HideAllPanels()
         {
             foreach (var panel in _panels)
