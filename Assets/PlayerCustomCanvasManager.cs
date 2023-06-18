@@ -8,6 +8,9 @@ public class PlayerCustomCanvasManager : MonoBehaviour
     [SerializeField] List<GameObject> SubCanvases;
     [SerializeField] List<GameObject> ViewCameras;
 
+    [SerializeField] GameObject Player;
+    [SerializeField] ScreenTouch screenTouch;
+
     public void OpenSubCanvas(int index)
     {
         foreach (GameObject canvas in SubCanvases) //   <--- go back to here --------+
@@ -20,6 +23,10 @@ public class PlayerCustomCanvasManager : MonoBehaviour
             // do work
             canvas.SetActive(false);
         }
+        if (index == 6)
+            RotatePlayerToShowBag();
+        else
+            RotatePlayerToDefault();
     }
     public void ChangeViewCamera(int index)
     {
@@ -46,6 +53,7 @@ public class PlayerCustomCanvasManager : MonoBehaviour
             // do work
             canvas.SetActive(false);
         }
+        RotatePlayerToDefault();
     }
     public void BackToMainScreen()
     {
@@ -55,10 +63,35 @@ public class PlayerCustomCanvasManager : MonoBehaviour
             // do work
             canvas.SetActive(false);
         }
+        RotatePlayerToDefault();
     }
     public void OpenCustomizationTab()
     {
         SubCanvases[0].SetActive(true);
         MainScreenCanvas.SetActive(false);
+        RotatePlayerToDefault();
+    }
+    private void Update()
+    {
+        RotatePlayer();
+    }
+    public void RotatePlayer()
+    {
+        float mouseX = screenTouch.moveShowInput.x;
+        if (screenTouch.rightFingerID == -1)
+        {
+            mouseX = 0;           
+        }
+        Player.transform.Rotate(0, -mouseX * Time.deltaTime, 0, Space.World);
+
+    }
+    [SerializeField] float playerRotateTime;
+    public void RotatePlayerToDefault()
+    {
+        Player.transform.rotation = Quaternion.Euler(0, Mathf.Lerp(Player.transform.rotation.y, 180f, playerRotateTime ),0) ;
+    }
+    public void RotatePlayerToShowBag()
+    {
+        Player.transform.rotation = Quaternion.Euler(0, Mathf.Lerp(Player.transform.rotation.y, 0f, playerRotateTime), 0);
     }
 }

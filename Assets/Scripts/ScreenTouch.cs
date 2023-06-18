@@ -7,10 +7,15 @@ public class ScreenTouch : MonoBehaviour
 {
     public float rightFingerID, leftFingerId;
     public float screenWidth;
+
+    public RectTransform rectTransform;
+    public float screenShowcaseWidth;
     public Vector2 lookInput;
 
     public Vector2 moveTouchStartPosition;
     public Vector2 moveInput;
+
+    public Vector2 moveShowInput;
     public float sensitivity;
     // Start is called before the first frame update
     void Start()
@@ -24,6 +29,7 @@ public class ScreenTouch : MonoBehaviour
     void Update()
     {
         GetTouch();
+        GetTouchForShowcase();
     }
 
     private void GetTouch()
@@ -68,6 +74,48 @@ public class ScreenTouch : MonoBehaviour
 
                 case TouchPhase.Stationary:
                     lookInput = Vector2.zero;
+
+                    break;
+
+
+            }
+        }
+    }
+    private void GetTouchForShowcase()
+    {
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            Touch t = Input.GetTouch(i);
+
+            switch (t.phase)
+            {
+                case TouchPhase.Began:
+                    
+                    if (t.position.x > 520 && t.position.x < 1400)
+                    {
+                        Debug.Log("work");
+                        rightFingerID = t.fingerId;
+                    }
+                   
+
+
+                    break;
+
+                case TouchPhase.Canceled:
+                case TouchPhase.Ended:
+                    if (t.fingerId == rightFingerID)
+                        rightFingerID = -1;
+                   
+                    moveShowInput = Vector2.zero;
+                    break;
+
+                case TouchPhase.Moved:
+                    if (rightFingerID == t.fingerId)
+                        moveShowInput = t.deltaPosition * Time.deltaTime * sensitivity;                   
+                    break;
+
+                case TouchPhase.Stationary:
+                    moveShowInput = Vector2.zero;
 
                     break;
 
