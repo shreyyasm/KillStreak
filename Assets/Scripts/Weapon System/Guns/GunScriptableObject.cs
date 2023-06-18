@@ -456,7 +456,7 @@ public class GunScriptableObject : ScriptableObject
     }
 
     /// <summary>
-    /// Calls <see cref="SurfaceManager.HandleImpact(GameObject, Vector3, Vector3, ImpactType, int)"/> and applies damage
+    ///// Calls <see cref="SurfaceManager.HandleImpactConrete(GameObject, Vector3, Vector3, ImpactType, int)"/> and applies damage
     /// if a damagable object was hit
     /// </summary>
     /// <param name="DistanceTraveled"></param>

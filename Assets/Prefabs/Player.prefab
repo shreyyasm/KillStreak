@@ -9124,7 +9124,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3183612703498771597}
-  - component: {fileID: 520034015307766144}
+  - component: {fileID: 4101345981364217920}
   m_Layer: 16
   m_Name: Ball_L
   m_TagString: Joint
@@ -9149,8 +9149,8 @@ Transform:
   m_Father: {fileID: 5246511477640388125}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &520034015307766144
-BoxCollider:
+--- !u!136 &4101345981364217920
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9159,9 +9159,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.22, y: 0.1, z: 0.1}
-  m_Center: {x: -0.03, y: -0.06, z: 0.0000000105277085}
+  m_Radius: 0.06
+  m_Height: 0.26
+  m_Direction: 0
+  m_Center: {x: -0.06, y: -0.04, z: 0}
 --- !u!1 &401792276946303805
 GameObject:
   m_ObjectHideFlags: 0
@@ -12473,13 +12474,13 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 7
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 774665742
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects:
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 8606142165491801254}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &6017902892697103238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12777,10 +12778,20 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 8606142165491801254}
   _networkObjectCache: {fileID: 8606142165491801254}
   startGameCanvas: {fileID: 6270972954969957436}
-  Surfaces: []
+  Surfaces:
+  - Albedo: {fileID: 2800000, guid: 177e7f514292f9247aaff29e2bd7934f, type: 3}
+    Surface: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
+  - Albedo: {fileID: 2800000, guid: 177e7f514292f9247aaff29e2bd7934f, type: 3}
+    Surface: {fileID: 11400000, guid: 2d66184d113051d4cb6f79a69840eb0e, type: 2}
   DefaultPoolSizes: 10
   DefaultSurface: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
-  surfaceEffect: {fileID: 11400000, guid: 7396e40f1b31cb74bbd09efcc3642375, type: 2}
+  DefaultSurfaceEffect: {fileID: 11400000, guid: 7396e40f1b31cb74bbd09efcc3642375,
+    type: 2}
+  ConreteSurface: {fileID: 11400000, guid: 2457786df76c47e4b8a80125f6b3cc93, type: 2}
+  ConreteSurfaceEffect: {fileID: 11400000, guid: 7396e40f1b31cb74bbd09efcc3642375,
+    type: 2}
+  BloodSurface: {fileID: 11400000, guid: 2d66184d113051d4cb6f79a69840eb0e, type: 2}
+  BloodSurfaceEffect: {fileID: 11400000, guid: cdec85157b58aa74ba3a9dd85d9cbcb1, type: 2}
   pooledObjects: []
   objectToPool: {fileID: 1067471869909948, guid: 5e02303289b3c494e8e185be0fbbd405,
     type: 3}
@@ -12789,6 +12800,7 @@ MonoBehaviour:
     type: 3}
   impactAudioPrefab: {fileID: 1482256750713985944, guid: b53742d29eb6df947b849b7ffcfdf0e5,
     type: 3}
+  impactBloodPrefab: {fileID: 166404, guid: ecdafb27396ac3f4cbf24e6c76a1f363, type: 3}
   SpawnInterval: 1
   spawned: []
 --- !u!114 &5050372454195438821
@@ -17983,7 +17995,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2980269339951117368}
-  - component: {fileID: 4115706715488966966}
+  - component: {fileID: 6475617031130456511}
   m_Layer: 16
   m_Name: Hand_R
   m_TagString: Joint
@@ -18018,8 +18030,8 @@ Transform:
   m_Father: {fileID: 7739350149974243484}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &4115706715488966966
-BoxCollider:
+--- !u!136 &6475617031130456511
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -18028,9 +18040,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.04, z: 0.1}
-  m_Center: {x: 0.06, y: -0.01, z: 0}
+  m_Radius: 0.05
+  m_Height: 0.15
+  m_Direction: 0
+  m_Center: {x: 0.06, y: 0.02, z: 0}
 --- !u!1 &2611529702496553590
 GameObject:
   m_ObjectHideFlags: 0
@@ -24437,7 +24450,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6085943039745793037}
-  - component: {fileID: 7824423965223141167}
+  - component: {fileID: 3287597986791281976}
   m_Layer: 16
   m_Name: Hand_L
   m_TagString: Joint
@@ -24463,8 +24476,8 @@ Transform:
   m_Father: {fileID: 6312452546194647405}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &7824423965223141167
-BoxCollider:
+--- !u!136 &3287597986791281976
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -24473,9 +24486,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.04, z: 0.1}
-  m_Center: {x: -0.06, y: -0.01, z: 0}
+  m_Radius: 0.05
+  m_Height: 0.15
+  m_Direction: 0
+  m_Center: {x: -0.09, y: -0.01, z: 0}
 --- !u!1 &4885094299666746160
 GameObject:
   m_ObjectHideFlags: 0
@@ -30544,7 +30558,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5879985716263197386}
-  - component: {fileID: 2160013459195992750}
+  - component: {fileID: 1863487684177737585}
   m_Layer: 16
   m_Name: Ball_R
   m_TagString: Joint
@@ -30569,8 +30583,8 @@ Transform:
   m_Father: {fileID: 270878177597425220}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2160013459195992750
-BoxCollider:
+--- !u!136 &1863487684177737585
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -30579,9 +30593,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.22, y: 0.1, z: 0.1}
-  m_Center: {x: 0.06, y: 0.06, z: 0.0000000105277085}
+  m_Radius: 0.06
+  m_Height: 0.26
+  m_Direction: 0
+  m_Center: {x: 0.03, y: 0.06, z: 0}
 --- !u!1 &7212212255358383519
 GameObject:
   m_ObjectHideFlags: 0

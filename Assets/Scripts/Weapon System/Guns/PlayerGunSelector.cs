@@ -1121,14 +1121,11 @@ public class PlayerGunSelector : NetworkBehaviour
        Collider HitCollider,Transform enemyPos)
     {
         
-        surfaceManager.HandleImpact(
-                HitCollider.gameObject,
-                HitLocation,
-                HitNormal,
-                ActiveGun.ImpactType,
-                0
-            );
-
+        if (HitCollider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider collider))
+            surfaceManager.HandleImpactBlood(HitCollider.gameObject,HitLocation,HitNormal,ActiveGun.ImpactType,0);
+        
+        else
+            surfaceManager.HandleImpactConrete(HitCollider.gameObject, HitLocation, HitNormal, ActiveGun.ImpactType, 0);
         //if (HitCollider.TryGetComponent(out IDamageable damageable))
         //{
         //    damageable.TakeDamage(ActiveGun.DamageConfig.GetDamage(DistanceTraveled));
