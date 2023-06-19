@@ -2164,7 +2164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 15
+  _componentIndexCache: 16
   _addedNetworkObject: {fileID: 5611253423464237946}
   _networkObjectCache: {fileID: 5611253423464237946}
   PlayerCheck: {fileID: 8422351478288677832}
@@ -2180,7 +2180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 16
+  _componentIndexCache: 17
   _addedNetworkObject: {fileID: 5611253423464237946}
   _networkObjectCache: {fileID: 5611253423464237946}
   GunSelector: {fileID: 3561272964555107162}
@@ -6667,7 +6667,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1.8274659, y: 1.827356}
+  m_AnchoredPosition: {x: 1.8273927, y: 1.827356}
   m_SizeDelta: {x: 304.56, y: 304.56}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &2391995886292560455
@@ -8834,7 +8834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 17
+  _componentIndexCache: 18
   _addedNetworkObject: {fileID: 5611253423464237946}
   _networkObjectCache: {fileID: 5611253423464237946}
   PlayerCheck: {fileID: 8422351478288677832}
@@ -12213,6 +12213,7 @@ MonoBehaviour:
   - {fileID: 4871120439833171671}
   - {fileID: 8982010597576880953}
   - {fileID: 4228886586755307360}
+  - {fileID: 5130543129842169717}
   - {fileID: 6565974233335421997}
   - {fileID: 973106067474182472}
   - {fileID: 7476638395712089365}
@@ -13320,6 +13321,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27e0ce363eaf1e1488d75e11167cec78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 13
+  _addedNetworkObject: {fileID: 5611253423464237946}
+  _networkObjectCache: {fileID: 5611253423464237946}
   Characters:
   - Gender: Male
     MainBody:
@@ -13457,7 +13461,23 @@ MonoBehaviour:
     - {fileID: 4228886586273875112}
     - {fileID: 4228886584915889676}
     - {fileID: 4228886586492955164}
-  characterIndex: []
+  characterIndex:
+  - Gender: Male
+    ActiveGenderIndex: 0
+    MainBodyIndex: 0
+    HairsIndex: 0
+    HeadGearIndex: 0
+    BeardIndex: 0
+    VestIndex: 0
+    BagIndex: 0
+  - Gender: Female
+    ActiveGenderIndex: 0
+    MainBodyIndex: 0
+    HairsIndex: 0
+    HeadGearIndex: 0
+    BeardIndex: 0
+    VestIndex: 0
+    BagIndex: 0
   GenderIndex: 0
 --- !u!1 &4104520378812803618
 GameObject:
@@ -13975,7 +13995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f544f2f09089d5e46a3d4724a3d2589e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 19
+  _componentIndexCache: 20
   _addedNetworkObject: {fileID: 5611253423464237946}
   _networkObjectCache: {fileID: 5611253423464237946}
   <selectedWeapon>k__BackingField: 0
@@ -31491,7 +31511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 13
+  _componentIndexCache: 14
   _addedNetworkObject: {fileID: 5611253423464237946}
   _networkObjectCache: {fileID: 5611253423464237946}
   _synchronizeParent: 0
@@ -35575,9 +35595,12 @@ MonoBehaviour:
   rightFingerID: 0
   leftFingerId: 0
   screenWidth: 0
+  rectTransform: {fileID: 0}
+  screenShowcaseWidth: 0
   lookInput: {x: 0, y: 0}
   moveTouchStartPosition: {x: 0, y: 0}
   moveInput: {x: 0, y: 0}
+  moveShowInput: {x: 0, y: 0}
   sensitivity: 8
 --- !u!1 &6684072966364911106
 GameObject:
@@ -42242,7 +42265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4eccd0b9cf3eed409616a314b8d58df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 14
+  _componentIndexCache: 15
   _addedNetworkObject: {fileID: 5611253423464237946}
   _networkObjectCache: {fileID: 5611253423464237946}
   mouseSensitivity: 100
@@ -42719,7 +42742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 18
+  _componentIndexCache: 19
   _addedNetworkObject: {fileID: 5611253423464237946}
   _networkObjectCache: {fileID: 5611253423464237946}
   GunSelector: {fileID: 3561272964555107162}

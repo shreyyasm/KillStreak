@@ -165,6 +165,8 @@ namespace FishNet.Object.Synchronizing
         /// Method which will be called on the server and clients when the value changes.
         ///</summary>
         public string OnChange;
+
+        public ReadPermission ReadPermission { get; set; }
     }
 
 }

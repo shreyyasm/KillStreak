@@ -1,3 +1,5 @@
+using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -5,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerCustomization : MonoBehaviour
+public class PlayerCustomizationNonNetwork : MonoBehaviour
 {
     [Serializable]
     public class Character
@@ -13,48 +15,44 @@ public class PlayerCustomization : MonoBehaviour
         public string Gender;
         public List<GameObject> MainBody;
         public List<GameObject> Hairs;
-        public List<GameObject> HeadGear;      
+        public List<GameObject> HeadGear;
         public List<GameObject> Beard;
         public List<GameObject> Vest;
         public List<GameObject> Bag;
 
     }
-    [Serializable]
-    public class CharacterIndex
-    {
 
-        public string Gender;
-        public int ActiveGenderIndex;
-        public int MainBodyIndex;
-        public int HairsIndex;
-        public int HeadGearIndex;
-        public int BeardIndex;
-        public int VestIndex;
-        public int BagIndex;
-    }
+
 
     public List<Character> Characters = new List<Character>();
+
+
     public List<CharacterIndex> characterIndex = new List<CharacterIndex>();
 
-    public int GenderIndex;
 
+    public int GenderIndex;
 
     private PlayerCustomizationData playerData = new JasonDataService();
     private bool EncryptionEnabled;
 
 
+
     private void Awake()
     {
-        //Loading Data
-        List<CharacterIndex> data = playerData.LoadData<List<CharacterIndex>>("/player-Customization.json", EncryptionEnabled);
+        List<CharacterIndex> data = playerData.LoadData<List<CharacterIndex>>("/player-CustomizationNew.json", EncryptionEnabled);
         characterIndex = data;
         GenderIndex = characterIndex[0].ActiveGenderIndex;
-        
         ChangeGender();
         LoadPlayerData();
     }
+    private void Update()
+    {
+
+    }
+
     public void LoadPlayerData()
     {
+
         foreach (GameObject body in Characters[GenderIndex].MainBody) //   <--- go back to here --------+
         {
 
@@ -67,23 +65,29 @@ public class PlayerCustomization : MonoBehaviour
             body.SetActive(false);
         }
     }
+
+
+
     public void SelectGender(int index)
     {
         GenderIndex = index;
         characterIndex[0].ActiveGenderIndex = GenderIndex;
         characterIndex[1].ActiveGenderIndex = GenderIndex;
         ChangeGender();
-        playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);
+        playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
     }
+
+
 
     public void ChangeGender()
     {
+        GenderIndex = characterIndex[0].ActiveGenderIndex;
         if (GenderIndex == 0)
         {
             Characters[0].MainBody[0].SetActive(false);
 
             //MainBody
-            Characters[0].MainBody[characterIndex[0].MainBodyIndex].SetActive(true);           
+            Characters[0].MainBody[characterIndex[0].MainBodyIndex].SetActive(true);
             Characters[1].MainBody[characterIndex[1].MainBodyIndex].SetActive(false);
 
             //Hairs
@@ -118,7 +122,7 @@ public class PlayerCustomization : MonoBehaviour
 
             //Hairs
             Characters[0].Hairs[characterIndex[0].HairsIndex].SetActive(false);
-            Characters[1].Hairs[characterIndex[1].HairsIndex ].SetActive(true);
+            Characters[1].Hairs[characterIndex[1].HairsIndex].SetActive(true);
 
             //HeadGear
             Characters[0].HeadGear[characterIndex[0].HeadGearIndex].SetActive(false);
@@ -159,7 +163,7 @@ public class PlayerCustomization : MonoBehaviour
         {
             if (body == Characters[GenderIndex].MainBody[characterIndex[GenderIndex].MainBodyIndex])
             {
-                Characters[GenderIndex].MainBody[characterIndex[GenderIndex].MainBodyIndex].SetActive(true);             
+                Characters[GenderIndex].MainBody[characterIndex[GenderIndex].MainBodyIndex].SetActive(true);
                 continue;   // Skip the remainder of this iteration. -----+
             }
 
@@ -167,7 +171,7 @@ public class PlayerCustomization : MonoBehaviour
             body.SetActive(false);
 
             //SavingData
-            playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);
+            playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
 
         }
 
@@ -200,7 +204,7 @@ public class PlayerCustomization : MonoBehaviour
             body.SetActive(false);
 
             //SavingData
-            playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);
+            playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
 
         }
 
@@ -233,7 +237,7 @@ public class PlayerCustomization : MonoBehaviour
             body.SetActive(false);
 
             //SavingData
-            playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);
+            playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
 
         }
 
@@ -266,7 +270,7 @@ public class PlayerCustomization : MonoBehaviour
             body.SetActive(false);
 
             //SavingData
-            playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);
+            playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
 
         }
 
@@ -299,7 +303,7 @@ public class PlayerCustomization : MonoBehaviour
             body.SetActive(false);
 
             //SavingData
-            playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);
+            playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
 
         }
 
@@ -332,7 +336,7 @@ public class PlayerCustomization : MonoBehaviour
             body.SetActive(false);
 
             //SavingData
-            playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled);
+            playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
 
         }
 
@@ -340,7 +344,7 @@ public class PlayerCustomization : MonoBehaviour
     public void SerializeJson()
     {
         long startTime = DateTime.Now.Ticks;
-        if (playerData.SaveData("/player-Customization.json", characterIndex, EncryptionEnabled))
+        if (playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled))
         {
             //SaveTime = DateTime.Now.Ticks - startTime;
             //SaveTimeText.SetText($"Save Time: {(SaveTime / TimeSpan.TicksPerMillisecond):N4}ms");
@@ -349,7 +353,7 @@ public class PlayerCustomization : MonoBehaviour
             try
             {
 
-                CharacterIndex data = playerData.LoadData<CharacterIndex>("/player-Customization.json", EncryptionEnabled);
+                CharacterIndex data = playerData.LoadData<CharacterIndex>("/player-CustomizationNew.json", EncryptionEnabled);
                 Debug.Log("Work");
                 //LoadTime = DateTime.Now.Ticks - startTime;
                 //InputField.text = "Loaded from file:\r\n" + JsonConvert.SerializeObject(data, Formatting.Indented);
