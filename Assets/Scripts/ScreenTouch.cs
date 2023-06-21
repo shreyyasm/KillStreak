@@ -17,6 +17,7 @@ public class ScreenTouch : MonoBehaviour
 
     public Vector2 moveShowInput;
     public float sensitivity;
+    public float sensitivityShowcase;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,18 +35,18 @@ public class ScreenTouch : MonoBehaviour
 
     private void GetTouch()
     {
-        for(int i = 0; i < Input.touchCount; i ++)
+        for (int i = 0; i < Input.touchCount; i++)
         {
             Touch t = Input.GetTouch(i);
 
             switch (t.phase)
             {
                 case TouchPhase.Began:
-                    if(t.position.x > (screenWidth/2) && rightFingerID == -1)
+                    if (t.position.x > (screenWidth / 2) && rightFingerID == -1)
                     {
                         rightFingerID = t.fingerId;
                     }
-                    else if(t.position.x < (screenWidth / 2) && leftFingerId == -1)
+                    else if (t.position.x < (screenWidth / 2) && leftFingerId == -1)
                     {
                         leftFingerId = t.fingerId;
                         moveTouchStartPosition = t.position;
@@ -53,16 +54,16 @@ public class ScreenTouch : MonoBehaviour
 
                     break;
 
-                case TouchPhase.Canceled:   
+                case TouchPhase.Canceled:
                 case TouchPhase.Ended:
                     if (t.fingerId == rightFingerID)
                         rightFingerID = -1;
-                    else if(t.fingerId == leftFingerId)
+                    else if (t.fingerId == leftFingerId)
                     {
                         leftFingerId = -1;
                         moveTouchStartPosition = moveInput = Vector2.zero;
                     }
-                        //lookInput = Vector2.zero;
+                    //lookInput = Vector2.zero;
                     break;
 
                 case TouchPhase.Moved:
@@ -90,13 +91,13 @@ public class ScreenTouch : MonoBehaviour
             switch (t.phase)
             {
                 case TouchPhase.Began:
-                    
+
                     if (t.position.x > 520 && t.position.x < 1400)
                     {
                         Debug.Log("work");
                         rightFingerID = t.fingerId;
                     }
-                   
+
 
 
                     break;
@@ -105,13 +106,13 @@ public class ScreenTouch : MonoBehaviour
                 case TouchPhase.Ended:
                     if (t.fingerId == rightFingerID)
                         rightFingerID = -1;
-                   
+
                     moveShowInput = Vector2.zero;
                     break;
 
                 case TouchPhase.Moved:
                     if (rightFingerID == t.fingerId)
-                        moveShowInput = t.deltaPosition * Time.deltaTime * sensitivity;                   
+                        moveShowInput = t.deltaPosition * Time.deltaTime * sensitivityShowcase;
                     break;
 
                 case TouchPhase.Stationary:

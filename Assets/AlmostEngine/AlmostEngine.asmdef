@@ -1,8 +1,0 @@
-{
-    "name": "AlmostEngine",
-    "references": [
-        "AlmostEngine.Shared"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": []
-}
