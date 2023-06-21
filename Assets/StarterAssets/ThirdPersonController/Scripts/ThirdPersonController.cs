@@ -273,8 +273,8 @@ namespace StarterAssets
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
             ray = Camera.main.ScreenPointToRay(screenCenterPoint);
             GroundedCheck();
-            MoveOld();
-            //Move();
+            //MoveOld();
+            Move();
             z = ultimateJoystick.GetVerticalAxis();
             //if(base.IsServer)
             changingGun = weaponSwitching.GunSwaping();
@@ -292,20 +292,20 @@ namespace StarterAssets
             playerDead = playerHealth.PlayerDeathState();
             
             //Pc input
-            playerGunSelector.SetLookInput(look.x, look.y, x, z);
+            //playerGunSelector.SetLookInput(look.x, look.y, x, z);
 
             //touchinput 
-            //playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
+            playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
             SetRigWeight();
             JumpAndGravity();
 
-            //if(_animationBlend > 1)
-            //    Slide();
+            if (_animationBlend > 1)
+                Slide();
             //if (Input.GetMouseButtonDown(2))
             //    Crouch();
-            if (Input.GetMouseButtonDown(2))
-                shooterController.Aim();
+            //if (Input.GetMouseButtonDown(2))
+            //    shooterController.Aim();
             ControllerChanges();
         }
         
@@ -314,8 +314,8 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-            CameraRotationOld();
-            //CameraRotation();
+            //CameraRotationOld();
+            CameraRotation();
             
         }
         public void SetRigWeight()
@@ -910,14 +910,14 @@ namespace StarterAssets
         }
         public void Crouch()
         {
-            //if (playerHealth.PlayerDeathState())
-            //    return;
+            if (playerHealth.PlayerDeathState())
+                return;
             if (z > 0.6f && !isAiming && !isCrouching)
                 StartSlide();
 
             //ForPcControls
-            if (_input.move.y > 0.6f && !isAiming && !isCrouching)
-                StartSlide();
+            //if (_input.move.y > 0.6f && !isAiming && !isCrouching)
+            //    StartSlide();
             
             else
                 CrouchInput();

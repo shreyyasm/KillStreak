@@ -102,10 +102,10 @@ public class PlayerAction : NetworkBehaviour
             //InverseKinematics.ElbowIKAmount = 0.25f;
         }
 
-        if (Input.GetMouseButton(1))
-            Shoot(1);
-        else
-            Shoot(0);
+        //if (Input.GetMouseButton(1))
+        //    Shoot(1);
+        //else
+        //    Shoot(0);
 
     }
     
