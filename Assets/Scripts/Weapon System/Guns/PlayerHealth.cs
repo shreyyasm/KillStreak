@@ -8,8 +8,8 @@ using UnityEngine.UI;
 
 public class PlayerHealth : NetworkBehaviour, IDamageable
 {
-    public GameObject PlayerCanvas;
-    public GameObject LoadOutCanvas;
+    public GameObject PlayerCanvas;    
+    public GameObject AnimatedCanvas;
 
     [SerializeField]
     private int _MaxHealth = 100;
@@ -124,12 +124,12 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         if(CurrentHealth <= 0)
         {
             if (PlayerCanvas != null)
-                PlayerCanvas.SetActive(false);
-            if (LoadOutCanvas != null)
-                LoadOutCanvas.SetActive(false);
+                PlayerCanvas.SetActive(false);           
+            if (AnimatedCanvas != null)
+                AnimatedCanvas.SetActive(false);
             RigController.enabled = false;
             StartCoroutine(DespawnPlayer());
-            PlayerRespawn.Instance.Respawn(player.gameObject , PlayerCanvas, LoadOutCanvas);
+            PlayerRespawn.Instance.Respawn(player.gameObject , PlayerCanvas,AnimatedCanvas);
             playerDead = true;
             anim.SetLayerWeight(7, 1);
             anim.SetInteger("DeadIndex", Random.Range(0, 4));

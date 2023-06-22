@@ -269,16 +269,14 @@ namespace StarterAssets
         {
             if (!base.IsOwner)
                 return;
-
-            Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
-            ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+          
             GroundedCheck();
+
             //MoveOld();
             Move();
-            z = ultimateJoystick.GetVerticalAxis();
-            //if(base.IsServer)
+
             changingGun = weaponSwitching.GunSwaping();
-            //Jump();
+           
             if (firedBullet && fireBulletTime >= 0)
             {
                 if (!firing)
@@ -339,8 +337,6 @@ namespace StarterAssets
 
         private void GroundedCheck()
         {
-            
-
             // update animator if using character
             if (_hasAnimator)
             {

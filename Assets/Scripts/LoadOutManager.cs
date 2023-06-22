@@ -12,6 +12,7 @@ public class LoadOutManager : NetworkBehaviour
     [SerializeField] ShooterController shooterController;
     [SerializeField] WeaponSwitching weaponSwitching;
     [SerializeField] GameObject LoadOutMenu;
+    [SerializeField] GameObject InputCanvas;
 
     public TextMeshProUGUI TimerLoadout;
     public float timeRemaining;
@@ -232,6 +233,7 @@ public class LoadOutManager : NetworkBehaviour
     public void OpenLoadOut()
     {
         LoadOutMenu.SetActive(true);
+        InputCanvas.SetActive(false);
         audioSource.PlayOneShot(loadoutUISFX);
         countdownState = true;
         timeRemaining = 6;
@@ -241,12 +243,14 @@ public class LoadOutManager : NetworkBehaviour
     }
     public void CloseLoadOut()
     {
-        if (anim != null)
-            anim.SetBool("LoadOutDone", true);
-        audioSource.PlayOneShot(loadoutSFX);
+        
         timeRemaining = 0;
         StopAllCoroutines();
         LoadOutMenu.SetActive(false);
+        InputCanvas.SetActive(true);
+        if (anim != null)
+            anim.SetBool("LoadOutDone", true);
+        audioSource.PlayOneShot(loadoutSFX);
     }
     public void Countdown()
     { 
@@ -276,7 +280,8 @@ public class LoadOutManager : NetworkBehaviour
     }
     public IEnumerator playLoadoutSound()
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(6f);       
+        InputCanvas.SetActive(true);
         if (anim != null)
             anim.SetBool("LoadOutDone", true);
         audioSource.PlayOneShot(loadoutSFX);
