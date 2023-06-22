@@ -12,7 +12,7 @@ public class FPSDisplay : MonoBehaviour
 
 	void Update()
 	{
-		//Application.targetFrameRate = 60;
+		Application.targetFrameRate = 60;
 		// Update time.
 		time += Time.deltaTime;
 
