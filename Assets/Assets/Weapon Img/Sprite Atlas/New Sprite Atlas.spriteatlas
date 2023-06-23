@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: New Sprite Atlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    - serializedVersion: 3
+      m_BuildTarget: Android
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 65
+      m_TextureCompression: 1
+      m_CompressionQuality: 100
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 4d81b579e48eb794b896c8e459d04bb2, type: 3}
+    - {fileID: 2800000, guid: f3f5c00c69361c147a9846490ea2f0b8, type: 3}
+    - {fileID: 2800000, guid: e730a0bfd3e0aec4e8689b45174cafa0, type: 3}
+    - {fileID: 2800000, guid: 526983fbfe2ffd8408eba18fbeeb29a1, type: 3}
+    - {fileID: 2800000, guid: d9498200e0dbf7044b04a3a46f1ec2b0, type: 3}
+    - {fileID: 2800000, guid: 16a813242b704104086c71a820ad0bb0, type: 3}
+    - {fileID: 2800000, guid: 7b482a2e17ef6404687868514e4fec6b, type: 3}
+    - {fileID: 2800000, guid: 852b25a1aa698e84cb5225725b693353, type: 3}
+    - {fileID: 2800000, guid: 2f27fde66e8b4344796299bef5d9002a, type: 3}
+    - {fileID: 2800000, guid: 3f0ab187837fb51408febf951f565f45, type: 3}
+    - {fileID: 2800000, guid: 049d567a46d2fb740bda8ba05222925c, type: 3}
+    - {fileID: 2800000, guid: ba27eef8a786237488e7ac7b45a89948, type: 3}
+    - {fileID: 2800000, guid: 1feaae5689d378f46bfc18e4a4a6b709, type: 3}
+    - {fileID: 2800000, guid: a68613a785c37e345b0929f1f0babe02, type: 3}
+    - {fileID: 2800000, guid: cbedea53475d3094e8f23155f6dc0896, type: 3}
+    - {fileID: 2800000, guid: 1d75392a4722c9c429b80d1de7158595, type: 3}
+    - {fileID: 2800000, guid: 5409aab9d1cb35e46bbbd1483cbed13c, type: 3}
+    - {fileID: 2800000, guid: 471514d28d02eaf4082c80e30c7e52af, type: 3}
+    - {fileID: 2800000, guid: d59624b6bfa5e5d4ebd026c7c59ceb0e, type: 3}
+    - {fileID: 2800000, guid: b551ab85d61d97340acca673548fc57d, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: d9498200e0dbf7044b04a3a46f1ec2b0, type: 3}
+  - {fileID: 21300000, guid: 852b25a1aa698e84cb5225725b693353, type: 3}
+  - {fileID: 21300000, guid: 471514d28d02eaf4082c80e30c7e52af, type: 3}
+  - {fileID: 21300000, guid: cbedea53475d3094e8f23155f6dc0896, type: 3}
+  - {fileID: 21300000, guid: 16a813242b704104086c71a820ad0bb0, type: 3}
+  - {fileID: 21300000, guid: b551ab85d61d97340acca673548fc57d, type: 3}
+  - {fileID: 21300000, guid: 1feaae5689d378f46bfc18e4a4a6b709, type: 3}
+  - {fileID: 21300000, guid: d59624b6bfa5e5d4ebd026c7c59ceb0e, type: 3}
+  - {fileID: 21300000, guid: 2f27fde66e8b4344796299bef5d9002a, type: 3}
+  - {fileID: 21300000, guid: 3f0ab187837fb51408febf951f565f45, type: 3}
+  - {fileID: 21300000, guid: a68613a785c37e345b0929f1f0babe02, type: 3}
+  - {fileID: 21300000, guid: ba27eef8a786237488e7ac7b45a89948, type: 3}
+  - {fileID: 21300000, guid: 4d81b579e48eb794b896c8e459d04bb2, type: 3}
+  - {fileID: 21300000, guid: 5409aab9d1cb35e46bbbd1483cbed13c, type: 3}
+  - {fileID: 21300000, guid: 1d75392a4722c9c429b80d1de7158595, type: 3}
+  - {fileID: 21300000, guid: 049d567a46d2fb740bda8ba05222925c, type: 3}
+  - {fileID: 21300000, guid: 526983fbfe2ffd8408eba18fbeeb29a1, type: 3}
+  - {fileID: 21300000, guid: f3f5c00c69361c147a9846490ea2f0b8, type: 3}
+  - {fileID: 21300000, guid: 7b482a2e17ef6404687868514e4fec6b, type: 3}
+  - {fileID: 21300000, guid: e730a0bfd3e0aec4e8689b45174cafa0, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - sawed-off
+  - Mp9
+  - img-weapons-g36c
+  - img-weapons-p90
+  - s190
+  - G36C White UI
+  - img-weapons-r45
+  - img-weapons-akm
+  - M24
+  - img-weapons-sawed_off
+  - img-weapons-p1911
+  - img-weapons-r1895
+  - weapon-minimalism-ak-47-white-wallpaper-preview-removebg-preview
+  - img-weapons-m24
+  - img-weapons-mp9
+  - img-weapons-s1897
+  - ssssss
+  - UI_weapon_icon_r45-removebg-preview
+  - r1895
+  - UI_weapon_icon_p18c-removebg-preview
+  m_RenderDataMap: {}
+  m_Tag: New Sprite Atlas
+  m_IsVariant: 0
