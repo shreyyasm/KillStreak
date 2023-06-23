@@ -6966,6 +6966,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 4866512734858148882}
   <selectedWeapon>k__BackingField: 0
   playerHealth: {fileID: 7459709495149301830}
+  thirdPersonController: {fileID: 1603918855143199604}
   shooterController: {fileID: 6492197335900248555}
   playerGunSelector: {fileID: 4556042117359066162}
   loadOutManager: {fileID: 8282398727071106129}

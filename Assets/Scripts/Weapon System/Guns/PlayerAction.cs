@@ -76,9 +76,11 @@ public class PlayerAction : NetworkBehaviour
         {
             IsReloading = false;
             thirdPersonController.ReloadCheck(IsReloading);
+            
         }
             
-
+        if(IsReloading)
+            thirdPersonController.SetRigWeight();
         if (ShouldAutoReload())
         {
             if (weaponSwitch.gunChanging)
@@ -96,8 +98,11 @@ public class PlayerAction : NetworkBehaviour
             IsReloading = true;
             
             thirdPersonController.ReloadCheck(IsReloading);
+            
+
             anim.SetBool("Reload",true);
             StartCoroutine(EndReload());
+           
             //InverseKinematics.HandIKAmount = 0.25f;
             //InverseKinematics.ElbowIKAmount = 0.25f;
         }
@@ -136,6 +141,7 @@ public class PlayerAction : NetworkBehaviour
             IsReloading = false;
             anim.SetBool("Reload", false);
             thirdPersonController.ReloadCheck(IsReloading);
+            thirdPersonController.SetRigWeight();
         }
        
     }
@@ -211,9 +217,11 @@ public class PlayerAction : NetworkBehaviour
             playerSoundManager.PlayReloadClip();
             //GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
-            thirdPersonController.ReloadCheck(IsReloading);
+            thirdPersonController.ReloadCheck(IsReloading);       
             anim.SetBool("Reload",true);
+            
             StartCoroutine(EndReload());
+          
         }
     }
     [ObserversRpc(BufferLast = true)]
@@ -234,9 +242,11 @@ public class PlayerAction : NetworkBehaviour
             playerSoundManager.PlayReloadClip();
             //GunSelector.ActiveGun.StartReloading();
             IsReloading = true;
-            thirdPersonController.ReloadCheck(IsReloading);
+            thirdPersonController.ReloadCheck(IsReloading);           
             anim.SetBool("Reload", true);
+            
             StartCoroutine(EndReload());
+           
         }
     }
     

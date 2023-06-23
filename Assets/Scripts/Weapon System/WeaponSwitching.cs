@@ -5,6 +5,7 @@ using FishNet.Transporting;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using StarterAssets;
 using UnityEngine.Animations.Rigging;
 
 public class WeaponSwitching : NetworkBehaviour
@@ -14,6 +15,7 @@ public class WeaponSwitching : NetworkBehaviour
     public int selectedWeapon { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
     [SerializeField]
     private PlayerHealth playerHealth;
+    [SerializeField] ThirdPersonController thirdPersonController;
     [SerializeField] ShooterController shooterController;
     [SerializeField] PlayerGunSelector playerGunSelector;
     [SerializeField] LoadOutManager loadOutManager;
@@ -85,16 +87,22 @@ public class WeaponSwitching : NetworkBehaviour
             if (anim.GetCurrentAnimatorStateInfo(4).IsName("Rifle To Pistol Locomotions") && anim.GetCurrentAnimatorStateInfo(4).normalizedTime > 1f)
             {
                 gunChanging = false;
+                thirdPersonController.changingGun = false;
+                thirdPersonController.SetRigWeight();
                 checkAnimationState = false;
             }
             if (anim.GetCurrentAnimatorStateInfo(4).IsName("Rifle To Pistol Locomotions Crouch") && anim.GetCurrentAnimatorStateInfo(4).normalizedTime > 1f)
             {
                 gunChanging = false;
+                thirdPersonController.changingGun = false;
+                thirdPersonController.SetRigWeight();
                 checkAnimationState = false;
             }
             if (anim.GetCurrentAnimatorStateInfo(4).IsName("Slide change gun") && anim.GetCurrentAnimatorStateInfo(4).normalizedTime > 1f)
             {
                 gunChanging = false;
+                thirdPersonController.changingGun = false;
+                thirdPersonController.SetRigWeight();
                 checkAnimationState = false;
             }
         }
@@ -289,6 +297,8 @@ public class WeaponSwitching : NetworkBehaviour
             anim.SetLayerWeight(8, 0);
             checkAnimationState = true;
             gunChanging = true;
+            thirdPersonController.changingGun = true;
+            thirdPersonController.SetRigWeight();
             int previousSelectedWeapon = selectedWeapon;
             if (!gunChanged)
             {
@@ -339,6 +349,8 @@ public class WeaponSwitching : NetworkBehaviour
             anim.SetLayerWeight(8, 0);
             checkAnimationState = true;
             gunChanging = true;
+            thirdPersonController.changingGun = true;
+            thirdPersonController.SetRigWeight();
             int previousSelectedWeapon = selectedWeapon;
             if (!gunChanged)
             {

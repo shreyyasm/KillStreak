@@ -274,9 +274,7 @@ namespace StarterAssets
 
             //MoveOld();
             Move();
-
-            changingGun = weaponSwitching.GunSwaping();
-           
+   
             if (firedBullet && fireBulletTime >= 0)
             {
                 if (!firing)
@@ -295,7 +293,7 @@ namespace StarterAssets
             //touchinput 
             playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
-            SetRigWeight();
+            
             JumpAndGravity();
 
             if (_animationBlend > 1)
@@ -502,10 +500,18 @@ namespace StarterAssets
             _animator.SetFloat("MoveZ", _input.move.y);
             Vector2 directionNew = new Vector2(_input.move.x, _input.move.y);
             if (directionNew.y > 0.2f && !isAiming && !firedBullet && !changingGun && !isCrouching && !isSliding)
+            {
                 MoveSpeed = 7f;
-
+                pistolRig.weight = 0f;
+                rifleRig.weight = 0f;
+            }
             else
+            {
                 MoveSpeed = 5;
+                pistolRig.weight = 1f;
+                rifleRig.weight = 1;
+            }
+                
 
             if (weaponSwitching.selectedWeapon == 0)
             {
@@ -675,7 +681,7 @@ namespace StarterAssets
             _animator.SetFloat("MoveZ", z);
 
         
-            if (direction.z > 0.2f && !isAiming && !firedBullet && !changingGun && !isCrouching && !isSliding)
+            if (direction.z > 0.2f && !isAiming && !isReloading && !firedBullet && !changingGun && !isCrouching && !isSliding)
                 MoveSpeed = 7f;               
 
             else
@@ -687,7 +693,7 @@ namespace StarterAssets
                 {
                     if(!firedBullet)
                     {
-                       
+                        
                         _animator.SetLayerWeight(1, 0);
                         _animator.SetLayerWeight(3, 0);
                     }
@@ -1177,28 +1183,21 @@ namespace StarterAssets
         public void ReloadCheck(bool state)
         {
             isReloading = state;
+            SetRigWeight();
+
         }
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void SetRigServer()
         {
-           
+
             if (weaponSwitching.selectedWeapon == 0)
             {
-                //MainRig.weight = 1f;
-                if (!running)
+                if (!changingGun)
                 {
-                    if (!changingGun)
+                    if (!isReloading)
                     {
-                        if (!isReloading)
-                        {
-                            rifleRig.weight = 1f;
-                            pistolRig.weight = 0f;
-                        }
-                        else
-                        {
-                            pistolRig.weight = 0f;
-                            rifleRig.weight = 0f;
-                        }
+                        rifleRig.weight = 1f;
+                        pistolRig.weight = 0f;
                     }
                     else
                     {
@@ -1206,31 +1205,32 @@ namespace StarterAssets
                         rifleRig.weight = 0f;
                     }
                 }
+                else
+                {
+                    pistolRig.weight = 0f;
+                    rifleRig.weight = 0f;
+                }
             }
 
             else
             {
-                //MainRig.weight = 1f;
-                if (!running)
+                if (!changingGun)
                 {
-                    if (!changingGun)
+                    if (!isReloading)
                     {
-                        if (!isReloading)
-                        {
-                            pistolRig.weight = 1f;
-                            rifleRig.weight = 0f;
-                        }
-                        else
-                        {
-                            pistolRig.weight = 0f;
-                            rifleRig.weight = 0f;
-                        }
+                        pistolRig.weight = 1f;
+                        rifleRig.weight = 0f;
                     }
                     else
                     {
                         pistolRig.weight = 0f;
                         rifleRig.weight = 0f;
                     }
+                }
+                else
+                {
+                    pistolRig.weight = 0f;
+                    rifleRig.weight = 0f;
                 }
             }
             if (weaponSwitching.selectedWeapon == 0)
@@ -1250,21 +1250,12 @@ namespace StarterAssets
             
             if (weaponSwitching.selectedWeapon == 0)
             {
-               // MainRig.weight = 1f;
-                if (!running)
+                if (!changingGun)
                 {
-                    if (!changingGun)
+                    if (!isReloading)
                     {
-                        if (!isReloading)
-                        {
-                            rifleRig.weight = 1f;
-                            pistolRig.weight = 0f;
-                        }
-                        else
-                        {
-                            pistolRig.weight = 0f;
-                            rifleRig.weight = 0f;
-                        }
+                        rifleRig.weight = 1f;
+                        pistolRig.weight = 0f;
                     }
                     else
                     {
@@ -1272,31 +1263,32 @@ namespace StarterAssets
                         rifleRig.weight = 0f;
                     }
                 }
+                else
+                {
+                    pistolRig.weight = 0f;
+                    rifleRig.weight = 0f;
+                }
             }
 
             else
             {
-                //MainRig.weight = 1f;
-                if (!running)
+                if (!changingGun)
                 {
-                    if (!changingGun)
+                    if (!isReloading)
                     {
-                        if (!isReloading)
-                        {
-                            pistolRig.weight = 1f;
-                            rifleRig.weight = 0f;
-                        }
-                        else
-                        {
-                            pistolRig.weight = 0f;
-                            rifleRig.weight = 0f;
-                        }
+                        pistolRig.weight = 1f;
+                        rifleRig.weight = 0f;
                     }
                     else
                     {
                         pistolRig.weight = 0f;
                         rifleRig.weight = 0f;
                     }
+                }
+                else
+                {
+                    pistolRig.weight = 0f;
+                    rifleRig.weight = 0f;
                 }
             }
             if (weaponSwitching.selectedWeapon == 0)
