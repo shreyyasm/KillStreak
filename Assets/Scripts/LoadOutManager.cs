@@ -10,6 +10,8 @@ public class LoadOutManager : NetworkBehaviour
     public static LoadOutManager Instance;
     [SerializeField] PlayerGunSelector playerGunSelector;
     [SerializeField] ShooterController shooterController;
+    [SerializeField]
+    private AmmoDisplayer ammoDisplayer;
     [SerializeField] WeaponSwitching weaponSwitching;
     [SerializeField] GameObject LoadOutMenu;
     [SerializeField] GameObject InputCanvas;
@@ -172,8 +174,10 @@ public class LoadOutManager : NetworkBehaviour
                 selectedLoadOut.SetActive(false);
             }
         }
-        
+
+        playerGunSelector.SetActiveGun(weaponSwitching.selectedWeapon);
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
+        ammoDisplayer.UpdateGunAmmo();
         SetGunUI(loadOutNumber);
         //playerGunSelector.ChangeCrosshair();
         shooterController.ExitAim();
@@ -221,9 +225,10 @@ public class LoadOutManager : NetworkBehaviour
                 selectedLoadOut.SetActive(false);
             }
         }
-        
-       
+
+        playerGunSelector.SetActiveGun(weaponSwitching.selectedWeapon);
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
+        ammoDisplayer.UpdateGunAmmo();
         SetGunUI(loadOutNumber);
         shooterController.ExitAim();
         //playerGunSelector.ChangeCrosshair();

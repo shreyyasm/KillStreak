@@ -35,6 +35,9 @@ public class PlayerAction : NetworkBehaviour
     [SerializeField]
     private PlayerSoundManager playerSoundManager;
 
+    [SerializeField]
+    private AmmoDisplayer ammoDisplayer;
+
 
     [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
     public bool IsReloading { get; [ServerRpc(RunLocally = true)] set; }
@@ -62,6 +65,8 @@ public class PlayerAction : NetworkBehaviour
             }
                 
         }
+        if(IsShooting)
+            ammoDisplayer.UpdateGunAmmo();
         IsChangingGun = thirdPersonController.changingGun;
         //ManualReloadMouse();
         //GunSelector.ActiveGun.Tick(
@@ -102,7 +107,7 @@ public class PlayerAction : NetworkBehaviour
 
             anim.SetBool("Reload",true);
             StartCoroutine(EndReload());
-           
+            
             //InverseKinematics.HandIKAmount = 0.25f;
             //InverseKinematics.ElbowIKAmount = 0.25f;
         }
@@ -142,6 +147,7 @@ public class PlayerAction : NetworkBehaviour
             anim.SetBool("Reload", false);
             thirdPersonController.ReloadCheck(IsReloading);
             thirdPersonController.SetRigWeight();
+            ammoDisplayer.UpdateGunAmmo();
         }
        
     }
@@ -221,7 +227,7 @@ public class PlayerAction : NetworkBehaviour
             anim.SetBool("Reload",true);
             
             StartCoroutine(EndReload());
-          
+            
         }
     }
     [ObserversRpc(BufferLast = true)]
@@ -246,7 +252,7 @@ public class PlayerAction : NetworkBehaviour
             anim.SetBool("Reload", true);
             
             StartCoroutine(EndReload());
-           
+            
         }
     }
     

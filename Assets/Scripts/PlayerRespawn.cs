@@ -42,7 +42,7 @@ public class PlayerRespawn : NetworkBehaviour
         if (animatedCanvas != null)
             animatedCanvas.SetActive(true);
         player.GetComponent<PlayerHealth>().playerDead = false;
-
         
+
     }
 }

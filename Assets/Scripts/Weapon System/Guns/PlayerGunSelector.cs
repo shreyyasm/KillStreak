@@ -48,11 +48,12 @@ public class PlayerGunSelector : NetworkBehaviour
     private FloatingDamage floatingDamage;
     [SerializeField]
     private PlayerHealth playerHealth;
-    int gunSelected;
+    
+    public int gunSelected;
     public GunScriptableObject gun1;
     public GunScriptableObject gun2;
    
-    public GameObject bulletTrail;
+    
 
     public static ObjectPooler SharedInstance;
     private GameObject bulletTrailPool;
@@ -141,30 +142,12 @@ public class PlayerGunSelector : NetworkBehaviour
     {
         if (!base.IsOwner)
             return;
-        
-        gun1 = PrimaryGuns[loadOutManager.loadNumber];
-        gun2 = SecondaryGuns[loadOutManager.loadNumber];
-
+   
         Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
         ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-       
-        gunSelected = weaponSwitching.selectedWeapon;
-       
-        if (gunSelected == 0)
-        {
-            if(!weaponSwitching.gunChanging)
-                ActiveGun = PrimaryGuns[loadOutManager.loadNumber];
-           
-        }
-        else
-        {
-            if (!weaponSwitching.gunChanging)
-                ActiveGun = SecondaryGuns[loadOutManager.loadNumber];
-            
-        }
-
-        bulletTrail = ActiveGun.ReturnBullet();
+    
         GunModelRecoil();
+
         if (anim.GetCurrentAnimatorStateInfo(8).IsName("Sniper Reload") && anim.GetCurrentAnimatorStateInfo(8).normalizedTime > 1f)
         {
             anim.SetBool("SniperReload", false);
@@ -188,13 +171,14 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         if (playerAction.IsShooting )
         {
-            if(!playerAction.IsReloading)
+            
+            if (!playerAction.IsReloading)
             {
                 if (!playerAction.IsChangingGun)
                 {
                     if (ActiveGun.ShootConfig.IsHitscan)
                     {
-
+                        
                         if (ActiveGun.Automatic)
                             FireConditionAutomatic();
                         else
@@ -204,7 +188,27 @@ public class PlayerGunSelector : NetworkBehaviour
             }
         }
         CheckBlocked();
-        ChangeCrosshair();
+        
+    }
+    public void SetActiveGun(int selectedWeapon)
+    {
+        
+        gun1 = PrimaryGuns[loadOutManager.loadNumber];
+        gun2 = SecondaryGuns[loadOutManager.loadNumber];
+
+        
+        if (selectedWeapon == 0)
+        {
+            if (!weaponSwitching.gunChanging)
+                ActiveGun = PrimaryGuns[loadOutManager.loadNumber];
+
+        }
+        else
+        {
+            if (!weaponSwitching.gunChanging)
+                ActiveGun = SecondaryGuns[loadOutManager.loadNumber];
+
+        }
     }
     public void SpawnAllGuns()
     {
@@ -281,6 +285,7 @@ public class PlayerGunSelector : NetworkBehaviour
             ActiveGunPrefab = SecondaryGunsPrefabs[loadOutManager.loadNumber];
         }
         GunModel = ActiveGunPrefab;
+        weaponSwitching.SetGuns();
         gun1.AmmoConfig.RefillAmmo();
         gun2.AmmoConfig.RefillAmmo();
     }
@@ -319,6 +324,7 @@ public class PlayerGunSelector : NetworkBehaviour
             ActiveGunPrefab = SecondaryGunsPrefabs[loadOutManager.loadNumber];
         }
         GunModel = ActiveGunPrefab;
+        weaponSwitching.SetGuns();
         gun1.AmmoConfig.RefillAmmo();
        gun2.AmmoConfig.RefillAmmo();
     }
@@ -443,7 +449,7 @@ public class PlayerGunSelector : NetworkBehaviour
                         + ActiveGun.ShootSystem.transform.forward * Vector3.Distance(
                                ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
-           
+            
             GunModel.transform.forward += GunModel.transform.TransformDirection(ActiveGun.spreadAmount);
             //GunModelRecoil(ActiveGun.spreadAmount);
             playerSoundManager.PlayShootingClip(transform.position, ActiveGun.AmmoConfig.CurrentClipAmmo == 1);
@@ -698,7 +704,7 @@ public class PlayerGunSelector : NetworkBehaviour
             //heading += new Vector3(1.07f, -0.2f, 0);
             var distance = heading.magnitude;
             var direction = heading / distance;
-
+            
 
             //Vector3 dirNew = (ActiveGun.ShootSystem.transform.position - ActiveCamera.transform.position);
             Vector3 shootDirection = direction + sphere.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));

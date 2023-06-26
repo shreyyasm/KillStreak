@@ -84,16 +84,17 @@ public class ShooterController : NetworkBehaviour
         if (!Aiming)
         {
             sniperScopeUI.SetActive(false);
-            var componentBase = aimVirtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
-            if (componentBase is Cinemachine3rdPersonFollow)
-            {
-                (componentBase as Cinemachine3rdPersonFollow).CameraDistance = 3.06f;
-            }
+            
         }
     }
     public void ExitAim()
     {
         Aiming = false;
+        var componentBase = aimVirtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
+        if (componentBase is Cinemachine3rdPersonFollow)
+        {
+            (componentBase as Cinemachine3rdPersonFollow).CameraDistance = 3.06f;
+        }
         animator.SetLayerWeight(1, 0);
         animator.SetLayerWeight(3, 0);
         thirdPersonController.Aiming(false);

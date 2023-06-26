@@ -6991,7 +6991,6 @@ MonoBehaviour:
   - {fileID: 8406345260730426547}
   - {fileID: 3155871976469885950}
   - {fileID: 3155871976469885950}
-  num: 0
 --- !u!114 &3530273750996363583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24570,11 +24569,11 @@ MonoBehaviour:
   weaponSwitching: {fileID: 3760958236556242323}
   playerSoundManager: {fileID: 3811869648561070088}
   surfaceManager: {fileID: 5606925415617864127}
-  floatingDamage: {fileID: 0}
+  floatingDamage: {fileID: 794585380540652492}
   playerHealth: {fileID: 7459709495149301830}
+  gunSelected: 0
   gun1: {fileID: 0}
   gun2: {fileID: 0}
-  bulletTrail: {fileID: 0}
   pooledObjects: []
   objectToPool: {fileID: 8081663345739861187, guid: c2e6aed9ca9047c4e9e811b1a9d78ecb,
     type: 3}
@@ -24672,6 +24671,7 @@ MonoBehaviour:
   playerHealth: {fileID: 7459709495149301830}
   weaponSwitch: {fileID: 3760958236556242323}
   playerSoundManager: {fileID: 3811869648561070088}
+  ammoDisplayer: {fileID: 5813009804763147807}
   <IsReloading>k__BackingField: 0
   IsShooting: 0
   resetShooting: 0
@@ -24804,6 +24804,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 4866512734858148882}
   playerGunSelector: {fileID: 4556042117359066162}
   shooterController: {fileID: 6492197335900248555}
+  ammoDisplayer: {fileID: 5813009804763147807}
   weaponSwitching: {fileID: 3760958236556242323}
   LoadOutMenu: {fileID: 4424037591173281898}
   InputCanvas: {fileID: 6527828215835793336}

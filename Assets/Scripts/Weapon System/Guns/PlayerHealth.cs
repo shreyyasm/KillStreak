@@ -88,6 +88,10 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         int damageTaken = Mathf.Clamp(Damage, 0, CurrentHealth);
         CurrentHealth -= damageTaken;
         SetHealth(CurrentHealth);
+        if(CurrentHealth <= 0)
+        {
+            PlayerDeath();
+        }
         if (damageTaken != 0)
         {
             OnTakeDamage?.Invoke(damageTaken);
@@ -96,13 +100,17 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         {
             OnDeath?.Invoke(transform.position);
         }
+        SetHealth(CurrentHealth);
     }
     [ObserversRpc(BufferLast = true)]
     public void TakeDamageObserver(int Damage)
-    {
-       
+    {       
         int damageTaken = Mathf.Clamp(Damage, 0, CurrentHealth);
         CurrentHealth -= damageTaken;
+        if (CurrentHealth <= 0)
+        {
+            PlayerDeath();
+        }
         if (damageTaken != 0)
         {
             OnTakeDamage?.Invoke(damageTaken);
@@ -111,14 +119,16 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         {
             OnDeath?.Invoke(transform.position);
         }
+        SetHealth(CurrentHealth);
     }
     private void Update()
     {
-        PlayerDeath();
+
         if (CurrentHealth > 0)
             RigController.enabled = true;
-        SetHealth(CurrentHealth);
+
     }
+   
     public void PlayerDeath()
     {
         if(CurrentHealth <= 0)
