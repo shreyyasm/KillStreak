@@ -136,7 +136,7 @@ namespace StarterAssets
         public bool isCrouching;
         public bool isSliding;
         public bool running;
-        public bool playerDead;
+        
         public bool isPressedJump = false;
         public bool isJump = false;
         
@@ -285,8 +285,7 @@ namespace StarterAssets
                 }
             }
 
-            playerDead = playerHealth.PlayerDeathState();
-            
+     
             //Pc input
             //playerGunSelector.SetLookInput(look.x, look.y, x, z);
 
@@ -1302,5 +1301,14 @@ namespace StarterAssets
                 _animator.SetLayerWeight(0, 0);
             }
         }
+        public void GunChangeAnimationCheck()
+        {
+            weaponSwitching.GunChangeAnimationCheck();
+        }
+        public void GunChangeAnimationCheckBackwards()
+        {
+            weaponSwitching.GunChangeAnimationCheckBackwards();
+        }
     }
+    
 }

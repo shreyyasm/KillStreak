@@ -58,38 +58,32 @@ public class ShooterController : NetworkBehaviour
         aimVirtualCamera = GameObject.FindWithTag("Aim Camera").GetComponent<CinemachineVirtualCamera>();
         followVirtualCamera = GameObject.FindWithTag("Follow Camera").GetComponent<CinemachineVirtualCamera>();
     }
-    private void Start()
-    {
-        //StartPool();
-    }
+  
     public void Update()
     {
         
         if (!base.IsOwner)
             return;
+
         AimMovenment();
-        if (thirdPersonController.changingGun)
-        {          
-            Aiming = false;
-            animator.SetLayerWeight(1, 0);
-            animator.SetLayerWeight(3, 0);
-            thirdPersonController.Aiming(false);
-            screenTouch.SetSensitivity(8);
-            if (!FPSMode)
-            {
-                aimVirtualCamera.enabled = false;
-                //thirdPersonController.SetSensitivity(normalSensitivity);
-            }
-        }
-        if (!Aiming)
+    }
+    public void GunChangeCheck()
+    {
+        Aiming = false;
+        animator.SetLayerWeight(1, 0);
+        animator.SetLayerWeight(3, 0);
+        thirdPersonController.Aiming(false);
+        screenTouch.SetSensitivity(8);
+        if (!FPSMode)
         {
-            sniperScopeUI.SetActive(false);
-            
+            aimVirtualCamera.enabled = false;
+            //thirdPersonController.SetSensitivity(normalSensitivity);
         }
     }
     public void ExitAim()
     {
         Aiming = false;
+        sniperScopeUI.SetActive(false);
         var componentBase = aimVirtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
         if (componentBase is Cinemachine3rdPersonFollow)
         {
@@ -108,33 +102,21 @@ public class ShooterController : NetworkBehaviour
     //RaycastHit raycastHit;
     public void AimMovenment()
     {
-        //aimVirtualCamera.transform.position = followVirtualCamera.transform.position;
-        //mouseWorldPosition = Vector3.zero;
-
+      
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimcolliderLayerMask))
         {
-            //debugTransform.position = raycastHit.point;
-            // debugTransform.position = Vector3.Lerp(debugTransform.position, raycastHit.point, Time.deltaTime * 20f);
             debugTransform.position = Vector3.Lerp(debugTransform.position, raycastHit.point, Time.deltaTime * 20f);
-            //if (base.IsServer)
-            //    AimMovementObserver();
-
-            //if (base.IsOwner)
-            //    AimMovementServer();
+            
             mouseWorldPosition = raycastHit.point;
             Vector3 worldAimTarget = mouseWorldPosition;
             worldAimTarget.y = transform.position.y;
             Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
-            //if(screenTouch.lookInput.y != 0 & screenTouch.lookInput.x != 0)
+            
             transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 10f);
         }
-       
-
-        
-
     }
    
     public void Aim()

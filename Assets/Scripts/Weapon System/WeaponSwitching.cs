@@ -20,6 +20,7 @@ public class WeaponSwitching : NetworkBehaviour
     [SerializeField] PlayerGunSelector playerGunSelector;
     [SerializeField] LoadOutManager loadOutManager;
     [SerializeField] WeaponInventory weaponInventory;
+
     public bool gunChanged = false;
 
     [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
@@ -34,7 +35,7 @@ public class WeaponSwitching : NetworkBehaviour
 
     public Animator anim;
     bool gunInHand = true;
-    bool checkAnimationState;
+    
     private readonly NetworkConnection newOwnerConnection;
 
     public List<Transform> PrimaryGunsFakePrefabs;
@@ -74,53 +75,30 @@ public class WeaponSwitching : NetworkBehaviour
         fakeRifle = PrimaryGunsFakePrefabs[loadOutManager.loadNumber].transform.gameObject;
         fakePistol = SecondaryGunsFakePrefabs[loadOutManager.loadNumber].transform.gameObject;
     }
-    // Update is called once per frame
-    void Update()
+
+    public void GunChangeAnimationCheck()
     {
-        
-
-        if (!base.IsOwner)
-            return;
-       
-        if (checkAnimationState)
+        if(animator.GetComponent<Animator>().GetLayerWeight(4) == 1)
         {
-            if (anim.GetCurrentAnimatorStateInfo(4).IsName("Rifle To Pistol Locomotions") && anim.GetCurrentAnimatorStateInfo(4).normalizedTime > 1f)
-            {
-                gunChanging = false;
-                playerGunSelector.SetActiveGun(selectedWeapon);
-                playerGunSelector.ChangeCrosshair();
-                thirdPersonController.changingGun = false;
-                thirdPersonController.SetRigWeight();
-                checkAnimationState = false;
-                ManagerLayerWeights();
-
-            }
-            if (anim.GetCurrentAnimatorStateInfo(4).IsName("Rifle To Pistol Locomotions Crouch") && anim.GetCurrentAnimatorStateInfo(4).normalizedTime > 1f)
-            {
-                gunChanging = false;
-                playerGunSelector.SetActiveGun(selectedWeapon);
-                playerGunSelector.ChangeCrosshair();
-                thirdPersonController.changingGun = false;
-                thirdPersonController.SetRigWeight();
-                checkAnimationState = false;
-                ManagerLayerWeights();
-            }
-            if (anim.GetCurrentAnimatorStateInfo(4).IsName("Slide change gun") && anim.GetCurrentAnimatorStateInfo(4).normalizedTime > 1f)
-            {
-                gunChanging = false;
-                playerGunSelector.SetActiveGun(selectedWeapon);
-                playerGunSelector.ChangeCrosshair();
-                thirdPersonController.changingGun = false;
-                thirdPersonController.SetRigWeight();
-                checkAnimationState = false;
-                ManagerLayerWeights();
-
-            }
+            gunChanging = false;
+            playerGunSelector.SetActiveGun(selectedWeapon);        
+            playerGunSelector.ChangeCrosshair();
+            thirdPersonController.changingGun = false;
+            thirdPersonController.SetRigWeight();
+            ManagerLayerWeights();
         }
-        //if (Input.GetMouseButtonDown(2))
-        //    ChangeGunIndex();
-
-        //ManagerLayerWeights();
+    }
+    public void GunChangeAnimationCheckBackwards()
+    {
+        if (animator.GetComponent<Animator>().GetLayerWeight(5) == 1)
+        {
+            gunChanging = false;
+            playerGunSelector.SetActiveGun(selectedWeapon);
+            playerGunSelector.ChangeCrosshair();
+            thirdPersonController.changingGun = false;
+            thirdPersonController.SetRigWeight();
+            ManagerLayerWeights();
+        }
     }
     public void SetActiveGun(int loadNumber)
     {
@@ -240,9 +218,10 @@ public class WeaponSwitching : NetworkBehaviour
             //    //SelectedWeapon();
             //}
             shooterController.GunChanged();
-            
+            thirdPersonController.SetRigWeight();
+            ManagerLayerWeights();
             //playerGunSelector.ActiveGunPrefab = playerGunSelector.PrimaryGunsPrefabs[loadOutManager.loadNumber];
-            
+
         }
         foreach (Transform fakeGun in PrimaryGunsFakePrefabs) //   <--- go back to here --------+
         {                               //                                |         
@@ -273,10 +252,11 @@ public class WeaponSwitching : NetworkBehaviour
             //    //SelectedWeapon();
             //}
             shooterController.GunChanged();
-            
+            thirdPersonController.SetRigWeight();
+            ManagerLayerWeights();
             //playerGunSelector.ActiveGunPrefab = playerGunSelector.PrimaryGunsPrefabs[loadOutManager.loadNumber];
-            
-           
+
+
         }
         foreach (Transform fakeGun in PrimaryGunsFakePrefabs) //   <--- go back to here --------+
         {                               //                                |         
@@ -306,10 +286,11 @@ public class WeaponSwitching : NetworkBehaviour
             
             anim.SetBool("SniperReload", false);
             anim.SetLayerWeight(8, 0);
-            checkAnimationState = true;
+            
             gunChanging = true;
             
             thirdPersonController.changingGun = true;
+            shooterController.GunChangeCheck();
             thirdPersonController.SetRigWeight();
             int previousSelectedWeapon = selectedWeapon;
             
@@ -364,10 +345,10 @@ public class WeaponSwitching : NetworkBehaviour
             
             anim.SetBool("SniperReload", false);
             anim.SetLayerWeight(8, 0);
-            checkAnimationState = true;
             gunChanging = true;
            
             thirdPersonController.changingGun = true;
+            shooterController.GunChangeCheck();
             thirdPersonController.SetRigWeight();
             int previousSelectedWeapon = selectedWeapon;
             

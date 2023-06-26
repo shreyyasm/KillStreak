@@ -32,24 +32,7 @@ public class CameraSwitch : NetworkBehaviour
         cameraSwitched = true;
         
     }
-    void Update()
-    {  
-        if (!base.IsOwner)
-            return;
-
-        //if (!inFPSMode)
-        //    fpsCamera.transform.rotation = MainCamera.transform.rotation;
-
-        //foreach (Transform gears in playerGears)
-        //{
-        //    var childGameObjects = gears.GetComponentsInChildren<Transform>();
-        //    foreach (Transform allObjects in childGameObjects)
-        //    {
-        //        allObjects.gameObject.layer = LayerMask.NameToLayer("HideItself");
-        //    }          
-        //}
-              
-    }
+    
     public void ChangeMode()
     {
         if (cameraSwitched)

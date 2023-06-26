@@ -175,11 +175,13 @@ public class LoadOutManager : NetworkBehaviour
             }
         }
 
-        playerGunSelector.SetActiveGun(weaponSwitching.selectedWeapon);
+        
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
+        playerGunSelector.ChangeCrosshair();
+        playerGunSelector.SetActiveGun(0);
         ammoDisplayer.UpdateGunAmmo();
         SetGunUI(loadOutNumber);
-        //playerGunSelector.ChangeCrosshair();
+        playerGunSelector.ChangeCrosshair();
         shooterController.ExitAim();
     }
     [ObserversRpc(BufferLast = true)]
@@ -226,12 +228,13 @@ public class LoadOutManager : NetworkBehaviour
             }
         }
 
-        playerGunSelector.SetActiveGun(weaponSwitching.selectedWeapon);
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
         ammoDisplayer.UpdateGunAmmo();
+        playerGunSelector.ChangeCrosshair();
+        playerGunSelector.SetActiveGun(0);
         SetGunUI(loadOutNumber);
         shooterController.ExitAim();
-        //playerGunSelector.ChangeCrosshair();
+        playerGunSelector.ChangeCrosshair();
 
     }
    

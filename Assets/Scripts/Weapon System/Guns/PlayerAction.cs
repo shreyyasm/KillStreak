@@ -44,12 +44,12 @@ public class PlayerAction : NetworkBehaviour
 
     public bool IsShooting;
     public bool resetShooting = false;
-    public bool IsChangingGun;
     public Animator anim;
     private void Update()
     {
         if (!base.IsOwner)
             return;
+
         if(Instance == null)
             Instance = this;
 
@@ -59,7 +59,7 @@ public class PlayerAction : NetworkBehaviour
         {
             if (!IsReloading)
             {
-                if(!IsChangingGun)
+                if(!thirdPersonController.changingGun)
                     GunSelector.ActiveGun.Tick(IsShooting);
                 //GunSelector.FireCondition(IsShooting);
             }
@@ -67,13 +67,7 @@ public class PlayerAction : NetworkBehaviour
         }
         if(IsShooting)
             ammoDisplayer.UpdateGunAmmo();
-        IsChangingGun = thirdPersonController.changingGun;
-        //ManualReloadMouse();
-        //GunSelector.ActiveGun.Tick(
-        //    !IsReloading
-        //    && Application.isFocused && Mouse.current.leftButton.isPressed
-        //    && GunSelector.ActiveGun != null
-        //);
+   
         if (!IsReloading)
             PlayerAnimator.SetLayerWeight(6, 0);
 
@@ -148,13 +142,14 @@ public class PlayerAction : NetworkBehaviour
             thirdPersonController.ReloadCheck(IsReloading);
             thirdPersonController.SetRigWeight();
             ammoDisplayer.UpdateGunAmmo();
+            PlayerAnimator.SetLayerWeight(6, 0);
         }
        
     }
     public void Shoot(float input)
     {
         
-        if (!IsChangingGun)
+        if (!thirdPersonController.changingGun)
         {
             if(GunSelector.ActiveGun.Automatic)
             {

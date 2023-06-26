@@ -23985,7 +23985,6 @@ MonoBehaviour:
   isCrouching: 0
   isSliding: 0
   running: 0
-  playerDead: 0
   isPressedJump: 0
   isJump: 0
   gunType: 0
@@ -24193,7 +24192,11 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Elbow_R'\n\tTransform 'Neck'\n\tTransform 'Elbow_L'\n\tTransform
+    'Head'\n\tTransform 'Hand_L'\n\tTransform 'Shoulder_L'\n\tTransform 'Clavicle_R'\n\tTransform
+    'Shoulder_R'\n\tTransform 'Spine_01'\n\tTransform 'Hips'\n\tand more ..."
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -24458,11 +24461,10 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 7
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 774665742
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects:
-  - {fileID: 0}
   - {fileID: 0}
 --- !u!114 &7450530433290570546
 MonoBehaviour:
@@ -24571,6 +24573,7 @@ MonoBehaviour:
   surfaceManager: {fileID: 5606925415617864127}
   floatingDamage: {fileID: 794585380540652492}
   playerHealth: {fileID: 7459709495149301830}
+  thirdPersonController: {fileID: 1603918855143199604}
   gunSelected: 0
   gun1: {fileID: 0}
   gun2: {fileID: 0}
@@ -24675,7 +24678,6 @@ MonoBehaviour:
   <IsReloading>k__BackingField: 0
   IsShooting: 0
   resetShooting: 0
-  IsChangingGun: 0
   anim: {fileID: 6535167469221512672}
 --- !u!114 &7459709495149301830
 MonoBehaviour:

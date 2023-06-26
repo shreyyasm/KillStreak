@@ -9,6 +9,7 @@ using FishNet;
 using FishNet.Utility.Performance;
 using System;
 using TMPro;
+using StarterAssets;
 using UnityEngine.Animations.Rigging;
 [DisallowMultipleComponent]
 public class PlayerGunSelector : NetworkBehaviour
@@ -48,7 +49,10 @@ public class PlayerGunSelector : NetworkBehaviour
     private FloatingDamage floatingDamage;
     [SerializeField]
     private PlayerHealth playerHealth;
-    
+
+    [SerializeField]
+    private ThirdPersonController thirdPersonController;
+
     public int gunSelected;
     public GunScriptableObject gun1;
     public GunScriptableObject gun2;
@@ -105,6 +109,9 @@ public class PlayerGunSelector : NetworkBehaviour
     {  
         SpawnAllGuns();
 
+        Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+        ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+
         gun1 = PrimaryGuns[loadOutManager.loadNumber];
         gun2 = SecondaryGuns[loadOutManager.loadNumber];
 
@@ -124,16 +131,10 @@ public class PlayerGunSelector : NetworkBehaviour
             ActiveGunPrefab = SecondaryGunsPrefabs[loadOutManager.loadNumber];
         }
 
-        GetModelFromParent();
+        GunModel = ActiveGunPrefab;
     }
     
-    public void GetModelFromParent()
-    {
-        //yield return new WaitForSeconds(0.1f);
-        //Model = GunParent.GetComponentsInChildren<Transform>();
-        GunModel = ActiveGunPrefab;
-        
-    }
+   
     [Range(0.1f, 1f)] public float sphereCastRadius;
     [Range(1f, 100f)] public float range;
 
@@ -143,41 +144,19 @@ public class PlayerGunSelector : NetworkBehaviour
         if (!base.IsOwner)
             return;
    
-        Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
-        ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-    
         GunModelRecoil();
-
-        if (anim.GetCurrentAnimatorStateInfo(8).IsName("Sniper Reload") && anim.GetCurrentAnimatorStateInfo(8).normalizedTime > 1f)
-        {
-            anim.SetBool("SniperReload", false);
-            anim.SetLayerWeight(8, 0);
-            SniperRig.weight = 1;
-
-        }
-        if (anim.GetCurrentAnimatorStateInfo(8).IsName("Sniper Slide Reload") && anim.GetCurrentAnimatorStateInfo(8).normalizedTime > 1f)
-        {
-            anim.SetBool("SniperReload", false);
-            anim.SetLayerWeight(8, 0);
-            SniperRig.weight = 1;
-
-        }
-        if (anim.GetCurrentAnimatorStateInfo(8).IsName("Sniper Crouch Reload") && anim.GetCurrentAnimatorStateInfo(8).normalizedTime > 1f)
-        {
-            anim.SetBool("SniperReload", false);
-            anim.SetLayerWeight(8, 0);
-            SniperRig.weight = 1;
-
-        }
+       
         if (playerAction.IsShooting )
         {
-            
+            Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+            ray = Camera.main.ScreenPointToRay(screenCenterPoint);
             if (!playerAction.IsReloading)
             {
-                if (!playerAction.IsChangingGun)
+                if (!thirdPersonController.changingGun)
                 {
                     if (ActiveGun.ShootConfig.IsHitscan)
                     {
+
                         
                         if (ActiveGun.Automatic)
                             FireConditionAutomatic();
@@ -189,6 +168,12 @@ public class PlayerGunSelector : NetworkBehaviour
         }
         CheckBlocked();
         
+    }
+    public void SniperReloadAimatioCheck()
+    {
+        anim.SetBool("SniperReload", false);
+        anim.SetLayerWeight(8, 0);
+        SniperRig.weight = 1;
     }
     public void SetActiveGun(int selectedWeapon)
     {
