@@ -89,6 +89,7 @@ public class ShooterController : NetworkBehaviour
         {
             (componentBase as Cinemachine3rdPersonFollow).CameraDistance = 3.06f;
         }
+        aimVirtualCamera.m_Lens.FieldOfView = 32;
         animator.SetLayerWeight(1, 0);
         animator.SetLayerWeight(3, 0);
         thirdPersonController.Aiming(false);
@@ -146,6 +147,7 @@ public class ShooterController : NetworkBehaviour
                         {
                             (componentBase as Cinemachine3rdPersonFollow).CameraDistance = 0;
                         }
+                        aimVirtualCamera.m_Lens.FieldOfView = 16;
                     }
                     
                 }
@@ -178,7 +180,7 @@ public class ShooterController : NetworkBehaviour
                 {
                     (componentBase as Cinemachine3rdPersonFollow).CameraDistance = 3.06f;
                 }
-                
+                aimVirtualCamera.m_Lens.FieldOfView = 32;
                 if (gunType == 0)
                     animator.SetLayerWeight(1, 0);
                 else

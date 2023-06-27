@@ -93,8 +93,7 @@ public class ScreenTouch : MonoBehaviour
                 case TouchPhase.Began:
 
                     if (t.position.x > 520 && t.position.x < 1400)
-                    {
-                        Debug.Log("work");
+                    {                      
                         rightFingerID = t.fingerId;
                     }
 
