@@ -143,9 +143,9 @@ public class PlayerGunSelector : NetworkBehaviour
     {
         if (!base.IsOwner)
             return;
-   
+        GunModel = ActiveGunPrefab;
         GunModelRecoil();
-       
+        
         if (playerAction.IsShooting )
         {
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
