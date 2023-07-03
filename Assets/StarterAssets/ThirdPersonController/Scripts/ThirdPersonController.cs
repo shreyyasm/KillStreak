@@ -7,6 +7,9 @@ using UnityEngine.Animations.Rigging;
 using System.Collections;
 using FishNet.Object.Synchronizing;
 using Cinemachine;
+using FishNet;
+using FishNet.Object.Prediction;
+using FishNet.Transporting;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 #endif
 
@@ -155,7 +158,7 @@ namespace StarterAssets
         private const float _threshold = 0.01f;
 
         private bool _hasAnimator;
-        public Vector3 direction;
+       
         float mouseX , mouseY;
         [SerializeField] ShooterController shooterController;
         [SerializeField] WeaponSwitching weaponSwitching;
@@ -169,6 +172,102 @@ namespace StarterAssets
         [SerializeField] Transform[] Root;
         public GameObject UICanvas;
         public AudioListener audioListener;
+
+
+        //MoveData for client simulation
+        private MoveData _clientMoveData;
+
+        //MoveData for replication
+        public struct MoveData : IReplicateData
+        {
+            public float x;
+            public float z;            
+            public Vector3 Move;
+            public bool Jump;
+            public float CameraEulerY;
+            public bool Sprint;
+            private uint _tick;
+            public void Dispose() { }
+            public uint GetTick() => _tick;
+            public void SetTick(uint value) => _tick = value;
+        }
+
+        //ReconcileData for Reconciliation
+        public struct ReconcileData : IReconcileData
+        {
+            public Vector3 Position;
+            public Quaternion Rotation;
+            public float VerticalVelocity;
+            public float FallTimeout;
+            public float JumpTimeout;
+            public bool Grounded;
+
+          
+            
+
+            private uint _tick;
+            public void Dispose() { }
+            public uint GetTick() => _tick;
+            public void SetTick(uint value) => _tick = value;
+            public ReconcileData(Vector3 position, Quaternion rotation, float verticalVelocity, float fallTimeout, float jumpTimeout, bool grounded, uint tick)
+            {
+                Position = position;
+                Rotation = rotation;
+                VerticalVelocity = verticalVelocity;
+                FallTimeout = fallTimeout;
+                JumpTimeout = jumpTimeout;
+                Grounded = grounded;
+                _tick = tick;
+            }
+        }
+
+        private void Awake()
+        {
+
+            //myActionAsset.bindingMask = new InputBinding { groups = "KeyboardMouse" };
+            //playerInput.SwitchCurrentControlScheme(Keyboard.current, Mouse.current);
+            // get a reference to our main camera
+            InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
+            InstanceFinder.TimeManager.OnUpdate += TimeManager_OnUpdate;
+
+            _controller = GetComponent<CharacterController>();
+
+            if (_mainCamera == null)
+            {
+                _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+            }
+            m_MainCamera = GameObject.FindWithTag("Follow Camera").GetComponent<CinemachineVirtualCamera>();
+            m_AimCamera = GameObject.FindWithTag("Aim Camera").GetComponent<CinemachineVirtualCamera>();
+            _controller = GetComponent<CharacterController>();
+            //rb = GetComponent<Rigidbody>();
+            //Root = GetComponentInChildren<Transform>();
+            //Root.layer = LayerMask.NameToLayer("Player Root");
+
+            isCrouching = false;
+        }
+        private void OnDestroy()
+        {
+            if (InstanceFinder.TimeManager != null)
+            {
+                InstanceFinder.TimeManager.OnTick -= TimeManager_OnTick;
+                InstanceFinder.TimeManager.OnUpdate -= TimeManager_OnUpdate;
+            }
+        }
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
+
+            _controller.enabled = (base.IsServer || base.IsOwner);
+
+            if (base.IsOwner)
+            {
+                // GameObject.FindGameObjectWithTag("PlayerFollowCamera").GetComponent<CinemachineVirtualCamera>().Follow = CinemachineCameraTarget.transform;
+                _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+                _playerInput = GetComponent<PlayerInput>();
+                _playerInput.enabled = true;
+                _input = GetComponent<StarterAssetsInputs>();
+            }
+        }
         public override void OnStartNetwork()
         {
             base.OnStartNetwork();
@@ -200,6 +299,68 @@ namespace StarterAssets
             }
             
             
+        }
+
+        private void TimeManager_OnTick()
+        {
+            if (base.IsOwner)
+            {
+                Reconciliation(default, false);
+                CheckInput(out MoveData md);
+                Move(md, false);
+            }
+            if (base.IsServer)
+            {
+                Move(default, true);
+                ReconcileData rd = new ReconcileData(transform.position, transform.rotation, _verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, Grounded,GetLastReconcileTick());
+                Reconciliation(rd, true);
+            }
+        }
+
+        private void TimeManager_OnUpdate()
+        {
+            if (base.IsOwner)
+            {
+                JumpAndGravity(_clientMoveData, Time.deltaTime);
+                GroundedCheck();
+                MoveWithData(_clientMoveData, Time.deltaTime);
+            }
+        }
+
+        [Reconcile]
+        private void Reconciliation(ReconcileData rd, bool asServer, Channel channel = Channel.Unreliable)
+        {
+            transform.position = rd.Position;
+            transform.rotation = rd.Rotation;
+            _verticalVelocity = rd.VerticalVelocity;
+            _fallTimeoutDelta = rd.FallTimeout;
+            _jumpTimeoutDelta = rd.JumpTimeout;
+            Grounded = rd.Grounded;
+        }
+        
+        private void CheckInput(out MoveData md)
+        {
+            md = new MoveData()
+            {  
+            Move = new Vector3(ultimateJoystick.GetHorizontalAxis(), 0f, ultimateJoystick.GetVerticalAxis()).normalized,
+            Jump = _input.jump,
+            CameraEulerY = _mainCamera.transform.eulerAngles.y,
+            Sprint = _input.sprint,
+            };
+
+            _input.jump = false;
+        }
+        [Replicate]
+        private void Move(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
+        {
+            if (asServer || replaying)
+            {
+                JumpAndGravity(md, (float)base.TimeManager.TickDelta);
+                GroundedCheck();
+                MoveWithData(md, (float)base.TimeManager.TickDelta);
+            }
+            else if (!asServer)
+                _clientMoveData = md;
         }
 
         //slide value
@@ -234,26 +395,7 @@ namespace StarterAssets
             
         }
 
-        private void Awake()
-        {
-
-            //myActionAsset.bindingMask = new InputBinding { groups = "KeyboardMouse" };
-            //playerInput.SwitchCurrentControlScheme(Keyboard.current, Mouse.current);
-            // get a reference to our main camera
-            if (_mainCamera == null)
-            {
-                _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-            }
-            m_MainCamera = GameObject.FindWithTag("Follow Camera").GetComponent<CinemachineVirtualCamera>();
-            m_AimCamera = GameObject.FindWithTag("Aim Camera").GetComponent<CinemachineVirtualCamera>();
-            _controller = GetComponent<CharacterController>();
-            //rb = GetComponent<Rigidbody>();
-            //Root = GetComponentInChildren<Transform>();
-            //Root.layer = LayerMask.NameToLayer("Player Root");
-            
-            isCrouching = false;
-        }
-
+        
         private void Start()
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
@@ -273,8 +415,8 @@ namespace StarterAssets
             GroundedCheck();
 
             //MoveOld();
-            Move();
-   
+            //Move();
+
             if (firedBullet && fireBulletTime >= 0)
             {
                 if (!firing)
@@ -292,9 +434,7 @@ namespace StarterAssets
             //touchinput 
             playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
-            
-            JumpAndGravity();
-
+        
             if (_animationBlend > 1)
                 Slide();
             //if (Input.GetMouseButtonDown(2))
@@ -665,22 +805,19 @@ namespace StarterAssets
                 isAimWalking = false;
             }
         }
-        public void Move()
+        public void MoveWithData(MoveData md, float delta)
         {
             //if (playerHealth.PlayerDeathState())
             //    return;
             //_controller.detectCollisions = false;
-            x = ultimateJoystick.GetHorizontalAxis();
-            z = ultimateJoystick.GetVerticalAxis();
-            direction = new Vector3(x, 0f, z).normalized;
 
             float neutralize = 1f;
-     
-            _animator.SetFloat("MoveX", x);
-            _animator.SetFloat("MoveZ", z);
+           
+            _animator.SetFloat("MoveX", md.Move.x);
+            _animator.SetFloat("MoveZ", md.Move.z);
 
         
-            if (direction.z > 0.2f && !isAiming && !isReloading && !firedBullet && !changingGun && !isCrouching && !isSliding)
+            if (md.Move.z > 0.2f && !isAiming && !isReloading && !firedBullet && !changingGun && !isCrouching && !isSliding)
                 MoveSpeed = 7f;               
 
             else
@@ -731,7 +868,7 @@ namespace StarterAssets
 
             float targetSpeed = MoveSpeed;
     
-            if(direction == Vector3.zero && !isSliding)
+            if(md.Move == Vector3.zero && !isSliding)
             {
                 targetSpeed = 0.0f;               
                 neutralize = 0f;
@@ -770,11 +907,11 @@ namespace StarterAssets
 
             // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is a move input rotate player when the player is moving
-            if (direction != Vector3.zero)
+            if (md.Move != Vector3.zero)
             {
                 //_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
                 //                  _mainCamera.transform.eulerAngles.y;
-                _targetRotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg +
+                _targetRotation = Mathf.Atan2(md.Move.x, md.Move.z) * Mathf.Rad2Deg +
                                   _mainCamera.transform.eulerAngles.y;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                     RotationSmoothTime);
@@ -843,6 +980,7 @@ namespace StarterAssets
                 isAimWalking = false;
             }                    
         }
+
         
         public void CrouchInput()
         {
@@ -945,7 +1083,7 @@ namespace StarterAssets
                 //value = slideTimeRemaining;
                 if (value > 0)
                 {
-                    Debug.Log(direction.z);
+                   
                     
                     value -= 1 * Time.deltaTime;
                     slideSpeed -= 3 * Time.deltaTime;
@@ -996,7 +1134,7 @@ namespace StarterAssets
             // _controller.height = originalHeight;
         }
            
-        public void JumpAndGravity()
+        public void JumpAndGravity(MoveData md, float delta)
         {
             if(_input.jump && isCrouching)
             {
@@ -1018,7 +1156,7 @@ namespace StarterAssets
                 }
 
                 // Jump
-                if (_input.jump && _jumpTimeoutDelta <= 0.0f )
+                if (md.Jump && _jumpTimeoutDelta <= 0.0f )
                 {
                     // set sphere position, with offset
                     Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
@@ -1045,7 +1183,7 @@ namespace StarterAssets
                 // jump timeout
                 if (_jumpTimeoutDelta >= 0.0f)
                 {
-                    _jumpTimeoutDelta -= Time.deltaTime;
+                    _jumpTimeoutDelta -= delta;
                 }
             }
             else
@@ -1056,7 +1194,7 @@ namespace StarterAssets
                 // fall timeout
                 if (_fallTimeoutDelta >= 0.0f)
                 {
-                    _fallTimeoutDelta -= Time.deltaTime;
+                    _fallTimeoutDelta -= delta;
                 }
                 else
                 {
@@ -1078,10 +1216,10 @@ namespace StarterAssets
             // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
             if (_verticalVelocity < _terminalVelocity)
             {
-                _verticalVelocity += Gravity * Time.deltaTime;
+                _verticalVelocity += Gravity * delta;
             }
         }
-       
+        
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
         {
             if (lfAngle < -360f) lfAngle += 360f;
