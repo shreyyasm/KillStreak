@@ -212,7 +212,7 @@ namespace StarterAssets
             public void Dispose() { }
             public uint GetTick() => _tick;
             public void SetTick(uint value) => _tick = value;
-            public ReconcileData(Vector3 position, Quaternion rotation, float verticalVelocity, float fallTimeout, float jumpTimeout, bool grounded, uint tick)
+            public ReconcileData(Vector3 position, Quaternion rotation, float verticalVelocity, float fallTimeout, float jumpTimeout, bool grounded)
             {
                 Position = position;
                 Rotation = rotation;
@@ -220,7 +220,7 @@ namespace StarterAssets
                 FallTimeout = fallTimeout;
                 JumpTimeout = jumpTimeout;
                 Grounded = grounded;
-                _tick = tick;
+                _tick = 0;
             }
         }
 
@@ -315,7 +315,7 @@ namespace StarterAssets
             if (base.IsServer)
             {
                 Move(default, true);
-                ReconcileData rd = new ReconcileData(transform.position, transform.rotation, _verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, Grounded,GetLastReconcileTick());
+                ReconcileData rd = new ReconcileData(transform.position, transform.rotation, _verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, Grounded);
                 Reconciliation(rd, true);
             }
         }
