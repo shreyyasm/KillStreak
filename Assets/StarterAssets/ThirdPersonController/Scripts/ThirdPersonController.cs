@@ -233,6 +233,7 @@ namespace StarterAssets
             InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
             InstanceFinder.TimeManager.OnUpdate += TimeManager_OnUpdate;
 
+
             _controller = GetComponent<CharacterController>();
 
             if (_mainCamera == null)
@@ -310,11 +311,14 @@ namespace StarterAssets
             {
                 Reconciliation(default, false);
                 CheckInput(out MoveData md);
-                Move(md, false);
+                MoveWithData(md, false);
+                
+
             }
             if (base.IsServer)
             {
-                Move(default, true);
+                MoveWithData(default, true);
+                
                 ReconcileData rd = new ReconcileData(transform.position, transform.rotation, _verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, Grounded);
                 Reconciliation(rd, true);
             }
@@ -324,12 +328,10 @@ namespace StarterAssets
         {
             if (base.IsOwner)
             {
-                JumpAndGravity(_clientMoveData, Time.deltaTime);
-                GroundedCheck();
-                MoveWithData(_clientMoveData, Time.deltaTime);
+                // JumpAndGravity(_clientMoveData, Time.deltaTime);               
             }
         }
-
+       
         [Reconcile]     
         private void Reconciliation(ReconcileData rd, bool asServer, Channel channel = Channel.Unreliable)
         {
@@ -353,18 +355,7 @@ namespace StarterAssets
 
             _input.jump = false;
         }
-        [Replicate]
-        private void Move(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
-        {
-            if (asServer || replaying)
-            {
-                JumpAndGravity(md, (float)base.TimeManager.TickDelta);
-                GroundedCheck();
-                MoveWithData(md, (float)base.TimeManager.TickDelta);
-            }
-            else if (!asServer)
-                _clientMoveData = md;
-        }
+  
 
         //slide value
         public float speed = 8f;
@@ -808,7 +799,8 @@ namespace StarterAssets
                 isAimWalking = false;
             }
         }
-        public void MoveWithData(MoveData md, float delta)
+        [Replicate]
+        private void MoveWithData(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
         {
             //if (playerHealth.PlayerDeathState())
             //    return;
@@ -892,7 +884,7 @@ namespace StarterAssets
                 //_speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
                 //    Time.deltaTime * SpeedChangeRate);
                 _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * 1,
-                    delta * SpeedChangeRate);
+                    (float)base.TimeManager.TickDelta * SpeedChangeRate);
 
                 // round speed to 3 decimal places
                 _speed = Mathf.Round(_speed * 1000f) / 1000f;
@@ -902,7 +894,7 @@ namespace StarterAssets
                // _speed = targetSpeed;
             }
 
-            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, delta * SpeedChangeRate);
+            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, (float)base.TimeManager.TickDelta * SpeedChangeRate);
             if (_animationBlend < 0.01f) _animationBlend = 0f;
 
             // normalise input direction
@@ -928,8 +920,8 @@ namespace StarterAssets
             {
                // _controller.enabled = true;
                 // move the player
-                _controller.Move(targetDirection.normalized * (targetSpeed * delta) * neutralize +
-                                 new Vector3(0.0f, _verticalVelocity, 0.0f) * delta);
+                _controller.Move(targetDirection.normalized * (targetSpeed * (float)base.TimeManager.TickDelta) * neutralize +
+                                 new Vector3(0.0f, _verticalVelocity, 0.0f));
             }
             //else
             //{
