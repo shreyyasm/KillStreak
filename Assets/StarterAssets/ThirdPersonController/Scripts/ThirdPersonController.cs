@@ -10,6 +10,9 @@ using Cinemachine;
 using FishNet;
 using FishNet.Object.Prediction;
 using FishNet.Transporting;
+using StarterAssets;
+using System.Collections.Generic;
+
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 #endif
 
@@ -262,7 +265,7 @@ namespace StarterAssets
             if (base.IsOwner)
             {
                 // GameObject.FindGameObjectWithTag("PlayerFollowCamera").GetComponent<CinemachineVirtualCamera>().Follow = CinemachineCameraTarget.transform;
-                _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+                
                 _playerInput = GetComponent<PlayerInput>();
                 _playerInput.enabled = true;
                 _input = GetComponent<StarterAssetsInputs>();
@@ -327,7 +330,7 @@ namespace StarterAssets
             }
         }
 
-        [Reconcile]
+        [Reconcile]     
         private void Reconciliation(ReconcileData rd, bool asServer, Channel channel = Channel.Unreliable)
         {
             transform.position = rd.Position;
@@ -889,7 +892,7 @@ namespace StarterAssets
                 //_speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
                 //    Time.deltaTime * SpeedChangeRate);
                 _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * 1,
-                    Time.deltaTime * SpeedChangeRate);
+                    delta * SpeedChangeRate);
 
                 // round speed to 3 decimal places
                 _speed = Mathf.Round(_speed * 1000f) / 1000f;
@@ -899,7 +902,7 @@ namespace StarterAssets
                // _speed = targetSpeed;
             }
 
-            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
+            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, delta * SpeedChangeRate);
             if (_animationBlend < 0.01f) _animationBlend = 0f;
 
             // normalise input direction
@@ -925,8 +928,8 @@ namespace StarterAssets
             {
                // _controller.enabled = true;
                 // move the player
-                _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) * neutralize +
-                                 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+                _controller.Move(targetDirection.normalized * (targetSpeed * delta) * neutralize +
+                                 new Vector3(0.0f, _verticalVelocity, 0.0f) * delta);
             }
             //else
             //{
