@@ -65,7 +65,7 @@ public class ShooterController : NetworkBehaviour
         if (!base.IsOwner)
             return;
 
-        //AimMovenment();
+        AimMovenment();
     }
     public void GunChangeCheck()
     {

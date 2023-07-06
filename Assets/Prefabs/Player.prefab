@@ -23886,7 +23886,7 @@ GameObject:
   - component: {fileID: 3811869648561070088}
   - component: {fileID: 5288676240204857373}
   - component: {fileID: 6757550525262360853}
-  - component: {fileID: 4538117556575027806}
+  - component: {fileID: 4137404698437881120}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -24442,7 +24442,7 @@ MonoBehaviour:
   - {fileID: 3811869648561070088}
   - {fileID: 5288676240204857373}
   - {fileID: 6757550525262360853}
-  - {fileID: 4538117556575027806}
+  - {fileID: 4137404698437881120}
   - {fileID: 6145575145839192901}
   - {fileID: 4016688909735605221}
   - {fileID: 7607747229311474301}
@@ -24454,7 +24454,7 @@ MonoBehaviour:
   _isNetworked: 1
   _isGlobal: 0
   _initializeOrder: 0
-  _defaultDespawnType: 0
+  _defaultDespawnType: 1
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 7
   <SpawnableCollectionId>k__BackingField: 0
@@ -25694,7 +25694,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
---- !u!114 &4538117556575027806
+--- !u!114 &4137404698437881120
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

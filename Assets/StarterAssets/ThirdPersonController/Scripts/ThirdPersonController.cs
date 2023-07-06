@@ -198,8 +198,7 @@ namespace StarterAssets
         //ReconcileData for Reconciliation
         public struct ReconcileData : IReconcileData
         {
-            public Vector3 Position;
-            public Quaternion Rotation;
+            public Vector3 Position;           
             public float VerticalVelocity;
             public float FallTimeout;
             public float JumpTimeout;
@@ -212,10 +211,9 @@ namespace StarterAssets
             public void Dispose() { }
             public uint GetTick() => _tick;
             public void SetTick(uint value) => _tick = value;
-            public ReconcileData(Vector3 position, Quaternion rotation, float verticalVelocity, float fallTimeout, float jumpTimeout, bool grounded)
+            public ReconcileData(Vector3 position, float verticalVelocity, float fallTimeout, float jumpTimeout, bool grounded)
             {
-                Position = position;
-                Rotation = rotation;
+                Position = position;              
                 VerticalVelocity = verticalVelocity;
                 FallTimeout = fallTimeout;
                 JumpTimeout = jumpTimeout;
@@ -230,8 +228,8 @@ namespace StarterAssets
             //myActionAsset.bindingMask = new InputBinding { groups = "KeyboardMouse" };
             //playerInput.SwitchCurrentControlScheme(Keyboard.current, Mouse.current);
             // get a reference to our main camera
+            AssignAnimationIDs();
             InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
-            InstanceFinder.TimeManager.OnUpdate += TimeManager_OnUpdate;
 
 
             _controller = GetComponent<CharacterController>();
@@ -254,7 +252,7 @@ namespace StarterAssets
             if (InstanceFinder.TimeManager != null)
             {
                 InstanceFinder.TimeManager.OnTick -= TimeManager_OnTick;
-                InstanceFinder.TimeManager.OnUpdate -= TimeManager_OnUpdate;
+               
             }
         }
         public override void OnStartClient()
@@ -301,8 +299,12 @@ namespace StarterAssets
                 //gameObject.AddComponent<Enemy>();
                 // gameObject.AddComponent<EnemyHealth>(); 
             }
-            
-            
+
+            // reset our timeouts on start
+            _fallTimeoutDelta = FallTimeout;
+            _jumpTimeoutDelta = JumpTimeout;
+
+
         }
 
         private void TimeManager_OnTick()
@@ -312,31 +314,23 @@ namespace StarterAssets
                 Reconciliation(default, false);
                 CheckInput(out MoveData md);
                 MoveWithData(md, false);
-                
-
+               
+                _clientMoveData = md;
             }
             if (base.IsServer)
             {
-                MoveWithData(default, true);
-                
-                ReconcileData rd = new ReconcileData(transform.position, transform.rotation, _verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, Grounded);
+                MoveWithData(default, true);                           
+                ReconcileData rd = new ReconcileData(transform.position, _verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, Grounded);
                 Reconciliation(rd, true);
             }
         }
 
-        private void TimeManager_OnUpdate()
-        {
-            if (base.IsOwner)
-            {
-                // JumpAndGravity(_clientMoveData, Time.deltaTime);               
-            }
-        }
+        
        
         [Reconcile]     
         private void Reconciliation(ReconcileData rd, bool asServer, Channel channel = Channel.Unreliable)
         {
-            transform.position = rd.Position;
-            transform.rotation = rd.Rotation;
+            transform.position = rd.Position;            
             _verticalVelocity = rd.VerticalVelocity;
             _fallTimeoutDelta = rd.FallTimeout;
             _jumpTimeoutDelta = rd.JumpTimeout;
@@ -394,7 +388,7 @@ namespace StarterAssets
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             _hasAnimator = TryGetComponent(out _animator);
-            AssignAnimationIDs();
+            
             SetRigWeight();
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
@@ -406,8 +400,7 @@ namespace StarterAssets
             if (!base.IsOwner)
                 return;
           
-            GroundedCheck();
-
+            
             //MoveOld();
             //Move();
 
@@ -468,6 +461,12 @@ namespace StarterAssets
 
         private void GroundedCheck()
         {
+            // set sphere position, with offset
+            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
+                transform.position.z);
+            Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
+                QueryTriggerInteraction.Ignore);
+
             // update animator if using character
             if (_hasAnimator)
             {
@@ -802,9 +801,86 @@ namespace StarterAssets
         [Replicate]
         private void MoveWithData(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
         {
+            if (md.Jump && isCrouching)
+            {
+                isCrouching = false;
+                _animator.SetBool("Crouch", isCrouching);
+            }
+            else if (Grounded && !isCrouching)
+            {
+                // reset the fall timeout timer
+                _fallTimeoutDelta = FallTimeout;
+
+                // stop our velocity dropping infinitely when grounded
+                if (_verticalVelocity < 0.0f)
+                {
+                    _animator.SetBool(_animIDIdleJump, false);
+                    _animator.SetBool(_animIDWalkJump, false);
+                    isPressedJump = false;
+                    _verticalVelocity = -2f;
+                }
+
+                // Jump
+                if (md.Jump && _jumpTimeoutDelta <= 0.0f)
+                {
+                    // set sphere position, with offset
+
+                    // the square root of H * -2 * G = how much velocity needed to reach desired height
+                    _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+
+                    // update animator if using character
+
+                    if (_hasAnimator)
+                    {
+                        if (_animationBlend > 1)
+                        {
+                            _animator.SetBool(_animIDWalkJump, true);
+                        }
+                        else
+                            _animator.SetBool(_animIDIdleJump, true);
+                    }
+
+                }
+
+                // jump timeout
+                if (_jumpTimeoutDelta >= 0.0f)
+                {
+                    _jumpTimeoutDelta -= (float)base.TimeManager.TickDelta;
+                }
+            }
+            else
+            {
+                // reset the jump timeout timer
+                _jumpTimeoutDelta = JumpTimeout;
+
+                // fall timeout
+                if (_fallTimeoutDelta >= 0.0f)
+                {
+                    _fallTimeoutDelta -= (float)base.TimeManager.TickDelta;
+                }
+                else
+                {
+                    // update animator if using character
+                    if (_hasAnimator)
+                    {
+                        // _animator.SetBool(_animIDFreeFall, true);
+                    }
+                }
+                
+                // if we are not grounded, do not jump
+                _input.jump = false;
+            }
+
+            // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
+            if (_verticalVelocity < _terminalVelocity)
+            {
+                _verticalVelocity += Gravity * (float)base.TimeManager.TickDelta;
+            }
             //if (playerHealth.PlayerDeathState())
             //    return;
             //_controller.detectCollisions = false;
+
+            GroundedCheck();
 
             float neutralize = 1f;
            
@@ -916,24 +992,15 @@ namespace StarterAssets
             }
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-            if(!isSliding)
+            Vector3 movement = targetDirection.normalized * targetSpeed * neutralize;
+            movement += new Vector3(0.0f, _verticalVelocity, 0.0f);
+            if (!isSliding)
             {
                // _controller.enabled = true;
                 // move the player
-                _controller.Move(targetDirection.normalized * (targetSpeed * (float)base.TimeManager.TickDelta) * neutralize +
-                                 new Vector3(0.0f, _verticalVelocity, 0.0f));
+                _controller.Move(movement * (float)base.TimeManager.TickDelta);
             }
-            //else
-            //{
-            //    // move the player
-            //    // _controller.enabled = false;
-            //    // _controller.detectCollisions = true;
-            //    _controller.Move(targetDirection.normalized * 0);
-            //}
-
-
-            
-
+           
             // update animator if using character
             if (_hasAnimator)
             {
@@ -973,7 +1040,8 @@ namespace StarterAssets
             else
             {
                 isAimWalking = false;
-            }                    
+            }
+            
         }
 
         
@@ -1131,12 +1199,12 @@ namespace StarterAssets
            
         public void JumpAndGravity(MoveData md, float delta)
         {
-            if(_input.jump && isCrouching)
+            if (md.Jump && isCrouching)
             {
                 isCrouching = false;
                 _animator.SetBool("Crouch", isCrouching);
             }
-            else if(Grounded && !isCrouching)
+            else if (Grounded && !isCrouching)
             {
                 // reset the fall timeout timer
                 _fallTimeoutDelta = FallTimeout;
@@ -1151,7 +1219,7 @@ namespace StarterAssets
                 }
 
                 // Jump
-                if (md.Jump && _jumpTimeoutDelta <= 0.0f )
+                if (md.Jump && _jumpTimeoutDelta <= 0.0f)
                 {
                     // set sphere position, with offset
                     Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
