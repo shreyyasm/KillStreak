@@ -850,6 +850,12 @@ namespace StarterAssets
                 if (md.Jump && _jumpTimeoutDelta <= 0.0f)
                 {
                     // set sphere position, with offset
+                    isSliding = false;
+                    value = 0f;
+                    slideSpeed = 0;
+                    startSlide = false;
+                    slideTimeRemaining = 0;
+                    timerIsRunning = false;
 
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
@@ -933,13 +939,13 @@ namespace StarterAssets
             else
             {
                 startSlide = false;
-
                 slideTimeRemaining = 0;
+                timerIsRunning = false;
                 //isCrouching = false;
                 isSliding = false;
                 _animator.SetBool("Slide", isSliding);
                 ControllerChanges();
-                timerIsRunning = false;
+               
 
                 extraJump = false;
                 value = 0f;
@@ -1197,10 +1203,7 @@ namespace StarterAssets
             //ForPcControls
             //if (_input.move.y > 0.6f && !isAiming && !isCrouching)
             //    StartSlide();
-            
-          
-                
-            
+        
         }
        
        
