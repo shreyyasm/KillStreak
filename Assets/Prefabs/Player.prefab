@@ -23971,6 +23971,8 @@ MonoBehaviour:
   pistolRig: {fileID: 1760918891627717477}
   rifleRig: {fileID: 3304178362065009533}
   _verticalVelocity: 0
+  _jumpTimeoutDelta: 0
+  _fallTimeoutDelta: 0
   _animator: {fileID: 6535167469221512672}
   _controller: {fileID: 6990179778244640081}
   _input: {fileID: 6524086848578905967}
@@ -24000,16 +24002,18 @@ MonoBehaviour:
   - {fileID: 2470748811032977076}
   UICanvas: {fileID: 481653689153286959}
   audioListener: {fileID: 0}
+  value: 0
+  slideSpeed: 0
+  zValue: 0
   speed: 12
   gravity: -9.81
-  value: 1.8
   groundCheck: {fileID: 6026542968252147384}
   groundDistance: 0.4
   groundMask:
     serializedVersion: 2
     m_Bits: 4096
   slideTimeRemaining: 40
-  slideSpeed: 10
+  timerIsRunning: 0
   extraJump: 0
   lookAtPlayer: 1
   look: {x: 0, y: 0}
@@ -29949,6 +29953,7 @@ GameObject:
   - component: {fileID: 893453413034798008}
   - component: {fileID: 7981460899056224911}
   - component: {fileID: 2724197534885811121}
+  - component: {fileID: 2929173914082520494}
   m_Layer: 13
   m_Name: Crouch
   m_TagString: Untagged
@@ -30066,6 +30071,48 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2929173914082520494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6492547890340058390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448cd6d8e2f2cb04096e777d99974bc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonStateOutputEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5925871992016949497}
+        m_TargetAssemblyTypeName: StarterAssets.UICanvasControllerInput, Assembly-CSharp
+        m_MethodName: VirtualSlideInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  buttonClickOutputEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

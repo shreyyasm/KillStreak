@@ -25,7 +25,12 @@ namespace StarterAssets
             //if(thirdPersonController.Grounded)
             //    thirdPersonController.isPressedJump = true;
         }
-
+        public void VirtualSlideInput(bool virtualJumpState)
+        {
+            starterAssetsInputs.SlideInput(virtualJumpState);
+            //if(thirdPersonController.Grounded)
+            //    thirdPersonController.isPressedJump = true;
+        }
         public void VirtualSprintInput(bool virtualSprintState)
         {
             starterAssetsInputs.SprintInput(virtualSprintState);

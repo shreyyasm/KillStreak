@@ -108,8 +108,8 @@ namespace StarterAssets
         private float _terminalVelocity = 53.0f;
 
         // timeout deltatime
-        private float _jumpTimeoutDelta;
-        private float _fallTimeoutDelta;
+        public float _jumpTimeoutDelta;
+        public float _fallTimeoutDelta;
 
         // animation IDs
         private int _animIDSpeed;
@@ -176,17 +176,20 @@ namespace StarterAssets
         public GameObject UICanvas;
         public AudioListener audioListener;
 
+        public float value;
+        public float slideSpeed = 7f;
 
+        public float zValue;
         //MoveData for client simulation
         private MoveData _clientMoveData;
 
         //MoveData for replication
         public struct MoveData : IReplicateData
         {
-            public float x;
-            public float z;            
+                     
             public Vector3 Move;
             public bool Jump;
+            public bool Slide;
             public float CameraEulerY;
             public bool Sprint;
             private uint _tick;
@@ -202,22 +205,30 @@ namespace StarterAssets
             public float VerticalVelocity;
             public float FallTimeout;
             public float JumpTimeout;
+            public float valueSlide;
+            public float slideSpeed;
             public bool Grounded;
+            public bool timeIsRunning;
 
-          
-            
+
+
+
 
             private uint _tick;
             public void Dispose() { }
             public uint GetTick() => _tick;
             public void SetTick(uint value) => _tick = value;
-            public ReconcileData(Vector3 position, float verticalVelocity, float fallTimeout, float jumpTimeout, bool grounded)
+            public ReconcileData(Vector3 position, float verticalVelocity, float fallTimeout, float jumpTimeout,float slideValue, float slideSpeedValue, bool grounded, bool timeRunning)
             {
                 Position = position;              
                 VerticalVelocity = verticalVelocity;
                 FallTimeout = fallTimeout;
                 JumpTimeout = jumpTimeout;
+                valueSlide = slideValue;
+                slideSpeed = slideSpeedValue;
+                
                 Grounded = grounded;
+                timeIsRunning = timeRunning;
                 _tick = 0;
             }
         }
@@ -225,8 +236,8 @@ namespace StarterAssets
         private void Awake()
         {
 
-            //myActionAsset.bindingMask = new InputBinding { groups = "KeyboardMouse" };
-            //playerInput.SwitchCurrentControlScheme(Keyboard.current, Mouse.current);
+            myActionAsset.bindingMask = new InputBinding { groups = "KeyboardMouse" };
+            playerInput.SwitchCurrentControlScheme(Keyboard.current, Mouse.current);
             // get a reference to our main camera
             AssignAnimationIDs();
             InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
@@ -303,7 +314,7 @@ namespace StarterAssets
             // reset our timeouts on start
             _fallTimeoutDelta = FallTimeout;
             _jumpTimeoutDelta = JumpTimeout;
-
+           
 
         }
 
@@ -314,13 +325,15 @@ namespace StarterAssets
                 Reconciliation(default, false);
                 CheckInput(out MoveData md);
                 MoveWithData(md, false);
-               
+                
                 _clientMoveData = md;
             }
             if (base.IsServer)
             {
-                MoveWithData(default, true);                           
-                ReconcileData rd = new ReconcileData(transform.position, _verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, Grounded);
+                
+                MoveWithData(default, true);
+                
+                ReconcileData rd = new  ReconcileData(transform.position, _verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning);
                 Reconciliation(rd, true);
             }
         }
@@ -334,27 +347,34 @@ namespace StarterAssets
             _verticalVelocity = rd.VerticalVelocity;
             _fallTimeoutDelta = rd.FallTimeout;
             _jumpTimeoutDelta = rd.JumpTimeout;
+            value = rd.valueSlide;
+            slideSpeed = rd.slideSpeed;
             Grounded = rd.Grounded;
+            timerIsRunning = rd.timeIsRunning;
         }
         
         private void CheckInput(out MoveData md)
         {
+            
             md = new MoveData()
-            {  
+            {
+                
             Move = new Vector3(ultimateJoystick.GetHorizontalAxis(), 0f, ultimateJoystick.GetVerticalAxis()).normalized,
             Jump = _input.jump,
+            Slide = _input.slide,
             CameraEulerY = _mainCamera.transform.eulerAngles.y,
             Sprint = _input.sprint,
             };
 
             _input.jump = false;
+            _input.slide = false;
         }
   
 
         //slide value
         public float speed = 8f;
         public float gravity = -9.81f;
-        public float value;
+       
         Vector3 velocity;
         bool isGrounded;
  
@@ -364,8 +384,8 @@ namespace StarterAssets
 
 
         public float slideTimeRemaining = 10;
-        bool timerIsRunning;
-        public float slideSpeed = 7f;
+        public bool timerIsRunning;
+        
 
         public bool extraJump;
        
@@ -377,10 +397,8 @@ namespace StarterAssets
             look = newLookDirection;
         }
         public void OnLook(InputValue value)
-        {
-            
-                LookInput(value.Get<Vector2>());
-            
+        {            
+            LookInput(value.Get<Vector2>());            
         }
 
         
@@ -392,7 +410,8 @@ namespace StarterAssets
             SetRigWeight();
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
-            _fallTimeoutDelta = FallTimeout;           
+            _fallTimeoutDelta = FallTimeout;
+           
         }
 
         private void Update()
@@ -422,10 +441,10 @@ namespace StarterAssets
             playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
            
         
-            if (_animationBlend > 1)
-                Slide();
-            //if (Input.GetMouseButtonDown(2))
-            //    Crouch();
+          
+
+            if (Input.GetMouseButtonDown(1))
+                Crouch();
             //if (Input.GetMouseButtonDown(2))
             //    shooterController.Aim();
             ControllerChanges();
@@ -798,9 +817,16 @@ namespace StarterAssets
                 isAimWalking = false;
             }
         }
+        bool startSlide;
         [Replicate]
         private void MoveWithData(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
         {
+
+            GroundedCheck();
+
+           
+
+            //Jump Function 
             if (md.Jump && isCrouching)
             {
                 isCrouching = false;
@@ -876,11 +902,57 @@ namespace StarterAssets
             {
                 _verticalVelocity += Gravity * (float)base.TimeManager.TickDelta;
             }
+            
+            if (md.Slide && md.Move.z > 0.6f && !isAiming && !isCrouching)
+            {
+                startSlide = true;
+                value = 1.8f;
+                slideSpeed = 10f;
+            }         
+            if (Grounded && startSlide)
+            {
+                //firedBullet = false;
+                timerIsRunning = true;
+                isSliding = true;
+                
+                _animator.SetBool("Slide", isSliding);
+                slideTimeRemaining = 0.5f;
+            }
+
+            if (value >  0 )
+            {
+                value -= (float)base.TimeManager.TickDelta;
+                slideSpeed -= 3 * (float)base.TimeManager.TickDelta;
+
+                Vector3 slideMovement = transform.forward * slideSpeed;
+                slideMovement += new Vector3(0.0f, _verticalVelocity * 1.5f, 0.0f);
+
+                _controller.Move(slideMovement * (float)base.TimeManager.TickDelta);
+            }
+
+            else
+            {
+                startSlide = false;
+
+                slideTimeRemaining = 0;
+                //isCrouching = false;
+                isSliding = false;
+                _animator.SetBool("Slide", isSliding);
+                ControllerChanges();
+                timerIsRunning = false;
+
+                extraJump = false;
+                value = 0f;
+                slideSpeed = 0;
+
+            }
+            //Movement Function
+
             //if (playerHealth.PlayerDeathState())
             //    return;
             //_controller.detectCollisions = false;
 
-            GroundedCheck();
+
 
             float neutralize = 1f;
            
@@ -1114,89 +1186,24 @@ namespace StarterAssets
         {
             if (playerHealth.PlayerDeathState())
                 return;
-            if (z > 0.6f && !isAiming && !isCrouching)
-                StartSlide();
+
+            if(ultimateJoystick.GetVerticalAxis() < 0.6f)
+            {
+                CrouchInput();
+            }
+            //if (ultimateJoystick.GetVerticalAxis() > 0.6f && !isAiming && !isCrouching)
+            //    StartSlide();
 
             //ForPcControls
             //if (_input.move.y > 0.6f && !isAiming && !isCrouching)
             //    StartSlide();
             
-            else
-                CrouchInput();
+          
+                
             
         }
        
-        public void Slide()
-        {
-            
-            
-            if (!timerIsRunning)
-            {
-            
-                if (Grounded)
-                {
-                    timerIsRunning = false;
-                }
-            }
-     
-            // This is a slidekick timer
-            if (timerIsRunning)
-            {
-                //extraJump = true;
-                //value = slideTimeRemaining;
-                if (value > 0)
-                {
-                   
-                    
-                    value -= 1 * Time.deltaTime;
-                    slideSpeed -= 3 * Time.deltaTime;
-                    
-                    _controller.Move(transform.forward * slideSpeed * Time.deltaTime +
-                                 new Vector3(0.0f, _verticalVelocity * 1.5f, 0.0f) * Time.deltaTime);
-                   
-
-                }
-
-                else
-                {
-                    value = 0;
-                    slideTimeRemaining = 0;
-                    //isCrouching = false;
-                    isSliding = false;
-                    _animator.SetBool("Slide", isSliding);
-                    ControllerChanges();
-                    timerIsRunning = false;
-                    
-                    extraJump = false;
-                    value = 1.8f;
-                    slideSpeed = 10;
-                }
-            }
-            
-        }
-        public void StartSlide()
-        {
-           
-            StartCoroutine(slide());
-        }
-        IEnumerator slide()
-        {
-            if(Grounded)
-            {
-                //firedBullet = false;
-                timerIsRunning = true;
-                isSliding = true;
-
-
-                _animator.SetBool("Slide", isSliding);
-                slideTimeRemaining = 0.5f;
-            }
-            
-            // _controller.height = reducedHeight;
-            yield return new WaitForSeconds(0.5f);
-            // _controller.height = originalHeight;
-        }
-           
+       
         public void JumpAndGravity(MoveData md, float delta)
         {
             if (md.Jump && isCrouching)
