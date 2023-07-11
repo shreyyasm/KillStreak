@@ -47,6 +47,7 @@ namespace EOSLobbyTest
             LobbyName = inputFieldLobbyName.text;
 
             UIPanelManager.Instance.HidePanel<UIPanelHostDetails>(true);
+            UIPanelManager.Instance.HidePanel<UIGameModePanel>(true);
         }
 
         public void Cancel()

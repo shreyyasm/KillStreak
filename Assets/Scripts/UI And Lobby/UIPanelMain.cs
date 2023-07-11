@@ -104,7 +104,7 @@ namespace EOSLobbyTest
             UpdateControlState();
         }
 
-        private IEnumerator DoHostGame()
+        private IEnumerator DoDeathmatchHostGame()
         {
             // is player name blank ?
             if (String.IsNullOrEmpty(Settings.Instance.CurrentPlayerName))
@@ -129,6 +129,31 @@ namespace EOSLobbyTest
                 }
             }
         }
+        private IEnumerator DoTeamDeathmatchHostGame()
+        {
+            // is player name blank ?
+            if (String.IsNullOrEmpty(Settings.Instance.CurrentPlayerName))
+            {
+                // show panel that gets player name
+                yield return UIPanelManager.Instance.ShowPanelAndWaitTillHidden<UIPanelPlayerName>();
+
+                // update player name on this panel
+                UpdateControlState();
+            }
+
+            // only allow host if we have player name
+            if (!String.IsNullOrEmpty(Settings.Instance.CurrentPlayerName))
+            {
+                yield return UIPanelManager.Instance.ShowPanelAndWaitTillHidden<UIPanelHostDetails>();
+
+                // did we create a valid room name ?
+                if (UIPanelHostDetails.Instance.UIResult)
+                {
+                    UIPanel4V4Lobby.Instance.IsHost = true;
+                    UIPanelManager.Instance.ShowPanel<UIPanel4V4Lobby>();
+                }
+            }
+        }
 
         private IEnumerator DoJoinGame()
         {
@@ -150,9 +175,13 @@ namespace EOSLobbyTest
             }
         }
 
-        public void HostGame()
+        public void DeathmatchHostGame()
         {
-            StartCoroutine(DoHostGame());
+            StartCoroutine(DoDeathmatchHostGame());
+        }
+        public void TeamDeathmatchHostGame()
+        {
+            StartCoroutine(DoTeamDeathmatchHostGame());
         }
 
         public void JoinGame()

@@ -9,6 +9,7 @@ namespace EOSLobbyTest
     public class UIPanelManager : MonoBehaviourSingletonForScene<UIPanelManager>
     {
         private List<IUIPanel> _panels;
+        [SerializeField] GameObject gameModePanel;
 
         [Tooltip("Panel we are going to show first")]
         public string initialPanel;
@@ -97,6 +98,11 @@ namespace EOSLobbyTest
             {
                 panel.DoShow();
             }
+        }
+        public void ShowGameModePanel()
+        {
+            //gameModePanel.SetActive(true);
+            UIPanelManager.Instance.ShowPanel<UIGameModePanel>();
         }
     }
 }
