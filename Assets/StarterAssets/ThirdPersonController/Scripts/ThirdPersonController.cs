@@ -1206,7 +1206,7 @@ namespace StarterAssets
         
         }
        
-       
+     
         public void JumpAndGravity(MoveData md, float delta)
         {
             if (md.Jump && isCrouching)

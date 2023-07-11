@@ -163,7 +163,7 @@ namespace PlayEveryWare.EpicOnlineServices.Samples
             }
 
             Id = outLobbyDetailsInfo?.LobbyId;
-            MaxNumLobbyMembers = (uint)(outLobbyDetailsInfo?.MaxMembers);
+            MaxNumLobbyMembers = 8;
             LobbyPermissionLevel = (LobbyPermissionLevel)(outLobbyDetailsInfo?.PermissionLevel);
             AllowInvites = (bool)(outLobbyDetailsInfo?.AllowInvites);
             AvailableSlots = (uint)(outLobbyDetailsInfo?.AvailableSlots);
