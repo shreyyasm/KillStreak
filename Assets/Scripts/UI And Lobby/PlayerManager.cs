@@ -9,7 +9,8 @@ namespace EOSLobbyTest
 {
     public class PlayerManager : MonoBehaviourSingletonPersistent<PlayerManager>
     {
-        private List<PlayerInfo> _players = new List<PlayerInfo>();
+       
+        public List<PlayerInfo> _players = new List<PlayerInfo>();
 
         // EOS lobby id we are currently in
         public string ActiveLobbyId { get; set; } = "testing";
@@ -36,8 +37,9 @@ namespace EOSLobbyTest
         public void AddPlayer(PlayerInfo info)
         {
             _players.Add(info);
-
+            
             PlayersChanged?.Invoke();
+          
         }
 
         public void RemovePlayer(string userId)

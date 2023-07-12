@@ -57,7 +57,6 @@ public class PlayerGunSelector : NetworkBehaviour
     public GunScriptableObject gun1;
     public GunScriptableObject gun2;
    
-    
 
     public static ObjectPooler SharedInstance;
     private GameObject bulletTrailPool;
@@ -93,14 +92,30 @@ public class PlayerGunSelector : NetworkBehaviour
     Animator anim;
 
     public GameObject ActiveGunPrefab;
+
+    public bool redTeamPlayer;
+    public bool blueTeamPlayer;
     private void Awake()
     {
         instance = this;
         ActiveCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         anim = GetComponent<Animator>();
-       
+
     }
-    
+    public override void OnStartNetwork()
+    {
+        base.OnStartNetwork();
+
+        PrewarmPools();
+
+        if (redTeamPlayer)
+            gameObject.AddComponent<RedTeamPlayer>();
+
+        if (blueTeamPlayer)
+            gameObject.AddComponent<BlueTeamPlayer>();
+
+    }
+
     [SerializeField] bool aimAssist;
     [SerializeField] float aimAssistSize = 1f;
     public TwoBoneIKConstraint SniperRig;
@@ -1149,14 +1164,7 @@ public class PlayerGunSelector : NetworkBehaviour
     public GameObject spawnObject;
     public uint SpawnInterval;
 
-    public List<NetworkObject> spawned = new List<NetworkObject>();
-
-    public override void OnStartNetwork()
-    {
-        base.OnStartNetwork();
-        // Prewarm pool
-        PrewarmPools();
-    }
+    public List<NetworkObject> spawned = new List<NetworkObject>();  
 
     void PrewarmPools()
     {

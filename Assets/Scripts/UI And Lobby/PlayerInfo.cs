@@ -22,6 +22,9 @@ namespace EOSLobbyTest
         [HideInInspector]
         public string UserId;
 
+        public bool RedPlayer;
+        public bool BluePlayer;
+
         private void OnPlayerName(string prev, string next, bool asServer)
         {
             PlayerManager.Instance.PlayerUpdated(UserId);
@@ -33,6 +36,15 @@ namespace EOSLobbyTest
 
             var fishy = InstanceFinder.NetworkManager.GetComponent<FishyEOS>();
             UserId = fishy.GetRemoteConnectionAddress(Owner.ClientId);
+        }
+        public override void OnStartNetwork()
+        {
+            base.OnStartNetwork();
+           
+            if (base.Owner.IsLocalClient)
+            {
+                gameObject.tag = "Player";
+            }
         }
 
         public override void OnStartClient()
@@ -115,7 +127,7 @@ namespace EOSLobbyTest
         {
             base.OnStopNetwork();
 
-            PlayerManager.Instance?.RemovePlayer(UserId);
+            //PlayerManager.Instance?.RemovePlayer(UserId);
         }
 
         [ServerRpc]

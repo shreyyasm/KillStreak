@@ -66,12 +66,21 @@ namespace EOSLobbyTest
 
         private void SceneManager_OnClientPresenceChangeEnd(FishNet.Managing.Scened.ClientPresenceChangeEventArgs obj)
         {
+          
             if (spawnPoints != null && spawnPoints.Length > 0)
             {
                 var spawnPoint = spawnPoints[_nextSpawnPointIndex % spawnPoints.Length];
 
                 InstanceFinder.SceneManager.AddConnectionToScene(obj.Connection, SceneManager.GetActiveScene());
                 var playerVehicle = Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
+                foreach (PlayerInfo i in PlayerManager.Instance._players)
+                {
+                    if(i.RedPlayer)
+                        playerVehicle.AddComponent<RedTeamPlayer>();
+                    if(i.BluePlayer)
+                        playerVehicle.AddComponent<BlueTeamPlayer>();
+                }
+               
                 InstanceFinder.ServerManager.Spawn(playerVehicle, obj.Connection);
 
                 _nextSpawnPointIndex++;

@@ -169,7 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: -9054881557358282398}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: -9054881557358282398}
   MoveSpeed: 4
   SprintSpeed: 6
   RotationSmoothTime: 0.12
@@ -193,11 +193,60 @@ MonoBehaviour:
   CameraAngleOverride: 0
   LockCameraPosition: 0
   fPSController: {fileID: 0}
+  screenTouch: {fileID: 0}
+  MainRig: {fileID: 0}
+  pistolRig: {fileID: 0}
+  rifleRig: {fileID: 0}
+  _verticalVelocity: 0
+  _jumpTimeoutDelta: 0
+  _fallTimeoutDelta: 0
+  _animator: {fileID: 0}
+  _controller: {fileID: 0}
+  _input: {fileID: 0}
   playerInput: {fileID: 0}
   myActionAsset: {fileID: 0}
+  playerGunSelector: {fileID: 0}
+  playerHealth: {fileID: 0}
   cameraRoot: {fileID: 0}
+  ultimateJoystick: {fileID: 0}
+  firedBullet: 0
+  firing: 0
+  isCrouching: 0
+  isSliding: 0
+  running: 0
+  isPressedJump: 0
+  isJump: 0
+  gunType: 0
+  <changingGun>k__BackingField: 0
+  <isReloading>k__BackingField: 0
   sensitivity: 100
-  move: {x: 0, y: 0}
+  shooterController: {fileID: 0}
+  weaponSwitching: {fileID: 0}
+  smoothSpeed: 80
+  crouchHeight: 0.5
+  Root: []
+  UICanvas: {fileID: 0}
+  audioListener: {fileID: 0}
+  value: 0
+  slideSpeed: 7
+  zValue: 0
+  speed: 8
+  gravity: -9.81
+  groundCheck: {fileID: 0}
+  groundDistance: 0.4
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  slideTimeRemaining: 10
+  timerIsRunning: 0
+  extraJump: 0
+  lookAtPlayer: 1
+  look: {x: 0, y: 0}
+  x: 0
+  z: 0
+  IdentifyEnemy:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &7292828519420468114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,9 +383,12 @@ MonoBehaviour:
   aim: 0
   shoot: 0
   switched: 0
+  weaponChange: 0
+  reload: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
+  thirdPersonController: {fileID: 0}
 --- !u!114 &-9054881557358282398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,20 +403,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
-  _networkBehaviours: []
+  <PredictedSpawn>k__BackingField: {fileID: 0}
+  _networkBehaviours:
+  - {fileID: 1925873226565265913}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
   _isGlobal: 0
   _initializeOrder: 0
-  _predictedSpawningType: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: -1
+  <PrefabId>k__BackingField: 4
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 7444559244401656801
+  <AssetPathHash>k__BackingField: 7246476628741833672
   _sceneNetworkObjects: []
 --- !u!1 &6074239116653777065
 GameObject:

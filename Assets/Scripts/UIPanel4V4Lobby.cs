@@ -19,9 +19,10 @@ namespace EOSLobbyTest
         [SerializeField]
         private Text textLobbyName;
 
-        [Tooltip("Controller for list of players in lobby")]
-        [SerializeField]
-        private UIScrollViewPlayers players;
+        [Tooltip("Controller for list of players in lobby")]       
+        [SerializeField] UIScrollViewPlayers players;
+        [SerializeField] UIScrollViewPlayers RedPlayers;
+        [SerializeField] UIScrollViewPlayers BluePlayers;
 
         [Tooltip("Button to back out ")]
         [SerializeField]
@@ -40,6 +41,11 @@ namespace EOSLobbyTest
         private void Update()
         {
             textLobbyName.text = UIPanelHostDetails.Instance.inputFieldLobbyName.text;
+
+            if (RedTeam.transform.childCount < 4)
+                players = RedPlayers;
+            else
+                players = BluePlayers;
         }
         // EOS lobby info about room
         public string LobbyId { get; set; }
@@ -54,7 +60,7 @@ namespace EOSLobbyTest
         {
             LeaveLobby();
         }
-
+        
         public void StartGame()
         {
             InstanceFinder.SceneManager.LoadGlobalScenes(new SceneLoadData("Game") { ReplaceScenes = ReplaceOption.All });
@@ -98,7 +104,9 @@ namespace EOSLobbyTest
                 InstanceFinder.ClientManager.StartConnection();
 
                 Debug.Log($"UIPanelLobby: Started client connection.");
+                
             });
+           
         }
 
         private void CreateLobby()
@@ -151,7 +159,7 @@ namespace EOSLobbyTest
                     lobbyModification.AddAttribute(ref attributeLobbyName);
 
                     var updateLobbyOptions = new UpdateLobbyOptions { LobbyModificationHandle = lobbyModification };
-
+                    
                     EOS.GetCachedLobbyInterface().UpdateLobby(ref updateLobbyOptions, null, delegate (ref UpdateLobbyCallbackInfo updateData)
                     {
                         if (updateData.ResultCode != Result.Success)
@@ -176,28 +184,30 @@ namespace EOSLobbyTest
                             // if we are host create the FishNet server & local client
                             InstanceFinder.ServerManager.StartConnection();
                             InstanceFinder.ClientManager.StartConnection();
-
+                            
                             Debug.Log($"UIPanelLobby: Started local server and client.");
+                           
                         }
                     });
                 });
+            
         }
-
+        
         protected override void OnShowing()
         {
             // add event callbacks
-            PlayerManager.Instance.PlayersChanged += PlayerManager_PlayersChanged;
+            PlayerManager.Instance.PlayersChanged += PlayerManager_PlayersChanged;     
             InstanceFinder.NetworkManager.ClientManager.OnClientConnectionState += ClientManager_OnClientConnectionState;
             VivoxManager.Instance.OnUserLoggedInEvent += VivoxManager_OnUserLoggedInEvent;
             VivoxManager.Instance.OnUserLoggedOutEvent += VivoxManager_OnUserLoggedOutEvent;
 
             // connect to vivox
             VivoxManager.Instance.Login(Settings.Instance.CurrentPlayerName);
-
+            
             // setup default state of ui
             players.ClearPlayers();
             UpdateControlState();
-
+            
             if (IsHost)
             {
                 // we are the host - so create the EOS lobby - and create the server once lobby is up
@@ -208,6 +218,7 @@ namespace EOSLobbyTest
                 // we are the client - connect to given parameters
                 JoinLobby();
             }
+            
         }
 
         protected override void OnHidden()
@@ -226,22 +237,23 @@ namespace EOSLobbyTest
             // only show start game button for host
             SetShowStartGame(_isFishnetConnected && _isVivoxConnected && InstanceFinder.NetworkManager.IsServer);
         }
-
+        
         private void PopulatePlayerList()
         {
             players.ClearPlayers();
-
+            
             // extra check due to this triggering during app shutdown - EOS could be gone
             if (EOS.GetCachedConnectInterface() != null)
             {
                 var playerInfos = PlayerManager.Instance.GetPlayers();
-
+                
                 foreach (var info in playerInfos)
                 {
-                    var playerItem = players.AddPlayer(info.UserId, info.PlayerName, info.UserId != EOS.LocalProductUserId.ToString() && InstanceFinder.NetworkManager.IsServer);
+                    var playerItem = players.AddPlayer(info.UserId, info.PlayerName, info.UserId != EOS.LocalProductUserId.ToString() && InstanceFinder.NetworkManager.IsServer);                    
                     playerItem.KickRequest += PlayerItem_KickRequest;
                 }
             }
+           
         }
 
         private void PlayerItem_KickRequest(string playerId)
@@ -278,6 +290,7 @@ namespace EOSLobbyTest
         private void PlayerManager_PlayersChanged()
         {
             PopulatePlayerList();
+            CheckTeam();
         }
 
         private void ClientManager_OnClientConnectionState(FishNet.Transporting.ClientConnectionStateArgs obj)
@@ -370,5 +383,53 @@ namespace EOSLobbyTest
                     UpdateControlState();
                 });
         }
+        [SerializeField] Transform RedTeam;
+        [SerializeField] Transform BlueTeam;
+
+        public void ChangeTeamRedPosition()
+        {
+            PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
+
+            if (RedTeam.transform.childCount < 4)
+            {
+                players.SpawnedPlayer.transform.SetParent(RedTeam);
+
+                playerInfo.RedPlayer = true;
+                playerInfo.BluePlayer = false;
+            }              
+        }
+        public void ChangeTeamBluePosition()
+        {
+            PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
+
+            if (BlueTeam.transform.childCount < 4)
+            {
+                players.SpawnedPlayer.transform.SetParent(BlueTeam);
+
+                playerInfo.RedPlayer = false;
+                playerInfo.BluePlayer = true;
+            }               
+        }
+        public void CheckTeam()
+        {
+            PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
+
+            if (RedTeam.transform.childCount < 4)
+            {
+                playerInfo.RedPlayer = true;
+                playerInfo.BluePlayer = false;
+            }
+                
+
+            else
+            {
+                playerInfo.RedPlayer = false;
+                playerInfo.BluePlayer = true;
+
+            }
+                
+
+        }
+
     }
 }
