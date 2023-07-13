@@ -7,7 +7,6 @@ using FishNet.Transporting.FishyEOSPlugin;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-
 namespace EOSLobbyTest
 {
     public class UIPanel4V4Lobby : UIPanel<UIPanel4V4Lobby>, IUIPanel
@@ -23,6 +22,9 @@ namespace EOSLobbyTest
         [SerializeField] UIScrollViewPlayers players;
         [SerializeField] UIScrollViewPlayers RedPlayers;
         [SerializeField] UIScrollViewPlayers BluePlayers;
+
+        [SerializeField] Transform RedTeam;
+        [SerializeField] Transform BlueTeam;
 
         [Tooltip("Button to back out ")]
         [SerializeField]
@@ -46,6 +48,8 @@ namespace EOSLobbyTest
                 players = RedPlayers;
             else
                 players = BluePlayers;
+            ShowRedTeamPlayerText();
+
         }
         // EOS lobby info about room
         public string LobbyId { get; set; }
@@ -383,8 +387,7 @@ namespace EOSLobbyTest
                     UpdateControlState();
                 });
         }
-        [SerializeField] Transform RedTeam;
-        [SerializeField] Transform BlueTeam;
+       
 
         public void ChangeTeamRedPosition()
         {
@@ -396,7 +399,7 @@ namespace EOSLobbyTest
 
                 playerInfo.RedPlayer = true;
                 playerInfo.BluePlayer = false;
-            }              
+            }
         }
         public void ChangeTeamBluePosition()
         {
@@ -408,7 +411,7 @@ namespace EOSLobbyTest
 
                 playerInfo.RedPlayer = false;
                 playerInfo.BluePlayer = true;
-            }               
+            }        
         }
         public void CheckTeam()
         {
@@ -419,17 +422,18 @@ namespace EOSLobbyTest
                 playerInfo.RedPlayer = true;
                 playerInfo.BluePlayer = false;
             }
-                
-
             else
             {
                 playerInfo.RedPlayer = false;
                 playerInfo.BluePlayer = true;
-
-            }
-                
-
+            }                
         }
-
+        public Text RedTeamPlayerNumber;
+        public Text BlueTeamPlayerNumber;
+        public void ShowRedTeamPlayerText()
+        {
+            RedTeamPlayerNumber.text = RedTeam.transform.childCount + "/4";
+            BlueTeamPlayerNumber.text = BlueTeam.transform.childCount + "/4";
+        }
     }
 }
