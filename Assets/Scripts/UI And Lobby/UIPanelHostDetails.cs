@@ -48,6 +48,7 @@ namespace EOSLobbyTest
 
             UIPanelManager.Instance.HidePanel<UIPanelHostDetails>(true);
             UIPanelManager.Instance.HidePanel<UIGameModePanel>(true);
+            UIPanelManager.Instance.HidePanel<UIGameModeJoinPanel>(true);
         }
 
         public void Cancel()

@@ -34,6 +34,7 @@ namespace EOSLobbyTest
         [SerializeField]
         private Button buttonStartGame;
 
+        
         // user given name of room
         public string LobbyName
         {
@@ -43,13 +44,17 @@ namespace EOSLobbyTest
         private void Update()
         {
             textLobbyName.text = UIPanelHostDetails.Instance.inputFieldLobbyName.text;
+            Debug.Log(RedTeam.transform.childCount);
+           
+            ShowRedTeamPlayerText();
 
-            if (RedTeam.transform.childCount < 4)
+        }
+        public void CheckIfTeamsFull()
+        {
+            if (RedTeam.transform.childCount < 1)
                 players = RedPlayers;
             else
                 players = BluePlayers;
-            ShowRedTeamPlayerText();
-
         }
         // EOS lobby info about room
         public string LobbyId { get; set; }
@@ -256,6 +261,7 @@ namespace EOSLobbyTest
                     var playerItem = players.AddPlayer(info.UserId, info.PlayerName, info.UserId != EOS.LocalProductUserId.ToString() && InstanceFinder.NetworkManager.IsServer);                    
                     playerItem.KickRequest += PlayerItem_KickRequest;
                 }
+              
             }
            
         }
@@ -392,10 +398,11 @@ namespace EOSLobbyTest
         public void ChangeTeamRedPosition()
         {
             PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
-
-            if (RedTeam.transform.childCount < 4)
+            GameObject uiPlayerItem = GameObject.FindGameObjectWithTag("PlayerPrefab");
+            
+            if (RedTeam.transform.childCount < 2)
             {
-                players.SpawnedPlayer.transform.SetParent(RedTeam);
+                uiPlayerItem.transform.SetParent(RedTeam);
 
                 playerInfo.RedPlayer = true;
                 playerInfo.BluePlayer = false;
@@ -404,10 +411,11 @@ namespace EOSLobbyTest
         public void ChangeTeamBluePosition()
         {
             PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
+            GameObject uiPlayerItem = GameObject.FindGameObjectWithTag("PlayerPrefab");
 
-            if (BlueTeam.transform.childCount < 4)
+            if (BlueTeam.transform.childCount < 2)
             {
-                players.SpawnedPlayer.transform.SetParent(BlueTeam);
+                uiPlayerItem.transform.SetParent(BlueTeam);
 
                 playerInfo.RedPlayer = false;
                 playerInfo.BluePlayer = true;
@@ -417,7 +425,7 @@ namespace EOSLobbyTest
         {
             PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
 
-            if (RedTeam.transform.childCount < 4)
+            if (RedTeam.transform.childCount < 2)
             {
                 playerInfo.RedPlayer = true;
                 playerInfo.BluePlayer = false;
@@ -432,8 +440,8 @@ namespace EOSLobbyTest
         public Text BlueTeamPlayerNumber;
         public void ShowRedTeamPlayerText()
         {
-            RedTeamPlayerNumber.text = RedTeam.transform.childCount + "/4";
-            BlueTeamPlayerNumber.text = BlueTeam.transform.childCount + "/4";
+            RedTeamPlayerNumber.text = RedTeam.transform.childCount + "/1";
+            BlueTeamPlayerNumber.text = BlueTeam.transform.childCount + "/1";
         }
     }
 }

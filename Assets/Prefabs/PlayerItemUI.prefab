@@ -50,6 +50,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0165d41530efb3b43b73385b44612fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 0}
+  _networkObjectCache: {fileID: 0}
   textPlayerName: {fileID: 6667277109483571957}
   buttonKick: {fileID: 6201718578658927951}
 --- !u!1 &6201718577798808268

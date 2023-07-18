@@ -9,7 +9,7 @@ namespace EOSLobbyTest
     public class UIPanelPlayerName : UIPanel<UIPanelPlayerName>, IUIPanel
     {
         [SerializeField]
-        private InputField inputFieldPlayerName;
+        public InputField inputFieldPlayerName;
 
         [SerializeField]
         private Button buttonSave;

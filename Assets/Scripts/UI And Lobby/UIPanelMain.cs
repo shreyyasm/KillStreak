@@ -172,6 +172,7 @@ namespace EOSLobbyTest
             {
                 // show panel showing list of lobbies
                 UIPanelManager.Instance.ShowPanel<UIPanelLobbies>();
+                UIPanelManager.Instance.HidePanel<UIGameModeJoinPanel>(true);
             }
         }
 
@@ -183,10 +184,13 @@ namespace EOSLobbyTest
         {
             StartCoroutine(DoTeamDeathmatchHostGame());
         }
-
-        public void JoinGame()
+        [SerializeField] UIPanelLobbies uIPanelLobbies;
+        public void JoinGame(bool deathMatch)
         {
             StartCoroutine(DoJoinGame());
+            uIPanelLobbies.deathMatch = deathMatch;
+
+
         }
 
         public void ShowSettings()

@@ -22,7 +22,15 @@ namespace EOSLobbyTest
             get => textPlayerName.text;
             set => textPlayerName.text = value;
         }
-
+        private void Start()
+        {
+  
+            if (textPlayerName.text == Settings.Instance.CurrentPlayerName)
+            {
+                
+                gameObject.tag = "PlayerPrefab";
+            }
+        }
         public event Action<string> KickRequest;
 
         // Disable/Enable kick button

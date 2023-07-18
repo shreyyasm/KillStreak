@@ -42,7 +42,8 @@ namespace EOSLobbyTest
         {
             panelBusy.SetActive(status);
         }
-
+        public bool deathMatch;
+       
         private void DoSearch()
         {
             lobbies.ClearLobbies();
@@ -129,7 +130,12 @@ namespace EOSLobbyTest
                             if (outLobbyDetailsInfo.Value.LobbyOwnerUserId != null && outLobbyDetailsInfo.Value.AvailableSlots != outLobbyDetailsInfo.Value.MaxMembers)
                             {
                                 var lobbyItem = lobbies.AddLobby(outLobbyDetails, outLobbyDetailsInfo.Value, lobbyName);
-                                lobbyItem.JoinRequest += LobbyItem_JoinRequest;
+
+                                if(deathMatch)
+                                    lobbyItem.JoinRequest += LobbyItem_JoinRequest;
+
+                                else
+                                    lobbyItem.JoinRequest += LobbyItem4V4_JoinRequest;
                             }
                         }
                     }
@@ -150,6 +156,18 @@ namespace EOSLobbyTest
             UIPanelLobby.Instance.LobbyName = lobbyName;
             UIPanelLobby.Instance.IsHost = false;
             UIPanelManager.Instance.ShowPanel<UIPanelLobby>();
+        }
+        private void LobbyItem4V4_JoinRequest(string lobbyName, LobbyDetails lobbyDetails, LobbyDetailsInfo lobbyDetailsInfo)
+        {
+            // hide lobbies
+            UIPanelManager.Instance.HidePanel<UIPanelLobbies>(true);
+
+            // show lobby screen while we connect
+            UIPanel4V4Lobby.Instance.LobbyId = lobbyDetailsInfo.LobbyId;
+            UIPanel4V4Lobby.Instance.OwnerId = lobbyDetailsInfo.LobbyOwnerUserId.ToString();
+            UIPanel4V4Lobby.Instance.LobbyName = lobbyName;
+            UIPanel4V4Lobby.Instance.IsHost = false;
+            UIPanelManager.Instance.ShowPanel<UIPanel4V4Lobby>();
         }
 
         protected override void OnShowing()
