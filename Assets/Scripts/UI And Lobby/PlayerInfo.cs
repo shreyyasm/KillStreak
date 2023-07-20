@@ -24,7 +24,7 @@ namespace EOSLobbyTest
 
         public bool RedPlayer;
         public bool BluePlayer;
-
+        [SerializeField] GameObject CanvasNetworkManager;
         private void OnPlayerName(string prev, string next, bool asServer)
         {
             PlayerManager.Instance.PlayerUpdated(UserId);
@@ -44,6 +44,10 @@ namespace EOSLobbyTest
             if (base.Owner.IsLocalClient)
             {
                 gameObject.tag = "Player";
+                GameObject manager = Instantiate(CanvasNetworkManager);
+                InstanceFinder.ServerManager.Spawn(manager,base.Owner);
+                //gameObject.AddComponent<CanvasNetworkManager>();
+
             }
         }
 

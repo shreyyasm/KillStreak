@@ -29,6 +29,7 @@ TagManager:
   - HealthAmmoAddOn
   - PlayerPrefab
   - PlayerName
+  - CanvasNetworkManager
   layers:
   - Default
   - TransparentFX

@@ -1,3 +1,4 @@
+using FishNet;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,7 +37,8 @@ namespace EOSLobbyTest
 
         public UIPlayerItem AddPlayer(string playerId, string playerName, bool canKick)
         {
-            var playerGameObject = GameObject.Instantiate(playerItemPrefab, container);           
+            var playerGameObject = GameObject.Instantiate(playerItemPrefab, container);
+            //InstanceFinder.ServerManager.Spawn(playerGameObject);
             SpawnedPlayer = playerGameObject;
             var playerItem = playerGameObject.GetComponent<UIPlayerItem>();
             playerItem.PlayerId = playerId;

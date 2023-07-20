@@ -10,6 +10,7 @@ namespace EOSLobbyTest
     public class PlayerManager : MonoBehaviourSingletonPersistent<PlayerManager>
     {
         public UIPanel4V4Lobby uIPanel4V4Lobby;
+        [SerializeField] CanvasNetworkManager canvasNetworkManager;
         public List<PlayerInfo> _players = new List<PlayerInfo>();
 
         // EOS lobby id we are currently in
@@ -39,17 +40,19 @@ namespace EOSLobbyTest
             _players.Add(info);
             
             PlayersChanged?.Invoke();
-            StartCoroutine(DelayCheck());
+            //StartCoroutine(DelayCheck());
         }
+        
         IEnumerator DelayCheck()
         {
             yield return new WaitForSeconds(.2f);
-            uIPanel4V4Lobby.CheckIfTeamsFull();
+            canvasNetworkManager.CheckIfTeamsFull();
         }
         public void RemovePlayer(string userId)
         {
             _players.RemoveAll(x => x.UserId == userId);
             PlayersChanged?.Invoke();
         }
+        
     }
 }

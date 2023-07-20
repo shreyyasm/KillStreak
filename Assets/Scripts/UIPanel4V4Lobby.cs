@@ -19,12 +19,12 @@ namespace EOSLobbyTest
         private Text textLobbyName;
 
         [Tooltip("Controller for list of players in lobby")]       
-        [SerializeField] UIScrollViewPlayers players;
-        [SerializeField] UIScrollViewPlayers RedPlayers;
-        [SerializeField] UIScrollViewPlayers BluePlayers;
+        [SerializeField] public UIScrollViewPlayers players;
+        [SerializeField] public UIScrollViewPlayers RedPlayers;
+        [SerializeField] public UIScrollViewPlayers BluePlayers;
 
-        [SerializeField] Transform RedTeam;
-        [SerializeField] Transform BlueTeam;
+        [SerializeField] public Transform RedTeam;
+        [SerializeField] public Transform BlueTeam;
 
         [Tooltip("Button to back out ")]
         [SerializeField]
@@ -442,6 +442,18 @@ namespace EOSLobbyTest
         {
             RedTeamPlayerNumber.text = RedTeam.transform.childCount + "/1";
             BlueTeamPlayerNumber.text = BlueTeam.transform.childCount + "/1";
+        }
+        public void MoveToRedTeam()
+        {
+            GameObject playerInfo = GameObject.FindGameObjectWithTag("CanvasNetworkManager");
+            playerInfo.GetComponent<CanvasNetworkManager>().ChangeTeamRedPosition();
+            
+        }
+        public void MoveToBlueTeam()
+        {
+            GameObject playerInfo = GameObject.FindGameObjectWithTag("CanvasNetworkManager");
+            playerInfo.GetComponent<CanvasNetworkManager>().ChangeTeamBluePosition();
+
         }
     }
 }

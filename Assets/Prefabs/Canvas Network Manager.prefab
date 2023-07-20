@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1259444252237689463
+--- !u!1 &1824896092923945930
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,54 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1815187225801107646}
-  - component: {fileID: 6955195814637214867}
-  - component: {fileID: 6713207236621221674}
+  - component: {fileID: 8237602459941149190}
+  - component: {fileID: 7698678907600251278}
+  - component: {fileID: 3124736360940898669}
   m_Layer: 0
-  m_Name: Lobby Player
-  m_TagString: Untagged
+  m_Name: Canvas Network Manager
+  m_TagString: CanvasNetworkManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1815187225801107646
+--- !u!4 &8237602459941149190
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1259444252237689463}
+  m_GameObject: {fileID: 1824896092923945930}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 672.56036, y: 622.4622, z: -8.505394}
+  m_LocalPosition: {x: 1114.7981, y: 607.31177, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6955195814637214867
+--- !u!114 &7698678907600251278
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1259444252237689463}
+  m_GameObject: {fileID: 1824896092923945930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0e2c9513b9eb3479a72b157dd28420, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 3124736360940898669}
+  _networkObjectCache: {fileID: 3124736360940898669}
+  uIPanel4V4Lobby: {fileID: 0}
+--- !u!114 &3124736360940898669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824896092923945930}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
@@ -49,7 +65,7 @@ MonoBehaviour:
   <ComponentIndex>k__BackingField: 0
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
-  - {fileID: 6713207236621221674}
+  - {fileID: 7698678907600251278}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -61,27 +77,6 @@ MonoBehaviour:
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 12472629412246443565
+  <AssetPathHash>k__BackingField: 17710914733897364649
   _sceneNetworkObjects:
-  - {fileID: 6955195814637214867}
---- !u!114 &6713207236621221674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1259444252237689463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21f6d4d185d3d3742930015faa671ce9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 6955195814637214867}
-  _networkObjectCache: {fileID: 6955195814637214867}
-  PlayerName: 
-  UserId: 
-  RedPlayer: 0
-  BluePlayer: 0
-  CanvasNetworkManager: {fileID: 1824896092923945930, guid: e4dd5a60113f1be48a363092889259af,
-    type: 3}
+  - {fileID: 3124736360940898669}
