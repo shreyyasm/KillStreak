@@ -14,22 +14,24 @@ namespace EOSLobbyTest
         [Tooltip("Container for the player items")]
         [SerializeField]
         public Transform container;
+
+
         public GameObject SpawnedPlayer;
 
         [SerializeField] UIScrollViewPlayers RedLobby;
         [SerializeField] UIScrollViewPlayers BlueLobby;
+        public UIPanel4V4Lobby uIPanel4V4Lobby;
 
-    
-           
         private void Update()
         {
             ChangePlayerPrefab();
+            
         }
         public UIPlayerItem[] GetPlayers()
         {
             return container.GetComponentsInChildren<UIPlayerItem>();
         }
-
+     
         public void ClearPlayers()
         {
             for (var i = container.childCount - 1; i >= 0; i--)

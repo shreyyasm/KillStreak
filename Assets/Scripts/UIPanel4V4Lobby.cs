@@ -50,13 +50,7 @@ namespace EOSLobbyTest
             ShowRedTeamPlayerText();
 
         }
-        public void CheckIfTeamsFull()
-        {
-            if (RedTeam.transform.childCount < 1)
-                players = RedPlayers;
-            else
-                players = BluePlayers;
-        }
+        
         // EOS lobby info about room
         public string LobbyId { get; set; }
 

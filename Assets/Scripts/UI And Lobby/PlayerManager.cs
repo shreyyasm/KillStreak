@@ -13,6 +13,8 @@ namespace EOSLobbyTest
         [SerializeField] CanvasNetworkManager canvasNetworkManager;
         public List<PlayerInfo> _players = new List<PlayerInfo>();
 
+        
+
         // EOS lobby id we are currently in
         public string ActiveLobbyId { get; set; } = "testing";
 
@@ -47,9 +49,11 @@ namespace EOSLobbyTest
        
         IEnumerator DelayCheck()
         {
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(0.5f);
             myPlayer = GameObject.FindGameObjectWithTag("Player");
-            myPlayer.GetComponent<CanvasNetworkManager>().CheckIfTeamsFull();
+            if(!myPlayer.GetComponent<CanvasNetworkManager>().spawned)
+                myPlayer.GetComponent<CanvasNetworkManager>().CheckIfTeamsFull();
+            //uIPanel4V4Lobby.RedPlayers.ChangeContainer();
         }
         public void RemovePlayer(string userId)
         {

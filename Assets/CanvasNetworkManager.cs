@@ -10,7 +10,8 @@ namespace EOSLobbyTest
         [SerializeField] UIPanel4V4Lobby uIPanel4V4Lobby;
         public GameObject myPlayer;
         public Transform container;
-       
+
+        public bool spawned;
      
         void Update()
         {
@@ -39,19 +40,22 @@ namespace EOSLobbyTest
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void CheckIfTeamsFullServer()
         {
-           
-            if (uIPanel4V4Lobby.RedTeam.transform.childCount < 1)
-                uIPanel4V4Lobby.players = uIPanel4V4Lobby.RedPlayers;
+
+            if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
+                myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
             else
-                uIPanel4V4Lobby.players = uIPanel4V4Lobby.BluePlayers;
+                myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
+
+            spawned = true;
         }
         [ObserversRpc(BufferLast = true)]
         public void CheckIfTeamsFullObserver()
         {
-            if (uIPanel4V4Lobby.RedTeam.transform.childCount < 1)
-                uIPanel4V4Lobby.players = uIPanel4V4Lobby.RedPlayers;
+            if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
+                myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
             else
-                uIPanel4V4Lobby.players = uIPanel4V4Lobby.BluePlayers;
+                myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
+            spawned = true;
         }
 
         public void ChangeTeamRedPosition()
