@@ -40,13 +40,16 @@ namespace EOSLobbyTest
             _players.Add(info);
             
             PlayersChanged?.Invoke();
-            //StartCoroutine(DelayCheck());
+
+            StartCoroutine(DelayCheck());
         }
-        
+        GameObject myPlayer;
+       
         IEnumerator DelayCheck()
         {
             yield return new WaitForSeconds(.2f);
-            canvasNetworkManager.CheckIfTeamsFull();
+            myPlayer = GameObject.FindGameObjectWithTag("Player");
+            myPlayer.GetComponent<CanvasNetworkManager>().CheckIfTeamsFull();
         }
         public void RemovePlayer(string userId)
         {

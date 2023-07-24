@@ -4,6 +4,7 @@ using FishNet;
 using FishNet.Managing.Scened;
 using FishNet.Plugins.FishyEOS.Util;
 using FishNet.Transporting.FishyEOSPlugin;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,7 +46,7 @@ namespace EOSLobbyTest
         {
             textLobbyName.text = UIPanelHostDetails.Instance.inputFieldLobbyName.text;
             Debug.Log(RedTeam.transform.childCount);
-           
+            playersList.RemoveAll(s => s == null);
             ShowRedTeamPlayerText();
 
         }
@@ -205,7 +206,8 @@ namespace EOSLobbyTest
         protected override void OnShowing()
         {
             // add event callbacks
-            PlayerManager.Instance.PlayersChanged += PlayerManager_PlayersChanged;     
+            PlayerManager.Instance.PlayersChanged += PlayerManager_PlayersChanged;
+            
             InstanceFinder.NetworkManager.ClientManager.OnClientConnectionState += ClientManager_OnClientConnectionState;
             VivoxManager.Instance.OnUserLoggedInEvent += VivoxManager_OnUserLoggedInEvent;
             VivoxManager.Instance.OnUserLoggedOutEvent += VivoxManager_OnUserLoggedOutEvent;
@@ -246,7 +248,7 @@ namespace EOSLobbyTest
             // only show start game button for host
             SetShowStartGame(_isFishnetConnected && _isVivoxConnected && InstanceFinder.NetworkManager.IsServer);
         }
-        
+        public List<GameObject> playersList;
         private void PopulatePlayerList()
         {
             players.ClearPlayers();
@@ -258,12 +260,13 @@ namespace EOSLobbyTest
                 
                 foreach (var info in playerInfos)
                 {
-                    var playerItem = players.AddPlayer(info.UserId, info.PlayerName, info.UserId != EOS.LocalProductUserId.ToString() && InstanceFinder.NetworkManager.IsServer);                    
+                    var playerItem = players.AddPlayer(info.UserId, info.PlayerName, info.UserId != EOS.LocalProductUserId.ToString() && InstanceFinder.NetworkManager.IsServer);
+                   
                     playerItem.KickRequest += PlayerItem_KickRequest;
                 }
               
             }
-           
+            SetPlayer();
         }
 
         private void PlayerItem_KickRequest(string playerId)
@@ -425,7 +428,7 @@ namespace EOSLobbyTest
         {
             PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
 
-            if (RedTeam.transform.childCount < 2)
+            if (RedTeam.transform.childCount == 0)
             {
                 playerInfo.RedPlayer = true;
                 playerInfo.BluePlayer = false;
@@ -443,17 +446,26 @@ namespace EOSLobbyTest
             RedTeamPlayerNumber.text = RedTeam.transform.childCount + "/1";
             BlueTeamPlayerNumber.text = BlueTeam.transform.childCount + "/1";
         }
-        public void MoveToRedTeam()
-        {
-            GameObject playerInfo = GameObject.FindGameObjectWithTag("CanvasNetworkManager");
-            playerInfo.GetComponent<CanvasNetworkManager>().ChangeTeamRedPosition();
-            
-        }
+       public void MoveToRedTeam()
+       {
+            CanvasNetworkManager playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<CanvasNetworkManager>();
+            playerInfo.ChangeTeamRedPosition();
+       }
         public void MoveToBlueTeam()
         {
-            GameObject playerInfo = GameObject.FindGameObjectWithTag("CanvasNetworkManager");
-            playerInfo.GetComponent<CanvasNetworkManager>().ChangeTeamBluePosition();
-
+            CanvasNetworkManager playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<CanvasNetworkManager>();
+            playerInfo.ChangeTeamBluePosition();
         }
+        public void SetPlayer()
+        {
+            
+            foreach (Transform i in RedPlayers.container.GetComponentInChildren<Transform>())
+            {
+                playersList.Add(i.gameObject);                
+                
+            }
+            
+        }
+      
     }
 }

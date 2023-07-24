@@ -47,5 +47,9 @@ namespace EOSLobbyTest
         {
             KickRequest?.Invoke(PlayerId);
         }
+        public GameObject ReturnObject()
+        {
+            return gameObject;
+        }
     }
 }

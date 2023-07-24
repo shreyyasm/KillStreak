@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1815187225801107646}
   - component: {fileID: 6955195814637214867}
   - component: {fileID: 6713207236621221674}
+  - component: {fileID: 3165303055743879740}
   m_Layer: 0
   m_Name: Lobby Player
   m_TagString: Untagged
@@ -83,5 +84,21 @@ MonoBehaviour:
   UserId: 
   RedPlayer: 0
   BluePlayer: 0
-  CanvasNetworkManager: {fileID: 1824896092923945930, guid: e4dd5a60113f1be48a363092889259af,
-    type: 3}
+--- !u!114 &3165303055743879740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259444252237689463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0e2c9513b9eb3479a72b157dd28420, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 6955195814637214867}
+  _networkObjectCache: {fileID: 0}
+  uIPanel4V4Lobby: {fileID: 0}
+  myPlayer: {fileID: 0}
+  container: {fileID: 0}

@@ -13,11 +13,14 @@ namespace EOSLobbyTest
 
         [Tooltip("Container for the player items")]
         [SerializeField]
-        private Transform container;
+        public Transform container;
         public GameObject SpawnedPlayer;
 
         [SerializeField] UIScrollViewPlayers RedLobby;
         [SerializeField] UIScrollViewPlayers BlueLobby;
+
+    
+           
         private void Update()
         {
             ChangePlayerPrefab();
@@ -39,7 +42,9 @@ namespace EOSLobbyTest
         {
             var playerGameObject = GameObject.Instantiate(playerItemPrefab, container);
             //InstanceFinder.ServerManager.Spawn(playerGameObject);
+            
             SpawnedPlayer = playerGameObject;
+      
             var playerItem = playerGameObject.GetComponent<UIPlayerItem>();
             playerItem.PlayerId = playerId;
             playerItem.PlayerName = playerName;

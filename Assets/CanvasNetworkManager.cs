@@ -10,21 +10,24 @@ namespace EOSLobbyTest
         [SerializeField] UIPanel4V4Lobby uIPanel4V4Lobby;
         public GameObject myPlayer;
         public Transform container;
-        private void Awake()
+       
+     
+        void Update()
         {
             uIPanel4V4Lobby = FindObjectOfType<UIPanel4V4Lobby>();
-            
+            SetPlayerPrefab();
         }
-        public override void OnStartNetwork()
+        public void SetPlayerPrefab()
         {
-            base.OnStartNetwork();
-            StartCoroutine(DelayInstance());
+            foreach(GameObject i in uIPanel4V4Lobby.playersList)
+            {
+                if (i.GetComponent<UIPlayerItem>().PlayerName == gameObject.GetComponent<PlayerInfo>().PlayerName)
+                {
+                    myPlayer = i;
+                }
+            }
         }
-        IEnumerator DelayInstance()
-        {
-            yield return new WaitForSeconds(0.1f);
-            myPlayer = GameObject.FindGameObjectWithTag("PlayerPrefab");
-        }
+        
         public void CheckIfTeamsFull()
         {
             if (base.IsServer)
@@ -53,8 +56,9 @@ namespace EOSLobbyTest
 
         public void ChangeTeamRedPosition()
         {
-           // GameObject myPlayer = GameObject.FindGameObjectWithTag("PlayerPrefab");
-
+            // GameObject myPlayer = GameObject.FindGameObjectWithTag("PlayerPrefab");
+            //SetPlayer();
+            myPlayer = GameObject.FindGameObjectWithTag("PlayerPrefab");
             if (base.IsServer)
            
                 ChangeTeamRedPositionObserver();
@@ -97,8 +101,8 @@ namespace EOSLobbyTest
         public void ChangeTeamBluePosition()
         {
 
-            
-          
+            myPlayer = GameObject.FindGameObjectWithTag("PlayerPrefab");
+            // SetPlayer();
             if (base.IsServer)
                 ChangeTeamBluePositionObserver();
 
