@@ -1,4 +1,5 @@
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,8 +12,9 @@ namespace EOSLobbyTest
         public GameObject myPlayer;
         public Transform container;
 
-        public bool spawned;
-     
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        public bool spawned { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
         void Update()
         {
             uIPanel4V4Lobby = FindObjectOfType<UIPanel4V4Lobby>();
@@ -31,11 +33,14 @@ namespace EOSLobbyTest
         
         public void CheckIfTeamsFull()
         {
-            if (base.IsServer)
-                CheckIfTeamsFullObserver();
+            if(!spawned)
+            {
+                if (base.IsServer)
+                    CheckIfTeamsFullObserver();
 
-            else
-                CheckIfTeamsFullServer();
+                else
+                    CheckIfTeamsFullServer();
+            }           
         }
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void CheckIfTeamsFullServer()
@@ -78,7 +83,7 @@ namespace EOSLobbyTest
             PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
             
 
-            if (uIPanel4V4Lobby.RedTeam.transform.childCount < 2)
+            if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
             {
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.RedTeam);
 
@@ -93,7 +98,7 @@ namespace EOSLobbyTest
             PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
             
 
-            if (uIPanel4V4Lobby.RedTeam.transform.childCount < 2)
+            if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
             {
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.RedTeam);
 
@@ -121,7 +126,7 @@ namespace EOSLobbyTest
             PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
 
            
-            if (uIPanel4V4Lobby.BlueTeam.transform.childCount < 2)
+            if (uIPanel4V4Lobby.BlueTeam.transform.childCount <= 1)
             {
                 
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.BlueTeam);
@@ -135,7 +140,7 @@ namespace EOSLobbyTest
         {         
             PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
 
-            if (uIPanel4V4Lobby.BlueTeam.transform.childCount < 2)
+            if (uIPanel4V4Lobby.BlueTeam.transform.childCount <= 1)
             {
                 container = uIPanel4V4Lobby.BlueTeam;
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.BlueTeam);

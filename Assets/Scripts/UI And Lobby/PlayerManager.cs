@@ -45,14 +45,16 @@ namespace EOSLobbyTest
 
             StartCoroutine(DelayCheck());
         }
-        GameObject myPlayer;
+        public GameObject myPlayer;
        
         IEnumerator DelayCheck()
         {
             yield return new WaitForSeconds(0.5f);
             myPlayer = GameObject.FindGameObjectWithTag("Player");
-            if(!myPlayer.GetComponent<CanvasNetworkManager>().spawned)
-                myPlayer.GetComponent<CanvasNetworkManager>().CheckIfTeamsFull();
+           
+            myPlayer.GetComponent<CanvasNetworkManager>().CheckIfTeamsFull();
+            
+                
             //uIPanel4V4Lobby.RedPlayers.ChangeContainer();
         }
         public void RemovePlayer(string userId)
