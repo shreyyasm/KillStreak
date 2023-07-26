@@ -22,9 +22,12 @@ namespace EOSLobbyTest
         [HideInInspector]
         public string UserId;
 
-        public bool RedPlayer;
-        public bool BluePlayer;
-       
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        public bool RedPlayer { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        public bool BluePlayer { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
         private void OnPlayerName(string prev, string next, bool asServer)
         {
             PlayerManager.Instance.PlayerUpdated(UserId);

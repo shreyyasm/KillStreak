@@ -18,6 +18,7 @@ namespace EOSLobbyTest
         void Update()
         {
             uIPanel4V4Lobby = FindObjectOfType<UIPanel4V4Lobby>();
+            Debug.Log(uIPanel4V4Lobby.RedTeam.transform.childCount);
             SetPlayerPrefab();
         }
         public void SetPlayerPrefab()
@@ -45,29 +46,52 @@ namespace EOSLobbyTest
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void CheckIfTeamsFullServer()
         {
-
+            
             if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
+            {
+                PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+                playerInfo.RedPlayer = true;
+                playerInfo.BluePlayer = false;     
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
+            }
+                
             else
+            {
+                PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+                playerInfo.RedPlayer = false;
+                playerInfo.BluePlayer = true;
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
+            }
 
             spawned = true;
+            PlayerManager.Instance.SetPlayerTeam();
         }
         [ObserversRpc(BufferLast = true)]
         public void CheckIfTeamsFullObserver()
         {
+
             if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
+            {
+                PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+                playerInfo.RedPlayer = true;
+                playerInfo.BluePlayer = false;
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
+            }
+
             else
+            {
+                PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+                playerInfo.RedPlayer = false;
+                playerInfo.BluePlayer = true;
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
+            }
+            PlayerManager.Instance.SetPlayerTeam();
             spawned = true;
         }
 
         public void ChangeTeamRedPosition()
         {
-            // GameObject myPlayer = GameObject.FindGameObjectWithTag("PlayerPrefab");
-            //SetPlayer();
-            myPlayer = GameObject.FindGameObjectWithTag("PlayerPrefab");
+
             if (base.IsServer)
            
                 ChangeTeamRedPositionObserver();
@@ -80,38 +104,35 @@ namespace EOSLobbyTest
         public void ChangeTeamRedPositionServer()
         {
            
-            PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
-            
+           PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
 
-            if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
+            if (uIPanel4V4Lobby.RedTeam.transform.childCount < 1)
             {
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.RedTeam);
 
                 playerInfo.RedPlayer = true;
                 playerInfo.BluePlayer = false;
             }
+            PlayerManager.Instance.SetPlayerTeam();
         }
         [ObserversRpc(BufferLast = true)]
         public void ChangeTeamRedPositionObserver()
         {
-           
-            PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
-            
 
-            if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
+            PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+            if (uIPanel4V4Lobby.RedTeam.transform.childCount < 1)
             {
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.RedTeam);
 
                 playerInfo.RedPlayer = true;
                 playerInfo.BluePlayer = false;
             }
+            PlayerManager.Instance.SetPlayerTeam();
         }
         
         public void ChangeTeamBluePosition()
         {
-
-            myPlayer = GameObject.FindGameObjectWithTag("PlayerPrefab");
-            // SetPlayer();
+           
             if (base.IsServer)
                 ChangeTeamBluePositionObserver();
 
@@ -122,11 +143,10 @@ namespace EOSLobbyTest
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void ChangeTeamBluePositionServer()
         {
-           
-            PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
 
-           
-            if (uIPanel4V4Lobby.BlueTeam.transform.childCount <= 1)
+            PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+
+            if (uIPanel4V4Lobby.BlueTeam.transform.childCount < 1)
             {
                 
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.BlueTeam);
@@ -134,13 +154,14 @@ namespace EOSLobbyTest
                 playerInfo.RedPlayer = false;
                 playerInfo.BluePlayer = true;
             }
+            PlayerManager.Instance.SetPlayerTeam();
         }
         [ObserversRpc(BufferLast = true)]
         public void ChangeTeamBluePositionObserver()
-        {         
-            PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
+        {
+            PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
 
-            if (uIPanel4V4Lobby.BlueTeam.transform.childCount <= 1)
+            if (uIPanel4V4Lobby.BlueTeam.transform.childCount < 1)
             {
                 container = uIPanel4V4Lobby.BlueTeam;
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.BlueTeam);
@@ -148,6 +169,7 @@ namespace EOSLobbyTest
                 playerInfo.RedPlayer = false;
                 playerInfo.BluePlayer = true;
             }
+            PlayerManager.Instance.SetPlayerTeam();
         }
       
     }

@@ -12,6 +12,7 @@ using FishNet.Object.Prediction;
 using FishNet.Transporting;
 using StarterAssets;
 using System.Collections.Generic;
+using EOSLobbyTest;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 #endif
@@ -180,6 +181,12 @@ namespace StarterAssets
         public float slideSpeed = 7f;
 
         public float zValue;
+
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        public bool redTeamPlayer { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        public bool blueTeamPlayer { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
         //MoveData for client simulation
         private MoveData _clientMoveData;
 
@@ -232,12 +239,12 @@ namespace StarterAssets
                 _tick = 0;
             }
         }
-
+        PlayerManager playerManager;
         private void Awake()
         {
 
-            myActionAsset.bindingMask = new InputBinding { groups = "KeyboardMouse" };
-            playerInput.SwitchCurrentControlScheme(Keyboard.current, Mouse.current);
+            //myActionAsset.bindingMask = new InputBinding { groups = "KeyboardMouse" };
+            //playerInput.SwitchCurrentControlScheme(Keyboard.current, Mouse.current);
             // get a reference to our main camera
             AssignAnimationIDs();
             InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
@@ -252,6 +259,9 @@ namespace StarterAssets
             m_MainCamera = GameObject.FindWithTag("Follow Camera").GetComponent<CinemachineVirtualCamera>();
             m_AimCamera = GameObject.FindWithTag("Aim Camera").GetComponent<CinemachineVirtualCamera>();
             _controller = GetComponent<CharacterController>();
+            playerManager = FindObjectOfType<PlayerManager>();
+            StartCoroutine(DelayTeamSetter());
+
             //rb = GetComponent<Rigidbody>();
             //Root = GetComponentInChildren<Transform>();
             //Root.layer = LayerMask.NameToLayer("Player Root");
@@ -288,6 +298,8 @@ namespace StarterAssets
             * this method do not use base.IsOwner, use
             * the code below instead. This difference exist
             * to support a clientHost condition. */
+
+            
             if (base.Owner.IsLocalClient)
             {
                 cameraRoot.AddComponent<CameraFollow>();
@@ -300,7 +312,7 @@ namespace StarterAssets
                         allObjects.gameObject.layer = LayerMask.NameToLayer("Player Root");
                     }
                 }
-
+                
 
             }
             else
@@ -1519,6 +1531,32 @@ namespace StarterAssets
         public void GunChangeAnimationCheckBackwards()
         {
             weaponSwitching.GunChangeAnimationCheckBackwards();
+        }
+        IEnumerator DelayTeamSetter()
+        {
+            yield return new WaitForSeconds(1f);
+            SetTeam();
+        }
+        public void SetTeam()
+        {
+            if (base.IsServer)
+                SetTeamObserver();
+            else
+                SetTeamServer();
+        }
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        public void SetTeamServer()
+        {
+           
+            redTeamPlayer = playerManager.redTeamPlayer;
+            blueTeamPlayer = playerManager.blueTeamPlayer;
+        }
+        [ObserversRpc(BufferLast = true)]
+        public void SetTeamObserver()
+        {
+         
+            redTeamPlayer = playerManager.redTeamPlayer;
+            blueTeamPlayer = playerManager.blueTeamPlayer;
         }
     }
     

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using StarterAssets;
 namespace EOSLobbyTest
 {
     public class GameManagerEOS : MonoBehaviourSingletonForScene<GameManagerEOS>
@@ -17,11 +17,13 @@ namespace EOSLobbyTest
         [SerializeField]
         private Transform[] spawnPoints;
 
+    
         // which spawn point to use
         private int _nextSpawnPointIndex = 1;
 
         private void Start()
         {
+           
             if (InstanceFinder.NetworkManager != null && InstanceFinder.NetworkManager.IsHost)
             {
                 InstanceFinder.SceneManager.OnClientPresenceChangeEnd += SceneManager_OnClientPresenceChangeEnd;
@@ -63,24 +65,17 @@ namespace EOSLobbyTest
                 }
             }
         }
-
+        
         private void SceneManager_OnClientPresenceChangeEnd(FishNet.Managing.Scened.ClientPresenceChangeEventArgs obj)
         {
           
             if (spawnPoints != null && spawnPoints.Length > 0)
             {
                 var spawnPoint = spawnPoints[_nextSpawnPointIndex % spawnPoints.Length];
-
+                
                 InstanceFinder.SceneManager.AddConnectionToScene(obj.Connection, SceneManager.GetActiveScene());
                 var playerVehicle = Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
-                foreach (PlayerInfo i in PlayerManager.Instance._players)
-                {
-                    if(i.RedPlayer)
-                        playerVehicle.AddComponent<RedTeamPlayer>();
-                    if(i.BluePlayer)
-                        playerVehicle.AddComponent<BlueTeamPlayer>();
-                }
-               
+
                 InstanceFinder.ServerManager.Spawn(playerVehicle, obj.Connection);
 
                 _nextSpawnPointIndex++;

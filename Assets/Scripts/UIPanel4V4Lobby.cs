@@ -45,7 +45,7 @@ namespace EOSLobbyTest
         private void Update()
         {
             textLobbyName.text = UIPanelHostDetails.Instance.inputFieldLobbyName.text;
-            Debug.Log(RedTeam.transform.childCount);
+            
             playersList.RemoveAll(s => s == null);
             ShowRedTeamPlayerText();
 
@@ -297,7 +297,7 @@ namespace EOSLobbyTest
         private void PlayerManager_PlayersChanged()
         {
             PopulatePlayerList();
-            CheckTeam();
+           
         }
 
         private void ClientManager_OnClientConnectionState(FishNet.Transporting.ClientConnectionStateArgs obj)
@@ -418,21 +418,7 @@ namespace EOSLobbyTest
                 playerInfo.BluePlayer = true;
             }        
         }
-        public void CheckTeam()
-        {
-            PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
-
-            if (RedTeam.transform.childCount == 0)
-            {
-                playerInfo.RedPlayer = true;
-                playerInfo.BluePlayer = false;
-            }
-            else
-            {
-                playerInfo.RedPlayer = false;
-                playerInfo.BluePlayer = true;
-            }                
-        }
+      
         public Text RedTeamPlayerNumber;
         public Text BlueTeamPlayerNumber;
         public void ShowRedTeamPlayerText()
