@@ -51,6 +51,7 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 6713207236621221674}
+  - {fileID: 3165303055743879740}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -82,8 +83,8 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 6955195814637214867}
   PlayerName: 
   UserId: 
-  RedPlayer: 0
-  BluePlayer: 0
+  <RedPlayer>k__BackingField: 1
+  <BluePlayer>k__BackingField: 0
 --- !u!114 &3165303055743879740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,9 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0e2c9513b9eb3479a72b157dd28420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 6955195814637214867}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 6955195814637214867}
   uIPanel4V4Lobby: {fileID: 0}
   myPlayer: {fileID: 0}
   container: {fileID: 0}
+  <spawned>k__BackingField: 0

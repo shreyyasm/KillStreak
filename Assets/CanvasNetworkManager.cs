@@ -88,6 +88,42 @@ namespace EOSLobbyTest
             PlayerManager.Instance.SetPlayerTeam();
             spawned = true;
         }
+       
+        public void CheckIfTeamsAfterSpawn()
+        {
+            
+            if (base.IsServer)
+                CheckIfTeamsAfterSpawnObserver();
+
+            else
+                CheckIfTeamsAfterSpawnServer();
+        }
+        [ServerRpc(RequireOwnership = false, RunLocally = false)]
+        public void CheckIfTeamsAfterSpawnServer()
+        {
+            PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+            if (playerInfo.RedPlayer)
+            {
+                myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
+            }
+            else
+            {
+                myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
+            }         
+        }
+        [ObserversRpc(BufferLast = true, RunLocally = false)]
+        public void CheckIfTeamsAfterSpawnObserver()
+        {
+            PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+            if (playerInfo.RedPlayer)
+            {
+                myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
+            }
+            else
+            {
+                myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
+            }
+        }
 
         public void ChangeTeamRedPosition()
         {

@@ -49,12 +49,18 @@ namespace EOSLobbyTest
        
         IEnumerator DelayCheck()
         {
-            yield return new WaitForSeconds(1f);
-            myPlayer = GameObject.FindGameObjectWithTag("Player");           
+            
+            myPlayer = GameObject.FindGameObjectWithTag("Player");
+            yield return new WaitForSeconds(0.5f);
+            myPlayer.GetComponent<CanvasNetworkManager>().CheckIfTeamsAfterSpawn();
+            
+
+            yield return new WaitForSeconds(0.5f);
             myPlayer.GetComponent<CanvasNetworkManager>().CheckIfTeamsFull();
-            
-            
-                
+
+
+
+
             //uIPanel4V4Lobby.RedPlayers.ChangeContainer();
         }
         public void RemovePlayer(string userId)
