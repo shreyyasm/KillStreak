@@ -15,23 +15,27 @@ namespace EOSLobbyTest
         [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
         public bool spawned { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
+        
         void Update()
         {
-            uIPanel4V4Lobby = FindObjectOfType<UIPanel4V4Lobby>();
-            Debug.Log(uIPanel4V4Lobby.RedTeam.transform.childCount);
+            uIPanel4V4Lobby = FindObjectOfType<UIPanel4V4Lobby>();            
             SetPlayerPrefab();
         }
         public void SetPlayerPrefab()
         {
-            foreach(GameObject i in uIPanel4V4Lobby.playersList)
+            if(uIPanel4V4Lobby != null)
             {
-                if (i.GetComponent<UIPlayerItem>().PlayerName == gameObject.GetComponent<PlayerInfo>().PlayerName)
+                foreach (GameObject i in uIPanel4V4Lobby.playersList)
                 {
-                    myPlayer = i;
+                    if (i.GetComponent<UIPlayerItem>().PlayerName == gameObject.GetComponent<PlayerInfo>().PlayerName)
+                    {
+                        myPlayer = i;
+                    }
                 }
             }
+           
         }
-        
+       
         public void CheckIfTeamsFull()
         {
             if(!spawned)
@@ -46,47 +50,53 @@ namespace EOSLobbyTest
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void CheckIfTeamsFullServer()
         {
-            
-            if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
+            if(uIPanel4V4Lobby != null)
             {
-                PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
-                playerInfo.RedPlayer = true;
-                playerInfo.BluePlayer = false;     
-                myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
-            }
-                
-            else
-            {
-                PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
-                playerInfo.RedPlayer = false;
-                playerInfo.BluePlayer = true;
-                myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
-            }
+                if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
+                {
+                    PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+                    playerInfo.RedPlayer = true;
+                    playerInfo.BluePlayer = false;
+                    myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
+                }
 
-            spawned = true;
-            PlayerManager.Instance.SetPlayerTeam();
+                else
+                {
+                    PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+                    playerInfo.RedPlayer = false;
+                    playerInfo.BluePlayer = true;
+                    myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
+                }
+
+                spawned = true;
+                PlayerManager.Instance.SetPlayerTeam();
+            }           
         }
         [ObserversRpc(BufferLast = true)]
         public void CheckIfTeamsFullObserver()
         {
 
-            if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
+            if (uIPanel4V4Lobby != null)
             {
-                PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
-                playerInfo.RedPlayer = true;
-                playerInfo.BluePlayer = false;
-                myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
-            }
+                if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
+                {
+                    PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+                    playerInfo.RedPlayer = true;
+                    playerInfo.BluePlayer = false;
+                    myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
+                }
 
-            else
-            {
-                PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
-                playerInfo.RedPlayer = false;
-                playerInfo.BluePlayer = true;
-                myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
+                else
+                {
+                    PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+                    playerInfo.RedPlayer = false;
+                    playerInfo.BluePlayer = true;
+                    myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
+                }
+
+                spawned = true;
+                PlayerManager.Instance.SetPlayerTeam();
             }
-            PlayerManager.Instance.SetPlayerTeam();
-            spawned = true;
         }
        
         public void CheckIfTeamsAfterSpawn()
@@ -101,27 +111,34 @@ namespace EOSLobbyTest
         [ServerRpc(RequireOwnership = false, RunLocally = false)]
         public void CheckIfTeamsAfterSpawnServer()
         {
-            PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
-            if (playerInfo.RedPlayer)
+            if(uIPanel4V4Lobby != null)
             {
-                myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
+                PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+                if (playerInfo.RedPlayer)
+                {
+                    myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
+                }
+                else
+                {
+                    myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
+                }
             }
-            else
-            {
-                myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
-            }         
+               
         }
         [ObserversRpc(BufferLast = true, RunLocally = false)]
         public void CheckIfTeamsAfterSpawnObserver()
         {
-            PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
-            if (playerInfo.RedPlayer)
+            if (uIPanel4V4Lobby != null)
             {
-                myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
-            }
-            else
-            {
-                myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
+                PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
+                if (playerInfo.RedPlayer)
+                {
+                    myPlayer.transform.SetParent(uIPanel4V4Lobby.RedPlayers.container);
+                }
+                else
+                {
+                    myPlayer.transform.SetParent(uIPanel4V4Lobby.BluePlayers.container);
+                }
             }
         }
 

@@ -45,7 +45,7 @@ namespace EOSLobbyTest
         private void Update()
         {
             textLobbyName.text = UIPanelHostDetails.Instance.inputFieldLobbyName.text;
-            
+            myPlayer = GameObject.FindGameObjectWithTag("PlayerPrefab");
             playersList.RemoveAll(s => s == null);
             ShowRedTeamPlayerText();
 
@@ -200,6 +200,7 @@ namespace EOSLobbyTest
         protected override void OnShowing()
         {
             // add event callbacks
+            
             PlayerManager.Instance.PlayersChanged += PlayerManager_PlayersChanged;
             
             InstanceFinder.NetworkManager.ClientManager.OnClientConnectionState += ClientManager_OnClientConnectionState;
@@ -243,6 +244,7 @@ namespace EOSLobbyTest
             SetShowStartGame(_isFishnetConnected && _isVivoxConnected && InstanceFinder.NetworkManager.IsServer);
         }
         public List<GameObject> playersList;
+        public bool repeatPlayer;
         private void PopulatePlayerList()
         {
             players.ClearPlayers();
@@ -254,8 +256,22 @@ namespace EOSLobbyTest
                 
                 foreach (var info in playerInfos)
                 {
-                    var playerItem = players.AddPlayer(info.UserId, info.PlayerName, info.UserId != EOS.LocalProductUserId.ToString() && InstanceFinder.NetworkManager.IsServer);
-                   
+
+                    repeatPlayer = false;
+                    if(myPlayer!= null)
+                    {
+                        if (info.PlayerName == myPlayer.GetComponent<UIPlayerItem>().PlayerName)
+                        {
+                            Debug.Log("Not Spawn");
+                            repeatPlayer = true;
+                            continue;
+                        }
+                    }
+                    if(repeatPlayer)
+                    {
+                        continue;
+                    }
+                    var playerItem = players.AddPlayer(info.UserId, info.PlayerName, info.UserId != EOS.LocalProductUserId.ToString() && InstanceFinder.NetworkManager.IsServer);                  
                     playerItem.KickRequest += PlayerItem_KickRequest;
                 }
               
@@ -421,6 +437,8 @@ namespace EOSLobbyTest
       
         public Text RedTeamPlayerNumber;
         public Text BlueTeamPlayerNumber;
+        public GameObject myPlayer;
+
         public void ShowRedTeamPlayerText()
         {
             RedTeamPlayerNumber.text = RedTeam.transform.childCount + "/1";
