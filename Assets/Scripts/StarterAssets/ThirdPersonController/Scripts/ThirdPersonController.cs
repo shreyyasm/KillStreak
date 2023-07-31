@@ -182,11 +182,7 @@ namespace StarterAssets
 
         public float zValue;
 
-        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
-        public bool redTeamPlayer { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
-
-        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
-        public bool blueTeamPlayer { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+       
         //MoveData for client simulation
         private MoveData _clientMoveData;
 
@@ -246,11 +242,11 @@ namespace StarterAssets
             //myActionAsset.bindingMask = new InputBinding { groups = "KeyboardMouse" };
             //playerInput.SwitchCurrentControlScheme(Keyboard.current, Mouse.current);
             // get a reference to our main camera
-            AssignAnimationIDs();
+            
             InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
 
 
-            _controller = GetComponent<CharacterController>();
+           // _controller = GetComponent<CharacterController>();
 
             if (_mainCamera == null)
             {
@@ -259,8 +255,6 @@ namespace StarterAssets
             m_MainCamera = GameObject.FindWithTag("Follow Camera").GetComponent<CinemachineVirtualCamera>();
             m_AimCamera = GameObject.FindWithTag("Aim Camera").GetComponent<CinemachineVirtualCamera>();
             _controller = GetComponent<CharacterController>();
-            playerManager = FindObjectOfType<PlayerManager>();
-            StartCoroutine(DelayTeamSetter());
 
             //rb = GetComponent<Rigidbody>();
             //Root = GetComponentInChildren<Transform>();
@@ -276,21 +270,7 @@ namespace StarterAssets
                
             }
         }
-        public override void OnStartClient()
-        {
-            base.OnStartClient();
-
-            _controller.enabled = (base.IsServer || base.IsOwner);
-
-            if (base.IsOwner)
-            {
-                // GameObject.FindGameObjectWithTag("PlayerFollowCamera").GetComponent<CinemachineVirtualCamera>().Follow = CinemachineCameraTarget.transform;
-                
-                _playerInput = GetComponent<PlayerInput>();
-                _playerInput.enabled = true;
-                _input = GetComponent<StarterAssetsInputs>();
-            }
-        }
+  
         public override void OnStartNetwork()
         {
             base.OnStartNetwork();
@@ -418,7 +398,7 @@ namespace StarterAssets
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             _hasAnimator = TryGetComponent(out _animator);
-            
+            AssignAnimationIDs();
             SetRigWeight();
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
@@ -451,14 +431,15 @@ namespace StarterAssets
 
             //touchinput 
             playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
-           
-        
-          
 
-            if (Input.GetMouseButtonDown(1))
-                Crouch();
+
+           
+
+            //if (Input.GetMouseButtonDown(1))
+            //    Crouch();
             //if (Input.GetMouseButtonDown(2))
             //    shooterController.Aim();
+
             ControllerChanges();
         }
         
@@ -473,11 +454,11 @@ namespace StarterAssets
         }
         public void SetRigWeight()
         {
-            if(base.IsServer)
+            if (base.IsServer)
                 SetRigObserver();
 
-            if(base.IsOwner)
-                SetRigServer(); 
+            else
+                SetRigServer();
         }
         
         private void AssignAnimationIDs()
@@ -1111,12 +1092,15 @@ namespace StarterAssets
                 else
                 {
                     running = false;
+                    if (!isReloading && !changingGun)
+                    {
+                        if (weaponSwitching.selectedWeapon == 0)
+                            rifleRig.weight = 1f;
 
-                    if(weaponSwitching.selectedWeapon == 0)
-                        rifleRig.weight = 1f;
-
-                    else
-                        pistolRig.weight = 1f;
+                        else
+                            pistolRig.weight = 1f;
+                    }
+                    
                 }
 
                 //fPSController.GetComponent<FPSController>().SetMovementSpeed(_animationBlend);            
@@ -1411,7 +1395,7 @@ namespace StarterAssets
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void SetRigServer()
         {
-
+           
             if (weaponSwitching.selectedWeapon == 0)
             {
                 if (!changingGun)
@@ -1466,10 +1450,10 @@ namespace StarterAssets
                 _animator.SetLayerWeight(0, 0);
             }
         }
-        [ObserversRpc(BufferLast = true)]
+        [ObserversRpc(BufferLast = true, RunLocally = true)]
         public void SetRigObserver()
         {
-            
+
             if (weaponSwitching.selectedWeapon == 0)
             {
                 if (!changingGun)
@@ -1532,32 +1516,7 @@ namespace StarterAssets
         {
             weaponSwitching.GunChangeAnimationCheckBackwards();
         }
-        IEnumerator DelayTeamSetter()
-        {
-            yield return new WaitForSeconds(1f);
-            SetTeam();
-        }
-        public void SetTeam()
-        {
-            if (base.IsServer)
-                SetTeamObserver();
-            else
-                SetTeamServer();
-        }
-        [ServerRpc(RequireOwnership = false, RunLocally = true)]
-        public void SetTeamServer()
-        {
-           
-            redTeamPlayer = playerManager.redTeamPlayer;
-            blueTeamPlayer = playerManager.blueTeamPlayer;
-        }
-        [ObserversRpc(BufferLast = true)]
-        public void SetTeamObserver()
-        {
-         
-            redTeamPlayer = playerManager.redTeamPlayer;
-            blueTeamPlayer = playerManager.blueTeamPlayer;
-        }
+      
     }
     
 }

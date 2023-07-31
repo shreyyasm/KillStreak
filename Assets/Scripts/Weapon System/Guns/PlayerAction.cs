@@ -50,10 +50,7 @@ public class PlayerAction : NetworkBehaviour
         if (!base.IsOwner)
             return;
 
-        if(Instance == null)
-            Instance = this;
-
-
+     
         
         if (GunSelector.ActiveGun != null)
         {
@@ -78,8 +75,8 @@ public class PlayerAction : NetworkBehaviour
             
         }
             
-        if(IsReloading)
-            thirdPersonController.SetRigWeight();
+       
+        thirdPersonController.SetRigWeight();
         if (ShouldAutoReload())
         {
             if (weaponSwitch.gunChanging)
@@ -131,20 +128,20 @@ public class PlayerAction : NetworkBehaviour
     {
         
         yield return new WaitForSeconds(2f);
-        if(base.IsOwner)
-        {
-            
+         
             GunSelector.ActiveGun.EndReload();
             //InverseKinematics.HandIKAmount = 1f;
             //InverseKinematics.ElbowIKAmount = 1f;
             IsReloading = false;
             anim.SetBool("Reload", false);
             thirdPersonController.ReloadCheck(IsReloading);
-            thirdPersonController.SetRigWeight();
+           
             ammoDisplayer.UpdateGunAmmo();
             PlayerAnimator.SetLayerWeight(6, 0);
-        }
-       
+            CheckReloadState();
+
+
+
     }
     public void Shoot(float input)
     {
@@ -193,12 +190,12 @@ public class PlayerAction : NetworkBehaviour
     //Manual Reload - Server and observer Logic
     public void ManualReload()
     {
-       
-        if (base.IsClient)
-            ManualReloadServer();
-
+ 
         if (base.IsServer)
             ManualReloadObserver();
+
+       else
+            ManualReloadServer();
     }
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void ManualReloadServer()
@@ -225,7 +222,7 @@ public class PlayerAction : NetworkBehaviour
             
         }
     }
-    [ObserversRpc(BufferLast = true)]
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
     public void ManualReloadObserver()
     {
         if (ShouldManualReload())
@@ -250,5 +247,23 @@ public class PlayerAction : NetworkBehaviour
             
         }
     }
-    
+    public void CheckReloadState()
+    {
+        if (base.IsServer)
+            CheckReloadStateObserver();
+        else
+            CheckReloadStateServer();
+
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void CheckReloadStateServer()
+    {
+        thirdPersonController.SetRigWeight();
+    }
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
+    public void CheckReloadStateObserver()
+    {
+        thirdPersonController.SetRigWeight();
+    }
+
 }

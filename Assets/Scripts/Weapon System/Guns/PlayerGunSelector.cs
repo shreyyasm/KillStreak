@@ -229,17 +229,20 @@ public class PlayerGunSelector : NetworkBehaviour
     }
     public void ChangeCrosshair()
     {
-        if (!ActiveGun.shotgun)
+        if(CrosshairPrimary != null)
         {
-            CrosshairPrimary.SetActive(true);
-            CrosshairSecondary.SetActive(false);
+            if (!ActiveGun.shotgun)
+            {
+                CrosshairPrimary.SetActive(true);
+                CrosshairSecondary.SetActive(false);
+            }
+            else
+            {
+                CrosshairPrimary.SetActive(false);
+                CrosshairSecondary.SetActive(true);
+            }
         }
-        else
-        {
-            CrosshairPrimary.SetActive(false);
-            CrosshairSecondary.SetActive(true);
-        }
-            
+      
     }
     public void ChangeGunLoadOut(int loadNumber)
     {
