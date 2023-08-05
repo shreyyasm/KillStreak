@@ -40,6 +40,7 @@ public class PlayerCustomization : NetworkBehaviour
         base.OnStartNetwork();
         if (base.Owner.IsLocalClient)
         {
+            
             List<CharacterIndex> data = playerData.LoadData<List<CharacterIndex>>("/player-CustomizationNew.json", EncryptionEnabled);
             characterIndex = data;
             GenderIndex = characterIndex[0].ActiveGenderIndex;

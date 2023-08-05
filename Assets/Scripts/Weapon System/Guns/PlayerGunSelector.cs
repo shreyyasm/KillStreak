@@ -394,8 +394,7 @@ public class PlayerGunSelector : NetworkBehaviour
         else
         {
             BlockUI.SetActive(false);
-            if (loadOutManager.loadNumber != 3)
-                CrosshairUI.SetActive(true);
+            CrosshairUI.SetActive(true);
         }
     }
     public void CheckBlock()

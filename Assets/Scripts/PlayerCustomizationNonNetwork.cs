@@ -39,6 +39,7 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
 
     private void Awake()
     {
+
         List<CharacterIndex> data = playerData.LoadData<List<CharacterIndex>>("/player-CustomizationNew.json", EncryptionEnabled);
         characterIndex = data;
         GenderIndex = characterIndex[0].ActiveGenderIndex;
@@ -67,7 +68,10 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
     }
 
 
-
+    public void SaveData()
+    {
+        playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
+    }
     public void SelectGender(int index)
     {
         GenderIndex = index;
