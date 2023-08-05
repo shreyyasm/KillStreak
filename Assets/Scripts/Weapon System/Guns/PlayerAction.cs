@@ -74,9 +74,9 @@ public class PlayerAction : NetworkBehaviour
             thirdPersonController.ReloadCheck(IsReloading);
             
         }
-            
-       
-        thirdPersonController.SetRigWeight();
+
+        if (IsReloading)
+            thirdPersonController.SetRigWeight();
         if (ShouldAutoReload())
         {
             if (weaponSwitch.gunChanging)
@@ -109,7 +109,11 @@ public class PlayerAction : NetworkBehaviour
         //    Shoot(0);
 
     }
-    
+    IEnumerator DelayRigSet()
+    {
+        yield return new WaitForSeconds(0.1f);
+        thirdPersonController.SetRigWeight();
+    }
     public bool ShouldManualReload()
     {
         return !IsReloading            
@@ -139,7 +143,7 @@ public class PlayerAction : NetworkBehaviour
             ammoDisplayer.UpdateGunAmmo();
             PlayerAnimator.SetLayerWeight(6, 0);
             CheckReloadState();
-
+            StartCoroutine(DelayRigSet());
 
 
     }
