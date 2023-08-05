@@ -97,8 +97,8 @@ namespace StarterAssets
         [SerializeField] private Rig pistolRig;
         [SerializeField] private Rig rifleRig;
         // cinemachine
-        private float _cinemachineTargetYaw;
-        private float _cinemachineTargetPitch;
+        public float _cinemachineTargetYaw;
+        public float _cinemachineTargetPitch;
 
         // player
         private float _speed;
@@ -191,6 +191,7 @@ namespace StarterAssets
         {
                      
             public Vector3 Move;
+            public Vector3 Look;
             public bool Jump;
             public bool Slide;
             public float CameraEulerY;
@@ -204,7 +205,9 @@ namespace StarterAssets
         //ReconcileData for Reconciliation
         public struct ReconcileData : IReconcileData
         {
-            public Vector3 Position;           
+            public Vector3 Position;
+            public Quaternion Rotation;
+
             public float VerticalVelocity;
             public float FallTimeout;
             public float JumpTimeout;
@@ -213,17 +216,18 @@ namespace StarterAssets
             public bool Grounded;
             public bool timeIsRunning;
 
-
-
+            public float _cinemachineTargetYaw;
+            public float _cinemachineTargetPitch;
 
 
             private uint _tick;
             public void Dispose() { }
             public uint GetTick() => _tick;
             public void SetTick(uint value) => _tick = value;
-            public ReconcileData(Vector3 position, float verticalVelocity, float fallTimeout, float jumpTimeout,float slideValue, float slideSpeedValue, bool grounded, bool timeRunning)
+            public ReconcileData(Vector3 position, Quaternion rotation,float verticalVelocity, float fallTimeout, float jumpTimeout,float slideValue, float slideSpeedValue, bool grounded, bool timeRunning, float _cinemachineTargetYawNew, float _cinemachineTargetPitchNew)
             {
-                Position = position;              
+                Position = position;
+                Rotation = rotation;
                 VerticalVelocity = verticalVelocity;
                 FallTimeout = fallTimeout;
                 JumpTimeout = jumpTimeout;
@@ -232,6 +236,9 @@ namespace StarterAssets
                 
                 Grounded = grounded;
                 timeIsRunning = timeRunning;
+
+                _cinemachineTargetYaw = _cinemachineTargetYawNew;
+                _cinemachineTargetPitch = _cinemachineTargetPitchNew;
                 _tick = 0;
             }
         }
@@ -317,15 +324,14 @@ namespace StarterAssets
                 Reconciliation(default, false);
                 CheckInput(out MoveData md);
                 MoveWithData(md, false);
-                
+
                 _clientMoveData = md;
             }
             if (base.IsServer)
             {
                 
                 MoveWithData(default, true);
-                
-                ReconcileData rd = new  ReconcileData(transform.position, _verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning);
+                ReconcileData rd = new  ReconcileData(transform.position, transform.rotation,_verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning, _cinemachineTargetYaw,  _cinemachineTargetPitch);
                 Reconciliation(rd, true);
             }
         }
@@ -335,7 +341,8 @@ namespace StarterAssets
         [Reconcile]     
         private void Reconciliation(ReconcileData rd, bool asServer, Channel channel = Channel.Unreliable)
         {
-            transform.position = rd.Position;            
+            transform.position = rd.Position;
+            transform.rotation = rd.Rotation;
             _verticalVelocity = rd.VerticalVelocity;
             _fallTimeoutDelta = rd.FallTimeout;
             _jumpTimeoutDelta = rd.JumpTimeout;
@@ -343,6 +350,8 @@ namespace StarterAssets
             slideSpeed = rd.slideSpeed;
             Grounded = rd.Grounded;
             timerIsRunning = rd.timeIsRunning;
+            _cinemachineTargetYaw = rd._cinemachineTargetYaw;
+            _cinemachineTargetPitch = rd._cinemachineTargetPitch;
         }
         
         private void CheckInput(out MoveData md)
@@ -352,9 +361,10 @@ namespace StarterAssets
             {
                 
             Move = new Vector3(ultimateJoystick.GetHorizontalAxis(), 0f, ultimateJoystick.GetVerticalAxis()).normalized,
+            Look = new Vector3(screenTouch.lookInput.x, screenTouch.lookInput.y),              
             Jump = _input.jump,
             Slide = _input.slide,
-            CameraEulerY = _mainCamera.transform.eulerAngles.y,
+            
             Sprint = _input.sprint,
             };
 
@@ -405,13 +415,14 @@ namespace StarterAssets
             _fallTimeoutDelta = FallTimeout;
            
         }
-
+        Vector2 screenCenterPoint;
+        Ray rayNew;
         private void Update()
         {
             if (!base.IsOwner)
                 return;
           
-            
+           
             //MoveOld();
             //Move();
 
@@ -424,15 +435,11 @@ namespace StarterAssets
                     firedBullet = false;
                 }
             }
-
-     
-            //Pc input
-            //playerGunSelector.SetLookInput(look.x, look.y, x, z);
-
-            //touchinput 
-            playerGunSelector.SetLookInput(mouseX, mouseY,x,z);
-
-
+            if (screenTouch.rightFingerID == -1)
+            {
+                screenTouch.lookInput.x = 0;
+                screenTouch.lookInput.y = 0;
+            }
            
 
             //if (Input.GetMouseButtonDown(1))
@@ -444,14 +451,7 @@ namespace StarterAssets
         }
         
 
-        private void LateUpdate()
-        {
-            if (!base.IsOwner)
-                return;
-            //CameraRotationOld();
-            CameraRotation();
-            
-        }
+       
         public void SetRigWeight()
         {
             if (base.IsServer)
@@ -491,87 +491,6 @@ namespace StarterAssets
         }
         public LayerMask IdentifyEnemy;
         private Ray ray;
-
-        public void CameraRotation()
-        {
-            if (playerHealth.PlayerDeathState())
-                return;
-            mouseX = screenTouch.lookInput.x;
-            mouseY = screenTouch.lookInput.y;
-            if (screenTouch.rightFingerID == -1)
-            {
-                mouseX = 0;
-                mouseY = 0;
-            }
-            if (screenTouch.rightFingerID != -1)
-            {
-                //float h = UltimateTouchpad.GetHorizontalAxis("Look");
-                //float v = UltimateTouchpad.GetVerticalAxis("Look");
-                //Vector3 direction = new Vector3(h, v, 0f).normalized;
-                //Debug.Log(direction.x);
-                // if there is an input and camera position is not fixed
-                if (screenTouch.lookInput.sqrMagnitude >= _threshold && !LockCameraPosition)
-                {
-                    //Don't multiply mouse input by Time.deltaTime;
-                    //float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-
-                    //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
-                    //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
-                    _cinemachineTargetYaw += mouseX * Time.deltaTime * 100;
-                    _cinemachineTargetPitch -= mouseY * Time.deltaTime * 100;
-                }
-
-                // clamp our rotations so our values are limited 360 degrees
-                _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-                _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
-                if (Physics.SphereCast(ray, 0.2f, out RaycastHit hitnew, float.MaxValue, IdentifyEnemy))
-                {
-                    Vector3 hitpoint = hitnew.collider.ClosestPointOnBounds(hitnew.point);
-
-                    //
-                    //CinemachineCameraTarget.transform.rotation 
-                    //Vector3 targetDirection = hitpoint - CinemachineCameraTarget.transform.localPosition;
-                    //Vector3 lookDirection = Vector3.RotateTowards(CinemachineCameraTarget.transform.forward, targetDirection, 1f, 0.0f);
-                    //CinemachineCameraTarget.transform.localRotation = Quaternion.LookRotation(lookDirection);
-                    sensitivity = 70f;
-                    screenTouch.SetSensitivity(6);
-                    //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(lookDirection.x, lookDirection.z, 0.0f);
-                    //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
-                    // _cinemachineTargetYaw, 0.0f);
-                    //Debug.Log("work");
-                    // CinemachineCameraTarget.transform.rotation = Quaternion.Euler(hitpoint.x , targetDirection.y, 0.0f);
-                    Debug.DrawLine(_mainCamera.transform.position, hitpoint, Color.red);
-                    Vector3 enemyPoint = hitpoint;
-                    lookAtPlayer = true;
-                    //Vector3 aimAssistPoint = ray.GetPoint(Vector3.Distance(enemyPoint, CinemachineCameraTarget.transform.position));
-                    //if (Vector3.Distance(aimAssistPoint, enemyPoint) <= 1.5f)
-                    //{
-                    //StartCoroutine(ToggleMouseLook(0.5f));
-                    //CinemachineCameraTarget.transform.LookAt(hitpoint);
-
-                    }
-
-            }
-                else
-                {
-                    if (!isAiming)
-                    {
-                        screenTouch.SetSensitivity(8);
-                        sensitivity = 100f;
-                    }
-
-                    //Cinemachine will follow this target
-
-                }
-                //if(lookAtPlayer)
-                //{
-                
-                //}
-           // }
-
-            CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
-                    _cinemachineTargetYaw, 0.0f);
-        }
 
         private void CameraRotationOld()
         {
@@ -811,13 +730,54 @@ namespace StarterAssets
             }
         }
         bool startSlide;
+      
         [Replicate]
         private void MoveWithData(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
         {
 
             GroundedCheck();
 
-           
+            if (playerHealth.PlayerDeathState())
+                return;
+            mouseX = screenTouch.lookInput.x;
+            mouseY = screenTouch.lookInput.y;
+            if (screenTouch.rightFingerID == -1)
+            {
+                md.Look.x = 0;
+                md.Look.y = 0;
+            }
+            if (screenTouch.rightFingerID != -1)
+            {
+                //float h = UltimateTouchpad.GetHorizontalAxis("Look");
+                //float v = UltimateTouchpad.GetVerticalAxis("Look");
+                //Vector3 direction = new Vector3(h, v, 0f).normalized;
+                //Debug.Log(direction.x);
+                // if there is an input and camera position is not fixed
+                if (md.Look.sqrMagnitude >= _threshold && !LockCameraPosition)
+                {
+                    //Don't multiply mouse input by Time.deltaTime;
+                    //float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+
+                    //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
+                    //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
+                    _cinemachineTargetYaw += md.Look.x * (float)base.TimeManager.TickDelta * 100;
+                    _cinemachineTargetPitch -= md.Look.y * (float)base.TimeManager.TickDelta * 100;
+                }
+
+                // clamp our rotations so our values are limited 360 degrees
+                _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
+                _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+
+
+            }
+
+            CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
+                    _cinemachineTargetYaw, 0.0f);
+
+
+            transform.rotation = Quaternion.Euler(0, _cinemachineTargetYaw, 0.0f);
+            // _controller.transform.forward = Vector3.Lerp(transform.forward, new Vector3(_mainCamera.transform.forward.x, 0, _mainCamera.transform.forward.z) , (float)base.TimeManager.TickDelta * 10f);
+
 
             //Jump Function 
             if (md.Jump && isCrouching)
