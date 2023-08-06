@@ -102,7 +102,10 @@ namespace StarterAssets
 
         // player
         private float _speed;
-        private float _animationBlend;
+
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        private float _animationBlend { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;
         public float _verticalVelocity;
@@ -140,7 +143,10 @@ namespace StarterAssets
         bool inFPSMode = false;
         public bool firedBullet = false;
         public bool firing = false;
-        public bool isCrouching;
+
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        public bool isCrouching { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
         public bool isSliding;
         public bool running;
         
@@ -251,10 +257,11 @@ namespace StarterAssets
             // get a reference to our main camera
             
             InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
-
-
-           // _controller = GetComponent<CharacterController>();
-
+            audioRunSource.Play(0);
+            audioCrouchSource.Play(0);
+            // _controller = GetComponent<CharacterController>();
+            audioRunSource.Pause();
+            audioCrouchSource.Pause();
             if (_mainCamera == null)
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -440,7 +447,13 @@ namespace StarterAssets
                 screenTouch.lookInput.x = 0;
                 screenTouch.lookInput.y = 0;
             }
-           
+            PlayRunSound(); 
+            //Pc input
+            //playerGunSelector.SetLookInput(look.x, look.y, x, z);
+
+            //touchinput 
+            playerGunSelector.SetLookInput(mouseX, mouseY, x, z);
+
 
             //if (Input.GetMouseButtonDown(1))
             //    Crouch();
@@ -1031,7 +1044,7 @@ namespace StarterAssets
                 // move the player
                 _controller.Move(movement * (float)base.TimeManager.TickDelta);
             }
-           
+            
             // update animator if using character
             if (_hasAnimator)
             {
@@ -1476,7 +1489,61 @@ namespace StarterAssets
         {
             weaponSwitching.GunChangeAnimationCheckBackwards();
         }
-      
+        public AudioSource audioRunSource;
+        public AudioSource audioCrouchSource;
+        public void PlayRunSound()
+        {
+
+            if (base.IsServer)
+                PlayRunSoundObserver();
+            else
+                PlayRunSoundServer();
+        }
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        public void PlayRunSoundServer()
+        {
+            if (!isCrouching && _animationBlend > 1)
+            {
+                audioCrouchSource.Pause();
+                audioRunSource.UnPause();
+            }
+
+
+            else if (isCrouching && _animationBlend > 1)
+            {
+                audioRunSource.Pause();
+                audioCrouchSource.UnPause();
+            }
+
+            else
+            {
+                audioRunSource.Pause();
+                audioCrouchSource.Pause();
+            }
+        }
+        [ObserversRpc(BufferLast = true, RunLocally = true)]
+        public void PlayRunSoundObserver()
+        {
+            if (!isCrouching && _animationBlend > 1)
+            {
+                audioCrouchSource.Pause();
+                audioRunSource.UnPause();                
+            }
+
+
+            else if (isCrouching && _animationBlend > 1)
+            {
+                audioRunSource.Pause();
+                audioCrouchSource.UnPause();               
+            }
+
+            else
+            {
+                audioRunSource.Pause();
+                audioCrouchSource.Pause();
+            }
+
+        }
     }
     
 }

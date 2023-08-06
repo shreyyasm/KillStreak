@@ -14,7 +14,7 @@ public class PlayerSoundManager : NetworkBehaviour
         if (base.IsServer)
             PlayShootingClipObserver(ImpactPos,IsLastBullet);
 
-        if(base.IsClientOnly)
+        else
             PlayShootingClipServer(ImpactPos,IsLastBullet);
     }
 
@@ -54,7 +54,7 @@ public class PlayerSoundManager : NetworkBehaviour
         if (base.IsServer)
             PlayReloadClipObserver();
 
-        if (base.IsOwner)
+        else
             PlayReloadClipServer();
     }
 
