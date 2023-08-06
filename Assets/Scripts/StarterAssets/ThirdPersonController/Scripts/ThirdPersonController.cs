@@ -61,9 +61,8 @@ namespace StarterAssets
         [Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
         public float FallTimeout = 0.15f;
 
-        [Header("Player Grounded")]
-        [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
-        public bool Grounded = true;
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        public bool Grounded { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
         [Tooltip("Useful for rough ground")]
         public float GroundedOffset = -0.14f;
@@ -187,8 +186,8 @@ namespace StarterAssets
         public float slideSpeed = 7f;
 
         public float zValue;
+        public AudioSource audioSource;
 
-       
         //MoveData for client simulation
         private MoveData _clientMoveData;
 
@@ -257,6 +256,7 @@ namespace StarterAssets
             // get a reference to our main camera
             
             InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
+            Grounded = true;
             audioRunSource.Play(0);
             audioCrouchSource.Play(0);
             // _controller = GetComponent<CharacterController>();
@@ -266,6 +266,7 @@ namespace StarterAssets
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
+           
             m_MainCamera = GameObject.FindWithTag("Follow Camera").GetComponent<CinemachineVirtualCamera>();
             m_AimCamera = GameObject.FindWithTag("Aim Camera").GetComponent<CinemachineVirtualCamera>();
             _controller = GetComponent<CharacterController>();
@@ -800,6 +801,7 @@ namespace StarterAssets
             }
             else if (Grounded && !isCrouching)
             {
+
                 // reset the fall timeout timer
                 _fallTimeoutDelta = FallTimeout;
 
@@ -822,7 +824,7 @@ namespace StarterAssets
                     startSlide = false;
                     slideTimeRemaining = 0;
                     timerIsRunning = false;
-
+                    
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
@@ -1342,7 +1344,9 @@ namespace StarterAssets
         }
         public void GunSwapingGunChangeIn()
        {
-            if(base.IsServer)           
+            audioSource.PlayOneShot(gunOutSound, 1);
+            //audioSource.PlayOneShot(gunOutSound, 1);
+            if (base.IsServer)           
                 weaponSwitching.GunSwapVisualTakeInObserver();
 
             else
@@ -1351,7 +1355,9 @@ namespace StarterAssets
         }
         public void GunSwapingGunChangeOut()
         {
-            if(base.IsServer)
+            
+            audioSource.PlayOneShot(gunInSound, 1);
+            if (base.IsServer)
                 weaponSwitching.GunSwapVisualTakeOutObserver();
 
             
@@ -1502,47 +1508,87 @@ namespace StarterAssets
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void PlayRunSoundServer()
         {
-            if (!isCrouching && _animationBlend > 1)
+            if (Grounded)
             {
-                audioCrouchSource.Pause();
-                audioRunSource.UnPause();
+                if (!isCrouching && _animationBlend > 2)
+                {
+                    audioCrouchSource.Pause();
+                    audioRunSource.UnPause();
+                }
+
+
+                else if (isCrouching && _animationBlend > 2)
+                {
+                    audioRunSource.Pause();
+                    audioCrouchSource.UnPause();
+                }
+
+                else
+                {
+                    audioRunSource.Pause();
+                    audioCrouchSource.Pause();
+                }
             }
-
-
-            else if (isCrouching && _animationBlend > 1)
-            {
-                audioRunSource.Pause();
-                audioCrouchSource.UnPause();
-            }
-
             else
             {
                 audioRunSource.Pause();
                 audioCrouchSource.Pause();
             }
         }
-        [ObserversRpc(BufferLast = true, RunLocally = true)]
+        [ObserversRpc(BufferLast = false, RunLocally = true)]
         public void PlayRunSoundObserver()
         {
-            if (!isCrouching && _animationBlend > 1)
+            if (Grounded)
             {
-                audioCrouchSource.Pause();
-                audioRunSource.UnPause();                
+                if (!isCrouching && _animationBlend > 2)
+                {
+                    audioCrouchSource.Pause();
+                    audioRunSource.UnPause();
+                }
+
+
+                else if (isCrouching && _animationBlend > 2)
+                {
+                    audioRunSource.Pause();
+                    audioCrouchSource.UnPause();
+                }
+
+                else
+                {
+                    audioRunSource.Pause();
+                    audioCrouchSource.Pause();
+                }
             }
-
-
-            else if (isCrouching && _animationBlend > 1)
-            {
-                audioRunSource.Pause();
-                audioCrouchSource.UnPause();               
-            }
-
             else
             {
                 audioRunSource.Pause();
                 audioCrouchSource.Pause();
             }
+        }
+        
+        public AudioClip jumpSound;
+        public AudioClip gunInSound;
+        public AudioClip gunOutSound;
+        public void PlayJumpSound()
+        {
 
+            if (base.IsServer)
+                PlayJumpSoundObserver();
+            else
+                PlayJumpSoundServer();
+        }
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        public void PlayJumpSoundServer()
+        {
+            if(!isCrouching)
+                audioSource.PlayOneShot(jumpSound, 0.8f);
+        }
+        [ObserversRpc(BufferLast = false, RunLocally = true)]
+        public void PlayJumpSoundObserver()
+        {
+            if (!isCrouching)
+                audioSource.PlayOneShot(jumpSound, 0.8f);
+           
         }
     }
     
