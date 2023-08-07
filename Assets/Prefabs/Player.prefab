@@ -24651,6 +24651,8 @@ MonoBehaviour:
   playerAction: {fileID: 911395708910928025}
   spawnedObject: {fileID: 0}
   blocked: 0
+  mouseX: 0
+  mouseY: 0
   BlockUI: {fileID: 4335145189862095435}
   CrosshairUI: {fileID: 1056125256268646366}
   loadOutManager: {fileID: 8282398727071106129}
@@ -24683,7 +24685,8 @@ MonoBehaviour:
   aimAssist: 1
   aimAssistSize: 1
   SniperRig: {fileID: 6854700186034592639}
-  sphereCastRadius: 0.2
+  sphereCastRadius: 0.25
+  sphereCastRadiusAimAssist: 3
   range: 100
   distanceObject: 0
   distancePlayer: 0
@@ -24696,6 +24699,9 @@ MonoBehaviour:
   SpawnInterval: 1
   spawned: []
   aimAssistText: {fileID: 7276579198603777640}
+  AimAssistHitMask:
+    serializedVersion: 2
+    m_Bits: 327680
 --- !u!114 &5288676240204857372
 MonoBehaviour:
   m_ObjectHideFlags: 0

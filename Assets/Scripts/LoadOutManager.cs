@@ -179,10 +179,11 @@ public class LoadOutManager : NetworkBehaviour
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
         playerGunSelector.ChangeCrosshair();
         playerGunSelector.SetActiveGun(0);
-        ammoDisplayer.UpdateGunAmmo();
+        
         SetGunUI(loadOutNumber);
         playerGunSelector.ChangeCrosshair();
         shooterController.ExitAim();
+        ammoDisplayer.UpdateGunAmmo();
     }
     [ObserversRpc(BufferLast = true)]
     public void GetLoadOutInputObserver(int loadOutNumber)
@@ -229,13 +230,13 @@ public class LoadOutManager : NetworkBehaviour
         }
 
         playerGunSelector.ChangeGunLoadOut(loadOutNumber);
-        ammoDisplayer.UpdateGunAmmo();
+        
         playerGunSelector.ChangeCrosshair();
         playerGunSelector.SetActiveGun(0);
         SetGunUI(loadOutNumber);
         shooterController.ExitAim();
         playerGunSelector.ChangeCrosshair();
-
+        ammoDisplayer.UpdateGunAmmo();
     }
    
     public void OpenLoadOut()

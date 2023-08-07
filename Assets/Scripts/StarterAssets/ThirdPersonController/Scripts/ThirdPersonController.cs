@@ -103,7 +103,7 @@ namespace StarterAssets
         private float _speed;
 
         [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
-        private float _animationBlend { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+        public float _animationBlend { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;

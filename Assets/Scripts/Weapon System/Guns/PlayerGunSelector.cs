@@ -69,7 +69,7 @@ public class PlayerGunSelector : NetworkBehaviour
     public GameObject spawnedObject;
     private NetworkConnection ownerConnection;
     public bool blocked;
-    private float mouseX,mouseY;
+    public float mouseX,mouseY;
     private  float moveX, moveZ;
     [SerializeField] GameObject BlockUI;
     [SerializeField] GameObject CrosshairUI;
@@ -151,6 +151,7 @@ public class PlayerGunSelector : NetworkBehaviour
     
    
     [Range(0.1f, 1f)] public float sphereCastRadius;
+    [Range(0.1f, 10f)] public float sphereCastRadiusAimAssist;
     [Range(1f, 100f)] public float range;
 
    
@@ -160,7 +161,7 @@ public class PlayerGunSelector : NetworkBehaviour
             return;
         GunModel = ActiveGunPrefab;
         GunModelRecoil();
-        
+        AimAssis();
         if (playerAction.IsShooting )
         {
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
@@ -500,15 +501,21 @@ public class PlayerGunSelector : NetworkBehaviour
                     {
                         if (Physics.SphereCast(ray, sphereCastRadius, out hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                         {
-                            //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
-                            //Debug.Log("Aim Assist: Hit");
-
-                            Vector3 sphereCastMidpoint = hitnew.point;
-
                             if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                             {
                                 rayHitPoint = hit.point;
                             }
+                            //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+                            //Debug.Log("Aim Assist: Hit");
+                            //if (hitnew.collider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider collider))
+                            //{
+                                
+                            //   // thirdPersonController._cinemachineTargetYaw += hitnew.collider.ClosestPointOnBounds(hitnew.point).x;
+                            //}
+                            
+                            Vector3 sphereCastMidpoint = hitnew.point;
+
+                            
 
                             if (hitnew.collider.gameObject.layer != 18)
                             {
@@ -722,8 +729,6 @@ public class PlayerGunSelector : NetworkBehaviour
             {
                 for (int i = 0; i < ActiveGun.bulletPerShot; i++)
                 {
-                    
-                    ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(UnityEngine.Random.Range(1,6)));
                     if (!blocked)
                         ray = Camera.main.ScreenPointToRay(screenCenterPoint);
                     else
@@ -764,15 +769,21 @@ public class PlayerGunSelector : NetworkBehaviour
                     {
                         if (Physics.SphereCast(ray, sphereCastRadius, out hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                         {
-                            //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
-                            //Debug.Log("Aim Assist: Hit");
-
-                            Vector3 sphereCastMidpoint = hitnew.point;
-
                             if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
                             {
                                 rayHitPoint = hit.point;
                             }
+                            //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+                            //Debug.Log("Aim Assist: Hit");
+                            //if (hitnew.collider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider collider))
+                            //{
+
+                            //   // thirdPersonController._cinemachineTargetYaw += hitnew.collider.ClosestPointOnBounds(hitnew.point).x;
+                            //}
+
+                            Vector3 sphereCastMidpoint = hitnew.point;
+
+
 
                             if (hitnew.collider.gameObject.layer != 18)
                             {
@@ -988,7 +999,7 @@ public class PlayerGunSelector : NetworkBehaviour
     [SerializeField] GameObject sphere;
     public GameObject CinemachineCameraTarget;
 
-   
+
     //private void OnDrawGizmos()
     //{
 
@@ -1001,13 +1012,18 @@ public class PlayerGunSelector : NetworkBehaviour
     //        {
     //            //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
     //            //Debug.Log("Aim Assist: Hit");
-    //            Gizmos.color = Color.green; 
+    //            Gizmos.color = Color.green;
     //            Vector3 sphereCastMidpoint = hit.point;
     //            //Debug.Log(hit.transform);
-    //            Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
+    //            Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadiusAimAssist);
     //            Gizmos.DrawSphere(hit.point, 0.1f);
     //            Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
-    //            Debug.DrawLine(ActiveGun.Model.transform.position, hitCheck.point, Color.green);
+    //            if (Physics.Raycast(ray, out RaycastHit hitnew, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+    //            {
+    //                Debug.DrawLine(ActiveCamera.transform.position, hitnew.point, Color.green);
+    //            }
+
+    //            //Debug.DrawLine(ActiveGun.Model.transform.position, hitCheck.point, Color.green);
     //            //float yVelocity = 0f;
     //            //float oldPos;
 
@@ -1019,20 +1035,20 @@ public class PlayerGunSelector : NetworkBehaviour
     //        }
     //        //Debug.DrawLine(ActiveGun.Model.transform.position,r.direction, Color.blue);
     //    }
-        //else
-        //{
-        //    //Debug.DrawRay(transform.position, transform.forward * 100f, Color.red);
+    //    else
+    //    {
+    //        //Debug.DrawRay(transform.position, transform.forward * 100f, Color.red);
 
-        //    if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
-        //    {
-        //        Debug.Log("No Aim Assist: Hit");
-        //        Gizmos.color = Color.red;
-        //        Vector3 sphereCastMidpoint = transform.position + (transform.forward * (range - sphereCastRadius));
-        //        Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
-        //        //Debug.DrawLine(screenCenterPoint, sphereCastMidpoint, Color.red);
-        //    }
-        //}
-   // }
+    //        if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+    //        {
+    //            Debug.Log("No Aim Assist: Hit");
+    //            Gizmos.color = Color.red;
+    //            Vector3 sphereCastMidpoint = transform.position + (transform.forward * (range - sphereCastRadius));
+    //            Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
+    //            //Debug.DrawLine(screenCenterPoint, sphereCastMidpoint, Color.red);
+    //        }
+    //    }
+    //}
     private IEnumerator PlayTrail(Vector3 StartPoint, Vector3 EndPoint, RaycastHit Hit)
     {
         
@@ -1204,6 +1220,62 @@ public class PlayerGunSelector : NetworkBehaviour
             aimAssistText.text = "On";
             aimAssist = true;
         }
+
+    }
+    public LayerMask AimAssistHitMask;
+    public void AimAssis()
+    { 
+        Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+        ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+        
+        if (Physics.SphereCast(ray, sphereCastRadiusAimAssist, out RaycastHit hitnew, float.MaxValue, AimAssistHitMask))
+        {
+            Vector3 newpOS;
+            if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+            {
+                //rayHitPoint = hit.point;
+            }
+            //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+            //Debug.Log("Aim Assist: Hit");
+            if (hitnew.collider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider collider))
+            {
+                if(!hit.collider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider colliderNew))
+                {
+                    if(thirdPersonController._animationBlend > 2)
+                    {
+                        if(!thirdPersonController.isSliding)
+                        {
+                            if(!ActiveGun.sniper)
+                            {
+                                newpOS = (hit.collider.transform.position - hitnew.collider.transform.position);
+                                //Debug.Log(hitnew.collider.);
+                                //Debug.Log(hitnew.collider.transform.position.x + "Sphere collider");
+                                //Debug.Log(hit.collider.transform.position.x + "Ray collider");
+                                //Debug.Log(newpOS.x);
+
+                                if (hitnew.collider.transform.position.x > hit.collider.transform.position.x)
+                                {
+                                    thirdPersonController._cinemachineTargetYaw = Mathf.Lerp(thirdPersonController._cinemachineTargetYaw, thirdPersonController._cinemachineTargetYaw += 0.2f, Time.deltaTime * 50f);
+                                }
+
+
+                                if (hitnew.collider.transform.position.x < hit.collider.transform.position.x)
+                                {
+                                    thirdPersonController._cinemachineTargetYaw = Mathf.Lerp(thirdPersonController._cinemachineTargetYaw, thirdPersonController._cinemachineTargetYaw -= 0.2f, Time.deltaTime * 50f);
+
+                                }
+                                Debug.Log("Work");
+                            }
+                            
+                        }
+                        
+                            
+                    }
+                    
+                }            
+                //
+            }
             
+        }
     }
 }
