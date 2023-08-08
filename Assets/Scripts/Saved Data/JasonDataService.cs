@@ -6,7 +6,7 @@ using System.IO;
 using System.Security.Cryptography;
 using UnityEngine;
 
-public class JasonDataService : PlayerCustomizationData
+public class JasonDataService : PlayerCustomizationData,PlayerInfoData
 {
     
     public bool SaveData<T>(string RelativePath, T Data, bool Encrypted)

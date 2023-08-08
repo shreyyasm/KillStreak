@@ -71,6 +71,7 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
     public void SaveData()
     {
         playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
+        
     }
     public void SelectGender(int index)
     {

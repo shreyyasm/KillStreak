@@ -13,39 +13,62 @@ namespace EOSLobbyTest
 
         [SerializeField]
         private Button buttonSave;
+         
+        private void Awake()
+        {
+            //string data = playerData.LoadData<string>("/player-Info.json", EncryptionEnabled);
+            //Settings.Instance.CurrentPlayerName = data;
+            Debug.Log(Settings.Instance.CurrentPlayerName);
 
+        }
         private void Start()
         {
             inputFieldPlayerName.onValueChanged.AddListener(delegate
             {
                 UpdateControlState();
             });
-        }
+           
 
+        }
+        private void Update()
+        {
+            PlayerName = inputFieldPlayerName.ToString();
+
+        }
         private void UpdateControlState()
         {
             buttonSave.interactable = !String.IsNullOrEmpty(inputFieldPlayerName.text);
+            PlayerName = inputFieldPlayerName.ToString();
+            playerData.SaveData("/player-Info.json", PlayerName, EncryptionEnabled);
         }
 
         protected override void OnShowing()
         {
             UpdateControlState();
 
-            inputFieldPlayerName.text = Settings.Instance.CurrentPlayerName;
+            //inputFieldPlayerName.text = Settings.Instance.CurrentPlayerName;
         }
 
         protected override void OnShown()
         {
             inputFieldPlayerName.ActivateInputField();
         }
-
+        private PlayerInfoData playerData = new JasonDataService();
+        private string PlayerName;
+        private bool EncryptionEnabled;
         public void Save()
         {
-            Settings.Instance.CurrentPlayerName = inputFieldPlayerName.text;
-
+            Debug.Log(inputFieldPlayerName.text);
+            PlayerName = inputFieldPlayerName.text;
+            playerData.SaveData("/player-Info.json", PlayerName, EncryptionEnabled);
+            
             UIPanelManager.Instance.HidePanel<UIPanelPlayerName>(true);
         }
-
+        private class SaveObject
+        {
+            public string PlayerName;
+            
+        }
         public void Cancel()
         {
             UIPanelManager.Instance.HidePanel<UIPanelPlayerName>(false);
