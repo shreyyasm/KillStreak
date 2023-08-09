@@ -722,13 +722,15 @@ public class PlayerGunSelector : NetworkBehaviour
                                ActiveGun.ShootSystem.transform.position,
                                 ActiveGun.ShootSystem.transform.position);
 
-            
+           
             GunModel.transform.forward += GunModel.transform.TransformDirection(ActiveGun.spreadAmount);
             playerSoundManager.PlayShootingClip(transform.position,ActiveGun.AmmoConfig.CurrentClipAmmo == 1);
             if (ActiveGun.shotgun)
             {
+               
                 for (int i = 0; i < ActiveGun.bulletPerShot; i++)
                 {
+                    ActiveCamera.transform.forward += ActiveCamera.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(UnityEngine.Random.Range(1, 6)));
                     if (!blocked)
                         ray = Camera.main.ScreenPointToRay(screenCenterPoint);
                     else
@@ -1000,55 +1002,55 @@ public class PlayerGunSelector : NetworkBehaviour
     public GameObject CinemachineCameraTarget;
 
 
-    private void OnDrawGizmos()
-    {
+    //private void OnDrawGizmos()
+    //{
 
-        //RaycastHit hit;
-        if (aimAssist)
-        {
-            //Debug.DrawRay(transform.position, transform.forward * 100f, Color.green);
-            //Physics.SphereCast(ActiveCamera.transform.position, sphereCastRadius, sphere.transform.position, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask)
-            if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hit, float.MaxValue, AimAssistHitMask))
-            {
-                //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
-                //Debug.Log("Aim Assist: Hit");
-                Gizmos.color = Color.green;
-                Vector3 sphereCastMidpoint = hit.point;
-                //Debug.Log(hit.transform);
-                Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadiusAimAssist);
-                Gizmos.DrawSphere(hit.point, 0.1f);
-                Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
-                if (Physics.Raycast(ray, out RaycastHit hitnew, float.MaxValue, AimAssistHitMask))
-                {
-                    Debug.DrawLine(ActiveCamera.transform.position, hitnew.point, Color.green);
-                }
+    //    //RaycastHit hit;
+    //    if (aimAssist)
+    //    {
+    //        //Debug.DrawRay(transform.position, transform.forward * 100f, Color.green);
+    //        //Physics.SphereCast(ActiveCamera.transform.position, sphereCastRadius, sphere.transform.position, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask)
+    //        if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hit, float.MaxValue, AimAssistHitMask))
+    //        {
+    //            //Debug.DrawLine(ActiveGun.Model.transform.position, hitnew.point, Color.green); 
+    //            //Debug.Log("Aim Assist: Hit");
+    //            Gizmos.color = Color.green;
+    //            Vector3 sphereCastMidpoint = hit.point;
+    //            //Debug.Log(hit.transform);
+    //            Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadiusAimAssist);
+    //            Gizmos.DrawSphere(hit.point, 0.1f);
+    //            Debug.DrawLine(ActiveCamera.transform.position, sphereCastMidpoint, Color.green);
+    //            if (Physics.Raycast(ray, out RaycastHit hitnew, float.MaxValue, AimAssistHitMask))
+    //            {
+    //                Debug.DrawLine(ActiveCamera.transform.position, hitnew.point, Color.green);
+    //            }
 
-                //Debug.DrawLine(ActiveGun.Model.transform.position, hitCheck.point, Color.green);
-                //float yVelocity = 0f;
-                //float oldPos;
+    //            //Debug.DrawLine(ActiveGun.Model.transform.position, hitCheck.point, Color.green);
+    //            //float yVelocity = 0f;
+    //            //float oldPos;
 
-                // oldPos = Mathf.SmoothDamp, 1f, ref yVelocity, Time.deltaTime * 30f);
+    //            // oldPos = Mathf.SmoothDamp, 1f, ref yVelocity, Time.deltaTime * 30f);
 
 
 
-                //CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
-            }
-            //Debug.DrawLine(ActiveGun.Model.transform.position,r.direction, Color.blue);
-        }
-        else
-        {
-            //Debug.DrawRay(transform.position, transform.forward * 100f, Color.red);
+    //            //CinemachineCameraTarget.transform.localPosition = new Vector3(0, oldPos, 0);
+    //        }
+    //        //Debug.DrawLine(ActiveGun.Model.transform.position,r.direction, Color.blue);
+    //    }
+    //    else
+    //    {
+    //        //Debug.DrawRay(transform.position, transform.forward * 100f, Color.red);
 
-            if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
-            {
-                Debug.Log("No Aim Assist: Hit");
-                Gizmos.color = Color.red;
-                Vector3 sphereCastMidpoint = transform.position + (transform.forward * (range - sphereCastRadius));
-                Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
-                //Debug.DrawLine(screenCenterPoint, sphereCastMidpoint, Color.red);
-            }
-        }
-    }
+    //        if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hit, float.MaxValue, ActiveGun.ShootConfig.HitMask))
+    //        {
+    //            Debug.Log("No Aim Assist: Hit");
+    //            Gizmos.color = Color.red;
+    //            Vector3 sphereCastMidpoint = transform.position + (transform.forward * (range - sphereCastRadius));
+    //            Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
+    //            //Debug.DrawLine(screenCenterPoint, sphereCastMidpoint, Color.red);
+    //        }
+    //    }
+    //}
     private IEnumerator PlayTrail(Vector3 StartPoint, Vector3 EndPoint, RaycastHit Hit)
     {
         
