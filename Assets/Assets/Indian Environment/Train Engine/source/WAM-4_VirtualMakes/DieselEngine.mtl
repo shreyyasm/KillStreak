@@ -1,0 +1,97 @@
+newmtl TRAIN_workfile_maya:TRAIN_workfile_maya:lambert2SG
+illum 4
+Kd 0.74 0.17 0.17
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl TRAIN_workfile_maya:TRAIN_workfile_maya:lambert3SG
+illum 4
+Kd 0.14 0.02 0.03
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl TRAIN_workfile_maya:TRAIN_workfile_maya:lambert4SG
+illum 4
+Kd 0.21 0.23 0.90
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl TRAIN_workfile_maya:TRAIN_workfile_maya:lambert5SG
+illum 4
+Kd 1.00 0.07 0.95
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl TRAIN_workfile_maya:TRAIN_workfile_maya:lambert6SG
+illum 4
+Kd 0.41 0.99 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl TRAIN_workfile_maya:lambert1SG
+illum 4
+Kd 0.72 0.14 0.98
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl TRAIN_workfile_maya:lambert2SG
+illum 4
+Kd 0.90 0.83 0.31
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl TRAIN_workfile_maya:lambert3SG
+illum 4
+Kd 0.24 0.70 0.39
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl TRAIN_workfile_maya:lambert4SG
+illum 4
+Kd 0.19 0.68 0.83
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl TRAIN_workfile_maya:lambert5SG
+illum 4
+Kd 0.00 0.83 0.83
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl initialShadingGroup
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl lambert3SG
+illum 4
+Kd 1.00 1.00 0.61
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl steam_engine:lambert2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd DieselEngineDirt.tga
+Ni 1.00
+newmtl steam_engine:lambert3SG
+illum 4
+Kd 0.34 0.34 0.34
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl steam_engine:lambert4SG
+illum 4
+Kd 0.81 0.81 0.81
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl steam_engine:lambert5SG
+illum 4
+Kd 0.38 0.20 0.11
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00

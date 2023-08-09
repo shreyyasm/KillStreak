@@ -1258,13 +1258,13 @@ public class PlayerGunSelector : NetworkBehaviour
 
                                     if (hitnew.collider.transform.position.x > hit.point.x)
                                     {
-                                        thirdPersonController._cinemachineTargetYaw = Mathf.Lerp(thirdPersonController._cinemachineTargetYaw, thirdPersonController._cinemachineTargetYaw += 0.2f, Time.deltaTime * 200f);
+                                        thirdPersonController._cinemachineTargetYaw = Mathf.Lerp(thirdPersonController._cinemachineTargetYaw, thirdPersonController._cinemachineTargetYaw += 0.15f, Time.deltaTime * 200f);
                                     }
 
 
                                     if (hitnew.collider.transform.position.x < hit.point.x)
                                     {
-                                        thirdPersonController._cinemachineTargetYaw = Mathf.Lerp(thirdPersonController._cinemachineTargetYaw, thirdPersonController._cinemachineTargetYaw -= 0.2f, Time.deltaTime * 200f);
+                                        thirdPersonController._cinemachineTargetYaw = Mathf.Lerp(thirdPersonController._cinemachineTargetYaw, thirdPersonController._cinemachineTargetYaw -= 0.15f, Time.deltaTime * 200f);
 
                                     }
                                     

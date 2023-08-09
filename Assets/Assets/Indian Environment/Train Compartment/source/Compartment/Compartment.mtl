@@ -1,0 +1,24 @@
+newmtl Compartment:lambert1SG
+illum 4
+Kd 0.72 0.14 0.98
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Compartment:lambert2SG
+illum 4
+Kd 0.74 0.17 0.17
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Compartment:lambert3SG
+illum 4
+Kd 1.00 1.00 0.61
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Compartment:lambert5SG
+illum 4
+Kd 0.00 0.83 0.83
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
