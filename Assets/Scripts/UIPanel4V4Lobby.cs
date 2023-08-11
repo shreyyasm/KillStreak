@@ -67,7 +67,7 @@ namespace EOSLobbyTest
         
         public void StartGame()
         {
-            InstanceFinder.SceneManager.LoadGlobalScenes(new SceneLoadData("Game") { ReplaceScenes = ReplaceOption.All });
+            InstanceFinder.SceneManager.LoadGlobalScenes(new SceneLoadData("4v4 Team DeathMatch") { ReplaceScenes = ReplaceOption.All });
 
             PlayerManager.Instance.ServerPlayer?.SendStartingGame();
         }
