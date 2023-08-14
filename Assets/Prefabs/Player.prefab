@@ -6416,8 +6416,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 2.814844, y: 2.814917}
-  m_SizeDelta: {x: 390.96, y: 390.96}
+  m_AnchoredPosition: {x: 3.1103761, y: 3.1104128}
+  m_SizeDelta: {x: 432, y: 432}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &3378225522413771638
 GameObject:
@@ -24557,7 +24557,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 7
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 774665742
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects:
@@ -26895,8 +26895,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 199.48755, y: 182.04138}
-  m_SizeDelta: {x: 394.8696, y: 394.8696}
+  m_AnchoredPosition: {x: 134.89911, y: 170.81284}
+  m_SizeDelta: {x: 436.32, y: 436.32}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &4268129674883721265
 CanvasRenderer:
@@ -26960,14 +26960,14 @@ MonoBehaviour:
   scalingAxis: 1
   anchor: 0
   joystickTouchSize: 0
-  joystickSize: 3.62
+  joystickSize: 4
   radiusModifier: 5
   dynamicPositioning: 1
   customTouchSize_X: 50
   customTouchSize_Y: 75
   customTouchSizePos_X: 0
   customTouchSizePos_Y: 0
-  customSpacing_X: 11
+  customSpacing_X: 7.7
   customSpacing_Y: 22.3
   gravity: 60
   extendRadius: 0
@@ -34505,8 +34505,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 800, y: 449.99994}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_AnchoredPosition: {x: 960.00006, y: 539.99994}
+  m_SizeDelta: {x: 2304, y: 1296}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2843881448874370212
 Canvas:
