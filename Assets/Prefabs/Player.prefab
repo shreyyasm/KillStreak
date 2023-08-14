@@ -616,7 +616,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 74abbbf1b1724e34b894191db38e10a0, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.6
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2458,19 +2458,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8774763312314991805}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1603918855143199604}
-        m_TargetAssemblyTypeName: StarterAssets.ThirdPersonController, Assembly-CSharp
-        m_MethodName: PlayJumpSound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &7058468995227165162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24569,7 +24557,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 7
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 774665742
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
   _sceneNetworkObjects:
@@ -34891,9 +34879,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d2add02f58e61e640aba3ae9110591cb, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e8d2e675ef8db4c44aced693b9d8b8ed, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 1
   Mute: 0

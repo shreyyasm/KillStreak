@@ -19,8 +19,10 @@ public class ScreenTouch : MonoBehaviour
     public float sensitivity;
     public float sensitivityShowcase;
     // Start is called before the first frame update
+    Touch t;
     void Start()
     {
+        
         leftFingerId = -1;
         rightFingerID = -1;
         screenWidth = Screen.width;
@@ -35,22 +37,59 @@ public class ScreenTouch : MonoBehaviour
 
     private void GetTouch()
     {
-        for (int i = 0; i < Input.touchCount; i++)
-        {
-            Touch t = Input.GetTouch(i);
+        //for (int i = 0; i < Input.touchCount; i++)
+        //{
 
-            switch (t.phase)
+        if(Input.touchCount != 0)
+            t = Input.GetTouch(0);
+        if (t.position.x < (screenWidth / 2))
+        {
+            //for (int i = 0; i < Input.touchCount; i++)
+            //{
+
+            //}t = Input.GetTouch(0);
+            if (Input.touchCount != 0)
+                t = Input.GetTouch(1);
+            foreach (Touch o in Input.touches)
+            {
+                if (o.position.x > (screenWidth / 2))
+                    t = Input.GetTouch(o.fingerId);           
+            }
+
+
+        }
+        else
+        {
+            if (Input.touchCount != 0)
+                t = Input.GetTouch(0);
+        }
+           
+        
+        
+       
+
+        //if (t.position.x < (screenWidth / 2))
+        //{
+        //    t.fingerId = 0;
+
+        //}
+        //if (t.position.x < (screenWidth / 2))
+        //{
+        //    t.fingerId = 0;
+
+        //}
+        switch (t.phase)
             {
                 case TouchPhase.Began:
-                    if (t.position.x > (screenWidth / 2) && rightFingerID == -1)
+                    if (rightFingerID == -1)
                     {
                         rightFingerID = t.fingerId;
                     }
-                    else if (t.position.x < (screenWidth / 2) && leftFingerId == -1)
-                    {
-                        leftFingerId = t.fingerId;
-                        moveTouchStartPosition = t.position;
-                    }
+                    //else if (t.position.x < (screenWidth / 2) && leftFingerId == -1)
+                    //{
+                    //    leftFingerId = t.fingerId;
+                    //    moveTouchStartPosition = t.position;
+                    //}
 
                     break;
 
@@ -58,19 +97,20 @@ public class ScreenTouch : MonoBehaviour
                 case TouchPhase.Ended:
                     if (t.fingerId == rightFingerID)
                         rightFingerID = -1;
-                    else if (t.fingerId == leftFingerId)
-                    {
-                        leftFingerId = -1;
-                        moveTouchStartPosition = moveInput = Vector2.zero;
-                    }
+                    //else if (t.fingerId == leftFingerId)
+                    //{
+                    //    leftFingerId = -1;
+                    //    moveTouchStartPosition = moveInput = Vector2.zero;
+                    //}
                     //lookInput = Vector2.zero;
                     break;
 
                 case TouchPhase.Moved:
-                    if (rightFingerID == t.fingerId)
-                        lookInput = t.deltaPosition * Time.deltaTime * sensitivity;
-                    else if (leftFingerId == t.fingerId)
-                        moveInput = t.position - moveTouchStartPosition;
+                //if (rightFingerID == t.fingerId)
+                if (t.position.x > (screenWidth / 2))
+                    lookInput = t.deltaPosition * Time.deltaTime * sensitivity;
+                    //else if (leftFingerId == t.fingerId)
+                    //    moveInput = t.position - moveTouchStartPosition;
                     break;
 
                 case TouchPhase.Stationary:
@@ -79,7 +119,7 @@ public class ScreenTouch : MonoBehaviour
                     break;
 
 
-            }
+          //  }
         }
     }
     private void GetTouchForShowcase()
