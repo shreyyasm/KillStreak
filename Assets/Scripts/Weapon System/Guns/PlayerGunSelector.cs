@@ -1159,7 +1159,8 @@ public class PlayerGunSelector : NetworkBehaviour
         IDamageable Damage = HitCollider.GetComponentInParent<IDamageable>();      
         if (Damage != null)
         {
-            if(loadOutManager.loadNumber == 4)
+            floatingDamage.SetFloat();
+            if (loadOutManager.loadNumber == 4)
             {
                 if (weaponSwitching.selectedWeapon == 0)
                 {
@@ -1176,7 +1177,8 @@ public class PlayerGunSelector : NetworkBehaviour
 
             
             Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
-            floatingDamage.GetPosition(enemyPos, ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+            floatingDamage.GetPosition(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+            floatingDamage.StartFloatDamage();
             //floatingDamage.CallStartAnimation();
         }
     }
@@ -1189,7 +1191,7 @@ public class PlayerGunSelector : NetworkBehaviour
     void PrewarmPools()
     {
         DefaultObjectPool pool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
-        pool.CacheObjects(spawnObject.GetComponent<NetworkObject>(), 10, IsServer);
+        pool.CacheObjects(spawnObject.GetComponent<NetworkObject>(), 30, IsServer);
     }
 
     public NetworkObject GetObject()

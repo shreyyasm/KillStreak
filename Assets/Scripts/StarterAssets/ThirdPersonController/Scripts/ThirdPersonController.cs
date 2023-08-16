@@ -187,7 +187,7 @@ namespace StarterAssets
 
         public float zValue;
         public AudioSource audioSource;
-
+        public GameObject RespawnPrefab;
         //MoveData for client simulation
         private MoveData _clientMoveData;
 
@@ -297,6 +297,7 @@ namespace StarterAssets
             
             if (base.Owner.IsLocalClient)
             {
+                RespawnManager();
                 cameraRoot.AddComponent<CameraFollow>();
                // gameObject.AddComponent<AudioListener>();
                 foreach (Transform gears in Root)
@@ -325,6 +326,11 @@ namespace StarterAssets
 
         }
 
+        public void RespawnManager()
+        {
+            GameObject obj = Instantiate(RespawnPrefab);
+            InstanceFinder.ServerManager.Spawn(obj);
+        }
         private void TimeManager_OnTick()
         {
             if (base.IsOwner)
@@ -455,7 +461,7 @@ namespace StarterAssets
             //touchinput 
             playerGunSelector.SetLookInput(mouseX, mouseY, x, z);
 
-
+            //SetRigWeight();
             //if (Input.GetMouseButtonDown(1))
             //    Crouch();
             //if (Input.GetMouseButtonDown(2))
@@ -1374,7 +1380,7 @@ namespace StarterAssets
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void SetRigServer()
         {
-           
+            Debug.Log("WorkServer");
             if (weaponSwitching.selectedWeapon == 0)
             {
                 if (!changingGun)
@@ -1432,7 +1438,7 @@ namespace StarterAssets
         [ObserversRpc(BufferLast = true, RunLocally = true)]
         public void SetRigObserver()
         {
-
+            Debug.Log("WorkObserver");
             if (weaponSwitching.selectedWeapon == 0)
             {
                 if (!changingGun)

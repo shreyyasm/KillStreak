@@ -84,8 +84,9 @@ public class WeaponSwitching : NetworkBehaviour
             playerGunSelector.SetActiveGun(selectedWeapon);        
             playerGunSelector.ChangeCrosshair();
             thirdPersonController.changingGun = false;
-            thirdPersonController.SetRigWeight();
+            
             ManagerLayerWeights();
+            StartCoroutine(SetRig());
         }
     }
     public void GunChangeAnimationCheckBackwards()
@@ -96,9 +97,15 @@ public class WeaponSwitching : NetworkBehaviour
             playerGunSelector.SetActiveGun(selectedWeapon);
             playerGunSelector.ChangeCrosshair();
             thirdPersonController.changingGun = false;
-            thirdPersonController.SetRigWeight();
+            
             ManagerLayerWeights();
+            StartCoroutine(SetRig());
         }
+    }
+    IEnumerator SetRig()
+    {
+        yield return new WaitForSeconds(0.1f);
+        thirdPersonController.SetRigWeight();
     }
     public void SetActiveGun(int loadNumber)
     {
@@ -218,7 +225,7 @@ public class WeaponSwitching : NetworkBehaviour
             //    //SelectedWeapon();
             //}
             shooterController.GunChanged();
-            thirdPersonController.SetRigWeight();
+            StartCoroutine(SetRig());
             ManagerLayerWeights();
             //playerGunSelector.ActiveGunPrefab = playerGunSelector.PrimaryGunsPrefabs[loadOutManager.loadNumber];
 
@@ -252,7 +259,7 @@ public class WeaponSwitching : NetworkBehaviour
             //    //SelectedWeapon();
             //}
             shooterController.GunChanged();
-            thirdPersonController.SetRigWeight();
+            StartCoroutine(SetRig());
             ManagerLayerWeights();
             //playerGunSelector.ActiveGunPrefab = playerGunSelector.PrimaryGunsPrefabs[loadOutManager.loadNumber];
 

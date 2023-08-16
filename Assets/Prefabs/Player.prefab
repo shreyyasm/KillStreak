@@ -1039,7 +1039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 17
+  _componentIndexCache: 18
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   PlayerCheck: {fileID: 8841774182271569056}
@@ -1055,7 +1055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 18
+  _componentIndexCache: 19
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   GunSelector: {fileID: 4556042117359066162}
@@ -7046,7 +7046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f544f2f09089d5e46a3d4724a3d2589e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 20
+  _componentIndexCache: 21
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   <selectedWeapon>k__BackingField: 0
@@ -23973,6 +23973,7 @@ GameObject:
   - component: {fileID: 6757550525262360853}
   - component: {fileID: 4137404698437881120}
   - component: {fileID: 4444467285361161639}
+  - component: {fileID: 4062980575288397414}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -24095,6 +24096,8 @@ MonoBehaviour:
   slideSpeed: 0
   zValue: 0
   audioSource: {fileID: 4444467285361161639}
+  RespawnPrefab: {fileID: 9090471693302619223, guid: d3acc2afa4c84234784135b30c2ad1d3,
+    type: 3}
   speed: 12
   gravity: -9.81
   groundCheck: {fileID: 6026542968252147384}
@@ -24542,6 +24545,7 @@ MonoBehaviour:
   - {fileID: 5288676240204857373}
   - {fileID: 6757550525262360853}
   - {fileID: 4137404698437881120}
+  - {fileID: 4062980575288397414}
   - {fileID: 6145575145839192901}
   - {fileID: 4016688909735605221}
   - {fileID: 7607747229311474301}
@@ -24595,7 +24599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c71fd7f855ec523429999fc4e14a1928, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _overrideType: 3
+  _overrideType: 1
   _updateHostVisibility: 1
   _observerConditions: []
 --- !u!114 &4556042117359066162
@@ -24626,7 +24630,7 @@ MonoBehaviour:
   weaponSwitching: {fileID: 3760958236556242323}
   playerSoundManager: {fileID: 3811869648561070088}
   surfaceManager: {fileID: 5606925415617864127}
-  floatingDamage: {fileID: 794585380540652492}
+  floatingDamage: {fileID: 3336215809204780483}
   playerHealth: {fileID: 7459709495149301830}
   thirdPersonController: {fileID: 1603918855143199604}
   gunSelected: 0
@@ -24794,6 +24798,7 @@ MonoBehaviour:
     m_NumColorKeys: 4
     m_NumAlphaKeys: 4
   fill: {fileID: 3811869648847142119}
+  healthAmmoSpawner: {fileID: 4062980575288397414}
 --- !u!114 &3792698823556867125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24872,7 +24877,9 @@ MonoBehaviour:
   ammoDisplayer: {fileID: 5813009804763147807}
   weaponSwitching: {fileID: 3760958236556242323}
   LoadOutMenu: {fileID: 4424037591173281898}
-  InputCanvas: {fileID: 6527828215835793336}
+  InputCanvasJoystick: {fileID: 8564524278370318299}
+  InputCanvasGunsUI: {fileID: 8044703296097881164}
+  floatingDamage: {fileID: 3336215809204780483}
   TimerLoadout: {fileID: 3811869648053755947}
   timeRemaining: 6
   countdownState: 0
@@ -25929,6 +25936,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &4062980575288397414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144055852716770995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 909a263795f993d45a3bda750b0fa250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 15
+  _addedNetworkObject: {fileID: 4866512734858148882}
+  _networkObjectCache: {fileID: 4866512734858148882}
+  AddOnPrefab: {fileID: 2253691433765683333, guid: 51f646e556b0ff042834f4f593c86ec9,
+    type: 3}
+  ReferenceObject: {fileID: 0}
 --- !u!1 &4226758256720615127
 GameObject:
   m_ObjectHideFlags: 0
@@ -28988,7 +29013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 15
+  _componentIndexCache: 16
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   _synchronizeParent: 0
@@ -30411,9 +30436,9 @@ GameObject:
   - component: {fileID: 3277780380947437091}
   - component: {fileID: 541877030972201147}
   - component: {fileID: 2462903445996538634}
-  - component: {fileID: 794585380540652492}
-  - component: {fileID: 6510612503645315491}
   - component: {fileID: 4016688909735605221}
+  - component: {fileID: 6970161878929902248}
+  - component: {fileID: 3336215809204780483}
   m_Layer: 13
   m_Name: Animated Canvas UI
   m_TagString: Untagged
@@ -30505,7 +30530,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &794585380540652492
+--- !u!114 &4016688909735605221
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -30514,16 +30539,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6527828215835793336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c5fd8c63641d3e4cb939ac226571674, type: 3}
+  m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floatingText: {fileID: 7083750502834594343}
-  text: {fileID: 7083750502834594337}
-  worldSpaceCanvas: {fileID: 8382661271144987975}
-  offset: {x: 0, y: 0, z: 0}
-  anim: {fileID: 6510612503645315491}
-  playerAction: {fileID: 911395708910928025}
---- !u!95 &6510612503645315491
+  _componentIndexCache: 17
+  _addedNetworkObject: {fileID: 4866512734858148882}
+  _networkObjectCache: {fileID: 4866512734858148882}
+  PlayerCheck: {fileID: 8841774182271569056}
+--- !u!95 &6970161878929902248
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -30543,7 +30566,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4016688909735605221
+--- !u!114 &3336215809204780483
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -30552,13 +30575,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6527828215835793336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c5fd8c63641d3e4cb939ac226571674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 16
-  _addedNetworkObject: {fileID: 4866512734858148882}
-  _networkObjectCache: {fileID: 4866512734858148882}
-  PlayerCheck: {fileID: 8841774182271569056}
+  floatingText: {fileID: 7083750502834594343}
+  text: {fileID: 7083750502834594337}
+  worldSpaceCanvas: {fileID: 8382661271144987975}
+  offset: {x: 0, y: 0, z: 0}
+  anim: {fileID: 6970161878929902248}
+  playerAction: {fileID: 911395708910928025}
 --- !u!1 &6548411619362041477
 GameObject:
   m_ObjectHideFlags: 0
@@ -33666,7 +33691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 19
+  _componentIndexCache: 20
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   GunSelector: {fileID: 4556042117359066162}

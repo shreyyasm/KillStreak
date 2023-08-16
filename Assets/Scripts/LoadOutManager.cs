@@ -14,7 +14,9 @@ public class LoadOutManager : NetworkBehaviour
     private AmmoDisplayer ammoDisplayer;
     [SerializeField] WeaponSwitching weaponSwitching;
     [SerializeField] GameObject LoadOutMenu;
-    [SerializeField] GameObject InputCanvas;
+    [SerializeField] GameObject InputCanvasJoystick;
+    [SerializeField] GameObject InputCanvasGunsUI;
+    [SerializeField] FloatingDamage floatingDamage;
 
     public TextMeshProUGUI TimerLoadout;
     public float timeRemaining;
@@ -122,12 +124,17 @@ public class LoadOutManager : NetworkBehaviour
     }
     public void GetLoadOutInput(int loadOutNumber)
     {
-        audioSource.PlayOneShot(loadoutUISFX);
+        
+        
         if (base.IsServer)
             GetLoadOutInputObserver(loadOutNumber);
 
         else
             GetLoadOutInputServer(loadOutNumber);
+
+        if (!base.IsOwner)
+            return;
+        audioSource.PlayOneShot(loadoutUISFX);
     }
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void GetLoadOutInputServer(int loadOutNumber)
@@ -184,6 +191,8 @@ public class LoadOutManager : NetworkBehaviour
         playerGunSelector.ChangeCrosshair();
         shooterController.ExitAim();
         ammoDisplayer.UpdateGunAmmo();
+        if (ammoDisplayer != null)
+            ammoDisplayer.ChangeGunSelectedUI(0);
     }
     [ObserversRpc(BufferLast = true)]
     public void GetLoadOutInputObserver(int loadOutNumber)
@@ -237,16 +246,20 @@ public class LoadOutManager : NetworkBehaviour
         shooterController.ExitAim();
         playerGunSelector.ChangeCrosshair();
         ammoDisplayer.UpdateGunAmmo();
+        if(ammoDisplayer!= null)
+            ammoDisplayer.ChangeGunSelectedUI(0);
     }
    
     public void OpenLoadOut()
     {
         LoadOutMenu.SetActive(true);
-        InputCanvas.SetActive(false);
+        floatingDamage.StopFloatDamage();
+       
         audioSource.PlayOneShot(loadoutUISFX);
         countdownState = true;
         timeRemaining = 6;
-        
+        InputCanvasJoystick.SetActive(false);
+        InputCanvasGunsUI.SetActive(false);
         StartCoroutine(playLoadoutSound());
 
     }
@@ -256,7 +269,8 @@ public class LoadOutManager : NetworkBehaviour
         timeRemaining = 0;
         StopAllCoroutines();
         LoadOutMenu.SetActive(false);
-        InputCanvas.SetActive(true);
+        InputCanvasJoystick.SetActive(true);
+        InputCanvasGunsUI.SetActive(true);
         if (anim != null)
             anim.SetBool("LoadOutDone", true);
         audioSource.PlayOneShot(loadoutSFX);
@@ -290,7 +304,8 @@ public class LoadOutManager : NetworkBehaviour
     public IEnumerator playLoadoutSound()
     {
         yield return new WaitForSeconds(6f);       
-        InputCanvas.SetActive(true);
+        InputCanvasJoystick.SetActive(true);
+        InputCanvasGunsUI.SetActive(true);
         if (anim != null)
             anim.SetBool("LoadOutDone", true);
         audioSource.PlayOneShot(loadoutSFX);

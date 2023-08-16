@@ -131,20 +131,48 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
    
     public void PlayerDeath()
     {
-        if(CurrentHealth <= 0)
+        if (CurrentHealth <= 0)
         {
             if (PlayerCanvas != null)
-                PlayerCanvas.SetActive(false);           
+                PlayerCanvas.SetActive(false);
             if (AnimatedCanvas != null)
                 AnimatedCanvas.SetActive(false);
             RigController.enabled = false;
             StartCoroutine(DespawnPlayer());
-            PlayerRespawn.Instance.Respawn(player.gameObject , PlayerCanvas,AnimatedCanvas);
+
             playerDead = true;
             anim.SetLayerWeight(7, 1);
             anim.SetInteger("DeadIndex", Random.Range(0, 4));
             anim.SetBool("Dead", true);
+            PlayerRespawn.Instance.Respawn(player.gameObject, PlayerCanvas, AnimatedCanvas);
+        }
+        //if (base.IsServer)
+        //    PlayerDeathObserver();
+        //else
+        //    PlayerDeathServer();
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void PlayerDeathServer()
+    {
+        
+    }
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
+    public void PlayerDeathObserver()
+    {
+        if (CurrentHealth <= 0)
+        {
+            if (PlayerCanvas != null)
+                PlayerCanvas.SetActive(false);
+            if (AnimatedCanvas != null)
+                AnimatedCanvas.SetActive(false);
+            RigController.enabled = false;
+            StartCoroutine(DespawnPlayer());
 
+            playerDead = true;
+            anim.SetLayerWeight(7, 1);
+            anim.SetInteger("DeadIndex", Random.Range(0, 4));
+            anim.SetBool("Dead", true);
+            PlayerRespawn.Instance.Respawn(player.gameObject, PlayerCanvas, AnimatedCanvas);
         }
     }
     public bool PlayerDeathState()
@@ -155,10 +183,30 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         yield return new WaitForSeconds(5f);
 
-        HealthAmmoSpawner.Instance.GetObject(transform.position, Quaternion.identity);
-        gameObject.SetActive(false);
-       
+        //HealthAmmoSpawner.Instance.GetObject(transform.position, Quaternion.identity);
+        //gameObject.SetActive(false);
+        DespwanPlayer();
         //InstanceFinder.ServerManager.Despawn(player.gameObject, DespawnType.Pool);   
+    }
+    public HealthAmmoSpawner healthAmmoSpawner;
+    public void DespwanPlayer()
+    {
+        if (base.IsServer)
+            DespawnPlayerObserver();
+        else
+            DespawnPlayerServer();
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void DespawnPlayerServer()
+    {
+        healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
+    }
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
+    public void DespawnPlayerObserver()
+    {
+        healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
     }
     public void RestoreHealth()
     {

@@ -362,7 +362,7 @@ public class SurfaceManager : NetworkBehaviour
         impactPool.CacheObjects(impactPrefab.GetComponent<NetworkObject>(), 40, IsServer);
 
         DefaultObjectPool impactBloodPool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
-        impactPool.CacheObjects(impactBloodPrefab.GetComponent<NetworkObject>(), 20, IsServer);
+        impactBloodPool.CacheObjects(impactBloodPrefab.GetComponent<NetworkObject>(), 40, IsServer);
 
         DefaultObjectPool audioPool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
         audioPool.CacheObjects(impactAudioPrefab.GetComponent<NetworkObject>(), 40, IsServer);
