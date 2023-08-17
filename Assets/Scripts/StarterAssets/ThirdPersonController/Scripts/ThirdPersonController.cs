@@ -96,8 +96,11 @@ namespace StarterAssets
         [SerializeField] private Rig pistolRig;
         [SerializeField] private Rig rifleRig;
         // cinemachine
-        public float _cinemachineTargetYaw;
-        public float _cinemachineTargetPitch;
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        public float _cinemachineTargetYaw { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        public float _cinemachineTargetPitch { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
         // player
         private float _speed;
@@ -105,7 +108,9 @@ namespace StarterAssets
         [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
         public float _animationBlend { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
-        private float _targetRotation = 0.0f;
+        public float _targetRotation = 0.0f;
+        public Vector3 movement;
+        public Vector3 targetDirection;
         private float _rotationVelocity;
         public float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
@@ -190,7 +195,7 @@ namespace StarterAssets
         public GameObject RespawnPrefab;
         //MoveData for client simulation
         private MoveData _clientMoveData;
-
+        public float _CameraEulerY;
         //MoveData for replication
         public struct MoveData : IReplicateData
         {
@@ -224,12 +229,16 @@ namespace StarterAssets
             public float _cinemachineTargetYaw;
             public float _cinemachineTargetPitch;
 
+            public float _targetRotation;
+            public Vector3 movement;
+            public Vector3 targetDirection;
 
+            public float CameraEulerY;
             private uint _tick;
             public void Dispose() { }
             public uint GetTick() => _tick;
             public void SetTick(uint value) => _tick = value;
-            public ReconcileData(Vector3 position, Quaternion rotation,float verticalVelocity, float fallTimeout, float jumpTimeout,float slideValue, float slideSpeedValue, bool grounded, bool timeRunning, float _cinemachineTargetYawNew, float _cinemachineTargetPitchNew)
+            public ReconcileData(Vector3 position, Quaternion rotation,float verticalVelocity, float fallTimeout, float jumpTimeout,float slideValue, float slideSpeedValue, bool grounded, bool timeRunning, float _cinemachineTargetYawNew, float _cinemachineTargetPitchNew, float targetRotation, Vector3 _movement, Vector3 _targetDirection, float cameraEuler)
             {
                 Position = position;
                 Rotation = rotation;
@@ -244,6 +253,14 @@ namespace StarterAssets
 
                 _cinemachineTargetYaw = _cinemachineTargetYawNew;
                 _cinemachineTargetPitch = _cinemachineTargetPitchNew;
+
+                movement = _movement;
+                targetDirection = _targetDirection;
+
+
+                _targetRotation = targetRotation;
+                CameraEulerY = cameraEuler;
+
                 _tick = 0;
             }
         }
@@ -345,7 +362,7 @@ namespace StarterAssets
             {
                 
                 MoveWithData(default, true);
-                ReconcileData rd = new  ReconcileData(transform.position, transform.rotation,_verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning, _cinemachineTargetYaw,  _cinemachineTargetPitch);
+                ReconcileData rd = new  ReconcileData(transform.position, transform.rotation,_verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning, _cinemachineTargetYaw,  _cinemachineTargetPitch, _targetRotation,movement,targetDirection,_CameraEulerY);
                 Reconciliation(rd, true);
             }
         }
@@ -366,6 +383,11 @@ namespace StarterAssets
             timerIsRunning = rd.timeIsRunning;
             _cinemachineTargetYaw = rd._cinemachineTargetYaw;
             _cinemachineTargetPitch = rd._cinemachineTargetPitch;
+
+            _targetRotation = rd._targetRotation;
+            movement = rd.movement;
+            targetDirection = rd.targetDirection;
+            _CameraEulerY = rd.CameraEulerY;
         }
         
         private void CheckInput(out MoveData md)
@@ -375,7 +397,8 @@ namespace StarterAssets
             {
                 
             Move = new Vector3(ultimateJoystick.GetHorizontalAxis(), 0f, ultimateJoystick.GetVerticalAxis()).normalized,
-            Look = new Vector3(screenTouch.lookInput.x, screenTouch.lookInput.y),              
+            Look = new Vector3(screenTouch.lookInput.x, screenTouch.lookInput.y),
+            CameraEulerY = _mainCamera.transform.eulerAngles.y,
             Jump = _input.jump,
             Slide = _input.slide,
             
@@ -757,6 +780,8 @@ namespace StarterAssets
 
             GroundedCheck();
 
+
+
             if (playerHealth.PlayerDeathState())
                 return;
             mouseX = screenTouch.lookInput.x;
@@ -795,7 +820,9 @@ namespace StarterAssets
                     _cinemachineTargetYaw, 0.0f);
 
 
-            transform.rotation = Quaternion.Euler(0, _cinemachineTargetYaw, 0.0f);
+            _controller.transform.rotation = Quaternion.Euler(0, _cinemachineTargetYaw, 0f);;
+            //transform.forward = Vector3.Lerp(transform.forward, shooterController.aimDirection, Time.deltaTime * 10f);
+            //_controller.transform.forward = Vector3.Lerp(transform.forward, new Vector3(_cinemachineTargetPitch, 0 , _cinemachineTargetYaw), (float)base.TimeManager.TickDelta * 10f);
             // _controller.transform.forward = Vector3.Lerp(transform.forward, new Vector3(_mainCamera.transform.forward.x, 0, _mainCamera.transform.forward.z) , (float)base.TimeManager.TickDelta * 10f);
 
 
@@ -1035,7 +1062,7 @@ namespace StarterAssets
                 //_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
                 //                  _mainCamera.transform.eulerAngles.y;
                 _targetRotation = Mathf.Atan2(md.Move.x, md.Move.z) * Mathf.Rad2Deg +
-                                  _mainCamera.transform.eulerAngles.y;
+                                  md.CameraEulerY;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                     RotationSmoothTime);
 
@@ -1043,8 +1070,8 @@ namespace StarterAssets
                 //transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
 
-            Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-            Vector3 movement = targetDirection.normalized * targetSpeed * neutralize;
+            targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+            movement = targetDirection.normalized * targetSpeed * neutralize;
             movement += new Vector3(0.0f, _verticalVelocity, 0.0f);
             if (!isSliding)
             {
@@ -1380,7 +1407,7 @@ namespace StarterAssets
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void SetRigServer()
         {
-            Debug.Log("WorkServer");
+            
             if (weaponSwitching.selectedWeapon == 0)
             {
                 if (!changingGun)
@@ -1438,7 +1465,7 @@ namespace StarterAssets
         [ObserversRpc(BufferLast = true, RunLocally = true)]
         public void SetRigObserver()
         {
-            Debug.Log("WorkObserver");
+            
             if (weaponSwitching.selectedWeapon == 0)
             {
                 if (!changingGun)

@@ -116,7 +116,7 @@ public class PlayerGunSelector : NetworkBehaviour
 
     }
 
-    [SerializeField] bool aimAssist;
+    [SerializeField] public  bool aimAssist;
     [SerializeField] float aimAssistSize = 1f;
     public TwoBoneIKConstraint SniperRig;
 
@@ -161,7 +161,7 @@ public class PlayerGunSelector : NetworkBehaviour
             return;
         GunModel = ActiveGunPrefab;
         GunModelRecoil();
-        AimAssis();
+        //AimAssis();
         if (playerAction.IsShooting )
         {
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
@@ -1100,11 +1100,11 @@ public class PlayerGunSelector : NetworkBehaviour
         else
             DisableTrailServer(tail.gameObject);
         tail.gameObject.SetActive(false);
-        //DisableTrailServer(tail.gameObject);
+        //DisableTrailServer(tail.gameObject);        
         InstanceFinder.ServerManager.Despawn(tail.gameObject, DespawnType.Pool);
        
     }
-
+    
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void HitDirectionServer(GameObject tail, Vector3 StartPoint, Vector3 EndPoint, float distance, float remainingDistance)
     {
@@ -1135,7 +1135,7 @@ public class PlayerGunSelector : NetworkBehaviour
     {
         tail.GetComponent<TrailRenderer>().emitting = false;
     }
-    [ObserversRpc(BufferLast = false)]
+    [ObserversRpc(BufferLast = false, RunLocally = true)]
     public void DisableTrailObserver(GameObject tail)
     {
         tail.GetComponent<TrailRenderer>().emitting = false;
@@ -1191,7 +1191,7 @@ public class PlayerGunSelector : NetworkBehaviour
     void PrewarmPools()
     {
         DefaultObjectPool pool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
-        pool.CacheObjects(spawnObject.GetComponent<NetworkObject>(), 30, IsServer);
+        pool.CacheObjects(spawnObject.GetComponent<NetworkObject>(), 10, IsServer);
     }
 
     public NetworkObject GetObject()
@@ -1254,12 +1254,12 @@ public class PlayerGunSelector : NetworkBehaviour
                                 if (!ActiveGun.sniper)
                                 {
                                     newpOS = (hit.collider.transform.position - hitnew.collider.transform.position);
-                                   
+
                                     //Debug.Log(hitnew.collider.transform.position.x + "Sphere collider");
                                     //Debug.Log(hit.point.x + "Ray collider");
                                     //Debug.Log(hit.collider);
                                     //Debug.Log(newpOS.x);
-
+                                    Debug.Log("Work");
                                     if (hitnew.collider.transform.position.x > hit.point.x)
                                     {
                                         thirdPersonController._cinemachineTargetYaw = Mathf.Lerp(thirdPersonController._cinemachineTargetYaw, thirdPersonController._cinemachineTargetYaw += 0.15f, Time.deltaTime * 200f);

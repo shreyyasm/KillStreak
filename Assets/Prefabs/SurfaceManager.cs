@@ -42,6 +42,7 @@ public class SurfaceManager : NetworkBehaviour
         {
             
             GameObject prefab = GetObjectImpact(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal).gameObject;
+            StartCoroutine(DisableImpact(prefab));
             List<TextureAlpha> activeTextures = GetActiveTexturesFromTerrain(terrain, HitPoint);
             foreach (TextureAlpha activeTexture in activeTextures)
             {
@@ -77,6 +78,7 @@ public class SurfaceManager : NetworkBehaviour
         {
                    
             GameObject prefab = GetObjectImpact(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal).gameObject;
+            StartCoroutine(DisableImpact(prefab));
             HitObject.TryGetComponent<Renderer>(out Renderer renderer);
             //Debug.Log("work");
             SurfaceType surfaceType = Surfaces.Find(surface => renderer);
@@ -114,6 +116,7 @@ public class SurfaceManager : NetworkBehaviour
             
            
             GameObject prefab =  GetObjectBlood(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal).gameObject;
+            StartCoroutine(DisableImpact(prefab));
             List<TextureAlpha> activeTextures = GetActiveTexturesFromTerrain(terrain, HitPoint);
             foreach (TextureAlpha activeTexture in activeTextures)
             {
@@ -150,6 +153,7 @@ public class SurfaceManager : NetworkBehaviour
            
            
             GameObject prefab = GetObjectBlood(HitPoint + HitNormal * 0.001f, Quaternion.LookRotation(HitNormal), HitNormal).gameObject;
+            StartCoroutine(DisableImpact(prefab));
             //Texture activeTexture = GetActiveTextureFromRenderer(renderer, TriangleIndex);
             HitObject.TryGetComponent<Renderer>(out Renderer renderer);
             //Debug.Log("work");
@@ -232,7 +236,7 @@ public class SurfaceManager : NetworkBehaviour
                     
 
                 getobject.transform.forward = HitNormal;
-                StartCoroutine(DisableImpact(getobject));
+                //StartCoroutine(DisableImpact(PoolObject));
                 //getobject.GetComponent<ImpactDespawn>().StartDespawn();
                 if (spawnObjectEffect.RandomizeRotation)
                 {
@@ -274,7 +278,7 @@ public class SurfaceManager : NetworkBehaviour
                 GameObject getobject = PoolObject;
 
                 getobject.transform.forward = HitNormal;
-                StartCoroutine(DisableImpact(getobject));
+                //StartCoroutine(DisableImpact(PoolObject));
                 //getobject.GetComponent<ImpactDespawn>().StartDespawn();
                 if (spawnObjectEffect.RandomizeRotation)
                 {
@@ -308,7 +312,7 @@ public class SurfaceManager : NetworkBehaviour
 
     private IEnumerator DisableAudioSource(AudioSource AudioSource, float Time)
     {
-        yield return new WaitForSeconds(Time);
+        yield return new WaitForSeconds(2f);
         InstanceFinder.ServerManager.Despawn(AudioSource.gameObject, DespawnType.Pool);
         //AudioSource.gameObject.SetActive(false);
     }
@@ -328,7 +332,7 @@ public class SurfaceManager : NetworkBehaviour
 
     IEnumerator DisableImpact(GameObject pooledObject)
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         InstanceFinder.ServerManager.Despawn(pooledObject, DespawnType.Pool);
     }
     
@@ -359,13 +363,13 @@ public class SurfaceManager : NetworkBehaviour
     void PrewarmPools()
     {
         DefaultObjectPool impactPool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
-        impactPool.CacheObjects(impactPrefab.GetComponent<NetworkObject>(), 40, IsServer);
+        impactPool.CacheObjects(impactPrefab.GetComponent<NetworkObject>(), 30, IsServer);
 
         DefaultObjectPool impactBloodPool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
-        impactBloodPool.CacheObjects(impactBloodPrefab.GetComponent<NetworkObject>(), 40, IsServer);
+        impactBloodPool.CacheObjects(impactBloodPrefab.GetComponent<NetworkObject>(), 30, IsServer);
 
         DefaultObjectPool audioPool = InstanceFinder.NetworkManager.GetComponent<DefaultObjectPool>();
-        audioPool.CacheObjects(impactAudioPrefab.GetComponent<NetworkObject>(), 40, IsServer);
+        audioPool.CacheObjects(impactAudioPrefab.GetComponent<NetworkObject>(), 30, IsServer);
     }
 
     public NetworkObject GetObjectImpact(Vector3 Position, Quaternion Rotation, Vector3 HitNormal)
@@ -392,4 +396,5 @@ public class SurfaceManager : NetworkBehaviour
 
         return getobject;
     }
+
 }
