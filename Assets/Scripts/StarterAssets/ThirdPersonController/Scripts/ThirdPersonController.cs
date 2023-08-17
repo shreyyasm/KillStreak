@@ -234,11 +234,12 @@ namespace StarterAssets
             public Vector3 targetDirection;
 
             public float CameraEulerY;
+            public Vector3 screenCenterPoint;
             private uint _tick;
             public void Dispose() { }
             public uint GetTick() => _tick;
             public void SetTick(uint value) => _tick = value;
-            public ReconcileData(Vector3 position, Quaternion rotation,float verticalVelocity, float fallTimeout, float jumpTimeout,float slideValue, float slideSpeedValue, bool grounded, bool timeRunning, float _cinemachineTargetYawNew, float _cinemachineTargetPitchNew, float targetRotation, Vector3 _movement, Vector3 _targetDirection, float cameraEuler)
+            public ReconcileData(Vector3 position, Quaternion rotation,float verticalVelocity, float fallTimeout, float jumpTimeout,float slideValue, float slideSpeedValue, bool grounded, bool timeRunning, float _cinemachineTargetYawNew, float _cinemachineTargetPitchNew, float targetRotation, Vector3 _movement, Vector3 _targetDirection, float cameraEuler, Vector3 _screenCenterPoint)
             {
                 Position = position;
                 Rotation = rotation;
@@ -260,8 +261,9 @@ namespace StarterAssets
 
                 _targetRotation = targetRotation;
                 CameraEulerY = cameraEuler;
+                screenCenterPoint = _screenCenterPoint;
 
-                _tick = 0;
+            _tick = 0;
             }
         }
         PlayerManager playerManager;
@@ -362,7 +364,7 @@ namespace StarterAssets
             {
                 
                 MoveWithData(default, true);
-                ReconcileData rd = new  ReconcileData(transform.position, transform.rotation,_verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning, _cinemachineTargetYaw,  _cinemachineTargetPitch, _targetRotation,movement,targetDirection,_CameraEulerY);
+                ReconcileData rd = new  ReconcileData(transform.position, transform.rotation,_verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning, _cinemachineTargetYaw,  _cinemachineTargetPitch, _targetRotation,movement,targetDirection,_CameraEulerY, screenCenterPoint);
                 Reconciliation(rd, true);
             }
         }
@@ -388,6 +390,7 @@ namespace StarterAssets
             movement = rd.movement;
             targetDirection = rd.targetDirection;
             _CameraEulerY = rd.CameraEulerY;
+            screenCenterPoint = rd.screenCenterPoint;
         }
         
         private void CheckInput(out MoveData md)
@@ -452,16 +455,18 @@ namespace StarterAssets
             _fallTimeoutDelta = FallTimeout;
            
         }
-        Vector2 screenCenterPoint;
+        public Vector3 screenCenterPoint;
         Ray rayNew;
         private void Update()
         {
             if (!base.IsOwner)
                 return;
-          
-           
+
+
             //MoveOld();
             //Move();
+            screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+            rayNew = Camera.main.ScreenPointToRay(screenCenterPoint);
 
             if (firedBullet && fireBulletTime >= 0)
             {
@@ -780,7 +785,53 @@ namespace StarterAssets
 
             GroundedCheck();
 
+            if (playerGunSelector.aimAssist)
+            {
+                if (Physics.SphereCast(rayNew, playerGunSelector.sphereCastRadiusAimAssist, out RaycastHit hitnew, float.MaxValue, playerGunSelector.AimAssistHitMask))
+                {
+                    
+                    if (Physics.Raycast(rayNew, out RaycastHit hit, float.MaxValue, playerGunSelector.ActiveGun.ShootConfig.HitMask))
+                    {
+                        //rayHitPoint = hit.point;
+                    }
+                    
+                    if (hitnew.collider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider collider))
+                    {
+                        if (!hit.collider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider colliderNew))
+                        {
+                            if (_animationBlend > 2)
+                            {
+                                if (!isSliding)
+                                {
+                                    if (!playerGunSelector.ActiveGun.sniper)
+                                    {
+                                       
+                                       
+                                        if (hitnew.collider.transform.position.x > hit.point.x)
+                                        {
+                                            _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw += 0.13f, (float)base.TimeManager.TickDelta * 25f);
+                                        }
 
+
+                                        if (hitnew.collider.transform.position.x < hit.point.x)
+                                        {
+                                            _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw -= 0.13f, (float)base.TimeManager.TickDelta * 25f);
+
+                                        }
+
+                                    }
+
+                                }
+
+
+                            }
+
+                        }
+                        //
+                    }
+
+                }
+            }
 
             if (playerHealth.PlayerDeathState())
                 return;
