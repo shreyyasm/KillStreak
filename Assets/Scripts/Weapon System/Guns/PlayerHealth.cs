@@ -181,7 +181,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     }
     IEnumerator DespawnPlayer()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
 
         //HealthAmmoSpawner.Instance.GetObject(transform.position, Quaternion.identity);
         //gameObject.SetActive(false);
@@ -199,13 +199,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void DespawnPlayerServer()
     {
-        healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+        //healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
         gameObject.SetActive(false);
     }
     [ObserversRpc(BufferLast = true, RunLocally = true)]
     public void DespawnPlayerObserver()
     {
-        healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+        //healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
         gameObject.SetActive(false);
     }
     public void RestoreHealth()

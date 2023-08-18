@@ -492,8 +492,8 @@ namespace StarterAssets
             //SetRigWeight();
             //if (Input.GetMouseButtonDown(1))
             //    Crouch();
-            //if (Input.GetMouseButtonDown(2))
-            //    shooterController.Aim();
+            if (Input.GetMouseButtonDown(2))
+                shooterController.Aim();
 
             ControllerChanges();
         }
