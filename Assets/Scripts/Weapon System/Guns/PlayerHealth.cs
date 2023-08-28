@@ -199,13 +199,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void DespawnPlayerServer()
     {
-        //healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+        healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
         gameObject.SetActive(false);
     }
     [ObserversRpc(BufferLast = true, RunLocally = true)]
     public void DespawnPlayerObserver()
     {
-        //healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+        healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
         gameObject.SetActive(false);
     }
     public void RestoreHealth()

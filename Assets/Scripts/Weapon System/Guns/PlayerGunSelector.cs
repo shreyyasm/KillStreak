@@ -92,6 +92,7 @@ public class PlayerGunSelector : NetworkBehaviour
     Animator anim;
 
     public GameObject ActiveGunPrefab;
+    [SerializeField] public AmmoDisplayer ammoDisplayer;
 
     public bool redTeamPlayer;
     public bool blueTeamPlayer;
@@ -193,22 +194,44 @@ public class PlayerGunSelector : NetworkBehaviour
     }
     public void SetActiveGun(int selectedWeapon)
     {
+
+        if (base.IsServer)
+            SetActiveGunObserver(selectedWeapon);
+        else
+            SetActiveGunServer(selectedWeapon);
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void SetActiveGunServer(int selectedWeapon)
+    {
         
         gun1 = PrimaryGuns[loadOutManager.loadNumber];
         gun2 = SecondaryGuns[loadOutManager.loadNumber];
 
-        
+
         if (selectedWeapon == 0)
         {
-            if (!weaponSwitching.gunChanging)
                 ActiveGun = PrimaryGuns[loadOutManager.loadNumber];
-
         }
         else
         {
-            if (!weaponSwitching.gunChanging)
                 ActiveGun = SecondaryGuns[loadOutManager.loadNumber];
+        }
+    }
+    [ObserversRpc(BufferLast = true,RunLocally = true)]
+    public void SetActiveGunObserver(int selectedWeapon)
+    {
+        
+        gun1 = PrimaryGuns[loadOutManager.loadNumber];
+        gun2 = SecondaryGuns[loadOutManager.loadNumber];
 
+
+        if (selectedWeapon == 0)
+        {          
+                ActiveGun = PrimaryGuns[loadOutManager.loadNumber];
+        }
+        else
+        {           
+                ActiveGun = SecondaryGuns[loadOutManager.loadNumber];
         }
     }
     public void SpawnAllGuns()
@@ -1178,6 +1201,7 @@ public class PlayerGunSelector : NetworkBehaviour
             
             Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
             floatingDamage.GetPosition(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+            
             floatingDamage.StartFloatDamage();
             //floatingDamage.CallStartAnimation();
         }

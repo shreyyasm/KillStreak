@@ -24057,9 +24057,12 @@ MonoBehaviour:
   MainRig: {fileID: 1852798421794133633}
   pistolRig: {fileID: 1760918891627717477}
   rifleRig: {fileID: 3304178362065009533}
-  _cinemachineTargetYaw: 0
-  _cinemachineTargetPitch: 0
+  <_cinemachineTargetYaw>k__BackingField: 0
+  <_cinemachineTargetPitch>k__BackingField: 0
   <_animationBlend>k__BackingField: 0
+  _targetRotation: 0
+  movement: {x: 0, y: 0, z: 0}
+  targetDirection: {x: 0, y: 0, z: 0}
   _verticalVelocity: 0
   _jumpTimeoutDelta: 0
   _fallTimeoutDelta: 0
@@ -24098,6 +24101,7 @@ MonoBehaviour:
   audioSource: {fileID: 4444467285361161639}
   RespawnPrefab: {fileID: 9090471693302619223, guid: d3acc2afa4c84234784135b30c2ad1d3,
     type: 3}
+  _CameraEulerY: 0
   speed: 12
   gravity: -9.81
   groundCheck: {fileID: 6026542968252147384}
@@ -24112,6 +24116,7 @@ MonoBehaviour:
   look: {x: 0, y: 0}
   x: 0
   z: 0
+  screenCenterPoint: {x: 0, y: 0, z: 0}
   IdentifyEnemy:
     serializedVersion: 2
     m_Bits: 262144
@@ -24159,6 +24164,7 @@ MonoBehaviour:
   loadOutManager: {fileID: 8282398727071106129}
   sniperScopeUI: {fileID: 3131795028269895586}
   crosshairUI: {fileID: 1056125256268646366}
+  aimDirection: {x: 0, y: 0, z: 0}
   gunType: 0
 --- !u!114 &202389063978304820
 MonoBehaviour:
@@ -24672,6 +24678,7 @@ MonoBehaviour:
   CrosshairPrimary: {fileID: 3811869649023349627}
   CrosshairSecondary: {fileID: 3811869647992248642}
   ActiveGunPrefab: {fileID: 0}
+  ammoDisplayer: {fileID: 5813009804763147807}
   redTeamPlayer: 0
   blueTeamPlayer: 0
   aimAssist: 1

@@ -9,6 +9,7 @@ public class HealthAmmoSpawner : NetworkBehaviour
 {
     public static HealthAmmoSpawner Instance;
     public GameObject AddOnPrefab;
+    
 
     private void Awake()
     {

@@ -81,10 +81,11 @@ public class WeaponSwitching : NetworkBehaviour
         if(animator.GetComponent<Animator>().GetLayerWeight(4) == 1)
         {
             gunChanging = false;
-            playerGunSelector.SetActiveGun(selectedWeapon);        
+                
             playerGunSelector.ChangeCrosshair();
             thirdPersonController.changingGun = false;
-            
+
+            playerGunSelector.SetActiveGun(selectedWeapon);
             ManagerLayerWeights();
             StartCoroutine(SetRig());
         }
@@ -94,11 +95,12 @@ public class WeaponSwitching : NetworkBehaviour
         if (animator.GetComponent<Animator>().GetLayerWeight(5) == 1)
         {
             gunChanging = false;
-            playerGunSelector.SetActiveGun(selectedWeapon);
+            
             playerGunSelector.ChangeCrosshair();
             thirdPersonController.changingGun = false;
             
             ManagerLayerWeights();
+            playerGunSelector.SetActiveGun(selectedWeapon);
             StartCoroutine(SetRig());
         }
     }
