@@ -805,20 +805,24 @@ namespace StarterAssets
                                 {
                                     if (!playerGunSelector.ActiveGun.sniper)
                                     {
-                                       
-                                       
-                                        if (hitnew.collider.transform.position.x > hit.point.x)
+
+                                        //Debug.Log(hitnew.point.x + "New");
+                                        //Debug.Log(hit.point.x + "Old");
+                                        float Distance = Vector3.Distance(hit.collider.transform.position, transform.position);
+                                        if(Distance < 15f)
                                         {
-                                            _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw += 0.13f, (float)base.TimeManager.TickDelta * 25f);
+                                            if (hitnew.point.x > hit.point.x)
+                                            {
+                                                _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw += 0.14f, (float)base.TimeManager.TickDelta * 30f);
+                                            }
+
+
+                                            if (hitnew.point.x < hit.point.x)
+                                            {
+                                                _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw -= 0.14f, (float)base.TimeManager.TickDelta * 30f);
+
+                                            }
                                         }
-
-
-                                        if (hitnew.collider.transform.position.x < hit.point.x)
-                                        {
-                                            _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw -= 0.13f, (float)base.TimeManager.TickDelta * 25f);
-
-                                        }
-
                                     }
 
                                 }

@@ -37,13 +37,18 @@ public class HealthAmmoSpawner : NetworkBehaviour
     public NetworkObject GetObject(Vector3 Position, Quaternion Rotation)
     {
 
-        if (base.IsServer)
-            GetHealthObjectObserver(Position,Rotation);
-        else
-            GetHealthObjectServer(Position, Rotation);
+        NetworkObject getobject = NetworkManager.GetPooledInstantiated(AddOnPrefab.GetComponent<NetworkObject>(), true);
+        getobject.transform.position = Position;
+        getobject.transform.rotation = Rotation;
+        getobject.gameObject.SetActive(true);
+        InstanceFinder.ServerManager.Spawn(getobject);
+        //if (base.IsServer)
+        //    GetHealthObjectObserver(Position,Rotation);
+        //else
+        //    GetHealthObjectServer(Position, Rotation);
+        Debug.Log("Spawn");
 
-
-        return ReferenceObject;
+        return getobject;
     }
 
     [ServerRpc(RequireOwnership = false, RunLocally = true)]

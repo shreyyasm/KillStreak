@@ -126,7 +126,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
         if (CurrentHealth > 0)
             RigController.enabled = true;
-
+       
     }
    
     public void PlayerDeath()
@@ -179,13 +179,20 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         return playerDead;
     }
+    public void DeathAnim()
+    {
+        healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+        Debug.Log("workAim");
+    }
     IEnumerator DespawnPlayer()
     {
         yield return new WaitForSeconds(2f);
 
+        //healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
         //HealthAmmoSpawner.Instance.GetObject(transform.position, Quaternion.identity);
         //gameObject.SetActive(false);
-        DespwanPlayer();
+        //DespwanPlayer();
         //InstanceFinder.ServerManager.Despawn(player.gameObject, DespawnType.Pool);   
     }
     public HealthAmmoSpawner healthAmmoSpawner;

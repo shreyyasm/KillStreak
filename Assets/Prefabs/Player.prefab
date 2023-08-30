@@ -24685,7 +24685,7 @@ MonoBehaviour:
   aimAssistSize: 1
   SniperRig: {fileID: 6854700186034592639}
   sphereCastRadius: 0.3
-  sphereCastRadiusAimAssist: 1.5
+  sphereCastRadiusAimAssist: 1.7
   range: 100
   distanceObject: 0
   distancePlayer: 0

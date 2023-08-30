@@ -162,7 +162,7 @@ public class PlayerGunSelector : NetworkBehaviour
             return;
         GunModel = ActiveGunPrefab;
         GunModelRecoil();
-        AimAssis();
+        //AimAssis();
         if (playerAction.IsShooting )
         {
             Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
