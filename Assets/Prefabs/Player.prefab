@@ -24770,6 +24770,8 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 4866512734858148882}
   PlayerCanvas: {fileID: 481653689153286959}
   AnimatedCanvas: {fileID: 6527828215835793336}
+  loadOutManager: {fileID: 8282398727071106129}
+  ammoDisplayer: {fileID: 5813009804763147807}
   _MaxHealth: 200
   _Health: 0
   playerDead: 0
@@ -24806,6 +24808,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 4
   fill: {fileID: 3811869648847142119}
   healthAmmoSpawner: {fileID: 4062980575288397414}
+  playerGunSelector: {fileID: 4556042117359066162}
 --- !u!114 &3792698823556867125
 MonoBehaviour:
   m_ObjectHideFlags: 0

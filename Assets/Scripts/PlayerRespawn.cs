@@ -34,6 +34,8 @@ public class PlayerRespawn : NetworkBehaviour
         NetworkObject playerObj = GetComponent<NetworkObject>();
         yield return new WaitForSeconds(10f);
         RespawnPlayer(player, playerCanvas, animatedCanvas);
+        
+    
         //player.SetActive(true);
         //InstanceFinder.ServerManager.Spawn(player,base.Owner);
         //playerObj.GiveOwnership(ownerConnection);
@@ -44,15 +46,17 @@ public class PlayerRespawn : NetworkBehaviour
         //if (animatedCanvas != null)
         //    animatedCanvas.SetActive(true);
         //player.GetComponent<PlayerHealth>().playerDead = false;
-        
+         
 
     }
     public void RespawnPlayer(GameObject player, GameObject playerCanvas, GameObject animatedCanvas)
     {
+
         if (base.IsServer)
             StartRespawnObserver(player,playerCanvas,animatedCanvas);
         else
             StartRespawnServer(player, playerCanvas, animatedCanvas);
+    
     }
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void StartRespawnServer(GameObject player, GameObject playerCanvas, GameObject animatedCanvas)
@@ -63,8 +67,7 @@ public class PlayerRespawn : NetworkBehaviour
         if (animatedCanvas != null)
             animatedCanvas.SetActive(true);
         player.GetComponent<PlayerHealth>().playerDead = false;
-        LoadOutManager playerLoadout = player.GetComponent<LoadOutManager>();
-        playerLoadout.GetLoadOutInput(playerLoadout.loadNumber);
+        //player.GetComponent<PlayerHealth>().RespawnAmmoLoadout();
         player.GetComponent<ThirdPersonController>().SetRigWeight();
 
     }
@@ -77,8 +80,7 @@ public class PlayerRespawn : NetworkBehaviour
         if (animatedCanvas != null)
             animatedCanvas.SetActive(true);
         player.GetComponent<PlayerHealth>().playerDead = false;
-        LoadOutManager playerLoadout = player.GetComponent<LoadOutManager>();
-        playerLoadout.GetLoadOutInput(playerLoadout.loadNumber);
+       // player.GetComponent<PlayerHealth>().RespawnAmmoLoadout();
         player.GetComponent<ThirdPersonController>().SetRigWeight();
     }
 }

@@ -10,6 +10,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 {
     public GameObject PlayerCanvas;    
     public GameObject AnimatedCanvas;
+    public LoadOutManager loadOutManager;
+    public AmmoDisplayer ammoDisplayer;
 
     [SerializeField]
     private int _MaxHealth = 100;
@@ -45,6 +47,12 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         CurrentHealth = Maxhealth;
         SetMaxHealth(CurrentHealth);
+        if(base.Owner.IsLocalClient)
+        {
+            RespawnAmmoLoadout();
+            ammoDisplayer.UpdateGunAmmo();
+        }
+        
     }
     public Slider slider;
     public Gradient gradient;
@@ -144,7 +152,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
             anim.SetLayerWeight(7, 1);
             anim.SetInteger("DeadIndex", Random.Range(0, 4));
             anim.SetBool("Dead", true);
-            PlayerRespawn.Instance.Respawn(player.gameObject, PlayerCanvas, AnimatedCanvas);
+            PlayerRespawn.Instance.Respawn(gameObject, PlayerCanvas, AnimatedCanvas);
         }
         //if (base.IsServer)
         //    PlayerDeathObserver();
@@ -179,16 +187,14 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         return playerDead;
     }
-    public void DeathAnim()
-    {
-        healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
-        Debug.Log("workAim");
-    }
+  
     IEnumerator DespawnPlayer()
     {
         yield return new WaitForSeconds(2f);
 
         //healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+    
+        
         gameObject.SetActive(false);
         //HealthAmmoSpawner.Instance.GetObject(transform.position, Quaternion.identity);
         //gameObject.SetActive(false);
@@ -206,18 +212,24 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void DespawnPlayerServer()
     {
-        healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+        //healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
         gameObject.SetActive(false);
     }
     [ObserversRpc(BufferLast = true, RunLocally = true)]
     public void DespawnPlayerObserver()
     {
-        healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+        //healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
         gameObject.SetActive(false);
     }
     public void RestoreHealth()
     {
         CurrentHealth = Maxhealth;
     }
-   
+    public PlayerGunSelector playerGunSelector;
+    public void RespawnAmmoLoadout()
+    {
+        //loadOutManager.GetLoadOutInput(loadOutManager.loadNumber);
+        playerGunSelector.gun1.AmmoConfig.RefillAmmo();
+        playerGunSelector.gun2.AmmoConfig.RefillAmmo();
+    }
 }

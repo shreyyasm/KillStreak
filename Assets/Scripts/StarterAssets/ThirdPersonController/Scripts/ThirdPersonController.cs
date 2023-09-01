@@ -316,7 +316,7 @@ namespace StarterAssets
             
             if (base.Owner.IsLocalClient)
             {
-                RespawnManager();
+                //RespawnManager();
                 cameraRoot.AddComponent<CameraFollow>();
                // gameObject.AddComponent<AudioListener>();
                 foreach (Transform gears in Root)

@@ -120,7 +120,11 @@ public class PlayerGunSelector : NetworkBehaviour
     [SerializeField] public  bool aimAssist;
     [SerializeField] float aimAssistSize = 1f;
     public TwoBoneIKConstraint SniperRig;
-
+    private void OnEnable()
+    {
+        gun1 = PrimaryGuns[loadOutManager.loadNumber];
+        gun2 = SecondaryGuns[loadOutManager.loadNumber];
+    }
     private void Start()
     {  
         SpawnAllGuns();
@@ -128,8 +132,7 @@ public class PlayerGunSelector : NetworkBehaviour
         Vector3 screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
         ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 
-        gun1 = PrimaryGuns[loadOutManager.loadNumber];
-        gun2 = SecondaryGuns[loadOutManager.loadNumber];
+       
 
         PrimaryGunsPrefabs[loadOutManager.loadNumber].SetActive(true);
       
