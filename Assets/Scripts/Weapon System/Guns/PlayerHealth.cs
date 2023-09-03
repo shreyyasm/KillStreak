@@ -187,40 +187,28 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         return playerDead;
     }
-  
+    GameObject spawnedCarte;
     IEnumerator DespawnPlayer()
     {
         yield return new WaitForSeconds(2f);
 
-        //healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
-    
+       
         
+
         gameObject.SetActive(false);
+        //yield return new WaitForSeconds(0.5f);
+        if (base.Owner.IsLocalClient)
+        {
+            NetworkObject spawnCrate = healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+            spawnedCarte = spawnCrate.gameObject;
+        }
         //HealthAmmoSpawner.Instance.GetObject(transform.position, Quaternion.identity);
         //gameObject.SetActive(false);
         //DespwanPlayer();
         //InstanceFinder.ServerManager.Despawn(player.gameObject, DespawnType.Pool);   
     }
     public HealthAmmoSpawner healthAmmoSpawner;
-    public void DespwanPlayer()
-    {
-        if (base.IsServer)
-            DespawnPlayerObserver();
-        else
-            DespawnPlayerServer();
-    }
-    [ServerRpc(RequireOwnership = false, RunLocally = true)]
-    public void DespawnPlayerServer()
-    {
-        //healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
-        gameObject.SetActive(false);
-    }
-    [ObserversRpc(BufferLast = true, RunLocally = true)]
-    public void DespawnPlayerObserver()
-    {
-        //healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
-        gameObject.SetActive(false);
-    }
+
     public void RestoreHealth()
     {
         CurrentHealth = Maxhealth;
@@ -231,5 +219,10 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         //loadOutManager.GetLoadOutInput(loadOutManager.loadNumber);
         playerGunSelector.gun1.AmmoConfig.RefillAmmo();
         playerGunSelector.gun2.AmmoConfig.RefillAmmo();
+    }
+    public void DespawnHealthNAmmoCrate()
+    {
+        InstanceFinder.ServerManager.Despawn(spawnedCarte, DespawnType.Pool);
+        //spawnedCarte.SetActive(false);
     }
 }

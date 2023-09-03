@@ -26,15 +26,17 @@ public class HealthAmmoPickup : NetworkBehaviour
         //Debug.Log("work");
         if (collision.gameObject.CompareTag("Player"))
         {
+
             
-            InstanceFinder.ServerManager.Despawn(gameObject, DespawnType.Pool);           
             collision.gameObject.GetComponent<PlayerHealth>().RestoreHealth();
             PlayerGunSelector playerGunSelector = collision.gameObject.GetComponent<PlayerGunSelector>();
             playerGunSelector.gun1.AmmoConfig.RefillAmmo();
             playerGunSelector.gun2.AmmoConfig.RefillAmmo();
             playerGunSelector.ammoDisplayer.UpdateGunAmmo();
+            collision.gameObject.GetComponent<PlayerHealth>().DespawnHealthNAmmoCrate();
             //CarGun.instance.AddAmmo(50);
             //gameObject.SetActive(false);
+            //InstanceFinder.ServerManager.Despawn(gameObject, DespawnType.Pool);
         }
     }
     void OnCollisionEnter(Collision collision)

@@ -11,6 +11,9 @@ using System;
 using TMPro;
 using StarterAssets;
 using UnityEngine.Animations.Rigging;
+using EOSLobbyTest;
+using FishNet.Object.Synchronizing;
+
 [DisallowMultipleComponent]
 public class PlayerGunSelector : NetworkBehaviour
 {
@@ -94,11 +97,19 @@ public class PlayerGunSelector : NetworkBehaviour
     public GameObject ActiveGunPrefab;
     [SerializeField] public AmmoDisplayer ammoDisplayer;
 
-    public bool redTeamPlayer;
-    public bool blueTeamPlayer;
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+    public bool redTeamPlayer { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+    public bool blueTeamPlayer { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
+    public PlayerManager playerManager;
     private void Awake()
     {
         instance = this;
+        playerManager = FindObjectOfType<PlayerManager>();
+        
+        
         ActiveCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         anim = GetComponent<Animator>();
 
@@ -109,11 +120,27 @@ public class PlayerGunSelector : NetworkBehaviour
 
         PrewarmPools();
 
-        if (redTeamPlayer)
-            gameObject.AddComponent<RedTeamPlayer>();
+        //if (redTeamPlayer)
+        //    gameObject.AddComponent<RedTeamPlayer>();
 
-        if (blueTeamPlayer)
-            gameObject.AddComponent<BlueTeamPlayer>();
+        //if (blueTeamPlayer)
+        //    gameObject.AddComponent<BlueTeamPlayer>();
+
+        if (base.Owner.IsLocalClient)
+        {
+            if (playerManager.redTeamPlayer)
+            {
+
+                blueTeamPlayer = false;
+                redTeamPlayer = true;
+
+            }
+            else
+            {
+                blueTeamPlayer = true;
+                redTeamPlayer = false;
+            }
+        }
 
     }
 

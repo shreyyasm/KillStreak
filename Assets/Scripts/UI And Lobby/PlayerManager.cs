@@ -13,8 +13,13 @@ namespace EOSLobbyTest
         [SerializeField] CanvasNetworkManager canvasNetworkManager;
         public List<PlayerInfo> _players = new List<PlayerInfo>();
 
-        
-
+        //public List<PlayerTeamInfo> PlayerInfos = new List<PlayerTeamInfo>();
+        //[Serializable]
+        //public class PlayerTeamInfo
+        //{
+        //    public bool RedPlayer;
+        //    public bool BluePlayer;
+        //}
         // EOS lobby id we are currently in
         public string ActiveLobbyId { get; set; } = "testing";
 
