@@ -1203,42 +1203,56 @@ public class PlayerGunSelector : NetworkBehaviour
        Vector3 HitNormal,
        Collider HitCollider,Transform enemyPos)
     {
-        
         if (HitCollider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider collider))
-            surfaceManager.HandleImpactBlood(HitCollider.gameObject,HitLocation,HitNormal,ActiveGun.ImpactType,0);
-        
+            surfaceManager.HandleImpactBlood(HitCollider.gameObject, HitLocation, HitNormal, ActiveGun.ImpactType, 0);
+
         else
             surfaceManager.HandleImpactConrete(HitCollider.gameObject, HitLocation, HitNormal, ActiveGun.ImpactType, 0);
+
+        if (PointSystem.Instance.GameStarted)
+        {
+            IDamageable Damage = HitCollider.GetComponentInParent<IDamageable>();
+            if (Damage != null)
+            {
+                if (HitCollider.GetComponentInParent<PlayerGunSelector>().redTeamPlayer != redTeamPlayer)
+                {
+                    floatingDamage.SetFloat();
+                    if (loadOutManager.loadNumber == 4)
+                    {
+                        if (weaponSwitching.selectedWeapon == 0)
+                        {
+                            float distance = Vector3.Distance(transform.position, HitCollider.gameObject.transform.position);
+                            if (distance > 10)
+                                ActiveGun.DamageConfig.DamageReduction = 2;
+                            else
+                                ActiveGun.DamageConfig.DamageReduction = 1;
+                        }
+
+                    }
+                    else
+                        ActiveGun.DamageConfig.DamageReduction = 1;
+
+
+                    Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+                    floatingDamage.GetPosition(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+
+                    floatingDamage.StartFloatDamage();
+                    //floatingDamage.CallStartAnimation();
+                }
+
+            }
+        }
+
+
+
         //if (HitCollider.TryGetComponent(out IDamageable damageable))
         //{
         //    damageable.TakeDamage(ActiveGun.DamageConfig.GetDamage(DistanceTraveled));
         //}
-        IDamageable Damage = HitCollider.GetComponentInParent<IDamageable>();      
-        if (Damage != null)
-        {
-            floatingDamage.SetFloat();
-            if (loadOutManager.loadNumber == 4)
-            {
-                if (weaponSwitching.selectedWeapon == 0)
-                {
-                    float distance = Vector3.Distance(transform.position, HitCollider.gameObject.transform.position);
-                    if (distance > 10)
-                        ActiveGun.DamageConfig.DamageReduction = 2;
-                    else
-                        ActiveGun.DamageConfig.DamageReduction = 1;
-                }
 
-            }
-            else
-                ActiveGun.DamageConfig.DamageReduction = 1;
 
-            
-            Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
-            floatingDamage.GetPosition(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
-            
-            floatingDamage.StartFloatDamage();
-            //floatingDamage.CallStartAnimation();
-        }
+
+
     }
     
     public GameObject spawnObject;
