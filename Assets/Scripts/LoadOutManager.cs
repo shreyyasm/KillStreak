@@ -132,9 +132,8 @@ public class LoadOutManager : NetworkBehaviour
         else
             GetLoadOutInputServer(loadOutNumber);
 
-        if (!base.IsOwner)
-            return;
-        audioSource.PlayOneShot(loadoutUISFX);
+       
+        
     }
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void GetLoadOutInputServer(int loadOutNumber)
@@ -193,6 +192,7 @@ public class LoadOutManager : NetworkBehaviour
         ammoDisplayer.UpdateGunAmmo();
         if (ammoDisplayer != null)
             ammoDisplayer.ChangeGunSelectedUI(0);
+        
     }
     [ObserversRpc(BufferLast = true)]
     public void GetLoadOutInputObserver(int loadOutNumber)
@@ -248,6 +248,7 @@ public class LoadOutManager : NetworkBehaviour
         ammoDisplayer.UpdateGunAmmo();
         if(ammoDisplayer!= null)
             ammoDisplayer.ChangeGunSelectedUI(0);
+        
     }
    
     public void OpenLoadOut()
@@ -257,7 +258,7 @@ public class LoadOutManager : NetworkBehaviour
        
         audioSource.PlayOneShot(loadoutUISFX);
         countdownState = true;
-        timeRemaining = 6;
+        timeRemaining = 8;
         InputCanvasJoystick.SetActive(false);
         InputCanvasGunsUI.SetActive(false);
         StartCoroutine(playLoadoutSound());
@@ -303,11 +304,21 @@ public class LoadOutManager : NetworkBehaviour
     }
     public IEnumerator playLoadoutSound()
     {
-        yield return new WaitForSeconds(6f);       
+        yield return new WaitForSeconds(8f);       
         InputCanvasJoystick.SetActive(true);
         InputCanvasGunsUI.SetActive(true);
         if (anim != null)
             anim.SetBool("LoadOutDone", true);
         audioSource.PlayOneShot(loadoutSFX);
+    }
+    public void PlayLoadoutSfX()
+    {
+        if (anim != null)
+            anim.SetBool("LoadOutDone", true);
+        audioSource.PlayOneShot(loadoutSFX);
+    }
+    public void PlaySelectSound()
+    {
+        audioSource.PlayOneShot(loadoutUISFX);
     }
 }

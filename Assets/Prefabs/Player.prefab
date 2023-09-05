@@ -9115,6 +9115,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8282398727071106129}
+        m_TargetAssemblyTypeName: LoadOutManager, Assembly-CSharp
+        m_MethodName: PlaySelectSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3811869647577922298
 GameObject:
   m_ObjectHideFlags: 0
@@ -10128,6 +10140,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: AmmoDisplayer, Assembly-CSharp
         m_MethodName: ChangeGunSelectedUI
         m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8282398727071106129}
+        m_TargetAssemblyTypeName: LoadOutManager, Assembly-CSharp
+        m_MethodName: PlaySelectSound
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -18552,6 +18576,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8282398727071106129}
+        m_TargetAssemblyTypeName: LoadOutManager, Assembly-CSharp
+        m_MethodName: PlaySelectSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3811869648826136212
 GameObject:
   m_ObjectHideFlags: 0
@@ -19740,6 +19776,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: AmmoDisplayer, Assembly-CSharp
         m_MethodName: ChangeGunSelectedUI
         m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8282398727071106129}
+        m_TargetAssemblyTypeName: LoadOutManager, Assembly-CSharp
+        m_MethodName: PlaySelectSound
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -21386,6 +21434,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: AmmoDisplayer, Assembly-CSharp
         m_MethodName: ChangeGunSelectedUI
         m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8282398727071106129}
+        m_TargetAssemblyTypeName: LoadOutManager, Assembly-CSharp
+        m_MethodName: PlaySelectSound
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -24102,6 +24162,7 @@ MonoBehaviour:
   RespawnPrefab: {fileID: 9090471693302619223, guid: d3acc2afa4c84234784135b30c2ad1d3,
     type: 3}
   _CameraEulerY: 0
+  loadOutManager: {fileID: 8282398727071106129}
   speed: 12
   gravity: -9.81
   groundCheck: {fileID: 6026542968252147384}
@@ -24679,8 +24740,9 @@ MonoBehaviour:
   CrosshairSecondary: {fileID: 3811869647992248642}
   ActiveGunPrefab: {fileID: 0}
   ammoDisplayer: {fileID: 5813009804763147807}
-  redTeamPlayer: 0
-  blueTeamPlayer: 0
+  <redTeamPlayer>k__BackingField: 0
+  <blueTeamPlayer>k__BackingField: 0
+  playerManager: {fileID: 0}
   aimAssist: 1
   aimAssistSize: 1
   SniperRig: {fileID: 6854700186034592639}
@@ -24891,7 +24953,7 @@ MonoBehaviour:
   InputCanvasGunsUI: {fileID: 8044703296097881164}
   floatingDamage: {fileID: 3336215809204780483}
   TimerLoadout: {fileID: 3811869648053755947}
-  timeRemaining: 6
+  timeRemaining: 8
   countdownState: 0
   loadOutsUI:
   - {fileID: 3811869648563180958}

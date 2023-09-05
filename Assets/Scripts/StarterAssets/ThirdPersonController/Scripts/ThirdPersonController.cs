@@ -196,6 +196,7 @@ namespace StarterAssets
         //MoveData for client simulation
         private MoveData _clientMoveData;
         public float _CameraEulerY;
+        public LoadOutManager loadOutManager;
         //MoveData for replication
         public struct MoveData : IReplicateData
         {
@@ -341,8 +342,8 @@ namespace StarterAssets
             // reset our timeouts on start
             _fallTimeoutDelta = FallTimeout;
             _jumpTimeoutDelta = JumpTimeout;
-           
 
+            
         }
 
         public void RespawnManager()
@@ -446,6 +447,8 @@ namespace StarterAssets
         
         private void Start()
         {
+            PointSystem.Instance.GameStartCountdown();
+            loadOutManager.PlayLoadoutSfX();
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             _hasAnimator = TryGetComponent(out _animator);
             AssignAnimationIDs();

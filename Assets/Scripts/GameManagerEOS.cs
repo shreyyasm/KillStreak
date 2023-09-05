@@ -147,6 +147,29 @@ namespace EOSLobbyTest
                 b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
                 _nextSpawnPointIndexBlue++;
             }
+       }
+        public void ResetPosition()
+        {
+            _nextSpawnPointIndexRed = 0;
+            _nextSpawnPointIndexBlue = 0;
+            foreach (GameObject r in RedPlayers)
+            {
+                r.transform.position = RedTeamSpawnPoints[_nextSpawnPointIndexRed].transform.position;
+                LoadOutManager loadout =  r.GetComponent<LoadOutManager>();
+                loadout.GetLoadOutInput(loadout.loadNumber);
+                loadout.PlayLoadoutSfX();
+                _nextSpawnPointIndexRed++;
+            }
+            foreach (GameObject b in BluePlayers)
+            {
+                b.transform.position = BlueTeamSpawnPoints[_nextSpawnPointIndexBlue].transform.position;
+                b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
+                LoadOutManager loadout = b.GetComponent<LoadOutManager>();
+                loadout.GetLoadOutInput(loadout.loadNumber);
+                loadout.PlayLoadoutSfX();
+                _nextSpawnPointIndexBlue++;
+            }
+            
         }
     }
 }

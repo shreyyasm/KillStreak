@@ -128,18 +128,22 @@ public class PlayerGunSelector : NetworkBehaviour
 
         if (base.Owner.IsLocalClient)
         {
-            if (playerManager.redTeamPlayer)
+            if(playerManager != null)
             {
+                if (playerManager.redTeamPlayer)
+                {
 
-                blueTeamPlayer = false;
-                redTeamPlayer = true;
+                    blueTeamPlayer = false;
+                    redTeamPlayer = true;
 
+                }
+                else
+                {
+                    blueTeamPlayer = true;
+                    redTeamPlayer = false;
+                }
             }
-            else
-            {
-                blueTeamPlayer = true;
-                redTeamPlayer = false;
-            }
+            
         }
 
     }
