@@ -32,6 +32,8 @@ public class PointSystem : MonoBehaviour
     public TextMeshProUGUI TimerGameStart;
     public float timeRemaining;
     public bool countdownState;
+
+    public PlayerRespawn playerRespawn;
     public void GameStartCountdown()
     {
         countdownState = true;
@@ -51,7 +53,7 @@ public class PointSystem : MonoBehaviour
             {
 
                 TimerGameStart.enabled = false;
-                gameManagerEOS.ResetPosition();
+                //PlayerRespawn.Instance.ResetPosition();
                 GameStarted = true;
                 countdownState = false;
             }

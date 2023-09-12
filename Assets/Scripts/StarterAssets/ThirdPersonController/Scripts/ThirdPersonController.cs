@@ -191,22 +191,28 @@ namespace StarterAssets
         public float slideSpeed = 7f;
 
         public float zValue;
+        public float lookSensitivity = 100;
         public AudioSource audioSource;
         public GameObject RespawnPrefab;
         //MoveData for client simulation
         private MoveData _clientMoveData;
         public float _CameraEulerY;
         public LoadOutManager loadOutManager;
+        public GameObject root;
         //MoveData for replication
         public struct MoveData : IReplicateData
         {
                      
             public Vector3 Move;
             public Vector3 Look;
+            public Vector3 ResetPosRed;
+            public Vector3 ResetPosBlue;
             public bool Jump;
             public bool Slide;
             public float CameraEulerY;
             public bool Sprint;
+
+            
             private uint _tick;
             public void Dispose() { }
             public uint GetTick() => _tick;
@@ -236,11 +242,12 @@ namespace StarterAssets
 
             public float CameraEulerY;
             public Vector3 screenCenterPoint;
+            public float lookSensitivity;
             private uint _tick;
             public void Dispose() { }
             public uint GetTick() => _tick;
             public void SetTick(uint value) => _tick = value;
-            public ReconcileData(Vector3 position, Quaternion rotation,float verticalVelocity, float fallTimeout, float jumpTimeout,float slideValue, float slideSpeedValue, bool grounded, bool timeRunning, float _cinemachineTargetYawNew, float _cinemachineTargetPitchNew, float targetRotation, Vector3 _movement, Vector3 _targetDirection, float cameraEuler, Vector3 _screenCenterPoint)
+            public ReconcileData(Vector3 position, Quaternion rotation,float verticalVelocity, float fallTimeout, float jumpTimeout,float slideValue, float slideSpeedValue, bool grounded, bool timeRunning, float _cinemachineTargetYawNew, float _cinemachineTargetPitchNew, float targetRotation, Vector3 _movement, Vector3 _targetDirection, float cameraEuler, Vector3 _screenCenterPoint, float lookSens)
             {
                 Position = position;
                 Rotation = rotation;
@@ -263,6 +270,7 @@ namespace StarterAssets
                 _targetRotation = targetRotation;
                 CameraEulerY = cameraEuler;
                 screenCenterPoint = _screenCenterPoint;
+                lookSensitivity = lookSens;
 
             _tick = 0;
             }
@@ -296,6 +304,10 @@ namespace StarterAssets
             //Root.layer = LayerMask.NameToLayer("Player Root");
 
             isCrouching = false;
+        }
+        private void OnEnable()
+        {
+            ResetPosition = false;
         }
         private void OnDestroy()
         {
@@ -365,7 +377,7 @@ namespace StarterAssets
             {
                 
                 MoveWithData(default, true);
-                ReconcileData rd = new  ReconcileData(transform.position, transform.rotation,_verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning, _cinemachineTargetYaw,  _cinemachineTargetPitch, _targetRotation,movement,targetDirection,_CameraEulerY, screenCenterPoint);
+                ReconcileData rd = new  ReconcileData(transform.position, transform.rotation,_verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning, _cinemachineTargetYaw,  _cinemachineTargetPitch, _targetRotation,movement,targetDirection,_CameraEulerY, screenCenterPoint, lookSensitivity);
                 Reconciliation(rd, true);
             }
         }
@@ -392,6 +404,7 @@ namespace StarterAssets
             targetDirection = rd.targetDirection;
             _CameraEulerY = rd.CameraEulerY;
             screenCenterPoint = rd.screenCenterPoint;
+            lookSensitivity = rd.lookSensitivity;
         }
         
         private void CheckInput(out MoveData md)
@@ -402,6 +415,8 @@ namespace StarterAssets
                 
             Move = new Vector3(ultimateJoystick.GetHorizontalAxis(), 0f, ultimateJoystick.GetVerticalAxis()).normalized,
             Look = new Vector3(screenTouch.lookInput.x, screenTouch.lookInput.y),
+            ResetPosRed = new Vector3(GameManagerEOS.Instance.RedTeamSpawnPoints[playerGunSelector.PlayerRedPosIndex].position.x, -0.46f, GameManagerEOS.Instance.RedTeamSpawnPoints[playerGunSelector.PlayerRedPosIndex].position.z),
+            ResetPosBlue = new Vector3(GameManagerEOS.Instance.BlueTeamSpawnPoints[playerGunSelector.PlayerBluePosIndex].position.x, -0.46f, GameManagerEOS.Instance.BlueTeamSpawnPoints[playerGunSelector.PlayerBluePosIndex].position.z),
             CameraEulerY = _mainCamera.transform.eulerAngles.y,
             Jump = _input.jump,
             Slide = _input.slide,
@@ -456,7 +471,12 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
-           
+           // StartCoroutine(MovementOn());
+        }
+        IEnumerator MovementOn()
+        {
+            yield return new WaitForSeconds(0.5f);
+            PlayerRespawn.Instance.SetResetFalse();
         }
         public Vector3 screenCenterPoint;
         Ray rayNew;
@@ -468,8 +488,8 @@ namespace StarterAssets
 
             //MoveOld();
             //Move();
-            screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
-            rayNew = Camera.main.ScreenPointToRay(screenCenterPoint);
+            //screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
+            //rayNew = Camera.main.ScreenPointToRay(screenCenterPoint);
 
             if (firedBullet && fireBulletTime >= 0)
             {
@@ -781,74 +801,81 @@ namespace StarterAssets
             }
         }
         bool startSlide;
-      
+        public bool ResetPosition;
         [Replicate]
         private void MoveWithData(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
         {
 
             GroundedCheck();
-
-            if (playerGunSelector.aimAssist)
+            if(ResetPosition)
             {
-                if (Physics.SphereCast(rayNew, playerGunSelector.sphereCastRadiusAimAssist, out RaycastHit hitnew, float.MaxValue, playerGunSelector.AimAssistHitMask))
-                {
-                    
-                    if (Physics.Raycast(rayNew, out RaycastHit hit, float.MaxValue, playerGunSelector.ActiveGun.ShootConfig.HitMask))
-                    {
-                        //rayHitPoint = hit.point;
-                    }
-                    
-                    if (hitnew.collider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider collider))
-                    {
-                        if (!hit.collider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider colliderNew))
-                        {
-                            if (_animationBlend > 2)
-                            {
-                                if (!isSliding)
-                                {
-                                    if (!playerGunSelector.ActiveGun.sniper)
-                                    {
-
-                                        //Debug.Log(hitnew.point.x + "New");
-                                        //Debug.Log(hit.point.x + "Old");
-                                        float Distance = Vector3.Distance(hit.collider.transform.position, transform.position);
-                                        if(Distance < 15f)
-                                        {
-                                            if (hitnew.point.x > hit.point.x)
-                                            {
-                                                _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw += 0.14f, (float)base.TimeManager.TickDelta * 30f);
-                                            }
-
-
-                                            if (hitnew.point.x < hit.point.x)
-                                            {
-                                                _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw -= 0.14f, (float)base.TimeManager.TickDelta * 30f);
-
-                                            }
-                                        }
-                                    }
-
-                                }
-
-
-                            }
-
-                        }
-                        //
-                    }
-
-                }
+                if (playerGunSelector.redTeamPlayer)
+                    transform.position = md.ResetPosRed;
+                else
+                    transform.position = md.ResetPosBlue;
             }
+            
+            //if (playerGunSelector.aimAssist)
+            //{
+            //    if (Physics.SphereCast(rayNew, playerGunSelector.sphereCastRadiusAimAssist, out RaycastHit hitnew, float.MaxValue, playerGunSelector.AimAssistHitMask))
+            //    {
+                    
+            //        if (Physics.Raycast(rayNew, out RaycastHit hit, float.MaxValue, playerGunSelector.ActiveGun.ShootConfig.HitMask))
+            //        {
+            //            //rayHitPoint = hit.point;
+            //        }
+                    
+            //        if (hitnew.collider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider collider))
+            //        {
+            //            if (!hit.collider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider colliderNew))
+            //            {
+            //                if (_animationBlend > 2)
+            //                {
+            //                    if (!isSliding)
+            //                    {
+            //                        if (!playerGunSelector.ActiveGun.sniper)
+            //                        {
+
+            //                            //Debug.Log(hitnew.point.x + "New");
+            //                            //Debug.Log(hit.point.x + "Old");
+            //                            float Distance = Vector3.Distance(hit.collider.transform.position, transform.position);
+            //                            if(Distance < 15f)
+            //                            {
+            //                                if (hitnew.point.x > hit.point.x)
+            //                                {
+            //                                    _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw += 0.14f, (float)base.TimeManager.TickDelta * 30f);
+            //                                }
+
+
+            //                                if (hitnew.point.x < hit.point.x)
+            //                                {
+            //                                    _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw -= 0.14f, (float)base.TimeManager.TickDelta * 30f);
+
+            //                                }
+            //                            }
+            //                        }
+
+            //                    }
+
+
+            //                }
+
+            //            }
+            //            //
+            //        }
+
+            //    }
+            //}
 
             if (playerHealth.PlayerDeathState())
                 return;
             mouseX = screenTouch.lookInput.x;
             mouseY = screenTouch.lookInput.y;
-            if (screenTouch.rightFingerID == -1)
-            {
-                md.Look.x = 0;
-                md.Look.y = 0;
-            }
+            //if (screenTouch.rightFingerID == -1)
+            //{
+            //    md.Look.x = 0;
+            //    md.Look.y = 0;
+            //}
             if (screenTouch.rightFingerID != -1)
             {
                 //float h = UltimateTouchpad.GetHorizontalAxis("Look");
@@ -856,16 +883,16 @@ namespace StarterAssets
                 //Vector3 direction = new Vector3(h, v, 0f).normalized;
                 //Debug.Log(direction.x);
                 // if there is an input and camera position is not fixed
-                if (md.Look.sqrMagnitude >= _threshold && !LockCameraPosition)
-                {
+                //if (md.Look.sqrMagnitude >= _threshold && !LockCameraPosition)
+                //{
                     //Don't multiply mouse input by Time.deltaTime;
                     //float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
                     //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
                     //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
-                    _cinemachineTargetYaw += md.Look.x * (float)base.TimeManager.TickDelta * 100;
-                    _cinemachineTargetPitch -= md.Look.y * (float)base.TimeManager.TickDelta * 100;
-                }
+                    _cinemachineTargetYaw += md.Look.x  * lookSensitivity * (float)base.TimeManager.TickDelta;
+                    _cinemachineTargetPitch -= md.Look.y * lookSensitivity * (float)base.TimeManager.TickDelta;
+                //}
 
                 // clamp our rotations so our values are limited 360 degrees
                 _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
@@ -878,8 +905,11 @@ namespace StarterAssets
                     _cinemachineTargetYaw, 0.0f);
 
 
-            _controller.transform.rotation = Quaternion.Euler(0, _cinemachineTargetYaw, 0f);;
-            //transform.forward = Vector3.Lerp(transform.forward, shooterController.aimDirection, Time.deltaTime * 10f);
+            transform.rotation = Quaternion.Euler(0, _cinemachineTargetYaw, 0f);
+            //transform.rotation = Quaternion.Lerp(transform.rotation, transform.rotation, 10 *(float)base.TimeManager.TickDelta);
+            //Vector3 newRot = new Vector3(_cinemachineTargetPitch, 0,0 );
+            //transform.forward = Vector3.Lerp(transform.forward, newRot, 10f);
+            //transform.forward = Vector3.Lerp(transform.forward, _cinemachineTargetYaw, Time.deltaTime * 10f);
             //_controller.transform.forward = Vector3.Lerp(transform.forward, new Vector3(_cinemachineTargetPitch, 0 , _cinemachineTargetYaw), (float)base.TimeManager.TickDelta * 10f);
             // _controller.transform.forward = Vector3.Lerp(transform.forward, new Vector3(_mainCamera.transform.forward.x, 0, _mainCamera.transform.forward.z) , (float)base.TimeManager.TickDelta * 10f);
 
@@ -1133,9 +1163,11 @@ namespace StarterAssets
             movement += new Vector3(0.0f, _verticalVelocity, 0.0f);
             if (!isSliding)
             {
-               // _controller.enabled = true;
+
+                // _controller.enabled = true;
                 // move the player
-                _controller.Move(movement * (float)base.TimeManager.TickDelta);
+                if (!ResetPosition)
+                    _controller.Move(movement * (float)base.TimeManager.TickDelta);
             }
             
             // update animator if using character

@@ -103,6 +103,9 @@ public class PlayerGunSelector : NetworkBehaviour
     [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
     public bool blueTeamPlayer { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
+    public int PlayerRedPosIndex = 0;
+    public int PlayerBluePosIndex = 0;
+
     public PlayerManager playerManager;
     private void Awake()
     {
