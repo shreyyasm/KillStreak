@@ -38,7 +38,7 @@ namespace EOSLobbyTest
             base.OnStartServer();
 
             var fishy = InstanceFinder.NetworkManager.GetComponent<FishyEOS>();
-            UserId = fishy.GetRemoteConnectionAddress(Owner.ClientId);
+            UserId = fishy.GetRemoteConnectionAddress(Owner.ClientId); 
         }
         public override void OnStartNetwork()
         {
