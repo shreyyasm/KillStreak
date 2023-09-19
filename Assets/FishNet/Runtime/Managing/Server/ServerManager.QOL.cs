@@ -2,6 +2,7 @@
 using FishNet.Managing.Logging;
 using FishNet.Managing.Transporting;
 using FishNet.Object;
+using FishNet.Serializing;
 using FishNet.Transporting;
 using FishNet.Transporting.Multipass;
 using System;
@@ -90,7 +91,7 @@ namespace FishNet.Managing.Server
         /// <param name="go">GameObject instance to spawn.</param>
         /// <param name="ownerConnection">Connection to give ownership to.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Spawn(GameObject go, NetworkConnection ownerConnection = null)
+        public void Spawn(GameObject go, NetworkConnection ownerConnection = null, UnityEngine.SceneManagement.Scene scene = default)
         {
             if (go == null)
             {
@@ -99,7 +100,7 @@ namespace FishNet.Managing.Server
             }
 
             NetworkObject nob = go.GetComponent<NetworkObject>();
-            Spawn(nob, ownerConnection);
+            Spawn(nob, ownerConnection, scene);
         }
 
 
@@ -108,9 +109,9 @@ namespace FishNet.Managing.Server
         /// </summary>
         /// <param name="nob">MetworkObject instance to spawn.</param>
         /// <param name="ownerConnection">Connection to give ownership to.</param>
-        public void Spawn(NetworkObject nob, NetworkConnection ownerConnection = null)
+        public void Spawn(NetworkObject nob, NetworkConnection ownerConnection = null, UnityEngine.SceneManagement.Scene scene = default)
         {
-            Objects.Spawn(nob, ownerConnection);
+            Objects.Spawn(nob, ownerConnection, scene);
         }
 
         /// <summary>
@@ -177,6 +178,20 @@ namespace FishNet.Managing.Server
             NetworkManager.TransportManager.Transport.StopConnection(clientId, true);
             if (!string.IsNullOrEmpty(log))
                 NetworkManager.Log(loggingType, log);
+        }
+
+        /// <summary>
+        /// Kicks a connection immediately while invoking OnClientKick.
+        /// </summary>
+        /// <param name="conn">Client to kick.</param>
+        /// <param name="reader">Reader to clear before kicking.</param>
+        /// <param name="kickReason">Reason client is being kicked.</param>
+        /// <param name="loggingType">How to print logging as.</param>
+        /// <param name="log">Optional message to be debug logged.</param>
+        public void Kick(NetworkConnection conn, Reader reader, KickReason kickReason, LoggingType loggingType = LoggingType.Common, string log = "")
+        {
+            reader.Clear();
+            Kick(conn, kickReason, loggingType, log);
         }
     }
 

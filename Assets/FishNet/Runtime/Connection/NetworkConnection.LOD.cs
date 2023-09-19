@@ -1,11 +1,7 @@
-﻿using FishNet.Managing;
-using FishNet.Managing.Logging;
-using FishNet.Managing.Server;
-using FishNet.Object;
-using FishNet.Serializing;
+﻿using FishNet.Object;
+using GameKit.Utilities;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace FishNet.Connection
 {
@@ -13,65 +9,76 @@ namespace FishNet.Connection
     /// <summary>
     /// A container for a connected client used to perform actions on and gather information for the declared client.
     /// </summary>
-    public partial class NetworkConnection : IEquatable<NetworkConnection>
+    public partial class NetworkConnection
     {
+
+        public class LevelOfDetailData : IResettable
+        {
+            /// <summary>
+            /// Current level of detail for a NetworkObject.
+            /// </summary>
+            public byte CurrentLevelOfDetail;
+            /// <summary>
+            /// Previous level of detail for a NetworkObject.
+            /// </summary>
+            public byte PreviousLevelOfDetail;
+
+            internal void Update(byte lodLevel)
+            {
+                PreviousLevelOfDetail = CurrentLevelOfDetail;
+                CurrentLevelOfDetail = lodLevel;
+            }
+
+            public void ResetState()
+            {
+                CurrentLevelOfDetail = 0;
+                PreviousLevelOfDetail = 0;
+            }
+
+            public void InitializeState() { }
+
+        }
         /// <summary>
         /// Level of detail for each NetworkObject.
+        /// Since this is called frequently this field is intentionally not an accessor to increase performance.
         /// </summary>
-        public Dictionary<NetworkObject, byte> LevelOfDetails = new Dictionary<NetworkObject, byte>();
-
-
-        private List<Vector3> _objectsPositionsCache = new List<Vector3>();
-
-        /* REALLY REALLY REALLY IMPORTANT.
-         * Do not let the client exceed MTU. This would
-         * result in a check if limit client MTU is enabled.
-         * Or perhaps allow this packet specifically to exceed MTU. 
-         * 
-         * Connection would likely not exceed MTU unless they had many hundred
-         * objects visible to them, but better safe than sorry. */
-
-        internal void SendLevelOfDetails()
+        public Dictionary<NetworkObject, LevelOfDetailData> LevelOfDetails = new Dictionary<NetworkObject, LevelOfDetailData>(new NetworkObjectIdComparer());
+        /// <summary>
+        /// Number oftimes this connection may send a forced LOD update.
+        /// </summary>
+        internal int AllowedForcedLodUpdates;
+        /// <summary>
+        /// Last tick an LOD was sent.
+        /// On client and clientHost this is LocalTick.
+        /// On server only this is LastPacketTick for the connection.
+        /// </summary>
+        internal uint LastLevelOfDetailUpdate;
+        /// <summary>
+        /// Returns if the client has not sent an LOD update for expectedInterval.
+        /// </summary>
+        /// <returns></returns>
+        internal bool IsLateForLevelOfDetail(uint expectedInterval)
         {
-            if (!IsActive)
-                return;
-            if (!IsLocalClient)
-                return;
-     
-            //Rebuild position cache for players objects.
-            _objectsPositionsCache.Clear();
-            foreach (NetworkObject playerObjects in Objects)
-                _objectsPositionsCache.Add(playerObjects.transform.position);
+            //Local client is immune since server and client share ticks.
+            if (IsLocalClient)
+                return false;
 
-            PooledWriter pw = WriterPool.GetWriter(5000);
-
-            Dictionary<int, NetworkObject> spawned = NetworkManager.ClientManager.Objects.Spawned;
-            foreach (NetworkObject nob in spawned.Values)
-            {
-                Vector3 nobPosition = nob.transform.position;
-                float closestDistance = float.MaxValue;
-                foreach (Vector3 objPosition in _objectsPositionsCache)
-                {
-                    float dist = Vector3.SqrMagnitude(nobPosition - objPosition);
-                    if (dist < closestDistance)
-                        closestDistance = dist;
-
-                    byte lod;
-                    if (dist <= (10 * 10))
-                        lod = 0;
-                    else if (dist <= (20 * 20))
-                        lod = 1;
-                    else if (dist <= (40 * 40))
-                        lod = 2;
-                    else
-                        lod = 3;
-
-                    pw.WriteNetworkObjectId(nob.ObjectId);
-                    pw.WriteByte(lod);
-                }
-            }
+            uint lastPacketTick = PacketTick.RemoteTick;
+            return ((lastPacketTick - LastLevelOfDetailUpdate) > expectedInterval);
         }
+        
+        /// <summary>
+        /// Number of level of detail update infractions for this connection.
+        /// </summary>
+        internal int LevelOfDetailInfractions;
 
+        private void ResetStates_Lod()
+        {
+            foreach (LevelOfDetailData data in LevelOfDetails.Values)
+                ResettableObjectCaches<LevelOfDetailData>.Store(data);
+
+            LevelOfDetails.Clear();
+        }
     }
 
 

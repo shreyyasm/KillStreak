@@ -1,4 +1,5 @@
-﻿using FishNet.CodeGenerating.Helping.Extension;
+﻿using FishNet.CodeGenerating.Extension;
+using FishNet.CodeGenerating.Helping.Extension;
 using FishNet.Object;
 using FishNet.Serializing.Helping;
 using FishNet.Utility.Performance;
@@ -87,15 +88,17 @@ namespace FishNet.CodeGenerating.Helping
             {
                 return SerializerType.List;
             }
-            else if (objectTd.Is(typeof(ListCache<>)))
+#pragma warning disable CS0618 // Type or member is obsolete
+            else if (objectTd.Is(typeof(ListCache<>))) //Remove on 2024/01/01
             {
                 return SerializerType.ListCache;
             }
+#pragma warning restore CS0618 // Type or member is obsolete
             else if (objectTd.InheritsFrom<NetworkBehaviour>(base.Session))
             {
                 return SerializerType.NetworkBehaviour;
             }
-            else if (objectTr.Name == typeof(System.Nullable<>).Name)
+            else if (objectTr.IsNullable(base.Session))
             {
                 GenericInstanceType git = objectTr as GenericInstanceType;
                 if (git == null || git.GenericArguments.Count != 1)

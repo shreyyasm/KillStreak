@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using static FishNet.Component.Prediction.PredictedObject;
 
 namespace FishNet.Component.Prediction
 {
@@ -10,6 +11,8 @@ namespace FishNet.Component.Prediction
     [CanEditMultipleObjects]
     public class PredictedObjectEditor : Editor
     {
+#if !PREDICTION_V2
+
         private SerializedProperty _implementsPredictionMethods;
         private SerializedProperty _graphicalObject;
         private SerializedProperty _ownerSmoothPosition;
@@ -23,8 +26,9 @@ namespace FishNet.Component.Prediction
         private SerializedProperty _rigidbody2d;
         private SerializedProperty _spectatorSmoothPosition;
         private SerializedProperty _spectatorSmoothRotation;
-        private SerializedProperty _spectatorInterpolation;
-        private SerializedProperty _overflowMultiplier;
+        private SerializedProperty _spectatorSmoothingType;
+        private SerializedProperty _customSmoothingData;
+        private SerializedProperty _preconfiguredSmoothingDataPreview;
         private SerializedProperty _maintainedVelocity;
         private SerializedProperty _resendType;
         private SerializedProperty _resendInterval;
@@ -46,8 +50,10 @@ namespace FishNet.Component.Prediction
             _rigidbody2d = serializedObject.FindProperty(nameof(_rigidbody2d));
             _spectatorSmoothPosition = serializedObject.FindProperty(nameof(_spectatorSmoothPosition));
             _spectatorSmoothRotation = serializedObject.FindProperty(nameof(_spectatorSmoothRotation));
-            _spectatorInterpolation = serializedObject.FindProperty(nameof(_spectatorInterpolation));
-            _overflowMultiplier = serializedObject.FindProperty(nameof(_overflowMultiplier));
+            _spectatorSmoothingType = serializedObject.FindProperty(nameof(_spectatorSmoothingType));
+            _customSmoothingData = serializedObject.FindProperty(nameof(_customSmoothingData));
+            _preconfiguredSmoothingDataPreview = serializedObject.FindProperty(nameof(_preconfiguredSmoothingDataPreview));
+
             _maintainedVelocity = serializedObject.FindProperty(nameof(_maintainedVelocity));
             _resendType = serializedObject.FindProperty(nameof(_resendType));
             _resendInterval = serializedObject.FindProperty(nameof(_resendInterval));
@@ -98,8 +104,23 @@ namespace FishNet.Component.Prediction
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(_spectatorSmoothPosition, new GUIContent("Smooth Position"));
                 EditorGUILayout.PropertyField(_spectatorSmoothRotation, new GUIContent("Smooth Rotation"));
-                EditorGUILayout.PropertyField(_spectatorInterpolation, new GUIContent("Interpolation"));
-                EditorGUILayout.PropertyField(_overflowMultiplier);
+                EditorGUILayout.PropertyField(_spectatorSmoothingType, new GUIContent("Smoothing Type"));
+                //Custom.
+                if ((SpectatorSmoothingType)_spectatorSmoothingType.intValue == SpectatorSmoothingType.Custom)
+                {
+                    EditorGUI.indentLevel++;
+                    EditorGUILayout.PropertyField(_customSmoothingData);
+                    EditorGUI.indentLevel--;
+                }
+                //Preconfigured.
+                else
+                {
+                    EditorGUI.indentLevel++;
+                    GUI.enabled = false;
+                    EditorGUILayout.PropertyField(_preconfiguredSmoothingDataPreview);
+                    GUI.enabled = true;
+                    EditorGUI.indentLevel--;
+                }
                 EditorGUI.indentLevel--;
                 EditorGUILayout.PropertyField(_maintainedVelocity);
 
@@ -126,8 +147,9 @@ namespace FishNet.Component.Prediction
             EditorGUILayout.Space();
             serializedObject.ApplyModifiedProperties();
         }
-
+#endif
     }
+
 }
 #endif
 

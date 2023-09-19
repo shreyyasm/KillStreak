@@ -7,6 +7,34 @@ namespace FishNet.CodeGenerating.Extension
 
     internal static class TypeDefinitionExtensions
     {
+
+
+        /// <summary>
+        /// Returns if a TypeDefinition is nullable.
+        /// </summary>
+        public static bool IsNullable(this TypeDefinition td)
+        {
+            return (td.Name == typeof(System.Nullable<>).Name);
+        }
+
+        /// <summary>
+        /// Finds the first method by a given name.
+        /// </summary>
+        /// <param name="typeDef"></param>
+        /// <param name="methodName"></param>
+        /// <returns></returns>
+        internal static MethodDefinition GetMethod(this TypeDefinition typeDef, string methodName)
+        {
+            foreach (MethodDefinition md in typeDef.Methods)
+            {
+                if (md.Name == methodName)
+                    return md;
+            }
+
+            return null;
+        }
+
+
         public static MethodReference GetMethodReferenceInBase(this TypeDefinition td, CodegenSession session, string methodName)
         {
             MethodDefinition baseMd = td.GetMethodDefinitionInBase(session, methodName);
@@ -135,6 +163,9 @@ namespace FishNet.CodeGenerating.Extension
                     foreach (ParameterDefinition pd in methodTemplate.Parameters)
                         md.Parameters.Add(pd);
                 }
+
+                foreach (var item in methodTemplate.GenericParameters)
+                    md.GenericParameters.Add(item);
 
                 td.Methods.Add(md);
                 created = true;

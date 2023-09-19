@@ -111,8 +111,9 @@ namespace FishNet.Object.Synchronizing
             if (!base.CanNetworkSetValues(true))
                 return;
 
+            Paused = true;
             SyncTimerOperation op = (sendRemaining) ? SyncTimerOperation.PauseUpdated : SyncTimerOperation.Pause;
-            AddOperation(op, -1f, -1f);
+            AddOperation(op, Remaining, Remaining);
         }
 
         /// <summary>
@@ -127,7 +128,8 @@ namespace FishNet.Object.Synchronizing
             if (!base.CanNetworkSetValues(true))
                 return;
 
-            AddOperation(SyncTimerOperation.Unpause, -1f, -1f);
+            Paused = false;
+            AddOperation(SyncTimerOperation.Unpause, Remaining, Remaining);
         }
 
         /// <summary>
@@ -288,15 +290,18 @@ namespace FishNet.Object.Synchronizing
             {
                 bool newPauseState = (op == SyncTimerOperation.Pause || op == SyncTimerOperation.PauseUpdated);
 
-                float prev = -1f;
-                float next = -1f;
+                float prev = Remaining;
+                float next;
                 //If updated time as well.
                 if (op == SyncTimerOperation.PauseUpdated)
                 {
-                    prev = Remaining;
                     next = reader.ReadSingle();
                     if (CanSetValues(asServer))
                         Remaining = next;
+                }
+                else
+                {
+                    next = Remaining;
                 }
 
                 if (CanSetValues(asServer))
@@ -373,6 +378,8 @@ namespace FishNet.Object.Synchronizing
             if (Paused)
                 return;
 
+            if (delta < 0)
+                delta *= -1f;
             float prev = Remaining;
             Remaining -= delta;
             //Still time left.

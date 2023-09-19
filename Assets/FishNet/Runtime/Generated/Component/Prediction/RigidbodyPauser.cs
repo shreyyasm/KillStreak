@@ -32,6 +32,18 @@ namespace FishNet.Component.Prediction
             /// Scene of this rigidbody when being set kinematic.
             /// </summary>
             public Scene SimulatedScene;
+            /// <summary>
+            /// True if the rigidbody was kinematic prior to being paused.
+            /// </summary>
+            public bool IsKinematic;
+            /// <summary>
+            /// Parent object of this rigidbody prior to pausing. This will usually be null.
+            /// </summary>
+            public Transform Parent;
+            /// <summary>
+            /// True if Parent was assigned during creation or update.
+            /// </summary>
+            public bool HasParent;
 
             public RigidbodyData(Rigidbody rb)
             {
@@ -40,6 +52,9 @@ namespace FishNet.Component.Prediction
                 Velocity = Vector3.zero;
                 AngularVelocity = Vector3.zero;
                 SimulatedScene = rb.gameObject.scene;
+                IsKinematic = rb.isKinematic;
+                Parent = rb.transform.parent;
+                HasParent = (Parent != null);
             }
 
             public void Update(Rigidbody rb)
@@ -47,6 +62,9 @@ namespace FishNet.Component.Prediction
                 Velocity = rb.velocity;
                 AngularVelocity = rb.angularVelocity;
                 SimulatedScene = rb.gameObject.scene;
+                IsKinematic = rb.isKinematic;
+                Parent = rb.transform.parent;
+                HasParent = (Parent != null);
             }
         }
         /// <summary>
@@ -70,6 +88,22 @@ namespace FishNet.Component.Prediction
             /// Scene of this rigidbody when being set kinematic.
             /// </summary>
             public Scene SimulatedScene;
+            /// <summary>
+            /// True if the rigidbody was simulated prior to being paused.
+            /// </summary>
+            public bool Simulated;
+            /// <summary>
+            /// True if the rigidbody was kinematic prior to being paused.
+            /// </summary>
+            public bool IsKinematic;
+            /// <summary>
+            /// Parent object of this rigidbody prior to pausing. This will usually be null.
+            /// </summary>
+            public Transform Parent;
+            /// <summary>
+            /// True if Parent was assigned during creation or update.
+            /// </summary>
+            public bool HasParent;
 
             public Rigidbody2DData(Rigidbody2D rb)
             {
@@ -78,6 +112,10 @@ namespace FishNet.Component.Prediction
                 Velocity = Vector2.zero;
                 AngularVelocity = 0f;
                 SimulatedScene = rb.gameObject.scene;
+                Simulated = rb.simulated;
+                IsKinematic = rb.isKinematic;
+                Parent = rb.transform.parent;
+                HasParent = (Parent != null);
             }
 
             public void Update(Rigidbody2D rb)
@@ -85,6 +123,10 @@ namespace FishNet.Component.Prediction
                 Velocity = rb.velocity;
                 AngularVelocity = rb.angularVelocity;
                 SimulatedScene = rb.gameObject.scene;
+                Simulated = rb.simulated;
+                IsKinematic = rb.isKinematic;
+                Parent = rb.transform.parent;
+                HasParent = (Parent != null);
             }
         }
         #endregion
@@ -147,7 +189,7 @@ namespace FishNet.Component.Prediction
 
             //3D.
             if (rbType == RigidbodyType.Rigidbody)
-            {   
+            {
                 if (getInChildren)
                 {
                     Rigidbody[] rbs = t.GetComponentsInChildren<Rigidbody>();
@@ -206,6 +248,94 @@ namespace FishNet.Component.Prediction
         }
 
         /// <summary>
+        /// Pauses rigidbodies preventing them from interacting.
+        /// </summary>
+        public void Pause()
+        {
+            if (Paused)
+                return;
+            Paused = true;
+
+            _graphicalObject?.SetParent(null);
+            Scene kinematicScene = _kinematicScene;
+
+            /* Iterate move after pausing.
+            * This ensures when the children RBs update values
+            * they are not updating from a new scene, where the root
+            * may have moved them */
+
+            //3D.
+            if (_rigidbodyType == RigidbodyType.Rigidbody)
+            {
+                for (int i = 0; i < _rigidbodyDatas.Count; i++)
+                {
+                    if (!PauseRigidbody(i))
+                    {
+                        _rigidbodyDatas.RemoveAt(i);
+                        i--;
+                    }
+                }
+
+                //Sets isKinematic status and returns if successful.
+                bool PauseRigidbody(int index)
+                {
+                    RigidbodyData rbData = _rigidbodyDatas[index];
+                    Rigidbody rb = rbData.Rigidbody;
+                    if (rb == null)
+                        return false;
+
+                    rbData.Update(rb);
+                    _rigidbodyDatas[index] = rbData;
+
+                    /* Move only first rigidbody to save
+                     * performance. If rb has a parent then unset
+                    * parent as child objects cannot be moved. */
+#if !FISHNET_RELEASE_MODE
+                    if (rb.transform.parent != null)
+                        rb.transform.SetParent(null);
+#endif
+                    SceneManager.MoveGameObjectToScene(rb.transform.gameObject, kinematicScene);
+
+                    return true;
+                }
+            }
+            //2D.
+            else
+            {
+                for (int i = 0; i < _rigidbody2dDatas.Count; i++)
+                {
+                    if (!PauseRigidbody(i))
+                    {
+                        _rigidbody2dDatas.RemoveAt(i);
+                        i--;
+                    }
+                }
+
+                //Sets isKinematic status and returns if successful.
+                bool PauseRigidbody(int index)
+                {
+                    Rigidbody2DData rbData = _rigidbody2dDatas[index];
+                    Rigidbody2D rb = rbData.Rigidbody2d;
+                    if (rb == null)
+                        return false;
+
+                    rbData.Update(rb);
+                    _rigidbody2dDatas[index] = rbData;
+
+#if !FISHNET_RELEASE_MODE
+                    if (rb.transform.parent != null)
+                        rb.transform.SetParent(null);
+#endif
+
+                    SceneManager.MoveGameObjectToScene(rb.transform.gameObject, kinematicScene);
+                    return true;
+                }
+            }
+
+        }
+
+
+        /// <summary>
         /// Unpauses rigidbodies allowing them to interact normally.
         /// </summary>
         public void Unpause()
@@ -234,9 +364,26 @@ namespace FishNet.Component.Prediction
                     if (rb == null)
                         return false;
 
+                    SceneManager.MoveGameObjectToScene(rb.transform.gameObject, rbData.SimulatedScene);
+#if !FISHNET_RELEASE_MODE
+                    /* If was moved while having a parent
+                     * then set back to the same parent. If the parent does
+                     * not exist then the object must have been destroyed.
+                     * When this occurs also destroy the rigidbody object. */
+                    if (rbData.HasParent)
+                    {
+                        Transform par = rbData.Parent;
+                        if (par != null)
+                            rb.transform.SetParent(rbData.Parent);
+                        else
+                            MonoBehaviour.Destroy(rb.gameObject);
+                    }
+#endif
+
                     rb.velocity = rbData.Velocity;
                     rb.angularVelocity = rbData.AngularVelocity;
-                    SceneManager.MoveGameObjectToScene(rb.transform.root.gameObject, rbData.SimulatedScene);
+                    rb.isKinematic = rbData.IsKinematic;
+
                     return true;
                 }
             }
@@ -260,9 +407,23 @@ namespace FishNet.Component.Prediction
                     if (rb == null)
                         return false;
 
+                    SceneManager.MoveGameObjectToScene(rb.transform.gameObject, rbData.SimulatedScene);
+#if !FISHNET_RELEASE_MODE
+                    if (rbData.HasParent)
+                    {
+                        Transform par = rbData.Parent;
+                        if (par != null)
+                            rb.transform.SetParent(rbData.Parent);
+                        else
+                            MonoBehaviour.Destroy(rb.gameObject);
+                    }
+#endif
+
                     rb.velocity = rbData.Velocity;
                     rb.angularVelocity = rbData.AngularVelocity;
-                    SceneManager.MoveGameObjectToScene(rb.transform.root.gameObject, rbData.SimulatedScene);
+                    rb.simulated = rbData.Simulated;
+                    rb.isKinematic = rbData.IsKinematic;
+
                     return true;
                 }
             }
@@ -275,71 +436,7 @@ namespace FishNet.Component.Prediction
 
         }
 
-        /// <summary>
-        /// Pauses rigidbodies preventing them from interacting.
-        /// </summary>
-        public void Pause()
-        {
-            if (Paused)
-                return;
-            Paused = true;
 
-            _graphicalObject?.SetParent(null);
-            Scene kinematicScene = _kinematicScene;
-
-            //3D.
-            if (_rigidbodyType == RigidbodyType.Rigidbody)
-            {
-                for (int i = 0; i < _rigidbodyDatas.Count; i++)
-                {
-                    if (!PauseRigidbody(i))
-                    {
-                        _rigidbodyDatas.RemoveAt(i);
-                        i--;
-                    }
-                }
-
-                //Sets isKinematic status and returns if successful.
-                bool PauseRigidbody(int index)
-                {
-                    RigidbodyData rbData = _rigidbodyDatas[index];
-                    Rigidbody rb = rbData.Rigidbody;
-                    if (rb == null)
-                        return false;
-
-                    rbData.Update(rb);
-                    _rigidbodyDatas[index] = rbData;
-                    SceneManager.MoveGameObjectToScene(rb.transform.root.gameObject, kinematicScene);
-                    return true;
-                }
-            }
-            //2D.
-            else
-            {
-                for (int i = 0; i < _rigidbody2dDatas.Count; i++)
-                {
-                    if (!PauseRigidbody(i))
-                    {
-                        _rigidbody2dDatas.RemoveAt(i);
-                        i--;
-                    }
-                }
-
-                //Sets isKinematic status and returns if successful.
-                bool PauseRigidbody(int index)
-                {
-                    Rigidbody2DData rbData = _rigidbody2dDatas[index];
-                    Rigidbody2D rb = rbData.Rigidbody2d;
-                    if (rb == null)
-                        return false;
-
-                    rbData.Update(rb);
-                    _rigidbody2dDatas[index] = rbData;
-                    SceneManager.MoveGameObjectToScene(rb.transform.root.gameObject, kinematicScene);
-                    return true;
-                }
-            }
-        }
     }
 
 
