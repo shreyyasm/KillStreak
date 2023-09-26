@@ -211,7 +211,7 @@ namespace EOSLobbyTest
             VivoxManager.Instance.Login(Settings.Instance.CurrentPlayerName);
             
             // setup default state of ui
-            players.ClearPlayers();
+            
             UpdateControlState();
             
             if (IsHost)
@@ -224,7 +224,8 @@ namespace EOSLobbyTest
                 // we are the client - connect to given parameters
                 JoinLobby();
             }
-            
+            if(RedPlayers.isActiveAndEnabled)
+                players.ClearPlayersDelay();
         }
 
         protected override void OnHidden()

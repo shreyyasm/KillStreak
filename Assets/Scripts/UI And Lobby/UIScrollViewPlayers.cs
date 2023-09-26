@@ -38,6 +38,20 @@ namespace EOSLobbyTest
             {
                 Destroy(container.GetChild(i).gameObject);
             }
+            
+        }
+        public void ClearPlayersDelay()
+        {
+            StartCoroutine(DelayClearPlayers());
+        }
+        IEnumerator DelayClearPlayers()
+        {
+            yield return new WaitForSeconds(.5f);
+            
+            for (var i = container.childCount - 1; i >= 0; i--)
+            {
+                Destroy(container.GetChild(i).gameObject);
+            }
         }
 
         public UIPlayerItem AddPlayer(string playerId, string playerName, bool canKick)

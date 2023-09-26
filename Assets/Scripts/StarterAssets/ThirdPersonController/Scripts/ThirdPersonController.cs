@@ -243,10 +243,7 @@ namespace StarterAssets
             public float CameraEulerY;
             public Vector3 screenCenterPoint;
             public float lookSensitivity;
-            private uint _tick;
-            public void Dispose() { }
-            public uint GetTick() => _tick;
-            public void SetTick(uint value) => _tick = value;
+            
             public ReconcileData(Vector3 position, Quaternion rotation,float verticalVelocity, float fallTimeout, float jumpTimeout,float slideValue, float slideSpeedValue, bool grounded, bool timeRunning, float _cinemachineTargetYawNew, float _cinemachineTargetPitchNew, float targetRotation, Vector3 _movement, Vector3 _targetDirection, float cameraEuler, Vector3 _screenCenterPoint, float lookSens)
             {
                 Position = position;
@@ -274,6 +271,10 @@ namespace StarterAssets
 
             _tick = 0;
             }
+            private uint _tick;
+            public void Dispose() { }
+            public uint GetTick() => _tick;
+            public void SetTick(uint value) => _tick = value;
         }
         PlayerManager playerManager;
         private void Awake()
@@ -409,12 +410,19 @@ namespace StarterAssets
         
         private void CheckInput(out MoveData md)
         {
-            
+            md = default;
+
+            Vector3 moveInput = new Vector3(ultimateJoystick.GetHorizontalAxis(), 0f, ultimateJoystick.GetVerticalAxis()).normalized;
+            Vector3 LookInput = new Vector3(screenTouch.lookInput.x, screenTouch.lookInput.y);
+
+            if (moveInput.magnitude == 0f && LookInput.magnitude == 0f)
+                return;
+
             md = new MoveData()
             {
                 
-            Move = new Vector3(ultimateJoystick.GetHorizontalAxis(), 0f, ultimateJoystick.GetVerticalAxis()).normalized,
-            Look = new Vector3(screenTouch.lookInput.x, screenTouch.lookInput.y),
+            Move = moveInput,
+            Look = LookInput,
             ResetPosRed = new Vector3(GameManagerEOS.Instance.RedTeamSpawnPoints[playerGunSelector.PlayerRedPosIndex].position.x, -0.46f, GameManagerEOS.Instance.RedTeamSpawnPoints[playerGunSelector.PlayerRedPosIndex].position.z),
             ResetPosBlue = new Vector3(GameManagerEOS.Instance.BlueTeamSpawnPoints[playerGunSelector.PlayerBluePosIndex].position.x, -0.46f, GameManagerEOS.Instance.BlueTeamSpawnPoints[playerGunSelector.PlayerBluePosIndex].position.z),
             CameraEulerY = _mainCamera.transform.eulerAngles.y,
