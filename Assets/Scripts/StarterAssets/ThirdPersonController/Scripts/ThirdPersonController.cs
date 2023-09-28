@@ -285,6 +285,7 @@ namespace StarterAssets
             // get a reference to our main camera
             
             InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
+            InstanceFinder.TimeManager.OnUpdate += TimeManager_OnUpdate;
             Grounded = true;
             audioRunSource.Play(0);
             audioCrouchSource.Play(0);
@@ -315,7 +316,7 @@ namespace StarterAssets
             if (InstanceFinder.TimeManager != null)
             {
                 InstanceFinder.TimeManager.OnTick -= TimeManager_OnTick;
-               
+                InstanceFinder.TimeManager.OnUpdate -= TimeManager_OnUpdate;
             }
         }
   
@@ -370,21 +371,30 @@ namespace StarterAssets
             {
                 Reconciliation(default, false);
                 CheckInput(out MoveData md);
-                MoveWithData(md, false);
+                Move(md, false);
 
-                _clientMoveData = md;
+               
             }
             if (base.IsServer)
             {
                 
-                MoveWithData(default, true);
+                Move(default, true);
                 ReconcileData rd = new  ReconcileData(transform.position, transform.rotation,_verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning, _cinemachineTargetYaw,  _cinemachineTargetPitch, _targetRotation,movement,targetDirection,_CameraEulerY, screenCenterPoint, lookSensitivity);
                 Reconciliation(rd, true);
             }
         }
+        private void TimeManager_OnUpdate()
+        {
+            if (base.IsOwner)
+            {
+                //JumpAndGravity(_clientMoveData, Time.deltaTime);
+                GroundedCheck();
+                MoveWithData(_clientMoveData, Time.deltaTime);
+            }
+        }
 
-        
-       
+
+
         [Reconcile]     
         private void Reconciliation(ReconcileData rd, bool asServer, Channel channel = Channel.Unreliable)
         {
@@ -410,19 +420,12 @@ namespace StarterAssets
         
         private void CheckInput(out MoveData md)
         {
-            md = default;
-
-            Vector3 moveInput = new Vector3(ultimateJoystick.GetHorizontalAxis(), 0f, ultimateJoystick.GetVerticalAxis()).normalized;
-            Vector3 LookInput = new Vector3(screenTouch.lookInput.x, screenTouch.lookInput.y);
-
-            if (moveInput.magnitude == 0f && LookInput.magnitude == 0f)
-                return;
-
+         
             md = new MoveData()
             {
                 
-            Move = moveInput,
-            Look = LookInput,
+            Move = new Vector3(ultimateJoystick.GetHorizontalAxis(), 0f, ultimateJoystick.GetVerticalAxis()).normalized,
+            Look = new Vector3(screenTouch.lookInput.x, screenTouch.lookInput.y),
             ResetPosRed = new Vector3(GameManagerEOS.Instance.RedTeamSpawnPoints[playerGunSelector.PlayerRedPosIndex].position.x, -0.46f, GameManagerEOS.Instance.RedTeamSpawnPoints[playerGunSelector.PlayerRedPosIndex].position.z),
             ResetPosBlue = new Vector3(GameManagerEOS.Instance.BlueTeamSpawnPoints[playerGunSelector.PlayerBluePosIndex].position.x, -0.46f, GameManagerEOS.Instance.BlueTeamSpawnPoints[playerGunSelector.PlayerBluePosIndex].position.z),
             CameraEulerY = _mainCamera.transform.eulerAngles.y,
@@ -811,10 +814,21 @@ namespace StarterAssets
         bool startSlide;
         public bool ResetPosition;
         [Replicate]
-        private void MoveWithData(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
+        private void Move(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
+        {
+            if (asServer || replaying)
+            {
+                //JumpAndGravity(md, (float)base.TimeManager.TickDelta);
+                GroundedCheck();
+                MoveWithData(md, (float)base.TimeManager.TickDelta);
+            }
+            else if (!asServer)
+                _clientMoveData = md;
+        }
+        private void MoveWithData(MoveData md, float delta)
         {
 
-            GroundedCheck();
+            //GroundedCheck();
             if(ResetPosition)
             {
                 if (playerGunSelector.redTeamPlayer)
@@ -822,17 +836,17 @@ namespace StarterAssets
                 else
                     transform.position = md.ResetPosBlue;
             }
-            
+
             //if (playerGunSelector.aimAssist)
             //{
             //    if (Physics.SphereCast(rayNew, playerGunSelector.sphereCastRadiusAimAssist, out RaycastHit hitnew, float.MaxValue, playerGunSelector.AimAssistHitMask))
             //    {
-                    
+
             //        if (Physics.Raycast(rayNew, out RaycastHit hit, float.MaxValue, playerGunSelector.ActiveGun.ShootConfig.HitMask))
             //        {
             //            //rayHitPoint = hit.point;
             //        }
-                    
+
             //        if (hitnew.collider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider collider))
             //        {
             //            if (!hit.collider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider colliderNew))
@@ -851,13 +865,13 @@ namespace StarterAssets
             //                            {
             //                                if (hitnew.point.x > hit.point.x)
             //                                {
-            //                                    _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw += 0.14f, (float)base.TimeManager.TickDelta * 30f);
+            //                                    _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw += 0.14f, delta * 30f);
             //                                }
 
 
             //                                if (hitnew.point.x < hit.point.x)
             //                                {
-            //                                    _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw -= 0.14f, (float)base.TimeManager.TickDelta * 30f);
+            //                                    _cinemachineTargetYaw = Mathf.Lerp(_cinemachineTargetYaw, _cinemachineTargetYaw -= 0.14f, delta * 30f);
 
             //                                }
             //                            }
@@ -879,11 +893,11 @@ namespace StarterAssets
                 return;
             mouseX = screenTouch.lookInput.x;
             mouseY = screenTouch.lookInput.y;
-            //if (screenTouch.rightFingerID == -1)
-            //{
-            //    md.Look.x = 0;
-            //    md.Look.y = 0;
-            //}
+            if (screenTouch.rightFingerID == -1)
+            {
+                md.Look.x = 0;
+                md.Look.y = 0;
+            }
             if (screenTouch.rightFingerID != -1)
             {
                 //float h = UltimateTouchpad.GetHorizontalAxis("Look");
@@ -893,13 +907,13 @@ namespace StarterAssets
                 // if there is an input and camera position is not fixed
                 //if (md.Look.sqrMagnitude >= _threshold && !LockCameraPosition)
                 //{
-                    //Don't multiply mouse input by Time.deltaTime;
-                    //float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+                //Don't multiply mouse input by Time.deltaTime;
+                //float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
-                    //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
-                    //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
-                    _cinemachineTargetYaw += md.Look.x  * lookSensitivity * (float)base.TimeManager.TickDelta;
-                    _cinemachineTargetPitch -= md.Look.y * lookSensitivity * (float)base.TimeManager.TickDelta;
+                //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
+                //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
+                _cinemachineTargetYaw += md.Look.x * lookSensitivity * delta;
+                _cinemachineTargetPitch -= md.Look.y * lookSensitivity * delta;
                 //}
 
                 // clamp our rotations so our values are limited 360 degrees
@@ -914,12 +928,12 @@ namespace StarterAssets
 
 
             transform.rotation = Quaternion.Euler(0, _cinemachineTargetYaw, 0f);
-            //transform.rotation = Quaternion.Lerp(transform.rotation, transform.rotation, 10 *(float)base.TimeManager.TickDelta);
+            //transform.rotation = Quaternion.Lerp(transform.rotation, transform.rotation, 10 *delta);
             //Vector3 newRot = new Vector3(_cinemachineTargetPitch, 0,0 );
             //transform.forward = Vector3.Lerp(transform.forward, newRot, 10f);
             //transform.forward = Vector3.Lerp(transform.forward, _cinemachineTargetYaw, Time.deltaTime * 10f);
-            //_controller.transform.forward = Vector3.Lerp(transform.forward, new Vector3(_cinemachineTargetPitch, 0 , _cinemachineTargetYaw), (float)base.TimeManager.TickDelta * 10f);
-            // _controller.transform.forward = Vector3.Lerp(transform.forward, new Vector3(_mainCamera.transform.forward.x, 0, _mainCamera.transform.forward.z) , (float)base.TimeManager.TickDelta * 10f);
+            //_controller.transform.forward = Vector3.Lerp(transform.forward, new Vector3(_cinemachineTargetPitch, 0 , _cinemachineTargetYaw), delta * 10f);
+            // _controller.transform.forward = Vector3.Lerp(transform.forward, new Vector3(_mainCamera.transform.forward.x, 0, _mainCamera.transform.forward.z) , delta * 10f);
 
 
             //Jump Function 
@@ -974,7 +988,7 @@ namespace StarterAssets
                 // jump timeout
                 if (_jumpTimeoutDelta >= 0.0f)
                 {
-                    _jumpTimeoutDelta -= (float)base.TimeManager.TickDelta;
+                    _jumpTimeoutDelta -= delta;
                 }
             }
             else
@@ -1003,7 +1017,7 @@ namespace StarterAssets
             // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
             if (_verticalVelocity < _terminalVelocity)
             {
-                _verticalVelocity += Gravity * (float)base.TimeManager.TickDelta;
+                _verticalVelocity += Gravity * delta;
             }
             
             if (md.Slide && md.Move.z > 0.6f && !isAiming && !isCrouching)
@@ -1024,13 +1038,13 @@ namespace StarterAssets
 
             if (value >  0 )
             {
-                value -= (float)base.TimeManager.TickDelta;
-                slideSpeed -= 3 * (float)base.TimeManager.TickDelta;
+                value -= delta;
+                slideSpeed -= 3 * delta;
 
                 Vector3 slideMovement = transform.forward * slideSpeed;
                 slideMovement += new Vector3(0.0f, _verticalVelocity * 1.5f, 0.0f);
 
-                _controller.Move(slideMovement * (float)base.TimeManager.TickDelta);
+                _controller.Move(slideMovement * delta);
             }
 
             else
@@ -1135,7 +1149,7 @@ namespace StarterAssets
                 //_speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
                 //    Time.deltaTime * SpeedChangeRate);
                 _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * 1,
-                    (float)base.TimeManager.TickDelta * SpeedChangeRate);
+                    delta * SpeedChangeRate);
 
                 // round speed to 3 decimal places
                 _speed = Mathf.Round(_speed * 1000f) / 1000f;
@@ -1145,7 +1159,7 @@ namespace StarterAssets
                // _speed = targetSpeed;
             }
 
-            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, (float)base.TimeManager.TickDelta * SpeedChangeRate);
+            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, delta * SpeedChangeRate);
             if (_animationBlend < 0.01f) _animationBlend = 0f;
 
             // normalise input direction
@@ -1172,10 +1186,10 @@ namespace StarterAssets
             if (!isSliding)
             {
 
-                // _controller.enabled = true;
+                 _controller.enabled = true;
                 // move the player
                 if (!ResetPosition)
-                    _controller.Move(movement * (float)base.TimeManager.TickDelta);
+                    _controller.Move(movement * delta);
             }
             
             // update animator if using character

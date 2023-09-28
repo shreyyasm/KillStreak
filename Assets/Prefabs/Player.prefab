@@ -24072,7 +24072,6 @@ GameObject:
   - component: {fileID: 4444467285361161639}
   - component: {fileID: 4062980575288397414}
   - component: {fileID: 6757550525262360853}
-  - component: {fileID: 1777886551435567034}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -24648,7 +24647,7 @@ MonoBehaviour:
   - {fileID: 5288676240204857373}
   - {fileID: 4062980575288397414}
   - {fileID: 6757550525262360853}
-  - {fileID: 1777886551435567034}
+  - {fileID: 0}
   - {fileID: 4016688909735605221}
   - {fileID: 7607747229311474301}
   - {fileID: 5813009804763147807}
@@ -24666,7 +24665,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 1
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 8
+  <PrefabId>k__BackingField: 13
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
@@ -24690,7 +24689,7 @@ MonoBehaviour:
   _animator: {fileID: 6535167469221512672}
   _smoothFloats: 1
   _interpolation: 2
-  _clientAuthoritative: 1
+  _clientAuthoritative: 0
   _sendToOwner: 0
 --- !u!114 &7358093237642973144
 MonoBehaviour:
@@ -26014,13 +26013,13 @@ MonoBehaviour:
     Position: 1
     Rotation: 1
     Scale: 0
-  _interpolation: 28
+  _interpolation: 2
   _extrapolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1
   _scaleThreshold: 1
-  _clientAuthoritative: 1
-  _sendToOwner: 1
+  _clientAuthoritative: 0
+  _sendToOwner: 0
   _enableNetworkLod: 1
   _interval: 1
   _synchronizePosition: 1
@@ -26038,48 +26037,6 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
---- !u!114 &1777886551435567034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4144055852716770995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 402926ef33e0a894d9fec352693988ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 15
-  _addedNetworkObject: {fileID: 4866512734858148882}
-  _networkObjectCache: {fileID: 4866512734858148882}
-  _implementsPredictionMethods: 1
-  _graphicalObject: {fileID: 3811869648679887157}
-  _enableTeleport: 0
-  _teleportThreshold: 1
-  _ownerSmoothPosition: 1
-  _ownerSmoothRotation: 1
-  _ownerInterpolation: 1
-  _predictionType: 0
-  _rigidbody: {fileID: 0}
-  _rigidbody2d: {fileID: 0}
-  _spectatorSmoothPosition: 1
-  _spectatorSmoothRotation: 1
-  _spectatorSmoothingType: 1
-  _customSmoothingData:
-    InterpolationPercent: 1
-    CollisionInterpolationPercent: 0.1
-    InterpolationDecreaseStep: 1
-    InterpolationIncreaseStep: 3
-  _preconfiguredSmoothingDataPreview:
-    InterpolationPercent: 1
-    CollisionInterpolationPercent: 0.1
-    InterpolationDecreaseStep: 1
-    InterpolationIncreaseStep: 3
-  _maintainedVelocity: 0
-  _resendType: 0
-  _resendInterval: 30
-  _networkTransform: {fileID: 6757550525262360853}
 --- !u!1 &4226758256720615127
 GameObject:
   m_ObjectHideFlags: 0
