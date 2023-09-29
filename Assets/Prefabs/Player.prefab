@@ -1039,7 +1039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 17
+  _componentIndexCache: 16
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   PlayerCheck: {fileID: 8841774182271569056}
@@ -1055,7 +1055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 18
+  _componentIndexCache: 17
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   GunSelector: {fileID: 4556042117359066162}
@@ -7078,7 +7078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f544f2f09089d5e46a3d4724a3d2589e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 21
+  _componentIndexCache: 20
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   <selectedWeapon>k__BackingField: 0
@@ -24072,6 +24072,7 @@ GameObject:
   - component: {fileID: 4444467285361161639}
   - component: {fileID: 4062980575288397414}
   - component: {fileID: 6757550525262360853}
+  - component: {fileID: 7476293489979744658}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -24647,7 +24648,6 @@ MonoBehaviour:
   - {fileID: 5288676240204857373}
   - {fileID: 4062980575288397414}
   - {fileID: 6757550525262360853}
-  - {fileID: 0}
   - {fileID: 4016688909735605221}
   - {fileID: 7607747229311474301}
   - {fileID: 5813009804763147807}
@@ -26037,6 +26037,48 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
+--- !u!114 &7476293489979744658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144055852716770995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402926ef33e0a894d9fec352693988ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 4866512734858148882}
+  _networkObjectCache: {fileID: 0}
+  _implementsPredictionMethods: 1
+  _graphicalObject: {fileID: 3811869648679887157}
+  _enableTeleport: 0
+  _teleportThreshold: 1
+  _ownerSmoothPosition: 1
+  _ownerSmoothRotation: 1
+  _ownerInterpolation: 1
+  _predictionType: 0
+  _rigidbody: {fileID: 0}
+  _rigidbody2d: {fileID: 0}
+  _spectatorSmoothPosition: 1
+  _spectatorSmoothRotation: 1
+  _spectatorSmoothingType: 1
+  _customSmoothingData:
+    InterpolationPercent: 1
+    CollisionInterpolationPercent: 0.1
+    InterpolationDecreaseStep: 1
+    InterpolationIncreaseStep: 3
+  _preconfiguredSmoothingDataPreview:
+    InterpolationPercent: 1
+    CollisionInterpolationPercent: 0.1
+    InterpolationDecreaseStep: 1
+    InterpolationIncreaseStep: 3
+  _maintainedVelocity: 0
+  _resendType: 0
+  _resendInterval: 30
+  _networkTransform: {fileID: 6757550525262360853}
 --- !u!1 &4226758256720615127
 GameObject:
   m_ObjectHideFlags: 0
@@ -29179,7 +29221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 19
+  _componentIndexCache: 18
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   _componentConfiguration: 0
@@ -30712,7 +30754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 16
+  _componentIndexCache: 15
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   PlayerCheck: {fileID: 8841774182271569056}
@@ -33861,7 +33903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 20
+  _componentIndexCache: 19
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   GunSelector: {fileID: 4556042117359066162}

@@ -102,6 +102,10 @@ namespace StarterAssets
         [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
         public float _cinemachineTargetPitch { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
+
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        public float _cinemachineTargetX { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
         // player
         private float _speed;
 
@@ -233,9 +237,7 @@ namespace StarterAssets
             public bool Grounded;
             public bool timeIsRunning;
 
-            public float _cinemachineTargetYaw;
-            public float _cinemachineTargetPitch;
-
+            public float _cinemachineTargetX;
             public float _targetRotation;
             public Vector3 movement;
             public Vector3 targetDirection;
@@ -243,8 +245,10 @@ namespace StarterAssets
             public float CameraEulerY;
             public Vector3 screenCenterPoint;
             public float lookSensitivity;
+
+
             
-            public ReconcileData(Vector3 position, Quaternion rotation,float verticalVelocity, float fallTimeout, float jumpTimeout,float slideValue, float slideSpeedValue, bool grounded, bool timeRunning, float _cinemachineTargetYawNew, float _cinemachineTargetPitchNew, float targetRotation, Vector3 _movement, Vector3 _targetDirection, float cameraEuler, Vector3 _screenCenterPoint, float lookSens)
+            public ReconcileData(Vector3 position, Quaternion rotation,float verticalVelocity, float fallTimeout, float jumpTimeout,float slideValue, float slideSpeedValue, bool grounded, bool timeRunning, float _cinemachineTargetXNew, float targetRotation, Vector3 _movement, Vector3 _targetDirection, float cameraEuler, Vector3 _screenCenterPoint, float lookSens)
             {
                 Position = position;
                 Rotation = rotation;
@@ -257,8 +261,8 @@ namespace StarterAssets
                 Grounded = grounded;
                 timeIsRunning = timeRunning;
 
-                _cinemachineTargetYaw = _cinemachineTargetYawNew;
-                _cinemachineTargetPitch = _cinemachineTargetPitchNew;
+                _cinemachineTargetX = _cinemachineTargetXNew;
+                
 
                 movement = _movement;
                 targetDirection = _targetDirection;
@@ -379,7 +383,7 @@ namespace StarterAssets
             {
                 
                 Move(default, true);
-                ReconcileData rd = new  ReconcileData(transform.position, transform.rotation,_verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning, _cinemachineTargetYaw,  _cinemachineTargetPitch, _targetRotation,movement,targetDirection,_CameraEulerY, screenCenterPoint, lookSensitivity);
+                ReconcileData rd = new  ReconcileData(transform.position, transform.rotation,_verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning, _cinemachineTargetX, _targetRotation,movement,targetDirection,_CameraEulerY, screenCenterPoint, lookSensitivity);
                 Reconciliation(rd, true);
             }
         }
@@ -407,8 +411,8 @@ namespace StarterAssets
             slideSpeed = rd.slideSpeed;
             Grounded = rd.Grounded;
             timerIsRunning = rd.timeIsRunning;
-            _cinemachineTargetYaw = rd._cinemachineTargetYaw;
-            _cinemachineTargetPitch = rd._cinemachineTargetPitch;
+            //_cinemachineTargetYaw = rd._cinemachineTargetYaw;
+            ///_cinemachineTargetPitch = rd._cinemachineTargetPitch;
 
             _targetRotation = rd._targetRotation;
             movement = rd.movement;
@@ -416,6 +420,7 @@ namespace StarterAssets
             _CameraEulerY = rd.CameraEulerY;
             screenCenterPoint = rd.screenCenterPoint;
             lookSensitivity = rd.lookSensitivity;
+            _cinemachineTargetX = rd._cinemachineTargetX;
         }
         
         private void CheckInput(out MoveData md)
@@ -531,9 +536,16 @@ namespace StarterAssets
 
             ControllerChanges();
         }
-        
 
-       
+
+        private void LateUpdate()
+        {
+            if (!base.IsOwner)
+                return;
+            //CameraRotationOld();
+           CameraRotation();
+
+        }
         public void SetRigWeight()
         {
             if (base.IsServer)
@@ -573,7 +585,44 @@ namespace StarterAssets
         }
         public LayerMask IdentifyEnemy;
         private Ray ray;
+        public void CameraRotation()
+        {
+            if (playerHealth.PlayerDeathState())
+                return;
+            mouseX = screenTouch.lookInput.x;
+            mouseY = screenTouch.lookInput.y;
+            if (screenTouch.rightFingerID == -1)
+            {
+                mouseX = 0;
+                mouseY = 0;
+            }
+            if (screenTouch.rightFingerID != -1)
+            {
+                //float h = UltimateTouchpad.GetHorizontalAxis("Look");
+                //float v = UltimateTouchpad.GetVerticalAxis("Look");
+                //Vector3 direction = new Vector3(h, v, 0f).normalized;
+                //Debug.Log(direction.x);
+                // if there is an input and camera position is not fixed
+                if (screenTouch.lookInput.sqrMagnitude >= _threshold && !LockCameraPosition)
+                {
+                    //Don't multiply mouse input by Time.deltaTime;
+                    //float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
+                    //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
+                    //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
+                    _cinemachineTargetYaw += mouseX * Time.deltaTime * 100;
+                    _cinemachineTargetPitch -= mouseY * Time.deltaTime * 100;
+                }
+
+                // clamp our rotations so our values are limited 360 degrees
+                _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
+                _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+
+
+                CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
+                        _cinemachineTargetYaw, 0.0f);
+            }
+        }
         private void CameraRotationOld()
         {
             if (playerHealth.PlayerDeathState())
@@ -891,13 +940,7 @@ namespace StarterAssets
 
             if (playerHealth.PlayerDeathState())
                 return;
-            mouseX = screenTouch.lookInput.x;
-            mouseY = screenTouch.lookInput.y;
-            if (screenTouch.rightFingerID == -1)
-            {
-                md.Look.x = 0;
-                md.Look.y = 0;
-            }
+      
             if (screenTouch.rightFingerID != -1)
             {
                 //float h = UltimateTouchpad.GetHorizontalAxis("Look");
@@ -905,29 +948,29 @@ namespace StarterAssets
                 //Vector3 direction = new Vector3(h, v, 0f).normalized;
                 //Debug.Log(direction.x);
                 // if there is an input and camera position is not fixed
-                //if (md.Look.sqrMagnitude >= _threshold && !LockCameraPosition)
-                //{
+                if (md.Look.sqrMagnitude >= _threshold && !LockCameraPosition)
+                {
                 //Don't multiply mouse input by Time.deltaTime;
                 //float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
                 //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
                 //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
-                _cinemachineTargetYaw += md.Look.x * lookSensitivity * delta;
-                _cinemachineTargetPitch -= md.Look.y * lookSensitivity * delta;
-                //}
+                _cinemachineTargetX += md.Look.x * lookSensitivity * delta;
+               // _cinemachineTargetPitch -= md.Look.y * lookSensitivity * delta;
+                }
 
                 // clamp our rotations so our values are limited 360 degrees
-                _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-                _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+                _cinemachineTargetX = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
+                //_cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
 
 
             }
 
-            CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
-                    _cinemachineTargetYaw, 0.0f);
+            //CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
+            //        _cinemachineTargetYaw, 0.0f);
 
 
-            transform.rotation = Quaternion.Euler(0, _cinemachineTargetYaw, 0f);
+            transform.rotation = Quaternion.Euler(0, _cinemachineTargetX, 0f);
             //transform.rotation = Quaternion.Lerp(transform.rotation, transform.rotation, 10 *delta);
             //Vector3 newRot = new Vector3(_cinemachineTargetPitch, 0,0 );
             //transform.forward = Vector3.Lerp(transform.forward, newRot, 10f);
@@ -999,7 +1042,7 @@ namespace StarterAssets
                 // fall timeout
                 if (_fallTimeoutDelta >= 0.0f)
                 {
-                    _fallTimeoutDelta -= (float)base.TimeManager.TickDelta;
+                    _fallTimeoutDelta -= delta;
                 }
                 else
                 {
