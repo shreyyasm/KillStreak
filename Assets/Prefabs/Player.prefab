@@ -1039,7 +1039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 16
+  _componentIndexCache: 17
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   PlayerCheck: {fileID: 8841774182271569056}
@@ -1055,7 +1055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 17
+  _componentIndexCache: 18
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   GunSelector: {fileID: 4556042117359066162}
@@ -6448,7 +6448,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 3.1103761, y: 3.1104128}
+  m_AnchoredPosition: {x: 3.1103761, y: 3.1103761}
   m_SizeDelta: {x: 432, y: 432}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &3378225522413771638
@@ -7078,7 +7078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f544f2f09089d5e46a3d4724a3d2589e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 20
+  _componentIndexCache: 21
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   <selectedWeapon>k__BackingField: 0
@@ -24169,8 +24169,8 @@ MonoBehaviour:
   playerHealth: {fileID: 7459709495149301830}
   cameraRoot: {fileID: 8841774182271569056}
   ultimateJoystick: {fileID: 1379624163703669385}
-  firedBullet: 0
-  firing: 0
+  <firedBullet>k__BackingField: 0
+  <firing>k__BackingField: 0
   <isCrouching>k__BackingField: 0
   isSliding: 0
   running: 0
@@ -24648,6 +24648,7 @@ MonoBehaviour:
   - {fileID: 5288676240204857373}
   - {fileID: 4062980575288397414}
   - {fileID: 6757550525262360853}
+  - {fileID: 6140298168393141146}
   - {fileID: 4016688909735605221}
   - {fileID: 7607747229311474301}
   - {fileID: 5813009804763147807}
@@ -24667,7 +24668,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 13
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 774665742
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
 --- !u!114 &2674982687319158315
@@ -26034,9 +26035,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 402926ef33e0a894d9fec352693988ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 15
   _addedNetworkObject: {fileID: 4866512734858148882}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 4866512734858148882}
   _implementsPredictionMethods: 1
   _graphicalObject: {fileID: 3811869648679887157}
   _enableTeleport: 0
@@ -29206,7 +29207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 18
+  _componentIndexCache: 19
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   _componentConfiguration: 0
@@ -30739,7 +30740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2766fdca1bf796641aeb997c37443a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 15
+  _componentIndexCache: 16
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   PlayerCheck: {fileID: 8841774182271569056}
@@ -33888,7 +33889,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6665973385eae945acce67247aea720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 19
+  _componentIndexCache: 20
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
   GunSelector: {fileID: 4556042117359066162}

@@ -22,6 +22,7 @@ namespace StarterAssets
         public void VirtualJumpInput(bool virtualJumpState)
         {
             starterAssetsInputs.JumpInput(virtualJumpState);
+            thirdPersonController.PlayJumpSound();
             //if(thirdPersonController.Grounded)
             //    thirdPersonController.isPressedJump = true;
         }

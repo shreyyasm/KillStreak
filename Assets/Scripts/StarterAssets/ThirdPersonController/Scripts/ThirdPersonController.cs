@@ -293,7 +293,6 @@ namespace StarterAssets
             // get a reference to our main camera
             
             InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
-            InstanceFinder.TimeManager.OnUpdate += TimeManager_OnUpdate;
             Grounded = true;
             audioRunSource.Play(0);
             audioCrouchSource.Play(0);
@@ -323,8 +322,7 @@ namespace StarterAssets
         {
             if (InstanceFinder.TimeManager != null)
             {
-                InstanceFinder.TimeManager.OnTick -= TimeManager_OnTick;
-                InstanceFinder.TimeManager.OnUpdate -= TimeManager_OnUpdate;
+                InstanceFinder.TimeManager.OnTick -= TimeManager_OnTick;               
             }
         }
   
@@ -379,27 +377,19 @@ namespace StarterAssets
             {
                 Reconciliation(default, false);
                 CheckInput(out MoveData md);
-                Move(md, false);
+                MoveWithData(md, false);
 
-               
+                _clientMoveData = md;
             }
             if (base.IsServer)
             {
-                
-                Move(default, true);
-                ReconcileData rd = new  ReconcileData(transform.position, transform.rotation,_verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed,Grounded,timerIsRunning, _cinemachineTargetX, _targetRotation,movement,targetDirection,_CameraEulerY, screenCenterPoint, lookSensitivity);
+
+                MoveWithData(default, true);
+                ReconcileData rd = new ReconcileData(transform.position, transform.rotation, _verticalVelocity, _fallTimeoutDelta, _jumpTimeoutDelta, value, slideSpeed, Grounded, timerIsRunning, _cinemachineTargetX, _targetRotation, movement, targetDirection, _CameraEulerY, screenCenterPoint, lookSensitivity);
                 Reconciliation(rd, true);
             }
         }
-        private void TimeManager_OnUpdate()
-        {
-            if (base.IsOwner)
-            {
-                //JumpAndGravity(_clientMoveData, Time.deltaTime);
-                GroundedCheck();
-                MoveWithData(_clientMoveData, Time.deltaTime);
-            }
-        }
+
 
 
 
@@ -426,28 +416,27 @@ namespace StarterAssets
             lookSensitivity = rd.lookSensitivity;
             _cinemachineTargetX = rd._cinemachineTargetX;
         }
-        
+
         private void CheckInput(out MoveData md)
         {
-         
+       
             md = new MoveData()
             {
-                
-            Move = new Vector3(ultimateJoystick.GetHorizontalAxis(), 0f, ultimateJoystick.GetVerticalAxis()).normalized,
-            Look = new Vector3(screenTouch.lookInput.x, screenTouch.lookInput.y),
-            ResetPosRed = new Vector3(GameManagerEOS.Instance.RedTeamSpawnPoints[playerGunSelector.PlayerRedPosIndex].position.x, -0.46f, GameManagerEOS.Instance.RedTeamSpawnPoints[playerGunSelector.PlayerRedPosIndex].position.z),
-            ResetPosBlue = new Vector3(GameManagerEOS.Instance.BlueTeamSpawnPoints[playerGunSelector.PlayerBluePosIndex].position.x, -0.46f, GameManagerEOS.Instance.BlueTeamSpawnPoints[playerGunSelector.PlayerBluePosIndex].position.z),
-            CameraEulerY = _mainCamera.transform.eulerAngles.y,
-            Jump = _input.jump,
-            Slide = _input.slide,
-            
-            Sprint = _input.sprint,
+
+                Move = new Vector3(ultimateJoystick.GetHorizontalAxis(), 0f, ultimateJoystick.GetVerticalAxis()).normalized,
+                Look = new Vector3(screenTouch.lookInput.x, screenTouch.lookInput.y),
+                ResetPosRed = new Vector3(GameManagerEOS.Instance.RedTeamSpawnPoints[playerGunSelector.PlayerRedPosIndex].position.x, -0.46f, GameManagerEOS.Instance.RedTeamSpawnPoints[playerGunSelector.PlayerRedPosIndex].position.z),
+                ResetPosBlue = new Vector3(GameManagerEOS.Instance.BlueTeamSpawnPoints[playerGunSelector.PlayerBluePosIndex].position.x, -0.46f, GameManagerEOS.Instance.BlueTeamSpawnPoints[playerGunSelector.PlayerBluePosIndex].position.z),
+                CameraEulerY = _mainCamera.transform.eulerAngles.y,
+                Jump = _input.jump,
+                Slide = _input.slide,
+
+                Sprint = _input.sprint,
             };
 
             _input.jump = false;
             _input.slide = false;
         }
-  
 
         //slide value
         public float speed = 8f;
@@ -834,21 +823,10 @@ namespace StarterAssets
         bool startSlide;
         public bool ResetPosition;
         [Replicate]
-        private void Move(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
-        {
-            if (asServer || replaying)
-            {
-                //JumpAndGravity(md, (float)base.TimeManager.TickDelta);
-                GroundedCheck();
-                MoveWithData(md, (float)base.TimeManager.TickDelta);
-            }
-            else if (!asServer)
-                _clientMoveData = md;
-        }
-        private void MoveWithData(MoveData md, float delta)
+        private void MoveWithData(MoveData md, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
         {
 
-            //GroundedCheck();
+            GroundedCheck();
             if(ResetPosition)
             {
                 if (playerGunSelector.redTeamPlayer)
@@ -925,7 +903,7 @@ namespace StarterAssets
 
                 //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
                 //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
-                _cinemachineTargetX += md.Look.x * lookSensitivity * delta;
+                _cinemachineTargetX += md.Look.x * lookSensitivity * (float)base.TimeManager.TickDelta;
                // _cinemachineTargetPitch -= md.Look.y * lookSensitivity * delta;
                 }
 
@@ -950,12 +928,12 @@ namespace StarterAssets
 
 
             //Jump Function 
-            if (_input.jump && isCrouching)
+            if (md.Jump && isCrouching)
             {
                 isCrouching = false;
                 _animator.SetBool("Crouch", isCrouching);
             }
-            else if (Grounded && !isCrouching)
+            else if(Grounded && !isCrouching)
             {
 
                 // reset the fall timeout timer
@@ -983,7 +961,7 @@ namespace StarterAssets
                     
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-                    PlayJumpSound();
+                    //PlayJumpSound();
                     // update animator if using character
 
                     if (_hasAnimator)
@@ -1001,7 +979,7 @@ namespace StarterAssets
                 // jump timeout
                 if (_jumpTimeoutDelta >= 0.0f)
                 {
-                    _jumpTimeoutDelta -= delta;
+                    _jumpTimeoutDelta -= (float)base.TimeManager.TickDelta;
                 }
             }
             else
@@ -1012,7 +990,7 @@ namespace StarterAssets
                 // fall timeout
                 if (_fallTimeoutDelta >= 0.0f)
                 {
-                    _fallTimeoutDelta -= delta;
+                    _fallTimeoutDelta -= (float)base.TimeManager.TickDelta;
                 }
                 else
                 {
@@ -1030,7 +1008,7 @@ namespace StarterAssets
             // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
             if (_verticalVelocity < _terminalVelocity)
             {
-                _verticalVelocity += Gravity * delta;
+                _verticalVelocity += Gravity * (float)base.TimeManager.TickDelta;
             }
             
             if (md.Slide && md.Move.z > 0.6f && !isAiming && !isCrouching)
@@ -1051,13 +1029,13 @@ namespace StarterAssets
 
             if (value >  0 )
             {
-                value -= delta;
-                slideSpeed -= 3 * delta;
+                value -= (float)base.TimeManager.TickDelta;
+                slideSpeed -= 3 * (float)base.TimeManager.TickDelta;
 
                 Vector3 slideMovement = transform.forward * slideSpeed;
                 slideMovement += new Vector3(0.0f, _verticalVelocity * 1.5f, 0.0f);
 
-                _controller.Move(slideMovement * delta);
+                _controller.Move(slideMovement * (float)base.TimeManager.TickDelta);
             }
 
             else
@@ -1162,7 +1140,7 @@ namespace StarterAssets
                 //_speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
                 //    Time.deltaTime * SpeedChangeRate);
                 _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * 1,
-                    delta * SpeedChangeRate);
+                    (float)base.TimeManager.TickDelta * SpeedChangeRate);
 
                 // round speed to 3 decimal places
                 _speed = Mathf.Round(_speed * 1000f) / 1000f;
@@ -1172,7 +1150,7 @@ namespace StarterAssets
                // _speed = targetSpeed;
             }
 
-            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, delta * SpeedChangeRate);
+            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, (float)base.TimeManager.TickDelta * SpeedChangeRate);
             if (_animationBlend < 0.01f) _animationBlend = 0f;
 
             // normalise input direction
@@ -1202,7 +1180,7 @@ namespace StarterAssets
                  _controller.enabled = true;
                 // move the player
                 if (!ResetPosition)
-                    _controller.Move(movement * delta);
+                    _controller.Move(movement * (float)base.TimeManager.TickDelta);
             }
             
             // update animator if using character
@@ -1731,21 +1709,38 @@ namespace StarterAssets
 
             if (base.IsServer)
                 PlayJumpSoundObserver();
+
             else
                 PlayJumpSoundServer();
         }
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void PlayJumpSoundServer()
         {
+            Debug.Log("Server");
             if(!isCrouching)
-                audioSource.PlayOneShot(jumpSound, 0.8f);
+            {
+                if(Grounded)
+                {
+                    if (_jumpTimeoutDelta <= -0.1)
+                        audioSource.PlayOneShot(jumpSound, 0.8f);
+                }
+                    
+            }
+                
         }
         [ObserversRpc(BufferLast = false, RunLocally = true)]
         public void PlayJumpSoundObserver()
         {
+            Debug.Log("Server");
             if (!isCrouching)
-                audioSource.PlayOneShot(jumpSound, 0.8f);
-           
+            {
+                if (Grounded)
+                {
+                    if (_jumpTimeoutDelta <= 0)
+                        audioSource.PlayOneShot(jumpSound, 0.8f);
+                }
+            }
+   
         }
     }
     
