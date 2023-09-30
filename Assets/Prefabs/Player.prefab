@@ -24057,7 +24057,6 @@ GameObject:
   - component: {fileID: 1174717042006629492}
   - component: {fileID: 4866512734858148882}
   - component: {fileID: 2674982687319158315}
-  - component: {fileID: 7358093237642973144}
   - component: {fileID: 4556042117359066162}
   - component: {fileID: 5288676240204857372}
   - component: {fileID: 911395708910928025}
@@ -24072,7 +24071,7 @@ GameObject:
   - component: {fileID: 4444467285361161639}
   - component: {fileID: 4062980575288397414}
   - component: {fileID: 6757550525262360853}
-  - component: {fileID: 7476293489979744658}
+  - component: {fileID: 6140298168393141146}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -24152,6 +24151,7 @@ MonoBehaviour:
   rifleRig: {fileID: 3304178362065009533}
   <_cinemachineTargetYaw>k__BackingField: 0
   <_cinemachineTargetPitch>k__BackingField: 0
+  <_cinemachineTargetX>k__BackingField: 0
   <_animationBlend>k__BackingField: 0
   _targetRotation: 0
   movement: {x: 0, y: 0, z: 0}
@@ -24689,23 +24689,8 @@ MonoBehaviour:
   _animator: {fileID: 6535167469221512672}
   _smoothFloats: 1
   _interpolation: 2
-  _clientAuthoritative: 0
+  _clientAuthoritative: 1
   _sendToOwner: 0
---- !u!114 &7358093237642973144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4144055852716770995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c71fd7f855ec523429999fc4e14a1928, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _overrideType: 1
-  _updateHostVisibility: 1
-  _observerConditions: []
 --- !u!114 &4556042117359066162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26007,7 +25992,7 @@ MonoBehaviour:
   _componentIndexCache: 14
   _addedNetworkObject: {fileID: 4866512734858148882}
   _networkObjectCache: {fileID: 4866512734858148882}
-  _componentConfiguration: 1
+  _componentConfiguration: 0
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -26037,7 +26022,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
---- !u!114 &7476293489979744658
+--- !u!114 &6140298168393141146
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

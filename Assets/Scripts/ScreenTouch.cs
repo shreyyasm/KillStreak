@@ -82,39 +82,20 @@ public class ScreenTouch : MonoBehaviour
             {
                 case TouchPhase.Began:
                     if (rightFingerID == -1)
-                    {
                         rightFingerID = t.fingerId;
-                    }
-                    //else if (t.position.x < (screenWidth / 2) && leftFingerId == -1)
-                    //{
-                    //    leftFingerId = t.fingerId;
-                    //    moveTouchStartPosition = t.position;
-                    //}
-
                     break;
 
                 case TouchPhase.Canceled:
                 case TouchPhase.Ended:
                     if (t.fingerId == rightFingerID)
-                {
-                    rightFingerID = -1;
-
-                }
-                        
-                    //else if (t.fingerId == leftFingerId)
-                    //{
-                    //    leftFingerId = -1;
-                    //    moveTouchStartPosition = moveInput = Vector2.zero;
-                    //}
-                    //
+                        rightFingerID = -1;
+                    moveShowInput = Vector2.zero;
                     break;
 
                 case TouchPhase.Moved:
                 //if (rightFingerID == t.fingerId)
                 if (t.position.x > (screenWidth / 2))
-                    lookInput = t.deltaPosition * Time.deltaTime * sensitivity;
-                    //else if (leftFingerId == t.fingerId)
-                    //    moveInput = t.position - moveTouchStartPosition;
+                    lookInput = t.deltaPosition * Time.deltaTime * sensitivity;                   
                     break;
 
                 case TouchPhase.Stationary:
