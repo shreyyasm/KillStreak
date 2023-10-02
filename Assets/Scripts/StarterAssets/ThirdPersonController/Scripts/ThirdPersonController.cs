@@ -591,8 +591,8 @@ namespace StarterAssets
             }
             if (screenTouch.rightFingerID != -1)
             {
-                if (mouseX > 0.2f || mouseX < -0.2f || mouseY > 0.2f || mouseY < -0.2f )
-                {
+                //if (mouseX > 0.4f || mouseX < -0.4f || mouseY > 0.4f || mouseY < -0.4f)
+                //{
 
                     //float h = UltimateTouchpad.GetHorizontalAxis("Look");
                     //float v = UltimateTouchpad.GetVerticalAxis("Look");
@@ -617,7 +617,7 @@ namespace StarterAssets
 
                     CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
                             _cinemachineTargetYaw, 0.0f);
-                }
+                //}
                 
             }
         }

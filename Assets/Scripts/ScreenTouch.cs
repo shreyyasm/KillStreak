@@ -89,17 +89,23 @@ public class ScreenTouch : MonoBehaviour
                 case TouchPhase.Ended:
                     if (t.fingerId == rightFingerID)
                         rightFingerID = -1;
-                    moveShowInput = Vector2.zero;
+                    lookInput = Vector2.zero;
                     break;
+            
 
-                case TouchPhase.Moved:
+            case TouchPhase.Moved:
                 //if (rightFingerID == t.fingerId)
                 if (t.position.x > (screenWidth / 2))
-                    lookInput = t.deltaPosition * Time.deltaTime * sensitivity;                   
+                    Debug.Log(t.radius);
+                    lookInput = t.deltaPosition * Time.deltaTime * sensitivity;
+                    
+                    
+                    //Debug.Log("Moving");
                     break;
 
                 case TouchPhase.Stationary:
                     lookInput = Vector2.zero;
+                    //Debug.Log("Statinary");
 
                     break;
 

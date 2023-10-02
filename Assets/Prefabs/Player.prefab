@@ -6448,7 +6448,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 3.1103761, y: 3.1103761}
+  m_AnchoredPosition: {x: 3.1103761, y: 3.1104128}
   m_SizeDelta: {x: 432, y: 432}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &3378225522413771638
@@ -24668,7 +24668,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 13
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 774665742
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
 --- !u!114 &2674982687319158315
@@ -29568,7 +29568,7 @@ MonoBehaviour:
   moveTouchStartPosition: {x: 0, y: 0}
   moveInput: {x: 0, y: 0}
   moveShowInput: {x: 0, y: 0}
-  sensitivity: 8
+  sensitivity: 6
   sensitivityShowcase: 0
 --- !u!1 &5985597097847076924
 GameObject:

@@ -169,7 +169,7 @@ public class ShooterController : NetworkBehaviour
                 audioSource.PlayOneShot(aimSFX);
                 playerGunSelector.ShowUIScope();
                 thirdPersonController.Aiming(false);
-                screenTouch.SetSensitivity(8);
+                screenTouch.SetSensitivity(6);
                 if (!FPSMode)
                 {
                     aimVirtualCamera.GetComponent<CinemachineVirtualCamera>().enabled = false;

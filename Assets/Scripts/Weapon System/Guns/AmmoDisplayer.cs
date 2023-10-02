@@ -26,15 +26,18 @@ public class AmmoDisplayer : NetworkBehaviour
     }
   
     public void UpdateGunAmmo()
-    {
-        AmmoTextGunPrimary.SetText
+    {   if(AmmoTextGunPrimary != null)
+        {
+            AmmoTextGunPrimary.SetText
            ($"{ GunSelector.gun1.AmmoConfig.CurrentClipAmmo} / "
            + $"{GunSelector.gun1.AmmoConfig.CurrentAmmo}");
 
 
-        AmmoTextGunSecondary.SetText
-       ($"{ GunSelector.gun2.AmmoConfig.CurrentClipAmmo} / "
-       + $"{GunSelector.gun2.AmmoConfig.CurrentAmmo}");
+            AmmoTextGunSecondary.SetText
+           ($"{ GunSelector.gun2.AmmoConfig.CurrentClipAmmo} / "
+           + $"{GunSelector.gun2.AmmoConfig.CurrentAmmo}");
+        }
+        
     }
     public void ChangeGunSelectedUI(int index)
     {
