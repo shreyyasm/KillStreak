@@ -207,7 +207,7 @@ namespace StarterAssets
         public float _CameraEulerY;
         public LoadOutManager loadOutManager;
         public GameObject root;
-        public GameObject pointSystem;
+        public GameObject loadOutButton;
         //MoveData for replication
         public struct MoveData : IReplicateData
         {
@@ -397,11 +397,6 @@ namespace StarterAssets
             
         }
 
-        public void RespawnManager()
-        {
-            GameObject obj = Instantiate(RespawnPrefab);
-            InstanceFinder.ServerManager.Spawn(obj);
-        }
         private void TimeManager_OnTick()
         {
             if (base.IsOwner)

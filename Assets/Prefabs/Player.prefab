@@ -24200,6 +24200,7 @@ MonoBehaviour:
   root: {fileID: 451184258316990071}
   pointSystem: {fileID: 2253694667054983081, guid: f46a6c20dc82c034ca03f6962d7d35e8,
     type: 3}
+  loadOutButton: {fileID: 3811869648227956642}
   speed: 12
   gravity: -9.81
   groundCheck: {fileID: 6026542968252147384}

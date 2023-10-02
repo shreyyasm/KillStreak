@@ -383,4 +383,16 @@ public class PlayerRespawn : NetworkBehaviour
         yield return new WaitForSeconds(0.1f);
         SetResetFalse();
     }
+    public void HideLoadOutButton()
+    {
+        StartCoroutine(DelayButtonHide());
+    }
+    IEnumerator DelayButtonHide()
+    {
+        yield return new WaitForSeconds(10f);
+        foreach (GameObject a in AllPlayers)
+        {
+            a.GetComponent<ThirdPersonController>().loadOutButton.SetActive(false);
+        }
+    }
 }

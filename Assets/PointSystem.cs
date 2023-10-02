@@ -57,6 +57,7 @@ public class PointSystem : NetworkBehaviour
 
                 TimerGameStart.enabled = false;
                 PlayerRespawn.Instance.ResetPosition();
+                PlayerRespawn.Instance.HideLoadOutButton();
                 GameStarted = true;
                 countdownState = false;
             }
