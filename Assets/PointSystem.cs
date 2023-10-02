@@ -53,7 +53,7 @@ public class PointSystem : MonoBehaviour
             {
 
                 TimerGameStart.enabled = false;
-                //PlayerRespawn.Instance.ResetPosition();
+                PlayerRespawn.Instance.ResetPosition();
                 GameStarted = true;
                 countdownState = false;
             }

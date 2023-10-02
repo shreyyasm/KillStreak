@@ -830,9 +830,17 @@ namespace StarterAssets
             if(ResetPosition)
             {
                 if (playerGunSelector.redTeamPlayer)
+                {
                     transform.position = md.ResetPosRed;
+                    
+                }
+                   
                 else
+                {
                     transform.position = md.ResetPosBlue;
+                    
+                }
+                    
             }
 
             //if (playerGunSelector.aimAssist)

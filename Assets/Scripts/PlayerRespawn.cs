@@ -135,7 +135,7 @@ public class PlayerRespawn : NetworkBehaviour
     public void AddPlayerObserver(GameObject playerPrefab)
     {
         AllPlayers.Add(playerPrefab);
-        //DelaySeparateTeam(playerPrefab);   
+        DelaySeparateTeam(playerPrefab);   
     }
    
     public void DelaySeparateTeam(GameObject playerPrefab)
@@ -194,9 +194,9 @@ public class PlayerRespawn : NetworkBehaviour
     }
     IEnumerator AssignPositionDelay()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         AssignPosition();
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(1f);
         SetResetFalse();
     }
     public void AssignPosition()
@@ -220,7 +220,7 @@ public class PlayerRespawn : NetworkBehaviour
         {
             //b.transform.position = BlueTeamSpawnPoints[_nextSpawnPointIndexBlue].transform.position;
             b.GetComponent<ThirdPersonController>().ResetPosition = true;
-            //b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
+            b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
             //_nextSpawnPointIndexBlue++;
         }
     }
@@ -238,7 +238,7 @@ public class PlayerRespawn : NetworkBehaviour
         {
             //b.transform.position = BlueTeamSpawnPoints[_nextSpawnPointIndexBlue].transform.position;
             b.GetComponent<ThirdPersonController>().ResetPosition = true;
-            //b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
+            b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
             //_nextSpawnPointIndexBlue++;
         }
     }
