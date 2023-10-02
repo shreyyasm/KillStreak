@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using EOSLobbyTest;
-public class PointSystem : MonoBehaviour
+using FishNet.Object;
+
+public class PointSystem : NetworkBehaviour
 {
     public static PointSystem Instance;
     [SerializeField] GameManagerEOS gameManagerEOS;
@@ -17,8 +19,9 @@ public class PointSystem : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
+       // GameStartCountdown();
     }
-
+    
     // Update is called once per frame
     void Update()
     {

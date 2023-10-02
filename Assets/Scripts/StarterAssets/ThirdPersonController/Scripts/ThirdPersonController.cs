@@ -207,6 +207,7 @@ namespace StarterAssets
         public float _CameraEulerY;
         public LoadOutManager loadOutManager;
         public GameObject root;
+        public GameObject pointSystem;
         //MoveData for replication
         public struct MoveData : IReplicateData
         {
@@ -287,11 +288,13 @@ namespace StarterAssets
         PlayerManager playerManager;
         private void Awake()
         {
-
+            
+            //SpawnCountDown();
+            //PointSystem.Instance.GameStartCountdown();
             //myActionAsset.bindingMask = new InputBinding { groups = "KeyboardMouse" };
             //playerInput.SwitchCurrentControlScheme(Keyboard.current, Mouse.current);
             // get a reference to our main camera
-            
+
             InstanceFinder.TimeManager.OnTick += TimeManager_OnTick;
             Grounded = true;
             audioRunSource.Play(0);
@@ -325,7 +328,35 @@ namespace StarterAssets
                 InstanceFinder.TimeManager.OnTick -= TimeManager_OnTick;               
             }
         }
+        
   
+        public void SpawnCountDown()
+        {
+            
+            if(base.IsClientOnly)
+            {
+                //Debug.Log("work");
+                StartCountDownServer();
+                StartCountDownObserver();
+            }
+               
+           
+            //GameObject countdown = Instantiate(pointSystem, transform.position, Quaternion.identity);
+            //InstanceFinder.ServerManager.Spawn(countdown);
+            
+        }
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        public void StartCountDownServer()
+        {
+            PointSystem.Instance.GameStartCountdown();
+        }
+        [ObserversRpc(BufferLast = true, RunLocally = true)]
+        public void StartCountDownObserver()
+        {
+            PointSystem.Instance.GameStartCountdown();
+        }
+
+
         public override void OnStartNetwork()
         {
             base.OnStartNetwork();
@@ -333,8 +364,8 @@ namespace StarterAssets
             * this method do not use base.IsOwner, use
             * the code below instead. This difference exist
             * to support a clientHost condition. */
+            SpawnCountDown();
 
-            
             if (base.Owner.IsLocalClient)
             {
                 //RespawnManager();
@@ -471,7 +502,7 @@ namespace StarterAssets
         
         private void Start()
         {
-            PointSystem.Instance.GameStartCountdown();
+            
             loadOutManager.PlayLoadoutSfX();
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             _hasAnimator = TryGetComponent(out _animator);
