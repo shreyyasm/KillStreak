@@ -1750,7 +1750,7 @@ namespace StarterAssets
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void PlayJumpSoundServer()
         {
-            Debug.Log("Server");
+          
             if(!isCrouching)
             {
                 if(Grounded)
@@ -1765,7 +1765,7 @@ namespace StarterAssets
         [ObserversRpc(BufferLast = false, RunLocally = true)]
         public void PlayJumpSoundObserver()
         {
-            Debug.Log("Server");
+            
             if (!isCrouching)
             {
                 if (Grounded)
@@ -1775,6 +1775,50 @@ namespace StarterAssets
                 }
             }
    
+        }
+        public void ResetPositionPlayer()
+        {
+            if (base.IsServer)
+                ResetPositionPlayerObserver();
+            else
+                ResetPositionPlayerServer();
+
+            if(base.IsOwner)
+                loadOutManager.PlayLoadoutSfX();
+        }
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        public void ResetPositionPlayerServer()
+        {
+            StartCoroutine(DelayResetPosition());
+        }
+        [ObserversRpc(BufferLast = false, RunLocally = true)]
+        public void ResetPositionPlayerObserver()
+        {
+            StartCoroutine(DelayResetPosition());
+        }
+
+        IEnumerator DelayResetPosition()
+        {
+            ResetPosition = true;
+
+            if (playerGunSelector.redTeamPlayer)
+                _cinemachineTargetYaw = 0;
+            else
+                _cinemachineTargetYaw = 180;
+
+            if (loadOutButton != null)
+                loadOutButton.SetActive(true);
+            
+
+            if (playerGunSelector.blueTeamPlayer)
+                _cinemachineTargetYaw = 180;
+
+            yield return new WaitForSeconds(3f);
+            ResetPosition = false;
+
+            yield return new WaitForSeconds(3f);
+            if(loadOutButton != null)
+                loadOutButton.SetActive(false);
         }
     }
     

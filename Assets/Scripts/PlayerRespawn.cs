@@ -55,14 +55,16 @@ public class PlayerRespawn : NetworkBehaviour
     public void Respawn(GameObject player, GameObject playerCanvas, GameObject animatedCanvas)
     {
         StartCoroutine(StartSpawning(player, playerCanvas, animatedCanvas));
+        
     }
     IEnumerator StartSpawning(GameObject player, GameObject playerCanvas,GameObject animatedCanvas)
     {
         NetworkObject playerObj = GetComponent<NetworkObject>();
+        
         yield return new WaitForSeconds(10f);
         RespawnPlayer(player, playerCanvas, animatedCanvas);
         
-    
+        //s
         //player.SetActive(true);
         //InstanceFinder.ServerManager.Spawn(player,base.Owner);
         //playerObj.GiveOwnership(ownerConnection);
@@ -96,10 +98,11 @@ public class PlayerRespawn : NetworkBehaviour
         player.GetComponent<PlayerHealth>().playerDead = false;
         //player.GetComponent<PlayerHealth>().RespawnAmmoLoadout();
         player.GetComponent<ThirdPersonController>().SetRigWeight();
-
+        player.GetComponent<ThirdPersonController>().ResetPositionPlayer();
         PlayerGunSelector playerGunSelector = GetComponent<PlayerGunSelector>();
+        //player.GetComponent<LoadOutManager>().PlayLoadoutSfX();
 
-        
+
     }
     [ObserversRpc(BufferLast = true, RunLocally = true)]
     public void StartRespawnObserver(GameObject player, GameObject playerCanvas, GameObject animatedCanvas)
@@ -112,10 +115,10 @@ public class PlayerRespawn : NetworkBehaviour
         player.GetComponent<PlayerHealth>().playerDead = false;
        // player.GetComponent<PlayerHealth>().RespawnAmmoLoadout();
         player.GetComponent<ThirdPersonController>().SetRigWeight();
-
+        player.GetComponent<ThirdPersonController>().ResetPositionPlayer();
         PlayerGunSelector playerGunSelector = GetComponent<PlayerGunSelector>();
-
         
+
     }
     public void AddPlayers(GameObject playerPrefab)
     {
@@ -194,7 +197,7 @@ public class PlayerRespawn : NetworkBehaviour
     }
     IEnumerator AssignPositionDelay()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.1f);
         AssignPosition();
         yield return new WaitForSeconds(1f);
         SetResetFalse();
@@ -214,6 +217,7 @@ public class PlayerRespawn : NetworkBehaviour
             //r.transform.position = RedTeamSpawnPoints[_nextSpawnPointIndexRed].transform.position;
 
             r.GetComponent<ThirdPersonController>().ResetPosition = true;
+            r.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 0;
             //_nextSpawnPointIndexRed++;//
         }
         foreach (GameObject b in BluePlayers)
@@ -232,6 +236,7 @@ public class PlayerRespawn : NetworkBehaviour
             //r.transform.position = RedTeamSpawnPoints[_nextSpawnPointIndexRed].transform.position;
 
             r.GetComponent<ThirdPersonController>().ResetPosition = true;
+            r.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 0;
             //_nextSpawnPointIndexRed++;
         }
         foreach (GameObject b in BluePlayers)
@@ -253,6 +258,7 @@ public class PlayerRespawn : NetworkBehaviour
             //r.transform.position = RedTeamSpawnPoints[_nextSpawnPointIndexRed].transform.position;
             r.GetComponent<ThirdPersonController>().ResetPosition = true;
             r.GetComponent<PlayerGunSelector>().PlayerRedPosIndex = playerRedPosIndex;
+            r.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 0;
             LoadOutManager loadout = r.GetComponent<LoadOutManager>();
             loadout.GetLoadOutInput(loadout.loadNumber);
             loadout.PlayLoadoutSfX();
@@ -289,6 +295,7 @@ public class PlayerRespawn : NetworkBehaviour
             //r.transform.position = RedTeamSpawnPoints[_nextSpawnPointIndexRed].transform.position;
             r.GetComponent<ThirdPersonController>().ResetPosition = true;
             r.GetComponent<PlayerGunSelector>().PlayerRedPosIndex = playerRedPosIndex;
+            r.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 0;
             LoadOutManager loadout = r.GetComponent<LoadOutManager>();
             loadout.GetLoadOutInput(loadout.loadNumber);
             loadout.PlayLoadoutSfX();
@@ -320,6 +327,7 @@ public class PlayerRespawn : NetworkBehaviour
             //r.transform.position = RedTeamSpawnPoints[_nextSpawnPointIndexRed].transform.position;
             r.GetComponent<ThirdPersonController>().ResetPosition = true;
             r.GetComponent<PlayerGunSelector>().PlayerRedPosIndex = playerRedPosIndex;
+            r.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 0;
             LoadOutManager loadout = r.GetComponent<LoadOutManager>();
             loadout.GetLoadOutInput(loadout.loadNumber);
             loadout.PlayLoadoutSfX();
@@ -392,7 +400,8 @@ public class PlayerRespawn : NetworkBehaviour
         yield return new WaitForSeconds(10f);
         foreach (GameObject a in AllPlayers)
         {
-            a.GetComponent<ThirdPersonController>().loadOutButton.SetActive(false);
+            if(a.GetComponent<ThirdPersonController>().loadOutButton != null)
+                a.GetComponent<ThirdPersonController>().loadOutButton.SetActive(false);
         }
     }
 }

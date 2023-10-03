@@ -27,10 +27,13 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     public event IDamageable.DeathEvent OnDeath;
     Animator anim;
     NetworkObject player;
+    public PointSystem pointSystem;
     private void Awake()
     {
         anim = GetComponent<Animator>();
         player = GetComponent<NetworkObject>();
+        
+
         if (PlayerCanvas != null)
             PlayerCanvas.SetActive(true);
         
@@ -42,6 +45,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         if (PlayerCanvas != null)
             PlayerCanvas.SetActive(true);
         playerDead = false;
+        //pointSystem = GameObject.FindGameObjectWithTag("PointSystem").GetComponent<PointSystem>(); 
     }
     private void OnEnable()
     {
@@ -82,11 +86,15 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     }
     public void SetPlayerHealth(int damage)
     {
+       
         if (base.IsServer)
             TakeDamageObserver(damage);
 
         else
             TakeDamageServer(damage);
+
+       
+
     }
 
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
@@ -109,10 +117,16 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
             OnDeath?.Invoke(transform.position);
         }
         SetHealth(CurrentHealth);
+        if (base.IsOwner)
+        {
+            if (CurrentHealth <= 0)
+                PointSystem.Instance.RespawnStartCountdown();
+        }
     }
     [ObserversRpc(BufferLast = true)]
     public void TakeDamageObserver(int Damage)
-    {       
+    {
+        
         int damageTaken = Mathf.Clamp(Damage, 0, CurrentHealth);
         CurrentHealth -= damageTaken;
         if (CurrentHealth <= 0)
@@ -128,19 +142,26 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
             OnDeath?.Invoke(transform.position);
         }
         SetHealth(CurrentHealth);
+        if (base.IsOwner)
+        {
+            if (CurrentHealth <= 0)
+                PointSystem.Instance.RespawnStartCountdown();
+        }
     }
     private void Update()
     {
 
         if (CurrentHealth > 0)
             RigController.enabled = true;
-       
+
+      
     }
    
     public void PlayerDeath()
     {
         if (CurrentHealth <= 0)
         {
+            
             if (PlayerCanvas != null)
                 PlayerCanvas.SetActive(false);
             if (AnimatedCanvas != null)
@@ -192,9 +213,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         yield return new WaitForSeconds(2f);
 
-       
-        
-
+    
         gameObject.SetActive(false);
         //yield return new WaitForSeconds(0.5f);
         if (base.Owner.IsLocalClient)
@@ -224,5 +243,10 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         InstanceFinder.ServerManager.Despawn(spawnedCarte, DespawnType.Pool);
         //spawnedCarte.SetActive(false);
+    }
+    public void StartRespawnTimer()
+    {
+        if (CurrentHealth <= 0)
+            pointSystem.RespawnStartCountdown();
     }
 }

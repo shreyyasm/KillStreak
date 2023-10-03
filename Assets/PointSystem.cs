@@ -13,6 +13,15 @@ public class PointSystem : NetworkBehaviour
     [SerializeField] public int RedTeamScore = 0;
     [SerializeField] public int BlueTeamScore = 0;
 
+    public TextMeshProUGUI TimerGameStart;
+    public float timeRemaining;
+    public bool countdownStateStart;
+
+    public TextMeshProUGUI RespawnTimer;
+    public float timeRemainingRespawn;
+    public bool countdownStateRespawn;
+
+    public PlayerRespawn playerRespawn;
     public bool GameStarted;
     // Start is called before the first frame update
     private void Awake()
@@ -25,26 +34,18 @@ public class PointSystem : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        Countdown();
+        GameStartTimer();
+        RespawnStartTimer();
     }
-    IEnumerator StartGameTimer()
-    {
-        yield return new WaitForSeconds(5f);
-
-    }
-    public TextMeshProUGUI TimerGameStart;
-    public float timeRemaining;
-    public bool countdownState;
-
-    public PlayerRespawn playerRespawn;
+ 
     public void GameStartCountdown()
     {
-        countdownState = true;
+        countdownStateStart = true;
         TimerGameStart.enabled = true;
     }
-    public void Countdown()
+    public void GameStartTimer()
     {
-        if (countdownState)
+        if (countdownStateStart)
         {
             //timeRemaining = 5;
             if (timeRemaining > 0)
@@ -59,13 +60,43 @@ public class PointSystem : NetworkBehaviour
                 PlayerRespawn.Instance.ResetPosition();
                 PlayerRespawn.Instance.HideLoadOutButton();
                 GameStarted = true;
-                countdownState = false;
+                countdownStateStart = false;
             }
 
         }
         else
         {
             timeRemaining = 10;
+            //TimerLoadout.text = "TIME'S UP!";
+
+        }
+    }
+    public void RespawnStartCountdown()
+    {
+        countdownStateRespawn = true;
+        RespawnTimer.enabled = true;
+    }
+    public void RespawnStartTimer()
+    {
+        if (countdownStateRespawn)
+        {
+            //timeRemaining = 5;
+            if (timeRemainingRespawn > 0)
+            {
+                timeRemainingRespawn -= Time.deltaTime;
+                RespawnTimer.text = "Respawns In(" + (int)timeRemainingRespawn + "s)";
+            }
+            else
+            {
+
+                RespawnTimer.enabled = false;
+                countdownStateRespawn = false;
+            }
+
+        }
+        else
+        {
+            timeRemainingRespawn = 10;
             //TimerLoadout.text = "TIME'S UP!";
 
         }
