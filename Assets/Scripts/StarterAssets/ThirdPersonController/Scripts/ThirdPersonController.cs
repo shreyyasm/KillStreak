@@ -156,12 +156,16 @@ namespace StarterAssets
         [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
         public bool firing { get;[ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
-    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
         public bool isCrouching { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
-        public bool isSliding;
-        public bool running;
-        
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+
+        public bool isSliding { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        public bool running { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
         public bool isPressedJump = false;
         public bool isJump = false;
         
