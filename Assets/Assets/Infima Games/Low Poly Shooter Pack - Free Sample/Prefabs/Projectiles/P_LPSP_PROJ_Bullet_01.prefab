@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 65871565580582628}
   - component: {fileID: 96448838451407516}
   - component: {fileID: 114243545424532484}
-  - component: {fileID: 951336689688289429}
   m_Layer: 15
   m_Name: P_LPSP_PROJ_Bullet_01
   m_TagString: Untagged
@@ -29,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086664671600574}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.676, y: 0.004, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -89,7 +88,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fc90e75401f65404a8dd6be2d7eafc19, type: 2}
+  - {fileID: 2100000, guid: 8adeec65686b8f2418219361b43c1f59, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -189,50 +188,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 951336689688289429}
+  _addedNetworkObject: {fileID: 0}
   _networkObjectCache: {fileID: 0}
   destroyAfter: 5
   destroyOnImpact: 1
   minDestroyTime: 0.01
   maxDestroyTime: 0.05
   bloodImpactPrefabs:
-  - {fileID: 4587651611338842, guid: 5e02303289b3c494e8e185be0fbbd405, type: 3}
+  - {fileID: 4418440862474872, guid: a845e59c374ae0240812749e46f13033, type: 3}
   metalImpactPrefabs:
-  - {fileID: 4587651611338842, guid: 5e02303289b3c494e8e185be0fbbd405, type: 3}
+  - {fileID: 4458509032938956, guid: 79927c6543a058b4383885fac101fe2e, type: 3}
   dirtImpactPrefabs:
-  - {fileID: 4587651611338842, guid: 5e02303289b3c494e8e185be0fbbd405, type: 3}
+  - {fileID: 4522298916909980, guid: 7178009a59b47d44385e833bda688e76, type: 3}
   concreteImpactPrefabs:
   - {fileID: 4587651611338842, guid: 5e02303289b3c494e8e185be0fbbd405, type: 3}
   projectileImpulse: 400
---- !u!114 &951336689688289429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086664671600574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <IsNested>k__BackingField: 0
-  <ComponentIndex>k__BackingField: 0
-  _networkBehaviours: []
-  <ParentNetworkObject>k__BackingField: {fileID: 0}
-  <ChildNetworkObjects>k__BackingField: []
-  _isNetworked: 1
-  _isGlobal: 0
-  _initializeOrder: 0
-  _predictedSpawningType: 0
-  _defaultDespawnType: 0
-  NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: -1
-  <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
-  <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 15325823578358555123
-  _sceneNetworkObjects: []
+  bulletParticle: {fileID: 0}
+  ObjectVFX: {fileID: 0}
 --- !u!1 &1231345400216816
 GameObject:
   m_ObjectHideFlags: 0
@@ -5065,6 +5037,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: a67df17391c315142b37a14f9dffc5a1, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

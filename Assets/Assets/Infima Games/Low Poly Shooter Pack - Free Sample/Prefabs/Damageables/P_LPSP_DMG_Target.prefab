@@ -122,7 +122,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -294,11 +294,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2450409000233696543, guid: e0824ef0160adf940a8470ee4509b859,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: b9cfd9f8504c7b34aa4aba43117e74b2, type: 2}
     - target: {fileID: 4387138317053204076, guid: e0824ef0160adf940a8470ee4509b859,
         type: 3}
       propertyPath: m_Layer
