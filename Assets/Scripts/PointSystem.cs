@@ -20,13 +20,18 @@ public class PointSystem : NetworkBehaviour
     public TextMeshProUGUI RedScoreText;
     public TextMeshProUGUI BlueScoreText;
 
+
+    //Game Start Timer
     public TextMeshProUGUI TimerGameStart;
     public float timeRemaining;
     public bool countdownStateStart;
 
+    //Respawn Timer
     public TextMeshProUGUI RespawnTimer;
     public float timeRemainingRespawn;
     public bool countdownStateRespawn;
+
+    
 
     public PlayerRespawn playerRespawn;
     public bool GameStarted;
@@ -43,6 +48,7 @@ public class PointSystem : NetworkBehaviour
     {
         GameStartTimer();
         RespawnStartTimer();
+        GameDurationStartTimer();
     }
  
     public void GameStartCountdown()
@@ -68,6 +74,7 @@ public class PointSystem : NetworkBehaviour
                 PlayerRespawn.Instance.HideLoadOutButton();
                 GameStarted = true;
                 countdownStateStart = false;
+                countdownStateGameStop = true;
             }
 
         }
@@ -107,6 +114,34 @@ public class PointSystem : NetworkBehaviour
             //TimerLoadout.text = "TIME'S UP!";
 
         }
+    }
+    //Game Duration Timer
+    public TextMeshProUGUI GameDurationTimer;
+    public float timeRemainingGameStop;
+    public bool countdownStateGameStop;
+    public void GameDurationStartTimer()
+    {
+        if (countdownStateGameStop)
+        {
+            if (timeRemainingGameStop > 0)
+            {
+                timeRemainingGameStop -= Time.deltaTime;
+                DisplayTime(timeRemainingGameStop);
+            }
+            else
+            {
+                Debug.Log("Time has run out!");
+                timeRemainingGameStop = 0;
+                countdownStateGameStop = false;
+            }
+        }
+    }
+    void DisplayTime(float timeToDisplay)
+    {
+        timeToDisplay += 1;
+        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
+        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
+        GameDurationTimer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
     public void AddScoreToRedTeam()
     {
