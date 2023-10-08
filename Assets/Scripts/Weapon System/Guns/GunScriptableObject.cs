@@ -193,7 +193,7 @@ public class GunScriptableObject : ScriptableObject
                 return;
             }
 
-            ShootSystem.Play();
+            //ShootSystem.Play();
             
             //AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
 
@@ -248,7 +248,7 @@ public class GunScriptableObject : ScriptableObject
                 return;
             }
 
-            ShootSystem.Play();
+            //ShootSystem.Play();
             
             //AudioConfig.PlayShootingClip(ShootingAudioSource, AmmoConfig.CurrentClipAmmo == 1);
 

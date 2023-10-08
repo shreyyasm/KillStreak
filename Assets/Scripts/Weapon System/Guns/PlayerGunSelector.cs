@@ -76,7 +76,7 @@ public class PlayerGunSelector : NetworkBehaviour
     private  float moveX, moveZ;
     [SerializeField] GameObject BlockUI;
     [SerializeField] GameObject CrosshairUI;
-    GameObject GunModel;
+     GameObject GunModel;
    
 
     public LoadOutManager loadOutManager;
@@ -505,7 +505,8 @@ public class PlayerGunSelector : NetworkBehaviour
             var distance = heading.magnitude;
             var direction = heading / distance;
 
-            
+            GunFlashPlay();
+
             //Vector3 dirNew = (ActiveGun.ShootSystem.transform.position - ActiveCamera.transform.position);
             Vector3 shootDirection = direction + sphere.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
             Vector3 origin = ActiveGun.ShootSystem.transform.position
@@ -773,7 +774,8 @@ public class PlayerGunSelector : NetworkBehaviour
             //heading += new Vector3(1.07f, -0.2f, 0);
             var distance = heading.magnitude;
             var direction = heading / distance;
-            
+
+            GunFlashPlay();
 
             //Vector3 dirNew = (ActiveGun.ShootSystem.transform.position - ActiveCamera.transform.position);
             Vector3 shootDirection = direction + sphere.transform.TransformDirection(ActiveGun.ShootConfig.GetSpread(ActiveGun.shootHoldTime - ActiveGun.InitialClickTime));
@@ -1061,7 +1063,25 @@ public class PlayerGunSelector : NetworkBehaviour
     [SerializeField] GameObject sphere;
     public GameObject CinemachineCameraTarget;
 
-
+    public void GunFlashPlay()
+    {
+        if (base.IsServer)
+            GunFlashPlayOberver();
+        else
+            GunFlashPlayServer();
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void GunFlashPlayServer()
+    {
+        ParticleSystem ShootSystem = ActiveGunPrefab.GetComponentInChildren<ParticleSystem>();
+        ShootSystem.Play();
+    }
+    [ObserversRpc(BufferLast = false, RunLocally = true)]
+    public void GunFlashPlayOberver()
+    {
+        ParticleSystem ShootSystem = ActiveGunPrefab.GetComponentInChildren<ParticleSystem>();
+        ShootSystem.Play();
+    }
     //private void OnDrawGizmos()
     //{
 

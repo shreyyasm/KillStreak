@@ -543,6 +543,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bullet Flash 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012903210382, guid: 90b98f6f613896c42ab17c350e9214fb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010921236120, guid: 90b98f6f613896c42ab17c350e9214fb, type: 3}
       propertyPath: m_RootOrder
       value: 4

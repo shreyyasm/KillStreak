@@ -184,8 +184,13 @@ namespace StarterAssets
         private const float _threshold = 0.01f;
 
         private bool _hasAnimator;
-       
-        float mouseX , mouseY;
+
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        float mouseX { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        float  mouseY { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
         [SerializeField] ShooterController shooterController;
         [SerializeField] WeaponSwitching weaponSwitching;
         [SerializeField] float smoothSpeed = 80f;
@@ -1227,30 +1232,30 @@ namespace StarterAssets
                 //Animations State
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetBool("Aim Walk", isAimWalking);
-                if(targetSpeed > 5f && !isAiming)
-                {
-                    running = true;
-                    if(!isSliding)
-                    {
-                        pistolRig.weight = 0f;
-                        rifleRig.weight = 0f;
-                    }
+                //if(targetSpeed > 5f && !isAiming)
+                //{
+                //    running = true;
+                //    if(!isSliding)
+                //    {
+                //        pistolRig.weight = 0f;
+                //        rifleRig.weight = 0f;
+                //    }
              
-                }
-                else
-                {
-                    running = false;
-                    if (!isReloading && !changingGun)
-                    {
-                        if (weaponSwitching.selectedWeapon == 0)
-                            rifleRig.weight = 1f;
+                //}
+                //else
+                //{
+                //    running = false;
+                //    if (!isReloading && !changingGun)
+                //    {
+                //        if (weaponSwitching.selectedWeapon == 0)
+                //            rifleRig.weight = 1f;
 
-                        else
-                            pistolRig.weight = 1f;
-                    }
+                //        else
+                //            pistolRig.weight = 1f;
+                //    }
                     
-                }
-
+                //}
+                RunningRigUpdate(targetSpeed);
                 //fPSController.GetComponent<FPSController>().SetMovementSpeed(_animationBlend);            
             }
            
@@ -1266,7 +1271,63 @@ namespace StarterAssets
             
         }
 
-        
+        public void RunningRigUpdate(float targetSpeed)
+        {
+            if (base.IsServer)
+                RunningRigUpdateObserver(targetSpeed);
+            else
+                RunningRigUpdateServer(targetSpeed);
+        }
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        public void RunningRigUpdateServer(float targetSpeed)
+        {
+            if (targetSpeed > 5f && !isAiming)
+            {
+                running = true;
+                if (!isSliding)
+                {
+                    pistolRig.weight = 0f;
+                    rifleRig.weight = 0f;
+                }
+            }
+            else
+            {
+                running = false;
+                if (!isReloading && !changingGun)
+                {
+                    if (weaponSwitching.selectedWeapon == 0)
+                        rifleRig.weight = 1f;
+
+                    else
+                        pistolRig.weight = 1f;
+                }
+            }
+        }
+        [ObserversRpc(BufferLast = true, RunLocally = true)]
+        public void RunningRigUpdateObserver(float targetSpeed)
+        {
+            if (targetSpeed > 5f && !isAiming)
+            {
+                running = true;
+                if (!isSliding)
+                {
+                    pistolRig.weight = 0f;
+                    rifleRig.weight = 0f;
+                }
+            }
+            else
+            {
+                running = false;
+                if (!isReloading && !changingGun)
+                {
+                    if (weaponSwitching.selectedWeapon == 0)
+                        rifleRig.weight = 1f;
+
+                    else
+                        pistolRig.weight = 1f;
+                }
+            }
+        }
         public void CrouchInput()
         {
             if(Grounded)
