@@ -96,6 +96,7 @@ public class PlayerRespawn : NetworkBehaviour
         if (animatedCanvas != null)
             animatedCanvas.SetActive(true);
         player.GetComponent<PlayerHealth>().playerDead = false;
+        player.GetComponent<PlayerHealth>().playerDeadConfirmed = false;
         //player.GetComponent<PlayerHealth>().RespawnAmmoLoadout();
         player.GetComponent<ThirdPersonController>().SetRigWeight();
         player.GetComponent<ThirdPersonController>().ResetPositionPlayer();
@@ -113,7 +114,8 @@ public class PlayerRespawn : NetworkBehaviour
         if (animatedCanvas != null)
             animatedCanvas.SetActive(true);
         player.GetComponent<PlayerHealth>().playerDead = false;
-       // player.GetComponent<PlayerHealth>().RespawnAmmoLoadout();
+        player.GetComponent<PlayerHealth>().playerDeadConfirmed = false;
+        // player.GetComponent<PlayerHealth>().RespawnAmmoLoadout();
         player.GetComponent<ThirdPersonController>().SetRigWeight();
         player.GetComponent<ThirdPersonController>().ResetPositionPlayer();
         PlayerGunSelector playerGunSelector = GetComponent<PlayerGunSelector>();

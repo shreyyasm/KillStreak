@@ -1206,6 +1206,7 @@ public class PlayerGunSelector : NetworkBehaviour
        Vector3 HitNormal,
        Collider HitCollider,Transform enemyPos)
     {
+       
         if (HitCollider.gameObject.TryGetComponent<CapsuleCollider>(out CapsuleCollider collider))
             surfaceManager.HandleImpactBlood(HitCollider.gameObject, HitLocation, HitNormal, ActiveGun.ImpactType, 0);
 
@@ -1214,33 +1215,41 @@ public class PlayerGunSelector : NetworkBehaviour
 
         if (PointSystem.Instance.GameStarted)
         {
+            
             IDamageable Damage = HitCollider.GetComponentInParent<IDamageable>();
             if (Damage != null)
             {
                 if (HitCollider.GetComponentInParent<PlayerGunSelector>().redTeamPlayer != redTeamPlayer)
                 {
-                    floatingDamage.SetFloat();
-                    if (loadOutManager.loadNumber == 4)
+                    if(!HitCollider.gameObject.GetComponentInParent<PlayerHealth>().playerDead)
                     {
-                        if (weaponSwitching.selectedWeapon == 0)
+                        floatingDamage.SetFloat();
+                        if (loadOutManager.loadNumber == 4)
                         {
-                            float distance = Vector3.Distance(transform.position, HitCollider.gameObject.transform.position);
-                            if (distance > 10)
-                                ActiveGun.DamageConfig.DamageReduction = 2;
-                            else
-                                ActiveGun.DamageConfig.DamageReduction = 1;
+                            if (weaponSwitching.selectedWeapon == 0)
+                            {
+                                float distance = Vector3.Distance(transform.position, HitCollider.gameObject.transform.position);
+                                if (distance > 10)
+                                    ActiveGun.DamageConfig.DamageReduction = 2;
+                                else
+                                    ActiveGun.DamageConfig.DamageReduction = 1;
+                            }
+
                         }
+                        else
+                            ActiveGun.DamageConfig.DamageReduction = 1;
+
+
+                        Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+                        floatingDamage.GetPosition(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
+
+                        floatingDamage.StartFloatDamage();
+                        //floatingDamage.CallStartAnimation();
+                        CheckPlayerDeadOrNot(HitCollider.gameObject);
+
 
                     }
-                    else
-                        ActiveGun.DamageConfig.DamageReduction = 1;
-
-
-                    Damage.SetPlayerHealth(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
-                    floatingDamage.GetPosition(ActiveGun.DamageConfig.GetDamage(HitCollider.gameObject));
-
-                    floatingDamage.StartFloatDamage();
-                    //floatingDamage.CallStartAnimation();
+                    
                 }
 
             }
@@ -1251,11 +1260,30 @@ public class PlayerGunSelector : NetworkBehaviour
         //if (HitCollider.TryGetComponent(out IDamageable damageable))
         //{
         //    damageable.TakeDamage(ActiveGun.DamageConfig.GetDamage(DistanceTraveled));
-        //}
+        //
 
-
-
-
+    }
+    PlayerHealth playerRef;
+    public KillSystem killSystem;
+    
+    
+    public void CheckPlayerDeadOrNot(GameObject player)
+    {
+        
+     
+        playerRef = player.GetComponentInParent<PlayerHealth>();
+        StartCoroutine(DelayCheckPlayerDead());
+       
+    }
+    IEnumerator DelayCheckPlayerDead()
+    {
+        yield return new WaitForSeconds(0.2f);
+        if (playerRef._Health <= 0 && !playerRef.playerDeadConfirmed)
+        {
+            
+            killSystem.playerKilled();
+            playerRef.playerDeadConfirmed = true;
+        }
     }
     
     public GameObject spawnObject;

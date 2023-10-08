@@ -14,10 +14,11 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     public AmmoDisplayer ammoDisplayer;
 
     [SerializeField]
-    private int _MaxHealth = 100;
+    public int _MaxHealth = 100;
     [SerializeField]
-    private int _Health;
+    public int _Health;
     public bool playerDead;
+    public bool playerDeadConfirmed;
     public RigBuilder RigController;
     public int CurrentHealth { get => _Health; private set => _Health = value;}
 
@@ -38,6 +39,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
             PlayerCanvas.SetActive(true);
         
         playerDead = false;
+        playerDeadConfirmed = false;
     }
     public override void OnStartNetwork()
     {
@@ -45,6 +47,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         if (PlayerCanvas != null)
             PlayerCanvas.SetActive(true);
         playerDead = false;
+        playerDeadConfirmed = false;
+
         //pointSystem = GameObject.FindGameObjectWithTag("PointSystem").GetComponent<PointSystem>(); 
     }
     private void OnEnable()

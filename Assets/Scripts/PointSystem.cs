@@ -4,14 +4,21 @@ using TMPro;
 using UnityEngine;
 using EOSLobbyTest;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 
 public class PointSystem : NetworkBehaviour
 {
     public static PointSystem Instance;
     [SerializeField] GameManagerEOS gameManagerEOS;
 
-    [SerializeField] public int RedTeamScore = 0;
-    [SerializeField] public int BlueTeamScore = 0;
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+    [SerializeField] public int RedTeamScore { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+    [SerializeField] public int BlueTeamScore { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
+    public TextMeshProUGUI RedScoreText;
+    public TextMeshProUGUI BlueScoreText;
 
     public TextMeshProUGUI TimerGameStart;
     public float timeRemaining;
@@ -100,5 +107,44 @@ public class PointSystem : NetworkBehaviour
             //TimerLoadout.text = "TIME'S UP!";
 
         }
+    }
+    public void AddScoreToRedTeam()
+    {
+        if (base.IsServer)
+            AddScoreToRedTeamObserver();
+        else
+            AddScoreToRedTeamServer();
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void AddScoreToRedTeamServer()
+    {
+        RedTeamScore++;
+        RedScoreText.text = RedTeamScore.ToString();
+    }
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
+    public void AddScoreToRedTeamObserver()
+    {
+        RedTeamScore++;
+        RedScoreText.text = RedTeamScore.ToString();
+    }
+    public void AddScoreToBlueTeam()
+    {
+        if (base.IsServer)
+            AddScoreToBlueTeamObserver();
+        else
+            AddScoreToBlueTeamServer();
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void AddScoreToBlueTeamServer()
+    {
+        BlueTeamScore++;
+        BlueScoreText.text = BlueTeamScore.ToString();
+
+    }
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
+    public void AddScoreToBlueTeamObserver()
+    {
+        BlueTeamScore++;
+        BlueScoreText.text = BlueTeamScore.ToString();
     }
 }
