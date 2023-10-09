@@ -22,11 +22,11 @@ public class PlayerRespawn : NetworkBehaviour
 
 
     [SerializeField]
-    private List<GameObject> AllPlayers;
+    public List<GameObject> AllPlayers;
     [SerializeField]
-    private List<GameObject> RedPlayers;
+    public List<GameObject> RedPlayers;
     [SerializeField]
-    private List<GameObject> BluePlayers;
+    public List<GameObject> BluePlayers;
 
     // which spawn point to use
     private int _nextSpawnPointIndex = 1;
@@ -51,6 +51,7 @@ public class PlayerRespawn : NetworkBehaviour
     private void Update()
     {
         //player = FindObjectOfType<CameraFollow>(); 
+        
     }
     public void Respawn(GameObject player, GameObject playerCanvas, GameObject animatedCanvas)
     {
@@ -154,12 +155,14 @@ public class PlayerRespawn : NetworkBehaviour
         {
             RedPlayers.Add(playerPrefab);
             _nextSpawnPointIndexRed++;
+            
 
         }
         else
         {
             BluePlayers.Add(playerPrefab);
             _nextSpawnPointIndexBlue++;
+           
         }
         //if (base.IsServer)
         //    SeparateTeamObserver(playerPrefab);
@@ -189,12 +192,14 @@ public class PlayerRespawn : NetworkBehaviour
         {
             RedPlayers.Add(playerPrefab);
             _nextSpawnPointIndexRed++;
+            
 
         }
         else
         {
             BluePlayers.Add(playerPrefab);
             _nextSpawnPointIndexBlue++;
+           
         }
     }
     IEnumerator AssignPositionDelay()
@@ -406,4 +411,6 @@ public class PlayerRespawn : NetworkBehaviour
                 a.GetComponent<ThirdPersonController>().loadOutButton.SetActive(false);
         }
     }
+
+   
 }

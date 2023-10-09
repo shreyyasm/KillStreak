@@ -319,11 +319,11 @@ namespace StarterAssets
             m_MainCamera = GameObject.FindWithTag("Follow Camera").GetComponent<CinemachineVirtualCamera>();
             m_AimCamera = GameObject.FindWithTag("Aim Camera").GetComponent<CinemachineVirtualCamera>();
             _controller = GetComponent<CharacterController>();
-            
+
             //rb = GetComponent<Rigidbody>();
             //Root = GetComponentInChildren<Transform>();
             //Root.layer = LayerMask.NameToLayer("Player Root");
-
+            
             isCrouching = false;
         }
         private void OnEnable()
@@ -388,8 +388,9 @@ namespace StarterAssets
                         allObjects.gameObject.layer = LayerMask.NameToLayer("Player Root");
                     }
                 }
-                
 
+                Invoke("ChangeToGreenColor", 0.5f);
+                //ChangeToGreenColor();
             }
             else
             {
@@ -398,7 +399,7 @@ namespace StarterAssets
                 //gameObject.AddComponent<Enemy>();
                 // gameObject.AddComponent<EnemyHealth>(); 
             }
-
+            
             // reset our timeouts on start
             _fallTimeoutDelta = FallTimeout;
             _jumpTimeoutDelta = JumpTimeout;
@@ -515,7 +516,8 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
-           // StartCoroutine(MovementOn());
+            // StartCoroutine(MovementOn());
+            
         }
         IEnumerator MovementOn()
         {
@@ -1884,6 +1886,28 @@ namespace StarterAssets
             yield return new WaitForSeconds(3f);
             if(loadOutButton != null)
                 loadOutButton.SetActive(false);
+        }
+        public void ChangeToGreenColor()
+        {
+            
+            if (playerGunSelector.redTeamPlayer)
+            {
+                Debug.Log("Work");
+                foreach (GameObject i in PlayerRespawn.Instance.RedPlayers)
+                {
+                    PlayerCustomization playerCustomization = i.GetComponent<PlayerCustomization>();
+                    Debug.Log("Color");
+                    playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex].gameObject.GetComponent<Outline>().enabled = false;
+                }
+            }
+            else
+            {
+                foreach (GameObject i in PlayerRespawn.Instance.BluePlayers)
+                {
+                    PlayerCustomization playerCustomization = i.GetComponent<PlayerCustomization>();
+                    playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex].gameObject.GetComponent<Outline>().enabled = false;
+                }
+            }
         }
     }
     

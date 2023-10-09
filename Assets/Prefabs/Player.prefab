@@ -2511,6 +2511,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1396432177825756447}
   - component: {fileID: 1563117296584826782}
+  - component: {fileID: 2202035620570440158}
   m_Layer: 13
   m_Name: Character_SportyMale_02
   m_TagString: Untagged
@@ -2635,6 +2636,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00032287836, y: 0.8435283, z: -0.056385264}
     m_Extent: {x: 1.0241506, y: 0.9445605, z: 0.26567835}
   m_DirtyAABB: 0
+--- !u!114 &2202035620570440158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474852346979506758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1507342293069822153
 GameObject:
   m_ObjectHideFlags: 0
@@ -3596,6 +3615,7 @@ GameObject:
   m_Component:
   - component: {fileID: 902646618596374953}
   - component: {fileID: 5587323664275649438}
+  - component: {fileID: 4396986606242573829}
   m_Layer: 13
   m_Name: Character_GhillieSuit_01
   m_TagString: Untagged
@@ -3720,6 +3740,24 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0.87767965, z: -0.039495274}
     m_Extent: {x: 1.0245614, y: 0.97877306, z: 0.27629763}
   m_DirtyAABB: 0
+--- !u!114 &4396986606242573829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721404344125183975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1763605668085545264
 GameObject:
   m_ObjectHideFlags: 0
@@ -4949,6 +4987,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5575297317556841372}
   - component: {fileID: 2272461954538171594}
+  - component: {fileID: 6302387415830610459}
   m_Layer: 13
   m_Name: Character_MilitaryMale_01
   m_TagString: Untagged
@@ -5073,6 +5112,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00032520294, y: 0.8450177, z: -0.054154232}
     m_Extent: {x: 1.0241513, y: 0.9430711, z: 0.27041548}
   m_DirtyAABB: 0
+--- !u!114 &6302387415830610459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2686820297996832741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &2725328339651479623
 GameObject:
   m_ObjectHideFlags: 0
@@ -5341,6 +5398,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6609180542325787979}
   - component: {fileID: 5728241305988601949}
+  - component: {fileID: 3105393726615490506}
   m_Layer: 13
   m_Name: Character_ToplessMale_01
   m_TagString: Untagged
@@ -5465,6 +5523,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00032281876, y: 0.8435283, z: -0.057662778}
     m_Extent: {x: 1.0241507, y: 0.9445605, z: 0.2565616}
   m_DirtyAABB: 0
+--- !u!114 &3105393726615490506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3077102948932119602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &3131795028269895586
 GameObject:
   m_ObjectHideFlags: 0
@@ -6285,6 +6361,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6286409057816583922}
   - component: {fileID: 8194063814099001376}
+  - component: {fileID: 9040342933648281574}
   m_Layer: 13
   m_Name: Character_SportyFemale_01
   m_TagString: Untagged
@@ -6409,6 +6486,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00039887428, y: 0.8414893, z: -0.054313593}
     m_Extent: {x: 1.0227978, y: 0.9470825, z: 0.25302297}
   m_DirtyAABB: 0
+--- !u!114 &9040342933648281574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3297609146501869229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &3364866647339450655
 GameObject:
   m_ObjectHideFlags: 0
@@ -6602,6 +6697,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2012132429750466046}
   - component: {fileID: 5871961433832993735}
+  - component: {fileID: 701165448938361225}
   m_Layer: 13
   m_Name: Character_SportsBraFemale_01
   m_TagString: Untagged
@@ -6726,6 +6822,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0004054308, y: 0.8465292, z: -0.05522339}
     m_Extent: {x: 1.02213, y: 0.94204265, z: 0.2557459}
   m_DirtyAABB: 0
+--- !u!114 &701165448938361225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3563764360325438345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &3564488897701873757
 GameObject:
   m_ObjectHideFlags: 0
@@ -6907,6 +7021,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7357776890732558278}
   - component: {fileID: 5954349403381555422}
+  - component: {fileID: 5926755076498582555}
   m_Layer: 13
   m_Name: Character_MercenaryMale_01
   m_TagString: Untagged
@@ -7031,6 +7146,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00032287836, y: 0.84501755, z: -0.048036024}
     m_Extent: {x: 1.0241506, y: 0.94307125, z: 0.27355146}
   m_DirtyAABB: 0
+--- !u!114 &5926755076498582555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3627658237069226518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &3749530945149086419
 GameObject:
   m_ObjectHideFlags: 0
@@ -23535,6 +23668,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1964338605537247175}
   - component: {fileID: 6427122803854416050}
+  - component: {fileID: 5109754086827134153}
   m_Layer: 13
   m_Name: Character_SportyFemale_02
   m_TagString: Untagged
@@ -23659,6 +23793,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00039887428, y: 0.84550077, z: -0.06702764}
     m_Extent: {x: 1.0227978, y: 0.94307107, z: 0.2641306}
   m_DirtyAABB: 0
+--- !u!114 &5109754086827134153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4017066615357526308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &4017422247886652931
 GameObject:
   m_ObjectHideFlags: 0
@@ -23910,6 +24062,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7987834054697194691}
   - component: {fileID: 6003639325264192878}
+  - component: {fileID: 2155689325941554361}
   m_Layer: 13
   m_Name: Character_SportyMale_01
   m_TagString: Untagged
@@ -24034,6 +24187,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00032281876, y: 0.84525913, z: -0.05883328}
     m_Extent: {x: 1.0241507, y: 0.94282967, z: 0.27757236}
   m_DirtyAABB: 0
+--- !u!114 &2155689325941554361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4114189531822486421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &4144055852716770995
 GameObject:
   m_ObjectHideFlags: 0
@@ -24181,6 +24352,8 @@ MonoBehaviour:
   <changingGun>k__BackingField: 0
   <isReloading>k__BackingField: 0
   sensitivity: 100
+  <mouseX>k__BackingField: 0
+  <mouseY>k__BackingField: 0
   shooterController: {fileID: 6492197335900248555}
   weaponSwitching: {fileID: 3760958236556242323}
   smoothSpeed: 100
@@ -24863,10 +25036,11 @@ MonoBehaviour:
   AnimatedCanvas: {fileID: 6527828215835793336}
   loadOutManager: {fileID: 8282398727071106129}
   ammoDisplayer: {fileID: 5813009804763147807}
+  _MaxHealth: 100
+  _Health: 0
   playerDead: 0
+  playerDeadConfirmed: 0
   RigController: {fileID: 5133554068090352199}
-  <CurrentHealth>k__BackingField: 200
-  <Maxhealth>k__BackingField: 200
   pointSystem: {fileID: 0}
   slider: {fileID: 3811869648939797511}
   gradient:
@@ -27192,6 +27366,7 @@ GameObject:
   - component: {fileID: 4272539030325341642}
   - component: {fileID: 4679063984087550375}
   - component: {fileID: 805707080909868770}
+  - component: {fileID: 1676139171380833881}
   m_Layer: 13
   m_Name: Character_GothFemale_01
   m_TagString: Player
@@ -27330,6 +27505,24 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &1676139171380833881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4625322571058971811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &4654059117985951482
 GameObject:
   m_ObjectHideFlags: 0
@@ -29304,6 +29497,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2719302443076569481}
   - component: {fileID: 4584966988345175743}
+  - component: {fileID: 489705507420915996}
   m_Layer: 13
   m_Name: Character_RedneckMale_01
   m_TagString: Untagged
@@ -29428,6 +29622,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00032281876, y: 0.84201634, z: -0.048269138}
     m_Extent: {x: 1.0241507, y: 0.94607246, z: 0.27936006}
   m_DirtyAABB: 0
+--- !u!114 &489705507420915996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5747467998720383548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &5897708391403940378
 GameObject:
   m_ObjectHideFlags: 0
@@ -29749,6 +29961,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4555422395517707843}
   - component: {fileID: 1931977675378573779}
+  - component: {fileID: 146084589750496854}
   m_Layer: 13
   m_Name: Character_MilitaryFemale_01
   m_TagString: Untagged
@@ -29873,6 +30086,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0004054904, y: 0.8454419, z: -0.05201415}
     m_Extent: {x: 1.02213, y: 0.94312996, z: 0.26729244}
   m_DirtyAABB: 0
+--- !u!114 &146084589750496854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6023968256603671398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &6026592116922722777
 GameObject:
   m_ObjectHideFlags: 0
@@ -30870,6 +31101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1476134258632774731}
   - component: {fileID: 5193064044396192005}
+  - component: {fileID: 8668389731403590210}
   m_Layer: 13
   m_Name: Character_70sFemale_01
   m_TagString: Untagged
@@ -30994,6 +31226,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00040555, y: 0.84602535, z: -0.017404929}
     m_Extent: {x: 1.0221299, y: 0.9425465, z: 0.28641993}
   m_DirtyAABB: 0
+--- !u!114 &8668389731403590210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6660221249694211154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &6710813759204278502
 GameObject:
   m_ObjectHideFlags: 0
@@ -33321,6 +33571,7 @@ GameObject:
   m_Component:
   - component: {fileID: 143896471337341045}
   - component: {fileID: 6449164142142126756}
+  - component: {fileID: 4208504824099522467}
   m_Layer: 13
   m_Name: Character_MercenaryFemale_01
   m_TagString: Untagged
@@ -33445,6 +33696,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0004054904, y: 0.852844, z: -0.062957734}
     m_Extent: {x: 1.02213, y: 0.93572783, z: 0.26757103}
   m_DirtyAABB: 0
+--- !u!114 &4208504824099522467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073523388296835594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &8107079810834035655
 GameObject:
   m_ObjectHideFlags: 0
@@ -35296,6 +35565,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8687700811034740647}
   - component: {fileID: 9105458030954451018}
+  - component: {fileID: 8731724990573410967}
   m_Layer: 13
   m_Name: Character_BusinessMale_01
   m_TagString: Untagged
@@ -35420,6 +35690,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00032311678, y: 0.8435283, z: -0.057688013}
     m_Extent: {x: 1.0241551, y: 0.9445605, z: 0.27360028}
   m_DirtyAABB: 0
+--- !u!114 &8731724990573410967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8960004400924153001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &8991423242653534094
 GameObject:
   m_ObjectHideFlags: 0
