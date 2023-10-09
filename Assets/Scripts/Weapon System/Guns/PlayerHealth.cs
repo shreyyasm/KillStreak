@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.UI;
+using StarterAssets;
 
 public class PlayerHealth : NetworkBehaviour, IDamageable
 {
@@ -29,6 +30,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     Animator anim;
     NetworkObject player;
     public PointSystem pointSystem;
+    public ThirdPersonController thirdPersonController;
 
     //Invincibilty
     public bool invincible;
@@ -59,7 +61,10 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         CurrentHealth = Maxhealth;
         SetMaxHealth(CurrentHealth);
+
         invincible = true;
+        thirdPersonController.SeeInvincibilty();
+        
         if(base.Owner.IsLocalClient)
         {
             RespawnAmmoLoadout();
@@ -268,7 +273,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         if(invincibiltyTimer <= 0)
         {
             invincible = false;
-            invincibiltyTimer = 8;
+            invincibiltyTimer = 5;
         }
     }
 }

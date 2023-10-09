@@ -1909,6 +1909,40 @@ namespace StarterAssets
                 }
             }
         }
+
+        public void SeeInvincibilty()
+        {
+            //StartCoroutine(SeeInvincibiltyDelay());
+            if (base.IsOwner)
+                SeeInvincibiltyObserver();
+
+            else
+                SeeInvincibiltyServer();
+        }
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        public void SeeInvincibiltyServer()
+        {
+            StartCoroutine(SeeInvincibiltyDelay());
+        }
+        [ObserversRpc(BufferLast = true, RunLocally = true)]
+        public void SeeInvincibiltyObserver()
+        {
+            StartCoroutine(SeeInvincibiltyDelay());
+        }
+        IEnumerator SeeInvincibiltyDelay()
+        {
+            yield return new WaitForSeconds(0.3f);
+            PlayerCustomization playerCustomization = GetComponent<PlayerCustomization>();
+            GameObject player = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
+            player.GetComponent<Outline>().enabled = true;
+            player.GetComponent<Outline>().OutlineColor = Color.white;
+
+           
+            yield return new WaitForSeconds(5f);
+            player.GetComponent<Outline>().enabled = false;
+            player.GetComponent<Outline>().OutlineColor = Color.red;
+        }
+
     }
     
 }
