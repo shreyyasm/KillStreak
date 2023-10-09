@@ -25042,6 +25042,8 @@ MonoBehaviour:
   playerDeadConfirmed: 0
   RigController: {fileID: 5133554068090352199}
   pointSystem: {fileID: 0}
+  invincible: 0
+  invincibiltyTimer: 8
   slider: {fileID: 3811869648939797511}
   gradient:
     serializedVersion: 2

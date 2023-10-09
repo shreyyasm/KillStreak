@@ -29,6 +29,10 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     Animator anim;
     NetworkObject player;
     public PointSystem pointSystem;
+
+    //Invincibilty
+    public bool invincible;
+    public float invincibiltyTimer;
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -55,6 +59,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         CurrentHealth = Maxhealth;
         SetMaxHealth(CurrentHealth);
+        invincible = true;
         if(base.Owner.IsLocalClient)
         {
             RespawnAmmoLoadout();
@@ -62,6 +67,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         }
         
     }
+   
     public Slider slider;
     public Gradient gradient;
     public Image fill;
@@ -90,15 +96,15 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     }
     public void SetPlayerHealth(int damage)
     {
-       
-        if (base.IsServer)
-            TakeDamageObserver(damage);
+       if(!invincible)
+       {
+            if (base.IsServer)
+                TakeDamageObserver(damage);
 
-        else
-            TakeDamageServer(damage);
-
-       
-
+            else
+                TakeDamageServer(damage);
+       }
+ 
     }
 
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
@@ -158,7 +164,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         if (CurrentHealth > 0)
             RigController.enabled = true;
 
-      
+        StartInvincibilty();
     }
    
     public void PlayerDeath()
@@ -252,5 +258,17 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     {
         if (CurrentHealth <= 0)
             pointSystem.RespawnStartCountdown();
+    }
+    public void StartInvincibilty()
+    {
+        if(invincible)
+        {
+            invincibiltyTimer -= Time.deltaTime;
+        }
+        if(invincibiltyTimer <= 0)
+        {
+            invincible = false;
+            invincibiltyTimer = 8;
+        }
     }
 }
