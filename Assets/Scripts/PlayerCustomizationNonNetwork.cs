@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public class PlayerCustomizationNonNetwork : MonoBehaviour
 {
     [Serializable]
@@ -23,13 +23,13 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
 
     }
 
-
-
+ 
     public List<Character> Characters = new List<Character>();
 
 
     public List<CharacterIndex> characterIndex = new List<CharacterIndex>();
 
+    public List<TextMeshProUGUI> CustomizationNumbers = new List<TextMeshProUGUI>();
 
     public int GenderIndex;
 
@@ -66,6 +66,7 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
             // do work
             body.SetActive(false);
         }
+        ShowCustomizationNumbers();
     }
 
 
@@ -180,7 +181,7 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
             playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
 
         }
-
+        CustomizationNumbers[0].text = characterIndex[GenderIndex].MainBodyIndex + " / " + (Characters[GenderIndex].MainBody.Count -1);
     }
     public void SelectHairs(int index)
     {
@@ -225,6 +226,7 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
             Characters[GenderIndex].HeadGear[characterIndex[GenderIndex].HeadGearIndex].SetActive(false);
             characterIndex[GenderIndex].HeadGearIndex = 0;
         }
+        CustomizationNumbers[1].text = characterIndex[GenderIndex].HairsIndex + " / " + (Characters[GenderIndex].Hairs.Count - 1);
     }
     public void SelectHeadGear(int index)
     {
@@ -269,6 +271,7 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
             Characters[GenderIndex].Hairs[characterIndex[GenderIndex].HairsIndex].SetActive(false);
             characterIndex[GenderIndex].HairsIndex = 0;
         }
+        CustomizationNumbers[2].text = characterIndex[GenderIndex].HeadGearIndex + " / " + (Characters[GenderIndex].HeadGear.Count - 1);
     }
     public void SelectBeard(int index)
     {
@@ -313,6 +316,7 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
             Characters[GenderIndex].MemeCharacter[characterIndex[GenderIndex].MemeCharacterIndex].SetActive(false);
             characterIndex[GenderIndex].MemeCharacterIndex = 0;
         }
+        CustomizationNumbers[3].text = characterIndex[GenderIndex].BeardIndex + " / " + (Characters[GenderIndex].Beard.Count - 1);
     }
     public void SelectVest(int index)
     {
@@ -345,7 +349,7 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
             playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
 
         }
-
+        CustomizationNumbers[4].text = characterIndex[GenderIndex].VestIndex + " / " + (Characters[GenderIndex].Vest.Count - 1);
     }
     public void SelectBag(int index)
     {
@@ -378,7 +382,7 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
             playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
 
         }
-
+        CustomizationNumbers[5].text = characterIndex[GenderIndex].BagIndex + " / " + (Characters[GenderIndex].Bag.Count - 1);
     }
     public void SelectMemeCharacter(int index)
     {
@@ -422,6 +426,30 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
 
             Characters[GenderIndex].Beard[characterIndex[GenderIndex].BeardIndex].SetActive(false);
             characterIndex[GenderIndex].BeardIndex = 0;
+        }
+        CustomizationNumbers[6].text = characterIndex[GenderIndex].MemeCharacterIndex + " / " + (Characters[GenderIndex].MemeCharacter.Count - 1);
+    }
+    public void ShowCustomizationNumbers()
+    {
+        if(GenderIndex == 0)
+        {
+            CustomizationNumbers[0].text = characterIndex[0].MainBodyIndex + " / " + (Characters[0].MainBody.Count - 1);
+            CustomizationNumbers[1].text = characterIndex[0].HairsIndex + " / " + (Characters[0].Hairs.Count - 1);
+            CustomizationNumbers[2].text = characterIndex[0].HeadGearIndex + " / " + (Characters[0].HeadGear.Count - 1);
+            CustomizationNumbers[3].text = characterIndex[0].BeardIndex + " / " + (Characters[0].Beard.Count - 1);
+            CustomizationNumbers[4].text = characterIndex[0].VestIndex + " / " + (Characters[0].Vest.Count - 1);
+            CustomizationNumbers[5].text = characterIndex[0].BagIndex + " / " + (Characters[0].Bag.Count - 1);
+            CustomizationNumbers[6].text = characterIndex[0].MemeCharacterIndex + " / " + (Characters[0].MemeCharacter.Count - 1);
+        }
+        else
+        {
+            CustomizationNumbers[0].text = characterIndex[1].MainBodyIndex + " / " + (Characters[1].MainBody.Count - 1);
+            CustomizationNumbers[1].text = characterIndex[1].HairsIndex + " / " + (Characters[1].Hairs.Count - 1);
+            CustomizationNumbers[2].text = characterIndex[1].HeadGearIndex + " / " + (Characters[1].HeadGear.Count - 1);
+            CustomizationNumbers[3].text = characterIndex[1].BeardIndex + " / " + (Characters[1].Beard.Count - 1);
+            CustomizationNumbers[4].text = characterIndex[1].VestIndex + " / " + (Characters[1].Vest.Count - 1);
+            CustomizationNumbers[5].text = characterIndex[1].BagIndex + " / " + (Characters[1].Bag.Count - 1);
+            CustomizationNumbers[6].text = characterIndex[1].MemeCharacterIndex + " / " + (Characters[1].MemeCharacter.Count - 1);
         }
     }
     public void SerializeJson()
