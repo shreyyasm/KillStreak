@@ -19,4 +19,5 @@ public class CharacterIndex
     public int BeardIndex;
     public int VestIndex;
     public int BagIndex;
+    public int MemeCharacterIndex;
 }

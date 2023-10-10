@@ -19,6 +19,7 @@ public class PlayerCustomization : NetworkBehaviour
         public List<GameObject> Beard;
         public List<GameObject> Vest;
         public List<GameObject> Bag;
+        public List<GameObject> MemeCharacter;
 
     }
 
@@ -141,6 +142,10 @@ public class PlayerCustomization : NetworkBehaviour
             //Bag
             Characters[0].Bag[characterIndex[0].BagIndex].SetActive(true);
             Characters[1].Bag[characterIndex[1].BagIndex].SetActive(false);
+
+            //MemeCharacter
+            Characters[0].MemeCharacter[characterIndex[0].MemeCharacterIndex].SetActive(true);
+            Characters[1].MemeCharacter[characterIndex[1].MemeCharacterIndex].SetActive(false);
         }
 
 
@@ -171,6 +176,10 @@ public class PlayerCustomization : NetworkBehaviour
             //Bag
             Characters[0].Bag[characterIndex[0].BagIndex].SetActive(false);
             Characters[1].Bag[characterIndex[1].BagIndex].SetActive(true);
+
+            //MemeCharacter
+            Characters[0].MemeCharacter[characterIndex[0].MemeCharacterIndex].SetActive(false);
+            Characters[1].MemeCharacter[characterIndex[1].MemeCharacterIndex].SetActive(true);
         }
 
     }
@@ -205,6 +214,10 @@ public class PlayerCustomization : NetworkBehaviour
             //Bag
             Characters[0].Bag[characterIndex[0].BagIndex].SetActive(true);
             Characters[1].Bag[characterIndex[1].BagIndex].SetActive(false);
+
+            //MemeCharacter
+            Characters[0].MemeCharacter[characterIndex[0].MemeCharacterIndex].SetActive(true);
+            Characters[1].MemeCharacter[characterIndex[1].MemeCharacterIndex].SetActive(false);
         }
 
 
@@ -235,6 +248,12 @@ public class PlayerCustomization : NetworkBehaviour
             //Bag
             Characters[0].Bag[characterIndex[0].BagIndex].SetActive(false);
             Characters[1].Bag[characterIndex[1].BagIndex].SetActive(true);
+
+            //MemeCharacter
+            Characters[0].MemeCharacter[characterIndex[0].MemeCharacterIndex].SetActive(false);
+            Characters[1].MemeCharacter[characterIndex[1].MemeCharacterIndex].SetActive(true);
+
+
         }
 
     }

@@ -19,6 +19,7 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
         public List<GameObject> Beard;
         public List<GameObject> Vest;
         public List<GameObject> Bag;
+        public List<GameObject> MemeCharacter;
 
     }
 
@@ -212,7 +213,18 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
             playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
 
         }
+        if (characterIndex[GenderIndex].HairsIndex == 0)
+        {
 
+            Characters[GenderIndex].HeadGear[characterIndex[GenderIndex].HeadGearIndex].SetActive(true);
+
+        }
+        else
+        {
+
+            Characters[GenderIndex].HeadGear[characterIndex[GenderIndex].HeadGearIndex].SetActive(false);
+            characterIndex[GenderIndex].HeadGearIndex = 0;
+        }
     }
     public void SelectHeadGear(int index)
     {
@@ -244,8 +256,19 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
             //SavingData
             playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
 
+        }    
+        if(characterIndex[GenderIndex].HeadGearIndex == 0)
+        {
+            
+            Characters[GenderIndex].Hairs[characterIndex[GenderIndex].HairsIndex].SetActive(true);
+  
         }
+        else
+        {
 
+            Characters[GenderIndex].Hairs[characterIndex[GenderIndex].HairsIndex].SetActive(false);
+            characterIndex[GenderIndex].HairsIndex = 0;
+        }
     }
     public void SelectBeard(int index)
     {
@@ -278,7 +301,18 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
             playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
 
         }
+        if (characterIndex[GenderIndex].BeardIndex == 0)
+        {
 
+            Characters[GenderIndex].MemeCharacter[characterIndex[GenderIndex].MemeCharacterIndex].SetActive(true);
+
+        }
+        else
+        {
+
+            Characters[GenderIndex].MemeCharacter[characterIndex[GenderIndex].MemeCharacterIndex].SetActive(false);
+            characterIndex[GenderIndex].MemeCharacterIndex = 0;
+        }
     }
     public void SelectVest(int index)
     {
@@ -345,6 +379,50 @@ public class PlayerCustomizationNonNetwork : MonoBehaviour
 
         }
 
+    }
+    public void SelectMemeCharacter(int index)
+    {
+        if (characterIndex[GenderIndex].MemeCharacterIndex < Characters[GenderIndex].MemeCharacter.Count - 1)
+        {
+            characterIndex[GenderIndex].MemeCharacterIndex += index;
+
+            if (characterIndex[GenderIndex].MemeCharacterIndex == -1)
+                characterIndex[GenderIndex].MemeCharacterIndex = Characters[GenderIndex].MemeCharacter.Count - 1;
+        }
+        else
+        {
+            if (index == 1)
+                characterIndex[GenderIndex].MemeCharacterIndex = 0;
+            else
+                characterIndex[GenderIndex].MemeCharacterIndex += index;
+        }
+        foreach (GameObject body in Characters[GenderIndex].MemeCharacter) //   <--- go back to here --------+
+        {
+            if (body == Characters[GenderIndex].MemeCharacter[characterIndex[GenderIndex].MemeCharacterIndex])
+            {
+                Characters[GenderIndex].MemeCharacter[characterIndex[GenderIndex].MemeCharacterIndex].SetActive(true);
+                continue;   // Skip the remainder of this iteration. -----+
+            }
+
+            // do work
+            body.SetActive(false);
+
+            //SavingData
+            playerData.SaveData("/player-CustomizationNew.json", characterIndex, EncryptionEnabled);
+
+        }
+        if (characterIndex[GenderIndex].MemeCharacterIndex == 0)
+        {
+
+            Characters[GenderIndex].Beard[characterIndex[GenderIndex].BeardIndex].SetActive(true);
+
+        }
+        else
+        {
+
+            Characters[GenderIndex].Beard[characterIndex[GenderIndex].BeardIndex].SetActive(false);
+            characterIndex[GenderIndex].BeardIndex = 0;
+        }
     }
     public void SerializeJson()
     {
