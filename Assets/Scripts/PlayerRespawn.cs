@@ -155,7 +155,6 @@ public class PlayerRespawn : NetworkBehaviour
         {
             RedPlayers.Add(playerPrefab);
             _nextSpawnPointIndexRed++;
-            
 
         }
         else
@@ -163,45 +162,9 @@ public class PlayerRespawn : NetworkBehaviour
             BluePlayers.Add(playerPrefab);
             _nextSpawnPointIndexBlue++;
            
-        }
-        //if (base.IsServer)
-        //    SeparateTeamObserver(playerPrefab);
-        //else
-        //    SeparateTeamServer(playerPrefab);
+        }       
     }
-    
-    [ServerRpc(RequireOwnership = false, RunLocally = true)]
-    public void SeparateTeamServer(GameObject playerPrefab)
-    {
-        if (playerPrefab.GetComponent<PlayerGunSelector>().redTeamPlayer)
-        {
-            RedPlayers.Add(playerPrefab);
-            _nextSpawnPointIndexRed++;
 
-        }
-        else
-        {
-            BluePlayers.Add(playerPrefab);
-            _nextSpawnPointIndexBlue++;
-        }
-    }
-    [ObserversRpc(BufferLast = true, RunLocally = true)]
-    public void SeparateTeamObserver(GameObject playerPrefab)
-    {
-        if (playerPrefab.GetComponent<PlayerGunSelector>().redTeamPlayer)
-        {
-            RedPlayers.Add(playerPrefab);
-            _nextSpawnPointIndexRed++;
-            
-
-        }
-        else
-        {
-            BluePlayers.Add(playerPrefab);
-            _nextSpawnPointIndexBlue++;
-           
-        }
-    }
     IEnumerator AssignPositionDelay()
     {
         yield return new WaitForSeconds(0.1f);
@@ -266,6 +229,7 @@ public class PlayerRespawn : NetworkBehaviour
             r.GetComponent<ThirdPersonController>().ResetPosition = true;
             r.GetComponent<PlayerGunSelector>().PlayerRedPosIndex = playerRedPosIndex;
             r.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 0;
+            r.GetComponent<ThirdPersonController>().SeeInvincibilty();
             LoadOutManager loadout = r.GetComponent<LoadOutManager>();
             loadout.GetLoadOutInput(loadout.loadNumber);
             loadout.PlayLoadoutSfX();
@@ -278,6 +242,7 @@ public class PlayerRespawn : NetworkBehaviour
             b.GetComponent<ThirdPersonController>().ResetPosition = true;
             b.GetComponent<PlayerGunSelector>().PlayerBluePosIndex = playerBluePosindex;
             b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
+            b.GetComponent<ThirdPersonController>().SeeInvincibilty();
             LoadOutManager loadout = b.GetComponent<LoadOutManager>();
             loadout.GetLoadOutInput(loadout.loadNumber);
             loadout.PlayLoadoutSfX();
@@ -285,76 +250,9 @@ public class PlayerRespawn : NetworkBehaviour
             playerBluePosindex++;
         }
         StartCoroutine(SetRestFalseDelay());
-        //if (base.IsServer)
-        //    ResetPositionObserver();
-        //else
-        //    ResetPositionServer();
 
     }
-    [ServerRpc(RequireOwnership = false, RunLocally = true)]
-    public void ResetPositionServer()
-    {
-        _nextSpawnPointIndexRed = 0;
-        _nextSpawnPointIndexBlue = 0;
-        foreach (GameObject r in RedPlayers)
-        {
-            Debug.Log("Reset pos");
-            //r.transform.position = RedTeamSpawnPoints[_nextSpawnPointIndexRed].transform.position;
-            r.GetComponent<ThirdPersonController>().ResetPosition = true;
-            r.GetComponent<PlayerGunSelector>().PlayerRedPosIndex = playerRedPosIndex;
-            r.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 0;
-            LoadOutManager loadout = r.GetComponent<LoadOutManager>();
-            loadout.GetLoadOutInput(loadout.loadNumber);
-            loadout.PlayLoadoutSfX();
-            _nextSpawnPointIndexRed++;
-            playerRedPosIndex++;
-        }
-        foreach (GameObject b in BluePlayers)
-        {
-            // b.transform.position = BlueTeamSpawnPoints[_nextSpawnPointIndexBlue].transform.position;
-            b.GetComponent<ThirdPersonController>().ResetPosition = true;
-            b.GetComponent<PlayerGunSelector>().PlayerBluePosIndex = playerBluePosindex;
-            b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
-            LoadOutManager loadout = b.GetComponent<LoadOutManager>();
-            loadout.GetLoadOutInput(loadout.loadNumber);
-            loadout.PlayLoadoutSfX();
-            _nextSpawnPointIndexBlue++;
-            playerBluePosindex++;
-        }
-        StartCoroutine(SetRestFalseDelay());
-    }
-    [ObserversRpc(BufferLast = true, RunLocally = true)]
-    public void ResetPositionObserver()
-    {
-        _nextSpawnPointIndexRed = 0;
-        _nextSpawnPointIndexBlue = 0;
-        foreach (GameObject r in RedPlayers)
-        {
-            Debug.Log("Reset pos");
-            //r.transform.position = RedTeamSpawnPoints[_nextSpawnPointIndexRed].transform.position;
-            r.GetComponent<ThirdPersonController>().ResetPosition = true;
-            r.GetComponent<PlayerGunSelector>().PlayerRedPosIndex = playerRedPosIndex;
-            r.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 0;
-            LoadOutManager loadout = r.GetComponent<LoadOutManager>();
-            loadout.GetLoadOutInput(loadout.loadNumber);
-            loadout.PlayLoadoutSfX();
-            _nextSpawnPointIndexRed++;
-            playerRedPosIndex++;
-        }
-        foreach (GameObject b in BluePlayers)
-        {
-            // b.transform.position = BlueTeamSpawnPoints[_nextSpawnPointIndexBlue].transform.position;
-            b.GetComponent<ThirdPersonController>().ResetPosition = true;
-            b.GetComponent<PlayerGunSelector>().PlayerBluePosIndex = playerBluePosindex;
-            b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
-            LoadOutManager loadout = b.GetComponent<LoadOutManager>();
-            loadout.GetLoadOutInput(loadout.loadNumber);
-            loadout.PlayLoadoutSfX();
-            _nextSpawnPointIndexBlue++;
-            playerBluePosindex++;
-        }
-        StartCoroutine(SetRestFalseDelay());
-    }
+    
     public void SetResetFalse()
     {
         if (base.IsServer)

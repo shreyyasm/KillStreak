@@ -516,14 +516,9 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
-            // StartCoroutine(MovementOn());
-            
+       
         }
-        IEnumerator MovementOn()
-        {
-            yield return new WaitForSeconds(0.5f);
-            PlayerRespawn.Instance.SetResetFalse();
-        }
+     
         public Vector3 screenCenterPoint;
         Ray rayNew;
         private void Update()
@@ -1913,7 +1908,7 @@ namespace StarterAssets
         public void SeeInvincibilty()
         {
             //StartCoroutine(SeeInvincibiltyDelay());
-            if (base.IsOwner)
+            if (base.IsServer)
                 SeeInvincibiltyObserver();
 
             else
@@ -1931,7 +1926,7 @@ namespace StarterAssets
         }
         IEnumerator SeeInvincibiltyDelay()
         {
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.5f);
             PlayerCustomization playerCustomization = GetComponent<PlayerCustomization>();
             GameObject player = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
             player.GetComponent<Outline>().enabled = true;
@@ -1939,7 +1934,10 @@ namespace StarterAssets
 
            
             yield return new WaitForSeconds(5f);
-            player.GetComponent<Outline>().enabled = false;
+            if(base.IsOwner)
+            {
+                player.GetComponent<Outline>().enabled = false;
+            }         
             player.GetComponent<Outline>().OutlineColor = Color.red;
         }
 
