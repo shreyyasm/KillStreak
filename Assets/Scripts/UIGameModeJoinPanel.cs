@@ -23,5 +23,10 @@ namespace EOSLobbyTest
         {
 
         }
+        public GameObject GameModeJoin;
+        public void CloseGameModeJoin()
+        {
+            GameModeJoin.SetActive(false);
+        }
     }
 }

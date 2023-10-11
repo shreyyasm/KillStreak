@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 namespace EOSLobbyTest
 {
     public class UIPanelPlayerName : UIPanel<UIPanelPlayerName>, IUIPanel
     {
         [SerializeField]
-        public InputField inputFieldPlayerName;
+        public TMP_InputField inputFieldPlayerName;
 
         [SerializeField]
         private Button buttonSave;

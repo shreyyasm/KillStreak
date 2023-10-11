@@ -23,5 +23,10 @@ namespace EOSLobbyTest
         {
 
         }
+        public GameObject GameModeCanvas;
+        public void CloseGameMode()
+        {
+            GameModeCanvas.SetActive(false);
+        }
     }
 }

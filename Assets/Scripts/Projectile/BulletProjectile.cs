@@ -14,20 +14,20 @@ public class BulletProjectile : MonoBehaviour
     }
     private void Start()
     {
-       float speed = 100f;
+       float speed = 5f;
        bulletRigidbody.velocity = transform.forward* speed;
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponent<BulletTarget>() != null)
+        if(other.gameObject.CompareTag("Wall"))
         {
             //Hit target
-            Instantiate(vfxHitTarget, transform.position, Quaternion.identity);
+            Instantiate(vfxHitTarget, transform.position, Quaternion.LookRotation(Vector3.forward));
         }
         else
         {
             //Hit Something else
-            Instantiate(vfxHitNull, transform.position, Quaternion.identity);
+            Instantiate(vfxHitNull, transform.position, Quaternion.LookRotation(Vector3.forward));
 
         }
         Destroy(gameObject);
