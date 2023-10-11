@@ -158,13 +158,13 @@ MonoBehaviour:
     value: 0
   colorFilter:
     overrideState: 1
-    value: {r: 1.0051394, g: 1.0051394, b: 1.0051394, a: 1}
+    value: {r: 0.9334222, g: 0.93996525, b: 0.9748054, a: 1}
   hueShift:
     overrideState: 0
     value: 0
   saturation:
     overrideState: 1
-    value: 25
+    value: 30
   brightness:
     overrideState: 0
     value: 0
@@ -173,7 +173,7 @@ MonoBehaviour:
     value: 0.15
   contrast:
     overrideState: 1
-    value: 17
+    value: 30
   mixerRedOutRedIn:
     overrideState: 0
     value: 100
@@ -1459,7 +1459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
@@ -1485,7 +1485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b94fcd11afffcb142908bfcb1e261fba, type: 3}
   m_Name: MotionBlur
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
@@ -1507,7 +1507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a79b01ea5641d4aa6daa2e23605641, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
