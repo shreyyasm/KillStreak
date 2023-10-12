@@ -9,7 +9,9 @@ namespace EOSLobbyTest
     public class UIPanelManager : MonoBehaviourSingletonForScene<UIPanelManager>
     {
         private List<IUIPanel> _panels;
-       
+
+        [SerializeField] AudioClip ButtonSound;
+        [SerializeField] AudioClip ButtonSoundHover;
 
         [Tooltip("Panel we are going to show first")]
         public string initialPanel;
@@ -108,6 +110,14 @@ namespace EOSLobbyTest
         {
             //gameModePanel.SetActive(true);
             UIPanelManager.Instance.ShowPanel<UIGameModeJoinPanel>();
+        }
+        public void PlayButtonSFX()
+        {
+            AudioSource.PlayClipAtPoint(ButtonSound,Camera.main.transform.position,1);
+        }
+        public void HoverButtonSFX()
+        {
+            AudioSource.PlayClipAtPoint(ButtonSoundHover, Camera.main.transform.position, 1);
         }
     }
 }
