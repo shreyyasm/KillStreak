@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 namespace InfimaGames.LowPolyShooterPack
 {
@@ -167,6 +168,11 @@ namespace InfimaGames.LowPolyShooterPack
 
 		#region UNITY
 
+		public GameObject GameUICanvas;
+		public GameObject OpeningCamera;
+		public GameObject DefaultCamera;
+		public CinemachineBrain brain;
+		public AudioSource audioSource;
 		protected override void Awake()
 		{
 			#region Lock Cursor
@@ -186,6 +192,27 @@ namespace InfimaGames.LowPolyShooterPack
 
 			//Refresh!
 			RefreshWeaponSetup();
+			StartCoroutine(StartFiring());
+		}
+		IEnumerator StartFiring()
+		{
+			yield return new WaitForSeconds(1f);
+			holdingButtonFire = true;
+
+			yield return new WaitForSeconds(2f);
+			holdingButtonFire = false;
+
+			yield return new WaitForSeconds(2f);
+			OpeningCamera.SetActive(false);
+			DefaultCamera.SetActive(true);
+			GameUICanvas.SetActive(true);
+			audioSource.Play();
+
+			yield return new WaitForSeconds(2f);
+			brain.m_DefaultBlend.m_Time = 0.2f;
+
+
+
 		}
 		protected override void Start()
 		{
@@ -388,10 +415,10 @@ namespace InfimaGames.LowPolyShooterPack
 		/// </summary>
 		private void UpdateCursorState()
 		{
-			//Update cursor visibility.
-			Cursor.visible = !cursorLocked;
-			//Update cursor lock state.
-			Cursor.lockState = cursorLocked ? CursorLockMode.Locked : CursorLockMode.None;
+			////Update cursor visibility.
+			//Cursor.visible = !cursorLocked;
+			////Update cursor lock state.
+			//Cursor.lockState = cursorLocked ? CursorLockMode.Locked : CursorLockMode.None;
 		}
 
 		/// <summary>
@@ -571,7 +598,7 @@ namespace InfimaGames.LowPolyShooterPack
 				//Started.
 				case {phase: InputActionPhase.Started}:
 					//Hold.
-					holdingButtonFire = true;
+					//holdingButtonFire = true;
 					break;
 				//Performed.
 				case {phase: InputActionPhase.Performed}:
@@ -607,22 +634,22 @@ namespace InfimaGames.LowPolyShooterPack
 		public void OnTryPlayReload(InputAction.CallbackContext context)
 		{
 			//Block while the cursor is unlocked.
-			if (!cursorLocked)
-				return;
+			//if (!cursorLocked)
+			//	return;
 			
-			//Block.
-			if (!CanPlayAnimationReload())
-				return;
+			////Block.
+			//if (!CanPlayAnimationReload())
+			//	return;
 			
-			//Switch.
-			switch (context)
-			{
-				//Performed.
-				case {phase: InputActionPhase.Performed}:
-					//Play Animation.
-					PlayReloadAnimation();
-					break;
-			}
+			////Switch.
+			//switch (context)
+			//{
+			//	//Performed.
+			//	case {phase: InputActionPhase.Performed}:
+			//		//Play Animation.
+			//		PlayReloadAnimation();
+			//		break;
+			//}
 		}
 
 		/// <summary>

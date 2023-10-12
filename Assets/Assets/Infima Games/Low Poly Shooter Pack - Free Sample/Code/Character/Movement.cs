@@ -134,7 +134,7 @@ namespace InfimaGames.LowPolyShooterPack
         protected override void FixedUpdate()
         {
             //Move.
-            MoveCharacter();
+            //MoveCharacter();
             
             //Unground.
             grounded = false;

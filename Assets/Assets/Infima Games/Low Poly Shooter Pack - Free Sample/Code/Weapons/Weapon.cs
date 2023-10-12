@@ -230,7 +230,8 @@ namespace InfimaGames.LowPolyShooterPack
             if (Physics.Raycast(new Ray(playerCamera.position, playerCamera.forward),
                 out RaycastHit hit, maximumDistance, mask))
                 rotation = Quaternion.LookRotation(hit.point - muzzleSocket.position);
-                
+
+            muzzleSocket.position += new Vector3(Random.Range(-0.15f, 0.15f), Random.Range(-0.15f, 0.15f),0);
             //Spawn projectile from the projectile spawn point.
             GameObject projectile = Instantiate(prefabProjectile, muzzleSocket.position, rotation);
             //Add velocity to the projectile.

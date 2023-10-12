@@ -8,7 +8,7 @@ using FishNet.Connection;
 using FishNet.Object;
 using UnityEngine.Pool;
 //using Unity.Netcode;
-public class Projectile : NetworkBehaviour {
+public class Projectile : MonoBehaviour {
 
 	[Range(5, 100)]
 	[Tooltip("After how long time should the bullet prefab be destroyed?")]
@@ -110,12 +110,12 @@ public class Projectile : NetworkBehaviour {
 		}
 
 		//If bullet collides with "Blood" tag
-		if (collision.transform.tag == "Blood")
+		if (collision.transform.tag == "Wall")
 		{
 			Transform VFX = Instantiate(bloodImpactPrefabs[Random.Range
 				(0, bloodImpactPrefabs.Length)], transform.position,
 				Quaternion.LookRotation(collision.contacts[0].normal));
-			SpawnVFX(VFX.gameObject, this);
+			
 			DespawnBullet();
 		}
 		//If bullet collides with "Blood" tag
@@ -124,7 +124,7 @@ public class Projectile : NetworkBehaviour {
 			Transform VFX = Instantiate(bloodImpactPrefabs[Random.Range
 				(0, bloodImpactPrefabs.Length)], transform.position,
 				Quaternion.LookRotation(collision.contacts[0].normal));
-			SpawnVFX(VFX.gameObject, this);
+			
 			DespawnBullet();
 
 		}
@@ -159,7 +159,7 @@ public class Projectile : NetworkBehaviour {
 			Transform VFX = Instantiate(bloodImpactPrefabs[Random.Range
 				(0, bloodImpactPrefabs.Length)], transform.position,
 				Quaternion.LookRotation(collision.contacts[0].normal));
-			SpawnVFX(VFX.gameObject, this);
+			
 			DespawnBullet();
 
 		}
@@ -174,7 +174,7 @@ public class Projectile : NetworkBehaviour {
 			Transform VFX = Instantiate(bloodImpactPrefabs[Random.Range
 				(0, bloodImpactPrefabs.Length)], transform.position,
 				Quaternion.LookRotation(collision.contacts[0].normal));
-			SpawnVFX(VFX.gameObject, this);
+			
 			DespawnBullet();
 			
 		}
@@ -218,10 +218,10 @@ public class Projectile : NetworkBehaviour {
 		DespawnBullet();
 
 	}
-	[ServerRpc(RequireOwnership = false)]
+	
 	public void DespawnBullet()
 	{		
-		ServerManager.Despawn(gameObject);
+		//ServerManager.Despawn(gameObject);
 	}
 	private IEnumerator DestroyTrailAfter()
 	{
@@ -231,16 +231,6 @@ public class Projectile : NetworkBehaviour {
 		trail.emitting = false;
 
 	}
-	[ServerRpc(RequireOwnership = false)]
-	public void SpawnVFX(GameObject VFX, Projectile script)
-    {
-		base.Spawn(VFX, base.Owner);
-		SetVFX(VFX, script);
-	}
-	[ObserversRpc]
-    public void SetVFX(GameObject spawned, Projectile script)
-    {
-		script.ObjectVFX = spawned;
-    }
+
 	
 }
