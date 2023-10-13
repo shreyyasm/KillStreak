@@ -196,7 +196,7 @@ namespace InfimaGames.LowPolyShooterPack
 		}
 		IEnumerator StartFiring()
 		{
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(2f);
 			holdingButtonFire = true;
 
 			yield return new WaitForSeconds(2f);

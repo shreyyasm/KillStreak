@@ -52,9 +52,17 @@ public class FloatingDamage : MonoBehaviour
         //}
         
     }
+    public GameObject Streak;
+    public GameObject Elimination;
+    public GameObject Headshot;
     public void StopFloatDamage()
     {
+        
         anim.SetBool("FloatDamage", false);
+        
+       
+        //Elimination.SetActive(false);
+        //Headshot.SetActive(false);
         text.SetActive(false);
     }
     public void GetPosition(float damage)

@@ -1299,15 +1299,29 @@ public class PlayerGunSelector : NetworkBehaviour
         StartCoroutine(DelayCheckPlayerDead());
        
     }
+    public Animator KillMessageAnim;
+    public GameObject Streak;
+    public GameObject Elimination;
+    public GameObject Headshot;
+    public AudioClip killSound;
     IEnumerator DelayCheckPlayerDead()
     {
         yield return new WaitForSeconds(0.2f);
         if (playerRef._Health <= 0 && !playerRef.playerDeadConfirmed)
         {
             
+            //Streak.SetActive(true);
+            //Elimination.SetActive(true);
+            //Headshot.SetActive(true);
+            KillMessageAnim.SetLayerWeight(1, 1);
+            KillMessageAnim.SetBool("KillMessage", true);
+            AudioSource.PlayClipAtPoint(killSound, Camera.main.transform.position,1f);
             killSystem.playerKilled();
             playerRef.playerDeadConfirmed = true;
         }
+        yield return new WaitForSeconds(6f);
+        KillMessageAnim.SetBool("KillMessage", false);
+        KillMessageAnim.SetLayerWeight(1, 0);
     }
     
     public GameObject spawnObject;
