@@ -10,6 +10,8 @@ public class KillSystem : NetworkBehaviour
 
     [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
     public int playerKills { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
+    
     // Start is called before the first frame update
     void Start()
     {

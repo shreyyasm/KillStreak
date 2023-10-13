@@ -25588,10 +25588,10 @@ MonoBehaviour:
   CinemachineCameraTarget: {fileID: 0}
   killSystem: {fileID: 4522284778504902401}
   KillMessageAnim: {fileID: 6970161878929902248}
-  Streak: {fileID: 1916559647}
+  Streak: {fileID: 1916559649}
   Elimination: {fileID: 831835750}
   Headshot: {fileID: 307913327}
-  killSound: {fileID: 8300000, guid: efeb3a8df274f3148b0a77080eb6d54f, type: 3}
+  killSound: {fileID: 8300000, guid: 224ad37daaa2c5f42956b37ca5f6b9b0, type: 3}
   spawnObject: {fileID: 8081663345739861187, guid: c2e6aed9ca9047c4e9e811b1a9d78ecb,
     type: 3}
   SpawnInterval: 1
@@ -26919,6 +26919,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 4866512734858148882}
   playerGunSelector: {fileID: 4556042117359066162}
   <playerKills>k__BackingField: 0
+  <killStreaks>k__BackingField: 0
 --- !u!1 &4226758256720615127
 GameObject:
   m_ObjectHideFlags: 0

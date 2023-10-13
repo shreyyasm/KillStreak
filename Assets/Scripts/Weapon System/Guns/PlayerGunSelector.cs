@@ -115,8 +115,9 @@ public class PlayerGunSelector : NetworkBehaviour
         
         ActiveCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         anim = GetComponent<Animator>();
-
+        
     }
+    
     public override void OnStartNetwork()
     {
         base.OnStartNetwork();
@@ -156,6 +157,7 @@ public class PlayerGunSelector : NetworkBehaviour
     public TwoBoneIKConstraint SniperRig;
     private void OnEnable()
     {
+        killStreaks = 0;
         gun1 = PrimaryGuns[loadOutManager.loadNumber];
         gun2 = SecondaryGuns[loadOutManager.loadNumber];
     }
@@ -1288,6 +1290,7 @@ public class PlayerGunSelector : NetworkBehaviour
 
     }
     PlayerHealth playerRef;
+    GameObject playerHitpart;
     public KillSystem killSystem;
     
     
@@ -1296,20 +1299,30 @@ public class PlayerGunSelector : NetworkBehaviour
         
      
         playerRef = player.GetComponentInParent<PlayerHealth>();
+        playerHitpart = player;
         StartCoroutine(DelayCheckPlayerDead());
        
     }
     public Animator KillMessageAnim;
-    public GameObject Streak;
+    public TextMeshProUGUI Streak;
     public GameObject Elimination;
     public GameObject Headshot;
     public AudioClip killSound;
+
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+    public int killStreaks { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
     IEnumerator DelayCheckPlayerDead()
     {
         yield return new WaitForSeconds(0.2f);
         if (playerRef._Health <= 0 && !playerRef.playerDeadConfirmed)
         {
-            
+            killStreaks += 1;
+            Streak.text = "+ " + killStreaks + " Streaks";
+            //Debug.Log(playerHitpart.tag);
+            if(playerHitpart.CompareTag("Head"))
+                Headshot.SetActive(true);
+            else
+                Headshot.SetActive(false);
             //Streak.SetActive(true);
             //Elimination.SetActive(true);
             //Headshot.SetActive(true);
@@ -1319,7 +1332,7 @@ public class PlayerGunSelector : NetworkBehaviour
             killSystem.playerKilled();
             playerRef.playerDeadConfirmed = true;
         }
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(5f);
         KillMessageAnim.SetBool("KillMessage", false);
         KillMessageAnim.SetLayerWeight(1, 0);
     }
