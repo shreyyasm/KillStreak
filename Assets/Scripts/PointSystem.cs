@@ -182,4 +182,44 @@ public class PointSystem : NetworkBehaviour
         BlueTeamScore++;
         BlueScoreText.text = BlueTeamScore.ToString();
     }
+    public void AddScoreToBoostBlue()
+    {
+        if (base.IsServer)
+            AddScoreToBoostBlueTeamObserver();
+        else
+            AddScoreToBoostBlueTeamServer();
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void AddScoreToBoostBlueTeamServer()
+    {
+        BlueTeamScore += 5;
+        BlueScoreText.text = BlueTeamScore.ToString();
+
+    }
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
+    public void AddScoreToBoostBlueTeamObserver()
+    {
+        BlueTeamScore += 5;
+        BlueScoreText.text = BlueTeamScore.ToString();
+    }
+    public void AddScoreToBoostRed()
+    {
+        if (base.IsServer)
+            AddScoreToBoostRedTeamObserver();
+        else
+            AddScoreToBoostRedTeamServer();
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void AddScoreToBoostRedTeamServer()
+    {
+        RedTeamScore += 5;
+        RedScoreText.text = RedTeamScore.ToString();
+
+    }
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
+    public void AddScoreToBoostRedTeamObserver()
+    {
+        RedTeamScore += 5;
+        RedScoreText.text = RedTeamScore.ToString();
+    }
 }
