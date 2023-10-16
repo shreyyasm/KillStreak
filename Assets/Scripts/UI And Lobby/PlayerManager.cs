@@ -64,7 +64,7 @@ namespace EOSLobbyTest
             myPlayer.GetComponent<CanvasNetworkManager>().CheckIfTeamsFull();
 
 
-
+            //SaveNames();
 
             //uIPanel4V4Lobby.RedPlayers.ChangeContainer();
         }
@@ -82,6 +82,25 @@ namespace EOSLobbyTest
             PlayerInfo playerInfo = myPlayer.GetComponent<PlayerInfo>();
             redTeamPlayer = playerInfo.RedPlayer;
             blueTeamPlayer = playerInfo.BluePlayer;
+        }
+        public List<string> RedplayersList;
+        public List<string> BlueplayersList;
+
+        public void SaveNames()
+        {
+            foreach(PlayerInfo i in _players)
+            {
+                if(i.RedPlayer)
+                {
+                    string playerName = i.GetComponent<CanvasNetworkManager>().myPlayer.GetComponent<UIPlayerItem>().textPlayerName.text;
+                    RedplayersList.Add(playerName);
+                }
+                if (i.BluePlayer)
+                {
+                    string playerName = i.GetComponent<CanvasNetworkManager>().myPlayer.GetComponent<UIPlayerItem>().textPlayerName.text;
+                    BlueplayersList.Add(playerName);
+                }
+            }
         }
     }
 }

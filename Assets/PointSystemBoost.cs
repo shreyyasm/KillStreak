@@ -11,6 +11,7 @@ public class PointSystemBoost : MonoBehaviour
     public GameObject buttonCanvas;
     public bool ButtonPressed;
     public float ButtonResetTimer;
+    public Outline outline;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +46,7 @@ public class PointSystemBoost : MonoBehaviour
                 if (other.gameObject.GetComponent<PlayerGunSelector>().redTeamPlayer)
                 {
                     buttonCanvas.SetActive(true);
+                    outline.enabled = true;
                     //pointSystem.AddScoreToBoostRed();
                 }
 
@@ -54,6 +56,7 @@ public class PointSystemBoost : MonoBehaviour
                 if (other.gameObject.GetComponent<PlayerGunSelector>().blueTeamPlayer)
                 {
                     buttonCanvas.SetActive(true);
+                    outline.enabled = true;
                     //pointSystem.AddScoreToBoostRed();
                 }
 
@@ -65,6 +68,7 @@ public class PointSystemBoost : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         buttonCanvas.SetActive(false);
+        outline.enabled = false;
     }
     public void BoostScore()
     {

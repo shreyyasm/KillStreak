@@ -10,7 +10,7 @@ namespace EOSLobbyTest
     {
         [Tooltip("UI text item for name of player")]
         [SerializeField]
-        private Text textPlayerName;
+        public Text textPlayerName;
 
         [Tooltip("UI button to allow kick of user")]
         [SerializeField]

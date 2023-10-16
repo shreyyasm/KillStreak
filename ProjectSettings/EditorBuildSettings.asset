@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/4v4 Team DeathMatch.unity
     guid: 3b713d6de90a85848af6dfaad199d95a
+  - enabled: 1
+    path: Assets/Scenes/New Level.unity
+    guid: 12b6850755b18894998ff0720e07b697
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7,
       type: 2}

@@ -67,7 +67,9 @@ namespace EOSLobbyTest
         
         public void StartGame()
         {
-            InstanceFinder.SceneManager.LoadGlobalScenes(new SceneLoadData("4v4 Team DeathMatch") { ReplaceScenes = ReplaceOption.All });
+            PlayerManager.Instance.SaveNames();
+            InstanceFinder.SceneManager.LoadGlobalScenes(new SceneLoadData("New Level") { ReplaceScenes = ReplaceOption.All });
+            //InstanceFinder.SceneManager.LoadGlobalScenes(new SceneLoadData("4v4 Team DeathMatch") { ReplaceScenes = ReplaceOption.All });
             //InstanceFinder.SceneManager.LoadGlobalScenes(new SceneLoadData("Game") { ReplaceScenes = ReplaceOption.All });
             PlayerManager.Instance.ServerPlayer?.SendStartingGame();
         }
@@ -245,6 +247,7 @@ namespace EOSLobbyTest
             SetShowStartGame(_isFishnetConnected && _isVivoxConnected && InstanceFinder.NetworkManager.IsServer);
         }
         public List<GameObject> playersList;
+        
         public bool repeatPlayer;
         private void PopulatePlayerList()
         {
