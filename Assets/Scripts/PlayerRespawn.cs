@@ -135,13 +135,15 @@ public class PlayerRespawn : NetworkBehaviour
     public void AddPlayerServer(GameObject playerPrefab)
     {
         AllPlayers.Add(playerPrefab);
-        //DelaySeparateTeam(playerPrefab);      
+        DelaySeparateTeam(playerPrefab);
+        //SetPlayerNum();
     }
     [ObserversRpc(BufferLast = true, RunLocally = true)]
     public void AddPlayerObserver(GameObject playerPrefab)
     {
         AllPlayers.Add(playerPrefab);
-        DelaySeparateTeam(playerPrefab);   
+        DelaySeparateTeam(playerPrefab);
+        
     }
    
     public void DelaySeparateTeam(GameObject playerPrefab)
@@ -155,14 +157,16 @@ public class PlayerRespawn : NetworkBehaviour
         {
             RedPlayers.Add(playerPrefab);
             _nextSpawnPointIndexRed++;
+            SetPlayerNum();
 
         }
         else
         {
             BluePlayers.Add(playerPrefab);
             _nextSpawnPointIndexBlue++;
-           
-        }       
+            SetPlayerNum();
+        }
+       
     }
 
     IEnumerator AssignPositionDelay()
@@ -309,6 +313,16 @@ public class PlayerRespawn : NetworkBehaviour
                 a.GetComponent<ThirdPersonController>().loadOutButton.SetActive(false);
         }
     }
-
+    public void SetPlayerNum()
+    {
+        foreach(GameObject i in AllPlayers)
+        {
+            for(int t = 1; t <= AllPlayers.Count; t++)
+            {
+                //Debug.Log(t);
+                i.GetComponent<PlayerGunSelector>().playerNumber = t;
+            }
+        }
+    }
    
 }

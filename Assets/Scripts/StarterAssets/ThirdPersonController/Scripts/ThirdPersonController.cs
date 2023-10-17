@@ -1887,7 +1887,7 @@ namespace StarterAssets
             
             if (playerGunSelector.redTeamPlayer)
             {
-                Debug.Log("Work");
+                //Debug.Log("Work");
                 foreach (GameObject i in PlayerRespawn.Instance.RedPlayers)
                 {
                     PlayerCustomization playerCustomization = i.GetComponent<PlayerCustomization>();

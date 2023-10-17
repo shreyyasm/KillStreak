@@ -6,11 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main Menu.unity
-    guid: d0157ef482d6fc749b20272f21c02a13
-  - enabled: 1
-    path: Assets/Scenes/4v4 Team DeathMatch.unity
-    guid: 3b713d6de90a85848af6dfaad199d95a
+    path: Assets/Scenes/New Level Main Menu.unity
+    guid: d3195db79c38ad443b9d23600edc7f2a
   - enabled: 1
     path: Assets/Scenes/New Level.unity
     guid: 12b6850755b18894998ff0720e07b697

@@ -107,6 +107,7 @@ public class PlayerGunSelector : NetworkBehaviour
     public int PlayerBluePosIndex = 0;
 
     public PlayerManager playerManager;
+    public int playerNumber;
     private void Awake()
     {
         instance = this;
