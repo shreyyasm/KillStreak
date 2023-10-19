@@ -52,7 +52,7 @@ namespace EOSLobbyTest
         {
             if(uIPanel4V4Lobby != null)
             {
-                if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
+                if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 4)
                 {
                     PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
                     playerInfo.RedPlayer = true;
@@ -78,7 +78,7 @@ namespace EOSLobbyTest
 
             if (uIPanel4V4Lobby != null)
             {
-                if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 1)
+                if (uIPanel4V4Lobby.RedTeam.transform.childCount <= 4)
                 {
                     PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
                     playerInfo.RedPlayer = true;
@@ -159,7 +159,7 @@ namespace EOSLobbyTest
            
            PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
 
-            if (uIPanel4V4Lobby.RedTeam.transform.childCount < 1)
+            if (uIPanel4V4Lobby.RedTeam.transform.childCount < 4)
             {
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.RedTeam);
 
@@ -173,7 +173,7 @@ namespace EOSLobbyTest
         {
 
             PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
-            if (uIPanel4V4Lobby.RedTeam.transform.childCount < 1)
+            if (uIPanel4V4Lobby.RedTeam.transform.childCount < 4)
             {
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.RedTeam);
 
@@ -199,7 +199,7 @@ namespace EOSLobbyTest
 
             PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
 
-            if (uIPanel4V4Lobby.BlueTeam.transform.childCount < 1)
+            if (uIPanel4V4Lobby.BlueTeam.transform.childCount < 4)
             {
                 
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.BlueTeam);
@@ -214,7 +214,7 @@ namespace EOSLobbyTest
         {
             PlayerInfo playerInfo = gameObject.GetComponent<PlayerInfo>();
 
-            if (uIPanel4V4Lobby.BlueTeam.transform.childCount < 1)
+            if (uIPanel4V4Lobby.BlueTeam.transform.childCount < 4)
             {
                 container = uIPanel4V4Lobby.BlueTeam;
                 myPlayer.transform.SetParent(uIPanel4V4Lobby.BlueTeam);
@@ -223,7 +223,7 @@ namespace EOSLobbyTest
                 playerInfo.BluePlayer = true;
             }
             PlayerManager.Instance.SetPlayerTeam();
-        }
-      
+        } 
+        
     }
 }

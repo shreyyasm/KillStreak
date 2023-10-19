@@ -67,7 +67,7 @@ namespace EOSLobbyTest
         
         public void StartGame()
         {
-            PlayerManager.Instance.SaveNames();
+            
             InstanceFinder.SceneManager.LoadGlobalScenes(new SceneLoadData("New Level") { ReplaceScenes = ReplaceOption.All });
             //InstanceFinder.SceneManager.LoadGlobalScenes(new SceneLoadData("4v4 Team DeathMatch") { ReplaceScenes = ReplaceOption.All });
             //InstanceFinder.SceneManager.LoadGlobalScenes(new SceneLoadData("Game") { ReplaceScenes = ReplaceOption.All });
@@ -417,7 +417,7 @@ namespace EOSLobbyTest
             PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
             GameObject uiPlayerItem = GameObject.FindGameObjectWithTag("PlayerPrefab");
             
-            if (RedTeam.transform.childCount < 2)
+            if (RedTeam.transform.childCount < 4)
             {
                 uiPlayerItem.transform.SetParent(RedTeam);
 
@@ -430,7 +430,7 @@ namespace EOSLobbyTest
             PlayerInfo playerInfo = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
             GameObject uiPlayerItem = GameObject.FindGameObjectWithTag("PlayerPrefab");
 
-            if (BlueTeam.transform.childCount < 2)
+            if (BlueTeam.transform.childCount < 4)
             {
                 uiPlayerItem.transform.SetParent(BlueTeam);
 
@@ -445,8 +445,8 @@ namespace EOSLobbyTest
 
         public void ShowRedTeamPlayerText()
         {
-            RedTeamPlayerNumber.text = RedTeam.transform.childCount + "/1";
-            BlueTeamPlayerNumber.text = BlueTeam.transform.childCount + "/1";
+            RedTeamPlayerNumber.text = RedTeam.transform.childCount + "/4";
+            BlueTeamPlayerNumber.text = BlueTeam.transform.childCount + "/4";
         }
        public void MoveToRedTeam()
        {

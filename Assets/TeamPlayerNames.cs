@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using FishNet.Object;
+
 namespace EOSLobbyTest
 {
-    public class TeamPlayerNames : MonoBehaviour
+    public class TeamPlayerNames : NetworkBehaviour
     {
+       
         public List<TextMeshProUGUI> myPlayersName;
         public List<GameObject> players;
         // Start is called before the first frame update
         void Start()
         {
-            //SetNames();
+            Invoke("SetNames",1.5f);
+
         }
 
         // Update is called once per frame
@@ -21,11 +25,11 @@ namespace EOSLobbyTest
         }
         public void SetNames()
         {
-            if(PlayerManager.Instance.redTeamPlayer)
+            if (PlayerManager.Instance.redTeamPlayer)
             {
-                foreach (string i in PlayerManager.Instance.RedplayersList)
+                foreach (string i in PlayerRespawn.Instance.redPlayersName)
                 {
-                    for (int t = 0; t < PlayerManager.Instance.RedplayersList.Count; t++)
+                    for (int t = 0; t < PlayerRespawn.Instance.redPlayersName.Count; t++)
                     {
                         myPlayersName[t].text = (t + 1) + ". " + i.ToString();
                         players[t].SetActive(true);
@@ -34,9 +38,37 @@ namespace EOSLobbyTest
             }
             else
             {
-                foreach (string i in PlayerManager.Instance.BlueplayersList)
+                foreach (string i in PlayerRespawn.Instance.bluePlayersName)
                 {
-                    for (int t = 0; t < PlayerManager.Instance.BlueplayersList.Count; t++)
+                    for (int t = 0; t < PlayerRespawn.Instance.bluePlayersName.Count; t++)
+                    {
+                        myPlayersName[t].text = (t + 1) + ".  " + i.ToString();
+                        players[t].SetActive(true);
+                    }
+                }
+            }
+            //SetNamesServer();
+            //SetNamesObserver();
+        }
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        public void SetNamesServer()
+        {
+            if(PlayerManager.Instance.redTeamPlayer)
+            {
+                foreach (string i in PlayerRespawn.Instance.redPlayersName)
+                {
+                    for (int t = 0; t < PlayerRespawn.Instance.redPlayersName.Count; t++)
+                    {
+                        myPlayersName[t].text = (t + 1) + ". " + i.ToString();
+                        players[t].SetActive(true);
+                    }
+                }
+            }
+            else
+            {
+                foreach (string i in PlayerRespawn.Instance.bluePlayersName)
+                {
+                    for (int t = 0; t < PlayerRespawn.Instance.bluePlayersName.Count; t++)
                     {
                         myPlayersName[t].text = (t + 1) + ".  " + i.ToString();
                         players[t].SetActive(true);
@@ -44,6 +76,32 @@ namespace EOSLobbyTest
                 }
             }
             
+        }
+        [ObserversRpc(BufferLast = true, RunLocally = true)]       
+        public void SetNamesObserver()
+        {
+            if (PlayerManager.Instance.redTeamPlayer)
+            {
+                foreach (string i in PlayerRespawn.Instance.redPlayersName)
+                {
+                    for (int t = 0; t < PlayerRespawn.Instance.redPlayersName.Count; t++)
+                    {
+                        myPlayersName[t].text = (t + 1) + ". " + i.ToString();
+                        players[t].SetActive(true);
+                    }
+                }
+            }
+            else
+            {
+                foreach (string i in PlayerRespawn.Instance.bluePlayersName)
+                {
+                    for (int t = 0; t < PlayerRespawn.Instance.bluePlayersName.Count; t++)
+                    {
+                        myPlayersName[t].text = (t + 1) + ".  " + i.ToString();
+                        players[t].SetActive(true);
+                    }
+                }
+            }
         }
     }
 }

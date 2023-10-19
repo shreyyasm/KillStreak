@@ -28,6 +28,9 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : NetworkBehaviour
     {
+        
+        [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+        public string PlayerName { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
@@ -294,7 +297,7 @@ namespace StarterAssets
             public uint GetTick() => _tick;
             public void SetTick(uint value) => _tick = value;
         }
-        PlayerManager playerManager;
+       
         private void Awake()
         {
             
@@ -318,6 +321,7 @@ namespace StarterAssets
            
             m_MainCamera = GameObject.FindWithTag("Follow Camera").GetComponent<CinemachineVirtualCamera>();
             m_AimCamera = GameObject.FindWithTag("Aim Camera").GetComponent<CinemachineVirtualCamera>();
+            playerManager = FindObjectOfType<PlayerManager>();
             _controller = GetComponent<CharacterController>();
 
             //rb = GetComponent<Rigidbody>();
@@ -365,7 +369,7 @@ namespace StarterAssets
             PointSystem.Instance.GameStartCountdown();
         }
 
-
+        public PlayerManager playerManager;
         public override void OnStartNetwork()
         {
             base.OnStartNetwork();
@@ -388,23 +392,35 @@ namespace StarterAssets
                         allObjects.gameObject.layer = LayerMask.NameToLayer("Player Root");
                     }
                 }
-
+                SetName();
                 Invoke("ChangeToGreenColor", 0.5f);
                 //ChangeToGreenColor();
-            }
-            else
-            {
-                //audioListener.enabled = false;
-                // UICanvas.SetActive(false);
-                //gameObject.AddComponent<Enemy>();
-                // gameObject.AddComponent<EnemyHealth>(); 
             }
             
             // reset our timeouts on start
             _fallTimeoutDelta = FallTimeout;
             _jumpTimeoutDelta = JumpTimeout;
-
             
+            
+        }
+        public void SetName()
+        {
+            PlayerName = playerManager.myPlayerName;
+            //if (base.IsServer)
+            //    SetNameObserver();
+            //else
+            //    SetNameServer();
+
+        }
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]        
+        public void SetNameServer()
+        {
+            PlayerName = playerManager.myPlayerName;
+        }      
+        [ObserversRpc(BufferLast = true, RunLocally = true)]
+        public void SetNameObserver()
+        {
+            PlayerName = playerManager.myPlayerName;
         }
 
         private void TimeManager_OnTick()
@@ -516,7 +532,7 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
-       
+           
         }
      
         public Vector3 screenCenterPoint;
@@ -1924,20 +1940,32 @@ namespace StarterAssets
         {
             StartCoroutine(SeeInvincibiltyDelay());
         }
+        public GameObject playerMainBody;
         IEnumerator SeeInvincibiltyDelay()
         {
             yield return new WaitForSeconds(0.5f);
             PlayerCustomization playerCustomization = GetComponent<PlayerCustomization>();
             GameObject player = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
+            playerMainBody = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
             player.GetComponent<Outline>().enabled = true;
             player.GetComponent<Outline>().OutlineColor = Color.white;
 
            
             yield return new WaitForSeconds(5f);
-            if(base.IsOwner)
+            if (base.IsOwner)
             {
-                player.GetComponent<Outline>().enabled = false;
-            }         
+                //player.GetComponent<Outline>().enabled = false;
+                if (playerGunSelector.redTeamPlayer)
+                    PlayerRespawn.Instance.DisableOutlineRedPlayers();
+                else
+                    PlayerRespawn.Instance.DisableOutlineBluePlayers();
+
+            }
+            if (playerGunSelector.redTeamPlayer)
+                PlayerRespawn.Instance.DisableOutlineRedPlayers();
+            else
+                PlayerRespawn.Instance.DisableOutlineBluePlayers();
+
             player.GetComponent<Outline>().OutlineColor = Color.red;
         }
 

@@ -75,32 +75,17 @@ namespace EOSLobbyTest
         }
         public bool redTeamPlayer;
         public bool blueTeamPlayer;
-        
+
+        public string myPlayerName;
         
         public void SetPlayerTeam()
         {
             PlayerInfo playerInfo = myPlayer.GetComponent<PlayerInfo>();
             redTeamPlayer = playerInfo.RedPlayer;
             blueTeamPlayer = playerInfo.BluePlayer;
+            myPlayerName = playerInfo.PlayerName;
         }
-        public List<string> RedplayersList;
-        public List<string> BlueplayersList;
-
-        public void SaveNames()
-        {
-            foreach(PlayerInfo i in _players)
-            {
-                if(i.RedPlayer)
-                {
-                    string playerName = i.GetComponent<CanvasNetworkManager>().myPlayer.GetComponent<UIPlayerItem>().textPlayerName.text;
-                    RedplayersList.Add(playerName);
-                }
-                if (i.BluePlayer)
-                {
-                    string playerName = i.GetComponent<CanvasNetworkManager>().myPlayer.GetComponent<UIPlayerItem>().textPlayerName.text;
-                    BlueplayersList.Add(playerName);
-                }
-            }
-        }
+       
+        
     }
 }

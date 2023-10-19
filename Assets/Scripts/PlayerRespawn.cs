@@ -45,6 +45,7 @@ public class PlayerRespawn : NetworkBehaviour
     public override void OnStartNetwork()
     {
         base.OnStartNetwork();
+        Invoke("LoadPlayerNames", 1);
         //StartCoroutine(DelaySeparate());
     }
 
@@ -136,6 +137,7 @@ public class PlayerRespawn : NetworkBehaviour
     {
         AllPlayers.Add(playerPrefab);
         DelaySeparateTeam(playerPrefab);
+        SetPlayerNum();
         //SetPlayerNum();
     }
     [ObserversRpc(BufferLast = true, RunLocally = true)]
@@ -143,7 +145,7 @@ public class PlayerRespawn : NetworkBehaviour
     {
         AllPlayers.Add(playerPrefab);
         DelaySeparateTeam(playerPrefab);
-        
+        SetPlayerNum();
     }
    
     public void DelaySeparateTeam(GameObject playerPrefab)
@@ -157,14 +159,14 @@ public class PlayerRespawn : NetworkBehaviour
         {
             RedPlayers.Add(playerPrefab);
             _nextSpawnPointIndexRed++;
-            SetPlayerNum();
+           
 
         }
         else
         {
             BluePlayers.Add(playerPrefab);
             _nextSpawnPointIndexBlue++;
-            SetPlayerNum();
+           
         }
        
     }
@@ -315,14 +317,70 @@ public class PlayerRespawn : NetworkBehaviour
     }
     public void SetPlayerNum()
     {
-        foreach(GameObject i in AllPlayers)
+        foreach(GameObject i in RedPlayers)
         {
-            for(int t = 1; t <= AllPlayers.Count; t++)
+            for(int t = 1; t <= RedPlayers.Count; t++)
+            {
+                Debug.Log(t);
+                i.GetComponent<PlayerGunSelector>().playerNumber = t;
+            }
+        }
+        foreach (GameObject i in BluePlayers)
+        {
+            for (int t = 1; t <= BluePlayers.Count; t++)
             {
                 //Debug.Log(t);
                 i.GetComponent<PlayerGunSelector>().playerNumber = t;
             }
         }
     }
-   
+   public void DisableOutlineRedPlayers()
+   {
+        foreach(GameObject i in RedPlayers)
+        {
+            i.GetComponent<ThirdPersonController>().playerMainBody.GetComponent<Outline>().enabled = false;
+        }
+   }
+    public void DisableOutlineBluePlayers()
+    {
+        foreach (GameObject i in BluePlayers)
+        {
+            i.GetComponent<ThirdPersonController>().playerMainBody.GetComponent<Outline>().enabled = false;
+        }
+    }
+
+    public List<string> redPlayersName;
+    public List<string> bluePlayersName;
+
+    public void LoadPlayerNames()
+    {
+        if (base.IsServer)
+            LoadPlayerNamesObserver();
+        else
+            LoadPlayerNamesServer();
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void LoadPlayerNamesServer()
+    {
+        foreach (GameObject i in RedPlayers)
+        {
+            redPlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
+        }
+        foreach (GameObject i in BluePlayers)
+        {
+            bluePlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
+        }
+    }
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
+    public void LoadPlayerNamesObserver()
+    {
+        foreach (GameObject i in RedPlayers)
+        {
+            redPlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
+        }
+        foreach (GameObject i in BluePlayers)
+        {
+            bluePlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
+        }
+    }
 }
