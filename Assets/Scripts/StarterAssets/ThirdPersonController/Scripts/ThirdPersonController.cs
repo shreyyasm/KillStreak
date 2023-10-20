@@ -392,7 +392,7 @@ namespace StarterAssets
                         allObjects.gameObject.layer = LayerMask.NameToLayer("Player Root");
                     }
                 }
-                SetName();
+                //SetName();
                 Invoke("ChangeToGreenColor", 0.5f);
                 //ChangeToGreenColor();
             }
@@ -1943,7 +1943,7 @@ namespace StarterAssets
         public GameObject playerMainBody;
         IEnumerator SeeInvincibiltyDelay()
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
             PlayerCustomization playerCustomization = GetComponent<PlayerCustomization>();
             GameObject player = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
             playerMainBody = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
