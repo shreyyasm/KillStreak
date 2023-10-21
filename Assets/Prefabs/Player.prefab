@@ -8672,7 +8672,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 3.1103761, y: 3.1104493}
+  m_AnchoredPosition: {x: 3.1103761, y: 3.1104128}
   m_SizeDelta: {x: 432, y: 432}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &3378225522413771638
@@ -27001,7 +27001,7 @@ MonoBehaviour:
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: -1.0270944, y: 0.000099897385, z: 2.6178842}
+    Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
@@ -27124,6 +27124,7 @@ MonoBehaviour:
   timeLeftBlock: 0
   sphere: {fileID: 5488305143637473820}
   CinemachineCameraTarget: {fileID: 0}
+  TargetDownClip: {fileID: 8300000, guid: 1255489fbb833964496a9cb786377010, type: 3}
   killSystem: {fileID: 4522284778504902401}
   KillMessageAnim: {fileID: 6970161878929902248}
   Streak: {fileID: 1916559649}
@@ -27191,6 +27192,7 @@ MonoBehaviour:
   IsShooting: 0
   resetShooting: 0
   anim: {fileID: 6535167469221512672}
+  reloadingVoiceClip: {fileID: 8300000, guid: db4dff877a89f394db08cab855f5d139, type: 3}
 --- !u!114 &7459709495149301830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27219,6 +27221,7 @@ MonoBehaviour:
   thirdPersonController: {fileID: 1603918855143199604}
   invincible: 0
   invincibiltyTimer: 5
+  deathSFX: {fileID: 8300000, guid: 25430c25dda4d794c83575009c0527dd, type: 3}
   slider: {fileID: 3811869648939797511}
   gradient:
     serializedVersion: 2

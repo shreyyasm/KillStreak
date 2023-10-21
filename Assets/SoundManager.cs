@@ -13,6 +13,9 @@ public class SoundManager : NetworkBehaviour
     public AudioClip letsGoClip;
     public AudioClip halfTimeClip;
 
+    public AudioClip firstKillToRedClip;
+    public AudioClip firstKillToBlueClip;
+
     public AudioClip redTeamLeadingClip;
     public AudioClip blueTeamLeadingClip;
 
@@ -21,6 +24,8 @@ public class SoundManager : NetworkBehaviour
 
     public AudioClip GreatYouAreWinningClip;
     public AudioClip CarefullYouAreLosingClip;
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -77,5 +82,12 @@ public class SoundManager : NetworkBehaviour
     {
         AudioSource.PlayClipAtPoint(CarefullYouAreLosingClip, Camera.main.transform.position, 1f);
     }
-
+    public void PlayfirstKillToRedLine()
+    {
+        AudioSource.PlayClipAtPoint(firstKillToRedClip, Camera.main.transform.position, 1f);
+    }
+    public void PlayfirstKillToBlueLine()
+    {
+        AudioSource.PlayClipAtPoint(firstKillToBlueClip, Camera.main.transform.position, 1f);
+    }
 }

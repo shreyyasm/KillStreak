@@ -45,6 +45,8 @@ public class PlayerAction : NetworkBehaviour
     public bool IsShooting;
     public bool resetShooting = false;
     public Animator anim;
+
+    public AudioClip reloadingVoiceClip;
     private void Update()
     {
         if (!base.IsOwner)
@@ -97,6 +99,7 @@ public class PlayerAction : NetworkBehaviour
             
 
             anim.SetBool("Reload",true);
+            AudioSource.PlayClipAtPoint(reloadingVoiceClip, Camera.main.transform.position, 0.4f);
             StartCoroutine(EndReload());
             
             //InverseKinematics.HandIKAmount = 0.25f;
@@ -221,7 +224,7 @@ public class PlayerAction : NetworkBehaviour
             IsReloading = true;
             thirdPersonController.ReloadCheck(IsReloading);       
             anim.SetBool("Reload",true);
-            
+            AudioSource.PlayClipAtPoint(reloadingVoiceClip, Camera.main.transform.position, 0.4f);
             StartCoroutine(EndReload());
             
         }
@@ -246,7 +249,7 @@ public class PlayerAction : NetworkBehaviour
             IsReloading = true;
             thirdPersonController.ReloadCheck(IsReloading);           
             anim.SetBool("Reload", true);
-            
+            AudioSource.PlayClipAtPoint(reloadingVoiceClip, Camera.main.transform.position, 0.4f);
             StartCoroutine(EndReload());
             
         }

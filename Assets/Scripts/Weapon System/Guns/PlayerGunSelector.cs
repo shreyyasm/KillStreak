@@ -1223,6 +1223,7 @@ public class PlayerGunSelector : NetworkBehaviour
     {
         tail.GetComponent<TrailRenderer>().emitting = false;
     }
+    public AudioClip TargetDownClip;
     private void HandleBulletImpact(
        float DistanceTraveled,
        Vector3 HitLocation,
@@ -1332,6 +1333,8 @@ public class PlayerGunSelector : NetworkBehaviour
             AudioSource.PlayClipAtPoint(killSound, Camera.main.transform.position,1f);
             killSystem.playerKilled();
             playerRef.playerDeadConfirmed = true;
+            if(base.IsOwner)
+                AudioSource.PlayClipAtPoint(TargetDownClip, Camera.main.transform.position, 1f);
         }
         yield return new WaitForSeconds(5f);
         KillMessageAnim.SetBool("KillMessage", false);

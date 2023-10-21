@@ -51,6 +51,7 @@ public class PointSystem : NetworkBehaviour
         RespawnStartTimer();
         GameDurationStartTimer();
         CheckWhoWinningNLosing();
+        CheckForFirstKill();
     }
     public void CheckScore()
     {
@@ -59,6 +60,29 @@ public class PointSystem : NetworkBehaviour
 
         if (RedTeamScore < BlueTeamScore)
             SoundManager.Instance.PlayBlueTeamLeadingLine();
+    }
+    bool firstKilled = false;
+    public void CheckForFirstKill()
+    {
+        if(!firstKilled)
+        {
+            if (RedTeamScore == 1)
+            {
+                //Debug.Log("Red First");
+                SoundManager.Instance.PlayfirstKillToRedLine();
+                firstKilled = true;
+            }
+                
+            if (BlueTeamScore == 1)
+            {
+                //Debug.Log("Blue First");
+                SoundManager.Instance.PlayfirstKillToBlueLine();
+                firstKilled = true;
+            }
+                
+            
+        }
+        
     }
     public bool red;
     public bool blue;

@@ -35,6 +35,8 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     //Invincibilty
     public bool invincible;
     public float invincibiltyTimer;
+
+    public AudioClip deathSFX;
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -183,7 +185,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
                 AnimatedCanvas.SetActive(false);
             RigController.enabled = false;
             StartCoroutine(DespawnPlayer());
-
+            AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position,1f);
             playerDead = true;
             anim.SetLayerWeight(7, 1);
             anim.SetInteger("DeadIndex", Random.Range(0, 4));
