@@ -7,23 +7,46 @@ public class SoundManager : NetworkBehaviour
 {
     public static SoundManager Instance;
 
-    //Public Lines
-    public AudioClip SimulationVoiceClip;
-    public AudioClip countdownClip;
-    public AudioClip letsGoClip;
-    public AudioClip halfTimeClip;
+    public bool English;
 
-    public AudioClip firstKillToRedClip;
-    public AudioClip firstKillToBlueClip;
+    [Header("English Voice lines")]
+    //_English VoiceLines
+    public AudioClip SimulationVoiceClip_English;
+    public AudioClip countdownClip_English;
+    public AudioClip letsGoClip_English;
+    public AudioClip halfTimeClip_English;
 
-    public AudioClip redTeamLeadingClip;
-    public AudioClip blueTeamLeadingClip;
+    public AudioClip firstKillToRedClip_English;
+    public AudioClip firstKillToBlueClip_English;
 
-    public AudioClip redTeamVictoryClip;
-    public AudioClip blueTeamVictoryClip;
+    public AudioClip redTeamLeadingClip_English;
+    public AudioClip blueTeamLeadingClip_English;
 
-    public AudioClip GreatYouAreWinningClip;
-    public AudioClip CarefullYouAreLosingClip;
+    public AudioClip redTeamVictoryClip_English;
+    public AudioClip blueTeamVictoryClip_English;
+
+    public AudioClip GreatYouAreWinningClip_English;
+    public AudioClip CarefullYouAreLosingClip_English;
+
+    [Header("Hindi Voice lines")]
+    
+    //_HindiVoiceLines
+    public AudioClip SimulationVoiceClip_Hindi;
+    public AudioClip countdownClip_Hindi;
+    public AudioClip letsGoClip_Hindi;
+    public AudioClip halfTimeClip_Hindi;
+
+    public AudioClip firstKillToRedClip_Hindi;
+    public AudioClip firstKillToBlueClip_Hindi;
+
+    public AudioClip redTeamLeadingClip_Hindi;
+    public AudioClip blueTeamLeadingClip_Hindi;
+
+    public AudioClip redTeamVictoryClip_Hindi;
+    public AudioClip blueTeamVictoryClip_Hindi;
+
+    public AudioClip GreatYouAreWinningClip_Hindi;
+    public AudioClip CarefullYouAreLosingClip_Hindi;
 
 
     private void Awake()
@@ -44,50 +67,105 @@ public class SoundManager : NetworkBehaviour
     }
     public void PlaySimulationVoiceLine()
     {
-        AudioSource.PlayClipAtPoint(SimulationVoiceClip, Camera.main.transform.position, 1f);
+        if (English)
+        {
+            AudioSource.PlayClipAtPoint(SimulationVoiceClip_English, Camera.main.transform.position, 1f);
+            Debug.Log("English Voiceline");
+        }
+
+        else
+        {
+            AudioSource.PlayClipAtPoint(SimulationVoiceClip_Hindi, Camera.main.transform.position, 1f);
+            Debug.Log("Hindi Voiceline");
+        }
+            
     }
     public void PlayCountdownLine()
     {
-        AudioSource.PlayClipAtPoint(countdownClip, Camera.main.transform.position, 1f);
+        if (English)
+            AudioSource.PlayClipAtPoint(countdownClip_English, Camera.main.transform.position, 1f);
+
+        else
+            AudioSource.PlayClipAtPoint(countdownClip_Hindi, Camera.main.transform.position, 1f);
     }
     public void PlayLetsGoLine()
     {
-        AudioSource.PlayClipAtPoint(letsGoClip, Camera.main.transform.position, 1f);
+        if (English)
+            AudioSource.PlayClipAtPoint(letsGoClip_English, Camera.main.transform.position, 1f);
+
+        else
+            AudioSource.PlayClipAtPoint(letsGoClip_Hindi, Camera.main.transform.position, 1f);
     }
     public void PlayHalfTimeLine()
     {
-        AudioSource.PlayClipAtPoint(halfTimeClip, Camera.main.transform.position, 1f);
+        if (English)
+            AudioSource.PlayClipAtPoint(halfTimeClip_English, Camera.main.transform.position, 1f);
+
+        else
+            AudioSource.PlayClipAtPoint(halfTimeClip_Hindi, Camera.main.transform.position, 1f);
     }
     public void PlayRedTeamLeadingLine()
     {
-        AudioSource.PlayClipAtPoint(redTeamLeadingClip, Camera.main.transform.position, 1f);
+        if (English)
+            AudioSource.PlayClipAtPoint(redTeamLeadingClip_English, Camera.main.transform.position, 1f);
+
+        else
+            AudioSource.PlayClipAtPoint(redTeamLeadingClip_Hindi, Camera.main.transform.position, 1f);
     }
     public void PlayBlueTeamLeadingLine()
     {
-        AudioSource.PlayClipAtPoint(blueTeamLeadingClip, Camera.main.transform.position, 1f);
+        if (English)
+            AudioSource.PlayClipAtPoint(blueTeamLeadingClip_English, Camera.main.transform.position, 1f);
+
+        else
+            AudioSource.PlayClipAtPoint(blueTeamLeadingClip_Hindi, Camera.main.transform.position, 1f);
     }
     public void PlayBlueTeamVictoryLine()
     {
-        AudioSource.PlayClipAtPoint(blueTeamVictoryClip, Camera.main.transform.position, 1f);
+        if (English)
+            AudioSource.PlayClipAtPoint(blueTeamVictoryClip_English, Camera.main.transform.position, 1f);
+
+        else
+            AudioSource.PlayClipAtPoint(blueTeamVictoryClip_Hindi, Camera.main.transform.position, 1f);
     }
     public void PlayRedTeamVictoryLine()
     {
-        AudioSource.PlayClipAtPoint(redTeamVictoryClip, Camera.main.transform.position, 1f);
+        if (English)
+            AudioSource.PlayClipAtPoint(redTeamVictoryClip_English, Camera.main.transform.position, 1f);
+
+        else
+            AudioSource.PlayClipAtPoint(redTeamVictoryClip_Hindi, Camera.main.transform.position, 1f);
     }
     public void PlayYouAreWinningLine()
     {
-        AudioSource.PlayClipAtPoint(GreatYouAreWinningClip, Camera.main.transform.position, 1f);
+        if (English)
+            AudioSource.PlayClipAtPoint(GreatYouAreWinningClip_English, Camera.main.transform.position, 1f);
+
+        else
+            AudioSource.PlayClipAtPoint(GreatYouAreWinningClip_Hindi, Camera.main.transform.position, 1f);
     }
     public void PlayYouAreLosingLine()
     {
-        AudioSource.PlayClipAtPoint(CarefullYouAreLosingClip, Camera.main.transform.position, 1f);
+        if (English)
+            AudioSource.PlayClipAtPoint(CarefullYouAreLosingClip_English, Camera.main.transform.position, 1f);
+
+        else
+            AudioSource.PlayClipAtPoint(CarefullYouAreLosingClip_Hindi, Camera.main.transform.position, 1f);
     }
     public void PlayfirstKillToRedLine()
     {
-        AudioSource.PlayClipAtPoint(firstKillToRedClip, Camera.main.transform.position, 1f);
+        if (English)
+            AudioSource.PlayClipAtPoint(firstKillToRedClip_English, Camera.main.transform.position, 1f);
+
+        else
+            AudioSource.PlayClipAtPoint(firstKillToRedClip_Hindi, Camera.main.transform.position, 1f);
     }
     public void PlayfirstKillToBlueLine()
     {
-        AudioSource.PlayClipAtPoint(firstKillToBlueClip, Camera.main.transform.position, 1f);
+        if (English)
+            AudioSource.PlayClipAtPoint(firstKillToBlueClip_English, Camera.main.transform.position, 1f);
+
+        else
+            AudioSource.PlayClipAtPoint(firstKillToBlueClip_Hindi, Camera.main.transform.position, 1f);
     }
 }
