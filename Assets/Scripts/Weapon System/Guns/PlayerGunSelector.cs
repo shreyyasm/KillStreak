@@ -152,7 +152,29 @@ public class PlayerGunSelector : NetworkBehaviour
         }
 
     }
-
+    public void SetPlayerPositionIndex()
+    {
+        if(redTeamPlayer)
+        {
+            for (int i = 0 ; i < PlayerRespawn.Instance.RedPlayers.Count; i++)
+            {                
+                if (PlayerRespawn.Instance.RedPlayers[i] == gameObject)
+                {
+                    PlayerRedPosIndex = i;
+                    Debug.Log("Index works");
+                }
+                        
+            }
+        }
+        if (blueTeamPlayer)
+        {
+            for (int i = 0; i < PlayerRespawn.Instance.BluePlayers.Count; i++)
+            {
+                if (PlayerRespawn.Instance.BluePlayers[i] == gameObject)
+                    PlayerBluePosIndex = i;
+            }
+        }
+    }
     [SerializeField] public  bool aimAssist;
     [SerializeField] float aimAssistSize = 1f;
     public TwoBoneIKConstraint SniperRig;

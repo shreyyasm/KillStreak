@@ -38,8 +38,11 @@ public class PlayerRespawn : NetworkBehaviour
     public int _nextSpawnPointIndexRed = 0;
     public int _nextSpawnPointIndexBlue = 0;
 
-    public int playerRedPosIndex = 0;
-    public int playerBluePosindex = 0;
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+    public int playerRedPosIndex { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
+
+    [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
+    public int playerBluePosindex { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
 
     void Awake()
     {
@@ -165,34 +168,71 @@ public class PlayerRespawn : NetworkBehaviour
     }
     public void SeparateTeam(GameObject playerPrefab)
     {
-        
+
+        if (base.IsServer)
+            SeparateTeamObserver(playerPrefab);
+        else
+            SeparateTeamServer(playerPrefab);
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void SeparateTeamServer(GameObject playerPrefab)
+    {
+
+        if (playerPrefab.GetComponent<PlayerGunSelector>().redTeamPlayer)
+        {
+            RedPlayers.Add(playerPrefab);            
+            RedPlayers = RedPlayers.Distinct().ToList();
+            //redPlayersName.Add(playerPrefab.GetComponent<ThirdPersonController>().PlayerName);
+            //_nextSpawnPointIndexRed++;
+            //Debug.Log("work");
+            //LoadPlayerNames(playerPrefab);
+        }
+        if(playerPrefab.GetComponent<PlayerGunSelector>().blueTeamPlayer)
+        {
+            BluePlayers.Add(playerPrefab);
+            BluePlayers = BluePlayers.Distinct().ToList();
+            //bluePlayersName.Add(playerPrefab.GetComponent<ThirdPersonController>().PlayerName);
+            //_nextSpawnPointIndexBlue++;
+            //LoadPlayerNames(playerPrefab);
+        }
+    }
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
+    public void SeparateTeamObserver(GameObject playerPrefab)
+    {
+
         if (playerPrefab.GetComponent<PlayerGunSelector>().redTeamPlayer)
         {
             RedPlayers.Add(playerPrefab);
-            //redPlayersName.Add(playerPrefab.GetComponent<ThirdPersonController>().PlayerName);
-            _nextSpawnPointIndexRed++;
-            Debug.Log("work");
-            //LoadPlayerNames(playerPrefab);
-            
-            
+            RedPlayers = RedPlayers.Distinct().ToList();
         }
-        else
+        if(playerPrefab.GetComponent<PlayerGunSelector>().blueTeamPlayer)
         {
             BluePlayers.Add(playerPrefab);
-            //bluePlayersName.Add(playerPrefab.GetComponent<ThirdPersonController>().PlayerName);
-            _nextSpawnPointIndexBlue++;
-            //LoadPlayerNames(playerPrefab);
-    
-            
-            
+            BluePlayers = BluePlayers.Distinct().ToList();
         }
-       
     }
+    public void SetPositionIndex()
+    {
 
+        //for(int i = 0; i < RedPlayers.Count; i++)
+        //{
+        //    RedPlayers[i].GetComponent<PlayerGunSelector>().PlayerRedPosIndex = playerRedPosIndex;
+        //    playerRedPosIndex++;
+        //    _nextSpawnPointIndexRed++;
+        //}
+        //for (int i = 0; i < BluePlayers.Count; i++)
+        //{
+        //    BluePlayers[i].GetComponent<PlayerGunSelector>().PlayerBluePosIndex = playerBluePosindex;
+        //    playerBluePosindex++;
+        //    _nextSpawnPointIndexBlue++;
+        //}
+        
+    }
     IEnumerator AssignPositionDelay()
     {
         yield return new WaitForSeconds(0.1f);
         AssignPosition();
+        SetPositionIndex();
         yield return new WaitForSeconds(1f);
         SetResetFalse();
     }
@@ -206,115 +246,79 @@ public class PlayerRespawn : NetworkBehaviour
     [ServerRpc(RequireOwnership = false, RunLocally = true)]
     public void AssignpositionServer()
     {
-        //foreach (GameObject i in AllPlayers)
-        //{
-        //    if (i.GetComponent<PlayerGunSelector>().redTeamPlayer)
-        //    {
-        //        if (RedPlayers.Count != 0)
-        //        {
-        //            foreach (GameObject r in RedPlayers)
-        //            {
-        //                if (i == r)
-        //                    continue;
-
-        //                RedPlayers.Add(i);
-        //                redPlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-        //                Debug.Log("work");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            RedPlayers.Add(i);
-        //            redPlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-        //        }
-        //    }
-        //    if (i.GetComponent<PlayerGunSelector>().blueTeamPlayer)
-        //    {
-        //        if (BluePlayers.Count != 0)
-        //        {
-        //            foreach (GameObject r in BluePlayers)
-        //            {
-        //                if (i == r)
-        //                    continue;
-
-        //                BluePlayers.Add(i);
-        //                bluePlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-        //                Debug.Log("work");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            BluePlayers.Add(i);
-        //            bluePlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-        //        }
-        //    }
-        //}
         foreach (GameObject r in RedPlayers)
         {
-            //r.transform.position = RedTeamSpawnPoints[_nextSpawnPointIndexRed].transform.position;
-
             r.GetComponent<ThirdPersonController>().ResetPosition = true;
             r.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 0;
-            //_nextSpawnPointIndexRed++;//
-        }
-        foreach (GameObject b in BluePlayers)
-        {
-            //b.transform.position = BlueTeamSpawnPoints[_nextSpawnPointIndexBlue].transform.position;
-            b.GetComponent<ThirdPersonController>().ResetPosition = true;
-            b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
-            //_nextSpawnPointIndexBlue++;
-        }
-    }
-    [ObserversRpc(BufferLast = true, RunLocally = true)]
-    public void AssignpositionObserver()
-    {
-        foreach (GameObject r in RedPlayers)
-        {
-            //r.transform.position = RedTeamSpawnPoints[_nextSpawnPointIndexRed].transform.position;
-
-            r.GetComponent<ThirdPersonController>().ResetPosition = true;
-            r.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 0;
+            r.GetComponent<PlayerGunSelector>().SetPlayerPositionIndex();
+            //r.GetComponent<PlayerGunSelector>().PlayerRedPosIndex = playerRedPosIndex;
+            //playerRedPosIndex++;
             //_nextSpawnPointIndexRed++;
         }
         foreach (GameObject b in BluePlayers)
         {
-            //b.transform.position = BlueTeamSpawnPoints[_nextSpawnPointIndexBlue].transform.position;
             b.GetComponent<ThirdPersonController>().ResetPosition = true;
             b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
+            b.GetComponent<PlayerGunSelector>().SetPlayerPositionIndex();
+            //b.GetComponent<PlayerGunSelector>().PlayerBluePosIndex = playerBluePosindex;
+            //playerBluePosindex++;
+            //_nextSpawnPointIndexBlue++;
+        }
+
+    }
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
+    public void AssignpositionObserver()
+    {      
+        foreach (GameObject r in RedPlayers)
+        {
+            r.GetComponent<ThirdPersonController>().ResetPosition = true;
+            r.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 0;
+            r.GetComponent<PlayerGunSelector>().SetPlayerPositionIndex();
+            //r.GetComponent<PlayerGunSelector>().PlayerRedPosIndex = playerRedPosIndex;
+            //playerRedPosIndex++;
+            //_nextSpawnPointIndexRed++;
+        }
+        foreach (GameObject b in BluePlayers)
+        {
+            b.GetComponent<ThirdPersonController>().ResetPosition = true;
+            b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
+            b.GetComponent<PlayerGunSelector>().SetPlayerPositionIndex();
+            //b.GetComponent<PlayerGunSelector>().PlayerBluePosIndex = playerBluePosindex;
+            //playerBluePosindex++;
             //_nextSpawnPointIndexBlue++;
         }
     }
 
     public void ResetPosition()
     {
-        _nextSpawnPointIndexRed = 0;
-        _nextSpawnPointIndexBlue = 0;
+        //_nextSpawnPointIndexRed = 0;
+        //_nextSpawnPointIndexBlue = 0;
         foreach (GameObject r in RedPlayers)
         {
             Debug.Log("Reset pos");
             //r.transform.position = RedTeamSpawnPoints[_nextSpawnPointIndexRed].transform.position;
             r.GetComponent<ThirdPersonController>().ResetPosition = true;
-            r.GetComponent<PlayerGunSelector>().PlayerRedPosIndex = playerRedPosIndex;
+            //r.GetComponent<PlayerGunSelector>().PlayerRedPosIndex = playerRedPosIndex;
             r.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 0;
             r.GetComponent<ThirdPersonController>().SeeInvincibilty();
             LoadOutManager loadout = r.GetComponent<LoadOutManager>();
             loadout.GetLoadOutInput(loadout.loadNumber);
             loadout.PlayLoadoutSfX();
-            _nextSpawnPointIndexRed++;
-            playerRedPosIndex++;
+            //_nextSpawnPointIndexRed++;
+            //playerRedPosIndex++;
         }
         foreach (GameObject b in BluePlayers)
         {
             // b.transform.position = BlueTeamSpawnPoints[_nextSpawnPointIndexBlue].transform.position;
             b.GetComponent<ThirdPersonController>().ResetPosition = true;
-            b.GetComponent<PlayerGunSelector>().PlayerBluePosIndex = playerBluePosindex;
+            //b.GetComponent<PlayerGunSelector>().PlayerBluePosIndex = playerBluePosindex;
             b.GetComponent<ThirdPersonController>()._cinemachineTargetYaw = 180;
             b.GetComponent<ThirdPersonController>().SeeInvincibilty();
             LoadOutManager loadout = b.GetComponent<LoadOutManager>();
             loadout.GetLoadOutInput(loadout.loadNumber);
             loadout.PlayLoadoutSfX();
-            _nextSpawnPointIndexBlue++;
-            playerBluePosindex++;
+            //_nextSpawnPointIndexBlue++;
+            //playerBluePosindex++;
         }
         StartCoroutine(SetRestFalseDelay());
 
@@ -449,7 +453,7 @@ public class PlayerRespawn : NetworkBehaviour
             {
                 redPlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
                 redPlayersName = redPlayersName.Distinct().ToList();
-                Debug.Log("work");
+                //Debug.Log("work");
             }
 
             if (i.GetComponent<PlayerGunSelector>().blueTeamPlayer)

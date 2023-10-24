@@ -1907,7 +1907,7 @@ namespace StarterAssets
                 foreach (GameObject i in PlayerRespawn.Instance.RedPlayers)
                 {
                     PlayerCustomization playerCustomization = i.GetComponent<PlayerCustomization>();
-                    Debug.Log("Color");
+                    //Debug.Log("Color");
                     playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex].gameObject.GetComponent<Outline>().enabled = false;
                 }
             }
@@ -1943,7 +1943,7 @@ namespace StarterAssets
         public GameObject playerMainBody;
         IEnumerator SeeInvincibiltyDelay()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.2f);
             PlayerCustomization playerCustomization = GetComponent<PlayerCustomization>();
             GameObject player = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
             playerMainBody = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
@@ -1968,7 +1968,7 @@ namespace StarterAssets
 
             player.GetComponent<Outline>().OutlineColor = Color.red;
         }
-
+        
     }
     
 }

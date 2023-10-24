@@ -30,7 +30,7 @@ namespace EOSLobbyTest
                 {
                     myPlayersName[t].text = (t + 1) + ". " + PlayerRespawn.Instance.redPlayersName[t];
                     players[t].SetActive(true);
-                    Debug.Log(PlayerRespawn.Instance.redPlayersName.Count);
+                    //Debug.Log(PlayerRespawn.Instance.redPlayersName.Count);
                 }
 
             }
