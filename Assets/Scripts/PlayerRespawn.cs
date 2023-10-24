@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using StarterAssets;
 using EOSLobbyTest;
+using System.Linq;
 using FishNet.Object.Synchronizing;
 
 public class PlayerRespawn : NetworkBehaviour
@@ -50,13 +51,12 @@ public class PlayerRespawn : NetworkBehaviour
     public override void OnStartNetwork()
     {
         base.OnStartNetwork();
-        
+        StartCoroutine(SavePlayerNames());
         //StartCoroutine(DelaySeparate());
     }
 
-    private void Update()
+    private void Start()
     {
-        //player = FindObjectOfType<CameraFollow>(); 
         
     }
     public void Respawn(GameObject player, GameObject playerCanvas, GameObject animatedCanvas)
@@ -169,7 +169,7 @@ public class PlayerRespawn : NetworkBehaviour
         if (playerPrefab.GetComponent<PlayerGunSelector>().redTeamPlayer)
         {
             RedPlayers.Add(playerPrefab);
-            redPlayersName.Add(playerPrefab.GetComponent<ThirdPersonController>().PlayerName);
+            //redPlayersName.Add(playerPrefab.GetComponent<ThirdPersonController>().PlayerName);
             _nextSpawnPointIndexRed++;
             Debug.Log("work");
             //LoadPlayerNames(playerPrefab);
@@ -179,7 +179,7 @@ public class PlayerRespawn : NetworkBehaviour
         else
         {
             BluePlayers.Add(playerPrefab);
-            bluePlayersName.Add(playerPrefab.GetComponent<ThirdPersonController>().PlayerName);
+            //bluePlayersName.Add(playerPrefab.GetComponent<ThirdPersonController>().PlayerName);
             _nextSpawnPointIndexBlue++;
             //LoadPlayerNames(playerPrefab);
     
@@ -382,7 +382,7 @@ public class PlayerRespawn : NetworkBehaviour
         {
             for(int t = 1; t <= RedPlayers.Count; t++)
             {
-                Debug.Log(t);
+                
                 i.GetComponent<PlayerGunSelector>().playerNumber = t;
             }
         }
@@ -427,70 +427,42 @@ public class PlayerRespawn : NetworkBehaviour
         {
             if (i.GetComponent<PlayerGunSelector>().redTeamPlayer)
             {
-                RedPlayers.Add(i);
                 redPlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
+                redPlayersName = redPlayersName.Distinct().ToList();
+                Debug.Log("work");
             }
-            else
+
+            if (i.GetComponent<PlayerGunSelector>().blueTeamPlayer)
             {
-                BluePlayers.Add(i);
                 bluePlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
+                bluePlayersName = bluePlayersName.Distinct().ToList();
             }
-
-
         }
-        //foreach (GameObject i in RedPlayers)
-        //{
-        //    redPlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-        //}
-        //foreach (GameObject i in BluePlayers)
-        //{
-        //    bluePlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-
-        //}
-        //if (i.GetComponent<PlayerGunSelector>().redTeamPlayer)
-        //{
-        //    redPlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-        //}
-        //else
-        //{
-        //    bluePlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-        //}
+        TeamPlayerNames.Instance.SetNames();
     }
     [ObserversRpc(BufferLast = true, RunLocally = true)]
     public void LoadPlayerNamesObserver()
     {
         foreach (GameObject i in AllPlayers)
-        {   
-           
+        {
             if (i.GetComponent<PlayerGunSelector>().redTeamPlayer)
             {
-                RedPlayers.Add(i);
                 redPlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
+                redPlayersName = redPlayersName.Distinct().ToList();
+                Debug.Log("work");
             }
-            else
+
+            if (i.GetComponent<PlayerGunSelector>().blueTeamPlayer)
             {
-                BluePlayers.Add(i);
                 bluePlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-            }
-
-
+                bluePlayersName = bluePlayersName.Distinct().ToList();
+            }         
         }
-        //foreach (GameObject i in RedPlayers)
-        //{
-        //    redPlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-        //}
-        //foreach (GameObject i in BluePlayers)
-        //{
-        //    bluePlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-
-        //}
-        //if (i.GetComponent<PlayerGunSelector>().redTeamPlayer)
-        //{
-        //    redPlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-        //}
-        //else
-        //{
-        //    bluePlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
-        //}
+        TeamPlayerNames.Instance.SetNames();
+    }
+    IEnumerator SavePlayerNames()
+    {
+        yield return new WaitForSeconds(1f);
+        LoadPlayerNames();
     }
 }
