@@ -69,7 +69,7 @@ public class SoundManager : NetworkBehaviour
     {
         if (English)
         {
-            AudioSource.PlayClipAtPoint(SimulationVoiceClip_English, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(SimulationVoiceClip_English, Camera.main.transform.position, .4f);
             Debug.Log("English Voiceline");
         }
 
