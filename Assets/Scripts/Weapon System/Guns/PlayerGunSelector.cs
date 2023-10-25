@@ -140,12 +140,16 @@ public class PlayerGunSelector : NetworkBehaviour
 
                     blueTeamPlayer = false;
                     redTeamPlayer = true;
+                    RedTeamIndicator.SetActive(true);
+                    BlueTeamIndicator.SetActive(false);
 
                 }
                 else
                 {
                     blueTeamPlayer = true;
                     redTeamPlayer = false;
+                    RedTeamIndicator.SetActive(false);
+                    BlueTeamIndicator.SetActive(true);
                 }
             }
             
@@ -1333,6 +1337,10 @@ public class PlayerGunSelector : NetworkBehaviour
     public GameObject Headshot;
     public AudioClip killSound;
 
+    public GameObject RedTeamIndicator;
+    public GameObject BlueTeamIndicator;
+
+    public TextMeshProUGUI KillsText;
     [field: SyncVar(ReadPermissions = ReadPermission.ExcludeOwner)]
     public int killStreaks { get; [ServerRpc(RequireOwnership = false, RunLocally = true)] set; }
     IEnumerator DelayCheckPlayerDead()
@@ -1342,6 +1350,7 @@ public class PlayerGunSelector : NetworkBehaviour
         {
             killStreaks += 1;
             Streak.text = "+ " + killStreaks + " Streaks";
+            
             //Debug.Log(playerHitpart.tag);
             if(playerHitpart.CompareTag("Head"))
                 Headshot.SetActive(true);
@@ -1354,6 +1363,7 @@ public class PlayerGunSelector : NetworkBehaviour
             KillMessageAnim.SetBool("KillMessage", true);
             AudioSource.PlayClipAtPoint(killSound, Camera.main.transform.position,1f);
             killSystem.playerKilled();
+            KillsText.text = "Kills: " + killSystem.playerKills;
             playerRef.playerDeadConfirmed = true;
             if(base.IsOwner)
                 AudioSource.PlayClipAtPoint(TargetDownClip, Camera.main.transform.position, 1f);
@@ -1407,6 +1417,8 @@ public class PlayerGunSelector : NetworkBehaviour
 
     }
     public LayerMask AimAssistHitMask;
+    
+
     public void AimAssis()
     { 
         if(aimAssist)
