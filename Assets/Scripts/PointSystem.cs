@@ -209,6 +209,7 @@ public class PointSystem : NetworkBehaviour
     public bool countdownStateGameStop;
     bool halfTimePlayed;
     bool gameOverPLayed;
+    public bool GameOver;
     public void GameDurationStartTimer()
     {
         if (countdownStateGameStop)
@@ -236,9 +237,10 @@ public class PointSystem : NetworkBehaviour
                         SoundManager.Instance.PlayBlueTeamVictoryLine();
                     gameOverPLayed = true;
                 }
-                
 
-                    Debug.Log("Time has run out!");
+                TeamPlayerNames.Instance.OpenGameOverCanvas();
+                GameOver = true;
+                Debug.Log("Time has run out!");
                 timeRemainingGameStop = 0;
                 countdownStateGameStop = false;
             }

@@ -1268,7 +1268,7 @@ public class PlayerGunSelector : NetworkBehaviour
         else
             surfaceManager.HandleImpactConrete(HitCollider.gameObject, HitLocation, HitNormal, ActiveGun.ImpactType, 0);
 
-        if (PointSystem.Instance.GameStarted)
+        if (PointSystem.Instance.GameStarted && !PointSystem.Instance.GameOver)
         {
             IDamageable Damage = HitCollider.GetComponentInParent<IDamageable>();
             if (Damage != null)

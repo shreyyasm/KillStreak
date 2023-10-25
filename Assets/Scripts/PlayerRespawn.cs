@@ -445,6 +445,7 @@ public class PlayerRespawn : NetworkBehaviour
             }
         }
         TeamPlayerNames.Instance.SetNames();
+        //TeamPlayerNames.Instance.SetFinalNamesNScore();
     }
     [ObserversRpc(BufferLast = true, RunLocally = true)]
     public void LoadPlayerNamesObserver()
@@ -465,6 +466,7 @@ public class PlayerRespawn : NetworkBehaviour
             }         
         }
         TeamPlayerNames.Instance.SetNames();
+        //TeamPlayerNames.Instance.SetFinalNamesNScore();
     }
     IEnumerator SavePlayerNames()
     {
