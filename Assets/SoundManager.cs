@@ -70,13 +70,13 @@ public class SoundManager : NetworkBehaviour
         if (English)
         {
             AudioSource.PlayClipAtPoint(SimulationVoiceClip_English, Camera.main.transform.position, .4f);
-            Debug.Log("English Voiceline");
+            //Debug.Log("English Voiceline");
         }
 
         else
         {
             AudioSource.PlayClipAtPoint(SimulationVoiceClip_Hindi, Camera.main.transform.position, 1f);
-            Debug.Log("Hindi Voiceline");
+            //Debug.Log("Hindi Voiceline");
         }
             
     }

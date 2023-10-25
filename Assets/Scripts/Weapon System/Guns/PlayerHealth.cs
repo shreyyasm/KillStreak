@@ -49,6 +49,10 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         playerDead = false;
         playerDeadConfirmed = false;
     }
+    private void Start()
+    {
+        thirdPersonController.SeeInvincibiltySpawn();
+    }
     public override void OnStartNetwork()
     {
         base.OnStartNetwork();
@@ -65,7 +69,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         SetMaxHealth(CurrentHealth);
 
         invincible = true;
-        thirdPersonController.SeeInvincibilty();
+        
         
         if(base.Owner.IsLocalClient)
         {
@@ -275,7 +279,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
         if(invincibiltyTimer <= 0)
         {
             invincible = false;
-            invincibiltyTimer = 5;
+            invincibiltyTimer = 6;
         }
     }
 }

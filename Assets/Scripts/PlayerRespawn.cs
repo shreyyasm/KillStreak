@@ -111,6 +111,7 @@ public class PlayerRespawn : NetworkBehaviour
         player.GetComponent<ThirdPersonController>().SetRigWeight();
         player.GetComponent<ThirdPersonController>().ResetPositionPlayer();
         PlayerGunSelector playerGunSelector = GetComponent<PlayerGunSelector>();
+        player.GetComponent<ThirdPersonController>().SeeInvincibilty();
         //player.GetComponent<LoadOutManager>().PlayLoadoutSfX();
 
 
@@ -129,7 +130,8 @@ public class PlayerRespawn : NetworkBehaviour
         player.GetComponent<ThirdPersonController>().SetRigWeight();
         player.GetComponent<ThirdPersonController>().ResetPositionPlayer();
         PlayerGunSelector playerGunSelector = GetComponent<PlayerGunSelector>();
-        
+        player.GetComponent<ThirdPersonController>().SeeInvincibilty();
+
 
     }
 
@@ -155,7 +157,7 @@ public class PlayerRespawn : NetworkBehaviour
     public void AddPlayerObserver(GameObject playerPrefab)
     {
         AllPlayers.Add(playerPrefab);
-        Debug.Log("workAdd");
+       // Debug.Log("workAdd");
         DelaySeparateTeam(playerPrefab);
         SetPlayerNum();
        
@@ -295,7 +297,7 @@ public class PlayerRespawn : NetworkBehaviour
         //_nextSpawnPointIndexBlue = 0;
         foreach (GameObject r in RedPlayers)
         {
-            Debug.Log("Reset pos");
+            //Debug.Log("Reset pos");
             //r.transform.position = RedTeamSpawnPoints[_nextSpawnPointIndexRed].transform.position;
             r.GetComponent<ThirdPersonController>().ResetPosition = true;
             //r.GetComponent<PlayerGunSelector>().PlayerRedPosIndex = playerRedPosIndex;
@@ -433,7 +435,7 @@ public class PlayerRespawn : NetworkBehaviour
             {
                 redPlayersName.Add(i.GetComponent<ThirdPersonController>().PlayerName);
                 redPlayersName = redPlayersName.Distinct().ToList();
-                Debug.Log("work");
+                //Debug.Log("work");
             }
 
             if (i.GetComponent<PlayerGunSelector>().blueTeamPlayer)

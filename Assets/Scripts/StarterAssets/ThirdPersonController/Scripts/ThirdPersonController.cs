@@ -1943,12 +1943,14 @@ namespace StarterAssets
         public GameObject playerMainBody;
         IEnumerator SeeInvincibiltyDelay()
         {
-            yield return new WaitForSeconds(1.2f);
             PlayerCustomization playerCustomization = GetComponent<PlayerCustomization>();
-            GameObject player = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
+            GameObject player = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex]; 
             playerMainBody = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
-            player.GetComponent<Outline>().enabled = true;
+
             player.GetComponent<Outline>().OutlineColor = Color.white;
+
+            player.GetComponent<Outline>().enabled = true;
+            
 
            
             yield return new WaitForSeconds(5f);
@@ -1961,14 +1963,62 @@ namespace StarterAssets
                     PlayerRespawn.Instance.DisableOutlineBluePlayers();
 
             }
-            if (playerGunSelector.redTeamPlayer)
-                PlayerRespawn.Instance.DisableOutlineRedPlayers();
-            else
-                PlayerRespawn.Instance.DisableOutlineBluePlayers();
+            //if (playerGunSelector.redTeamPlayer)
+            //    PlayerRespawn.Instance.DisableOutlineRedPlayers();
+            //else
+            //    PlayerRespawn.Instance.DisableOutlineBluePlayers();
 
             player.GetComponent<Outline>().OutlineColor = Color.red;
         }
+        public void SeeInvincibiltySpawn()
+        {
+            //StartCoroutine(SeeInvincibiltyDelay());
+            if (base.IsServer)
+                SeeInvincibiltyObserverSpawn();
+
+            else
+                SeeInvincibiltyServeSpawn();
+        }
+        [ServerRpc(RequireOwnership = false, RunLocally = true)]
+        public void SeeInvincibiltyServeSpawn()
+        {
+            StartCoroutine(SeeInvincibiltyDelaySpawn());
+        }
+        [ObserversRpc(BufferLast = true, RunLocally = true)]
+        public void SeeInvincibiltyObserverSpawn()
+        {
+            StartCoroutine(SeeInvincibiltyDelaySpawn());
+        }
         
+        IEnumerator SeeInvincibiltyDelaySpawn()
+        {
+            yield return new WaitForSeconds(2f);
+            PlayerCustomization playerCustomization = GetComponent<PlayerCustomization>();
+            GameObject player = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
+            playerMainBody = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
+            player.GetComponent<Outline>().OutlineColor = Color.white;
+
+            player.GetComponent<Outline>().enabled = true;
+
+
+
+            yield return new WaitForSeconds(5f);
+            if (base.IsOwner)
+            {
+                //player.GetComponent<Outline>().enabled = false;
+                if (playerGunSelector.redTeamPlayer)
+                    PlayerRespawn.Instance.DisableOutlineRedPlayers();
+                else
+                    PlayerRespawn.Instance.DisableOutlineBluePlayers();
+
+            }
+            //if (playerGunSelector.redTeamPlayer)
+            //    PlayerRespawn.Instance.DisableOutlineRedPlayers();
+            //else
+            //    PlayerRespawn.Instance.DisableOutlineBluePlayers();
+
+            player.GetComponent<Outline>().OutlineColor = Color.red;
+        }
     }
     
 }

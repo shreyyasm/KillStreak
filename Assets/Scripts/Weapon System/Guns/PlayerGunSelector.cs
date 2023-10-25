@@ -161,7 +161,7 @@ public class PlayerGunSelector : NetworkBehaviour
                 if (PlayerRespawn.Instance.RedPlayers[i] == gameObject)
                 {
                     PlayerRedPosIndex = i;
-                    Debug.Log("Index works");
+                    //Debug.Log("Index works");
                 }
                         
             }
