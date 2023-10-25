@@ -15,6 +15,7 @@ namespace EOSLobbyTest
         {
             if (Instance == null)
                 Instance = this;
+            //OpenGameOverCanvas();
         }
 
         // Update is called once per frame
@@ -74,9 +75,9 @@ namespace EOSLobbyTest
         public void ShowConclusion()
         {
 
-            if(PointSystem.Instance.RedTeamScore > PointSystem.Instance.BlueTeamScore)
+            if (PointSystem.Instance.RedTeamScore > PointSystem.Instance.BlueTeamScore)
             {
-                if(PlayerManager.Instance.redTeamPlayer)
+                if (PlayerManager.Instance.redTeamPlayer)
                 {
                     Victory.enabled = true;
                     Defeat.enabled = false;
@@ -93,7 +94,7 @@ namespace EOSLobbyTest
                 {
                     Victory.enabled = false;
                     Defeat.enabled = true;
-                   
+
                 }
                 else
                 {
@@ -112,6 +113,8 @@ namespace EOSLobbyTest
             GameOverCanvas.SetActive(true);
             ShowConclusion();
             SetFinalNamesNScore();
+            yield return new WaitForSeconds(10f);
+            PointSystem.Instance.LeaveLobby();
         }
 
     }

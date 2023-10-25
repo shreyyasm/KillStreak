@@ -41,6 +41,10 @@ namespace EOSLobbyTest
         {
             PlayersChanged?.Invoke();
         }
+        private void Update()
+        {
+            _players.RemoveAll(s => s == null);
+        }
 
         public void AddPlayer(PlayerInfo info)
         {

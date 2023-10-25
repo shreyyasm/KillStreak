@@ -5,6 +5,9 @@ using UnityEngine;
 using EOSLobbyTest;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using UnityEngine.SceneManagement;
+using FishNet;
+using FishNet.Managing.Scened;
 
 public class PointSystem : NetworkBehaviour
 {
@@ -42,6 +45,7 @@ public class PointSystem : NetworkBehaviour
             Instance = this;
         InvokeRepeating("CheckScore", 20f, 60f);
        // GameStartCountdown();
+
     }
     
     // Update is called once per frame
@@ -218,7 +222,7 @@ public class PointSystem : NetworkBehaviour
             {
                 
                 timeRemainingGameStop -= Time.deltaTime;
-                if ((int)timeRemainingGameStop == 300f && !halfTimePlayed)
+                if ((int)timeRemainingGameStop == 100f && !halfTimePlayed)
                 {
                     SoundManager.Instance.PlayHalfTimeLine();
                     halfTimePlayed = true;
@@ -240,6 +244,7 @@ public class PointSystem : NetworkBehaviour
 
                 TeamPlayerNames.Instance.OpenGameOverCanvas();
                 GameOver = true;
+                ShowConclusion();
                 Debug.Log("Time has run out!");
                 timeRemainingGameStop = 0;
                 countdownStateGameStop = false;
@@ -331,5 +336,54 @@ public class PointSystem : NetworkBehaviour
     {
         RedTeamScore += 5;
         RedScoreText.text = RedTeamScore.ToString();
+    }
+    public TextMeshProUGUI Victory;
+    public TextMeshProUGUI Defeat;
+    public void ShowConclusion()
+    {
+
+        if (PointSystem.Instance.RedTeamScore > PointSystem.Instance.BlueTeamScore)
+        {
+            if (PlayerManager.Instance.redTeamPlayer)
+            {
+                Victory.enabled = true;
+                Defeat.enabled = false;
+            }
+            else
+            {
+                Victory.enabled = false;
+                Defeat.enabled = true;
+            }
+        }
+        if (PointSystem.Instance.RedTeamScore < PointSystem.Instance.BlueTeamScore)
+        {
+            if (PlayerManager.Instance.redTeamPlayer)
+            {
+                Victory.enabled = false;
+                Defeat.enabled = true;
+
+            }
+            else
+            {
+                Victory.enabled = true;
+                Defeat.enabled = false;
+            }
+        }
+    }
+    public void LeaveLobby()
+    {
+        //SceneUnloadData sud = new SceneUnloadData("New Level");
+        //base.NetworkManager.SceneManager.UnloadGlobalScenes(sud);
+
+        ServerManager.StopConnection(true);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("New Level Main Menu");
+        
+        //InstanceFinder.SceneManager.LoadGlobalScenes(new SceneLoadData("New Level Main Menu") { ReplaceScenes = ReplaceOption.All });
+        //StartCoroutine(StopServer());
+    }
+    IEnumerator StopServer()
+    {
+        yield return new WaitForSeconds(2f);
+        
     }
 }
