@@ -12,13 +12,16 @@ namespace EOSLobbyTest
         public TMP_InputField inputFieldPlayerName;
 
         [SerializeField]
+        public TMP_InputField PlayerNameText;
+
+        [SerializeField]
         private Button buttonSave;
          
         private void Awake()
         {
             //string data = playerData.LoadData<string>("/player-Info.json", EncryptionEnabled);
             //Settings.Instance.CurrentPlayerName = data;
-            Debug.Log(Settings.Instance.CurrentPlayerName);
+            //Debug.Log(Settings.Instance.CurrentPlayerName);
 
         }
         private void Start()
@@ -39,7 +42,8 @@ namespace EOSLobbyTest
         {
             buttonSave.interactable = !String.IsNullOrEmpty(inputFieldPlayerName.text);
             PlayerName = inputFieldPlayerName.ToString();
-            playerData.SaveData("/player-Info.json", PlayerName, EncryptionEnabled);
+            Settings.Instance.CurrentPlayerName = inputFieldPlayerName.text;
+
         }
 
         protected override void OnShowing()
@@ -60,8 +64,9 @@ namespace EOSLobbyTest
         {
             Debug.Log(inputFieldPlayerName.text);
             PlayerName = inputFieldPlayerName.text;
-            playerData.SaveData("/player-Info.json", PlayerName, EncryptionEnabled);
-            
+            Settings.Instance.CurrentPlayerName = PlayerName;
+            PlayerPrefs.SetString("PlayerName", PlayerName);
+            PlayerNameText.text = PlayerPrefs.GetString("PlayerName");
             UIPanelManager.Instance.HidePanel<UIPanelPlayerName>(true);
         }
         private class SaveObject

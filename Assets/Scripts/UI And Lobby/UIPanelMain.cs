@@ -35,13 +35,19 @@ namespace EOSLobbyTest
 
         private void Start()
         {
-            Settings.Instance.Load();
+            //Settings.Instance.Load();
+            //Debug.Log(PlayerPrefs.GetString("PlayerName"));
+            inputFieldPlayerName.text = PlayerPrefs.GetString("PlayerName");
+            Settings.Instance.CurrentPlayerName = PlayerPrefs.GetString("PlayerName");          
             Debug.Log(Settings.Instance.CurrentPlayerName);
-            inputFieldPlayerName.onValueChanged.AddListener(delegate
-            {
-                Settings.Instance.CurrentPlayerName = inputFieldPlayerName.text;
-                Debug.Log(Settings.Instance.CurrentPlayerName);
-            });
+
+            StartCoroutine(ShowPanel());
+            //inputFieldPlayerName.onValueChanged.AddListener(delegate
+            //{
+            //    Settings.Instance.CurrentPlayerName = inputFieldPlayerName.text;
+            //    //PlayerPrefs.SetString("PlayerName", inputFieldPlayerName.text);
+                
+            //});
 
             VivoxManager.Instance.OnInitialized += Vivox_OnAuthenticated;
 
@@ -52,7 +58,11 @@ namespace EOSLobbyTest
                 StartCoroutine(ConnectToEOS());
             }
         }
-
+        public void OpenPlayerName()
+        {
+            UIPanelManager.Instance.ShowPanel<UIPanelPlayerName>();
+            Debug.Log("work");
+        }
         private void OnDestroy()
         {
             if (VivoxManager.Instance != null)
@@ -89,7 +99,7 @@ namespace EOSLobbyTest
 
         private void UpdateControlState()
         {
-            inputFieldPlayerName.text = Settings.Instance.CurrentPlayerName;
+            //inputFieldPlayerName.text = Settings.Instance.CurrentPlayerName;
 
             // only allow host/join if all logged in ok
             //buttonHost.interactable = EOS.LocalProductUserId != null;
@@ -202,5 +212,14 @@ namespace EOSLobbyTest
         {
             Application.Quit();
         }
+       
+       IEnumerator ShowPanel()
+       {
+            yield return new WaitForSeconds(1f);
+            if (Settings.Instance.CurrentPlayerName == null)
+            {
+                UIPanelManager.Instance.ShowPanel<UIPanelPlayerName>();
+            }
+       }
     }
 }

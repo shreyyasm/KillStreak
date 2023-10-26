@@ -104,12 +104,17 @@ namespace EOSLobbyTest
         public void ShowGameModePanel()
         {
             //gameModePanel.SetActive(true);
-            UIPanelManager.Instance.ShowPanel<UIGameModePanel>();
+            if (String.IsNullOrEmpty(Settings.Instance.CurrentPlayerName))
+                UIPanelManager.Instance.ShowPanel<UIPanelPlayerName>();
+            else
+                UIPanelManager.Instance.ShowPanel<UIGameModePanel>();
         }
         public void ShowGameModeJoinPanel()
         {
-            //gameModePanel.SetActive(true);
-            UIPanelManager.Instance.ShowPanel<UIGameModeJoinPanel>();
+            if (String.IsNullOrEmpty(Settings.Instance.CurrentPlayerName))
+                UIPanelManager.Instance.ShowPanel<UIPanelPlayerName>();
+            else
+                UIPanelManager.Instance.ShowPanel<UIGameModeJoinPanel>();
         }
         public void PlayButtonSFX()
         {

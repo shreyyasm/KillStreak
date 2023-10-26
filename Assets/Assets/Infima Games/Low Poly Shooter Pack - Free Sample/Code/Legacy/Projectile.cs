@@ -220,8 +220,9 @@ public class Projectile : MonoBehaviour {
 	}
 	
 	public void DespawnBullet()
-	{		
+	{
 		//ServerManager.Despawn(gameObject);
+		//gameObject.SetActive(false);
 	}
 	private IEnumerator DestroyTrailAfter()
 	{
