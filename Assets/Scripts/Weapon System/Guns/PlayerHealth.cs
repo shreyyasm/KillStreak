@@ -237,11 +237,11 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     
         gameObject.SetActive(false);
         //yield return new WaitForSeconds(0.5f);
-        if (base.Owner.IsLocalClient)
-        {
-            NetworkObject spawnCrate = healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
-            spawnedCarte = spawnCrate.gameObject;
-        }
+        //if (base.Owner.IsLocalClient)
+        //{
+        //    NetworkObject spawnCrate = healthAmmoSpawner.GetObject(transform.position, Quaternion.identity);
+        //    spawnedCarte = spawnCrate.gameObject;
+        //}
         //HealthAmmoSpawner.Instance.GetObject(transform.position, Quaternion.identity);
         //gameObject.SetActive(false);
         //DespwanPlayer();

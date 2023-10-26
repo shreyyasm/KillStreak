@@ -20,7 +20,7 @@ public class HealthAmmoSpawner : NetworkBehaviour
     {
         base.OnStartNetwork();
         // Prewarm pool
-        PrewarmPools();
+        //PrewarmPools();
         
         
         

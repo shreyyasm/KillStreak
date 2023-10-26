@@ -392,7 +392,7 @@ namespace StarterAssets
                         allObjects.gameObject.layer = LayerMask.NameToLayer("Player Root");
                     }
                 }
-                SetName();
+                //SetName();
                 Invoke("ChangeToGreenColor", 0.5f);
                 //ChangeToGreenColor();
             }
