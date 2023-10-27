@@ -35,13 +35,18 @@ namespace EOSLobbyTest
 
         private void Start()
         {
-            //Settings.Instance.Load();
+
+            if (EOS.LocalProductUserId == null)
+            {
+                StartCoroutine(ConnectToEOS());
+            }
+            Settings.Instance.Load();
             //Debug.Log(PlayerPrefs.GetString("PlayerName"));
             inputFieldPlayerName.text = PlayerPrefs.GetString("PlayerName");
             Settings.Instance.CurrentPlayerName = PlayerPrefs.GetString("PlayerName");          
             Debug.Log(Settings.Instance.CurrentPlayerName);
 
-            StartCoroutine(ShowPanel());
+            //StartCoroutine(ShowPanel());
             //inputFieldPlayerName.onValueChanged.AddListener(delegate
             //{
             //    Settings.Instance.CurrentPlayerName = inputFieldPlayerName.text;
@@ -53,15 +58,13 @@ namespace EOSLobbyTest
 
             UpdateControlState();
 
-            if (EOS.LocalProductUserId == null)
-            {
-                StartCoroutine(ConnectToEOS());
-            }
+            
         }
+        public GameObject playerNameCanvas;
         public void OpenPlayerName()
         {
-            UIPanelManager.Instance.ShowPanel<UIPanelPlayerName>();
-            Debug.Log("work");
+            playerNameCanvas.SetActive(true);
+            
         }
         private void OnDestroy()
         {
@@ -99,14 +102,14 @@ namespace EOSLobbyTest
 
         private void UpdateControlState()
         {
-            //inputFieldPlayerName.text = Settings.Instance.CurrentPlayerName;
+            inputFieldPlayerName.text = Settings.Instance.CurrentPlayerName;
 
             // only allow host/join if all logged in ok
-            //buttonHost.interactable = EOS.LocalProductUserId != null;
-            //buttonJoin.interactable = EOS.LocalProductUserId != null;
+            buttonHost.interactable = EOS.LocalProductUserId != null;
+            buttonJoin.interactable = EOS.LocalProductUserId != null;
 
             // as the voice device is not initialised until we logged in we have to wait on this - not ideal...
-            //buttonSettings.interactable = VivoxManager.Instance.Initialized;
+            buttonSettings.interactable = VivoxManager.Instance.Initialized;
         }
 
         protected override void OnShowing()
@@ -216,7 +219,7 @@ namespace EOSLobbyTest
        IEnumerator ShowPanel()
        {
             yield return new WaitForSeconds(1f);
-            if (Settings.Instance.CurrentPlayerName == null)
+            if (String.IsNullOrEmpty(Settings.Instance.CurrentPlayerName))
             {
                 UIPanelManager.Instance.ShowPanel<UIPanelPlayerName>();
             }

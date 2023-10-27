@@ -50,7 +50,7 @@ namespace EOSLobbyTest
         {
             UpdateControlState();
 
-            //inputFieldPlayerName.text = Settings.Instance.CurrentPlayerName;
+            inputFieldPlayerName.text = Settings.Instance.CurrentPlayerName;
         }
 
         protected override void OnShown()

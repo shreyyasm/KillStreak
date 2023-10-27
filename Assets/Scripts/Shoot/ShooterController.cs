@@ -73,7 +73,7 @@ public class ShooterController : NetworkBehaviour
         animator.SetLayerWeight(1, 0);
         animator.SetLayerWeight(3, 0);
         thirdPersonController.Aiming(false);
-        screenTouch.SetSensitivity(8);
+        //screenTouch.SetSensitivity(8);
         if (!FPSMode)
         {
             aimVirtualCamera.enabled = false;
@@ -94,7 +94,7 @@ public class ShooterController : NetworkBehaviour
         animator.SetLayerWeight(1, 0);
         animator.SetLayerWeight(3, 0);
         thirdPersonController.Aiming(false);
-        screenTouch.SetSensitivity(8);
+        //screenTouch.SetSensitivity(8);
         if (!FPSMode)
         {
             aimVirtualCamera.enabled = false;
@@ -135,7 +135,7 @@ public class ShooterController : NetworkBehaviour
                 {
                     aimVirtualCamera.GetComponent<CinemachineVirtualCamera>().enabled = true;
                     thirdPersonController.SetSensitivity(aimSensitivity);
-                    screenTouch.SetSensitivity(4);
+                    //screenTouch.SetSensitivity(4);
                 }
                 if(loadOutManager.loadNumber == 3)
                 {
@@ -169,7 +169,7 @@ public class ShooterController : NetworkBehaviour
                 audioSource.PlayOneShot(aimSFX);
                 playerGunSelector.ShowUIScope();
                 thirdPersonController.Aiming(false);
-                screenTouch.SetSensitivity(6);
+                //screenTouch.SetSensitivity(6);
                 if (!FPSMode)
                 {
                     aimVirtualCamera.GetComponent<CinemachineVirtualCamera>().enabled = false;

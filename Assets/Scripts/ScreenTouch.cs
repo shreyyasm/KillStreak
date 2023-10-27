@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ScreenTouch : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class ScreenTouch : MonoBehaviour
     public Vector2 moveShowInput;
     public float sensitivity;
     public float sensitivityShowcase;
+
+
     // Start is called before the first frame update
     Touch t;
     void Start()
@@ -26,91 +30,73 @@ public class ScreenTouch : MonoBehaviour
         leftFingerId = -1;
         rightFingerID = -1;
         screenWidth = Screen.width;
+
+      
+
     }
 
-    // Update is called once per frame
     void Update()
     {
-        GetTouch();
-        GetTouchForShowcase();
-    }
 
+        GetTouch();
+        //GetTouchForShowcase();
+    }
+ 
     private void GetTouch()
     {
-        //for (int i = 0; i < Input.touchCount; i++)
-        //{
-
-        if(Input.touchCount != 0)
-            t = Input.GetTouch(0);
-        if (t.position.x < (screenWidth / 2))
+        for (int i = 0; i < Input.touchCount; i++)
         {
-            //for (int i = 0; i < Input.touchCount; i++)
-            //{
-
-            //}t = Input.GetTouch(0);
-            if (Input.touchCount != 0)
-                t = Input.GetTouch(1);
-            foreach (Touch o in Input.touches)
+            if (Input.GetTouch(i).position.x > (screenWidth / 2))
             {
-                if (o.position.x > (screenWidth / 2))
-                    t = Input.GetTouch(o.fingerId);           
+                t = Input.GetTouch(i);
+                //Debug.Log(t.fingerId);
+                continue;
             }
-
-
         }
-        else
-        {
-            if (Input.touchCount != 0)
-                t = Input.GetTouch(0);
-        }
-           
-        
-        
-       
-
-        //if (t.position.x < (screenWidth / 2))
-        //{
-        //    t.fingerId = 0;
-
-        //}
-        //if (t.position.x < (screenWidth / 2))
-        //{
-        //    t.fingerId = 0;
-
-        //}
         switch (t.phase)
-            {
-                case TouchPhase.Began:
-                    if (rightFingerID == -1)
-                        rightFingerID = t.fingerId;
-                    break;
+        {
+            case TouchPhase.Began:
+                if (rightFingerID == -1)
+                    rightFingerID = t.fingerId;
+                break;
 
-                case TouchPhase.Canceled:
-                case TouchPhase.Ended:
-                    if (t.fingerId == rightFingerID)
-                        rightFingerID = -1;
-                    lookInput = Vector2.zero;
-                    break;
-            
+            case TouchPhase.Canceled:
+            case TouchPhase.Ended:
+                if (t.fingerId == rightFingerID)
+                    rightFingerID = -1;
+                lookInput = Vector2.zero;
+                break;
+
 
             case TouchPhase.Moved:
-                //if (rightFingerID == t.fingerId)
                 if (t.position.x > (screenWidth / 2))
-                    //Debug.Log(t.radius);
-                    lookInput = t.deltaPosition * Time.deltaTime * sensitivity;
-                    
-                    
-                    //Debug.Log("Moving");
-                    break;
+                {
+                    float valueX = t.deltaTime > 0 ? t.deltaPosition.x / Screen.width / t.deltaTime : 0;
+                    float valuY = t.deltaTime > 0 ? t.deltaPosition.y / Screen.width / t.deltaTime : 0;
+                    Vector2 net = new Vector2(valueX, valuY);
+                    Debug.Log(net);
+                    //if (Mathf.Abs(t.deltaPosition.x) > Mathf.Abs(t.deltaPosition.y))
+                    //{
+                    //    //Debug.Log("Delta Pos " + t.deltaPosition);
+                        
+                    //    lookInput = net * Time.deltaTime * sensitivity;
+                    //}
+                    //if (Mathf.Abs(t.deltaPosition.x) < Mathf.Abs(t.deltaPosition.y))
+                    //{
+                        
 
-                case TouchPhase.Stationary:
+                    //    lookInput = net * Time.deltaTime * sensitivity;
+                    //}
+                    lookInput = net * Time.deltaTime * sensitivity;
+                }
+                else
                     lookInput = Vector2.zero;
-                    //Debug.Log("Statinary");
 
-                    break;
+                break;
 
-
-          //  }
+            case TouchPhase.Stationary:
+                lookInput = Vector2.zero;           
+                break;     
         }
     }
     private void GetTouchForShowcase()
