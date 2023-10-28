@@ -224,5 +224,10 @@ namespace EOSLobbyTest
                 UIPanelManager.Instance.ShowPanel<UIPanelPlayerName>();
             }
        }
+        public GameObject settingsMenu;
+        public void OpenSettings()
+        {
+            settingsMenu.SetActive(true);
+        }
     }
 }

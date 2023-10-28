@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
 {
+    public static Settings Instance;
     public GameObject SettingsCanvas;
 
     public GameObject EngVoiceLinesButton;
@@ -12,6 +14,14 @@ public class Settings : MonoBehaviour
     public int EngVoiceIndex;
     public int HindiVoiceIndex;
 
+    public float MusicVolume;
+    public Slider VolumeSlider;
+
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +31,7 @@ public class Settings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        SetMusicVolume();
     }
     public void ChangeToEnglish(int EngIndex)
     {
@@ -43,7 +53,8 @@ public class Settings : MonoBehaviour
     {
         EngVoiceIndex = PlayerPrefs.GetInt("VoiceSettingsEng");
         HindiVoiceIndex = PlayerPrefs.GetInt("VoiceSettingsHindi");
-        if(EngVoiceIndex == 1)
+        VolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+        if (EngVoiceIndex == 1)
         {
             EngVoiceLinesButton.SetActive(true);
             HindiVoiceLinesButton.SetActive(false);
@@ -65,5 +76,10 @@ public class Settings : MonoBehaviour
     public void CloseSettings()
     {
         SettingsCanvas.SetActive(false);
+    }
+    public void SetMusicVolume()
+    {
+        MusicVolume = VolumeSlider.value;
+        PlayerPrefs.SetFloat("MusicVolume", MusicVolume);
     }
 }
