@@ -300,7 +300,7 @@ namespace StarterAssets
        
         private void Awake()
         {
-            
+            //SetJoystickPos();
             //SpawnCountDown();
             //PointSystem.Instance.GameStartCountdown();
             //myActionAsset.bindingMask = new InputBinding { groups = "KeyboardMouse" };
@@ -396,7 +396,7 @@ namespace StarterAssets
                 Invoke("ChangeToGreenColor", 0.5f);
                 //ChangeToGreenColor();
             }
-            
+            ResetPositionPlayer();
             // reset our timeouts on start
             _fallTimeoutDelta = FallTimeout;
             _jumpTimeoutDelta = JumpTimeout;
@@ -542,7 +542,7 @@ namespace StarterAssets
             if (!base.IsOwner)
                 return;
 
-
+            //SetJoystickPos();
             //MoveOld();
             //Move();
             //screenCenterPoint = new Vector3(Screen.width / 2f, Screen.height / 2f);
@@ -2006,6 +2006,12 @@ namespace StarterAssets
             //    PlayerRespawn.Instance.DisableOutlineBluePlayers();
 
             player.GetComponent<Outline>().OutlineColor = Color.red;
+        }
+        public GameObject joystick;
+        public Rect joystickPos;
+        public void SetJoystickPos()
+        {
+            joystick.transform.position = joystickPos.position;
         }
     }
     

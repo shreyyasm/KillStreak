@@ -21,6 +21,7 @@ public class ScreenTouch : MonoBehaviour
     public float sensitivity;
     public float sensitivityShowcase;
 
+    public bool MainMenu;
 
     // Start is called before the first frame update
     Touch t;
@@ -39,7 +40,8 @@ public class ScreenTouch : MonoBehaviour
     {
 
         GetTouch();
-        //GetTouchForShowcase();
+        if(MainMenu)
+            GetTouchForShowcase();
     }
  
     private void GetTouch()

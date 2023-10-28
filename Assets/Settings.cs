@@ -39,7 +39,8 @@ public class Settings : MonoBehaviour
         HindiVoiceLinesButton.SetActive(false);
         PlayerPrefs.SetInt("VoiceSettingsEng", EngIndex);
         PlayerPrefs.SetInt("VoiceSettingsHindi", 0);
-        SoundManager.Instance.English = true;
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.English = true;
     }
     public void ChangeToHindi(int HindiIndex)
     {
@@ -47,7 +48,8 @@ public class Settings : MonoBehaviour
         HindiVoiceLinesButton.SetActive(true);
         PlayerPrefs.SetInt("VoiceSettingsEng", 0);
         PlayerPrefs.SetInt("VoiceSettingsHindi", HindiIndex);
-        SoundManager.Instance.English = false;
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.English = false;
     }
     public void LoadSettingsData()
     {
@@ -58,13 +60,15 @@ public class Settings : MonoBehaviour
         {
             EngVoiceLinesButton.SetActive(true);
             HindiVoiceLinesButton.SetActive(false);
-            SoundManager.Instance.English = true;
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.English = true;
         }
         else
         {
             EngVoiceLinesButton.SetActive(false);
             HindiVoiceLinesButton.SetActive(true);
-            SoundManager.Instance.English = false;
+            if(SoundManager.Instance != null)
+                SoundManager.Instance.English = false;
         }
 
 

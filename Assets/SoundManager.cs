@@ -75,7 +75,7 @@ public class SoundManager : NetworkBehaviour
 
         else
         {
-            AudioSource.PlayClipAtPoint(SimulationVoiceClip_Hindi, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(SimulationVoiceClip_Hindi, Camera.main.transform.position, Settings.Instance.MusicVolume);
             //Debug.Log("Hindi Voiceline");
         }
             
@@ -83,89 +83,89 @@ public class SoundManager : NetworkBehaviour
     public void PlayCountdownLine()
     {
         if (English)
-            AudioSource.PlayClipAtPoint(countdownClip_English, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(countdownClip_English, Camera.main.transform.position, Settings.Instance.MusicVolume);
 
         else
-            AudioSource.PlayClipAtPoint(countdownClip_Hindi, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(countdownClip_Hindi, Camera.main.transform.position, Settings.Instance.MusicVolume);
     }
     public void PlayLetsGoLine()
     {
         if (English)
-            AudioSource.PlayClipAtPoint(letsGoClip_English, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(letsGoClip_English, Camera.main.transform.position, Settings.Instance.MusicVolume);
 
         else
-            AudioSource.PlayClipAtPoint(letsGoClip_Hindi, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(letsGoClip_Hindi, Camera.main.transform.position, Settings.Instance.MusicVolume);
     }
     public void PlayHalfTimeLine()
     {
         if (English)
-            AudioSource.PlayClipAtPoint(halfTimeClip_English, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(halfTimeClip_English, Camera.main.transform.position, Settings.Instance.MusicVolume);
 
         else
-            AudioSource.PlayClipAtPoint(halfTimeClip_Hindi, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(halfTimeClip_Hindi, Camera.main.transform.position, Settings.Instance.MusicVolume);
     }
     public void PlayRedTeamLeadingLine()
     {
         if (English)
-            AudioSource.PlayClipAtPoint(redTeamLeadingClip_English, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(redTeamLeadingClip_English, Camera.main.transform.position, Settings.Instance.MusicVolume);
 
         else
-            AudioSource.PlayClipAtPoint(redTeamLeadingClip_Hindi, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(redTeamLeadingClip_Hindi, Camera.main.transform.position, Settings.Instance.MusicVolume);
     }
     public void PlayBlueTeamLeadingLine()
     {
         if (English)
-            AudioSource.PlayClipAtPoint(blueTeamLeadingClip_English, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(blueTeamLeadingClip_English, Camera.main.transform.position, Settings.Instance.MusicVolume);
 
         else
-            AudioSource.PlayClipAtPoint(blueTeamLeadingClip_Hindi, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(blueTeamLeadingClip_Hindi, Camera.main.transform.position, Settings.Instance.MusicVolume);
     }
     public void PlayBlueTeamVictoryLine()
     {
         if (English)
-            AudioSource.PlayClipAtPoint(blueTeamVictoryClip_English, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(blueTeamVictoryClip_English, Camera.main.transform.position, Settings.Instance.MusicVolume);
 
         else
-            AudioSource.PlayClipAtPoint(blueTeamVictoryClip_Hindi, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(blueTeamVictoryClip_Hindi, Camera.main.transform.position, Settings.Instance.MusicVolume);
     }
     public void PlayRedTeamVictoryLine()
     {
         if (English)
-            AudioSource.PlayClipAtPoint(redTeamVictoryClip_English, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(redTeamVictoryClip_English, Camera.main.transform.position, Settings.Instance.MusicVolume);
 
         else
-            AudioSource.PlayClipAtPoint(redTeamVictoryClip_Hindi, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(redTeamVictoryClip_Hindi, Camera.main.transform.position, Settings.Instance.MusicVolume);
     }
     public void PlayYouAreWinningLine()
     {
         if (English)
-            AudioSource.PlayClipAtPoint(GreatYouAreWinningClip_English, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(GreatYouAreWinningClip_English, Camera.main.transform.position, Settings.Instance.MusicVolume);
 
         else
-            AudioSource.PlayClipAtPoint(GreatYouAreWinningClip_Hindi, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(GreatYouAreWinningClip_Hindi, Camera.main.transform.position, Settings.Instance.MusicVolume);
     }
     public void PlayYouAreLosingLine()
     {
         if (English)
-            AudioSource.PlayClipAtPoint(CarefullYouAreLosingClip_English, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(CarefullYouAreLosingClip_English, Camera.main.transform.position, Settings.Instance.MusicVolume);
 
         else
-            AudioSource.PlayClipAtPoint(CarefullYouAreLosingClip_Hindi, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(CarefullYouAreLosingClip_Hindi, Camera.main.transform.position, Settings.Instance.MusicVolume);
     }
     public void PlayfirstKillToRedLine()
     {
         if (English)
-            AudioSource.PlayClipAtPoint(firstKillToRedClip_English, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(firstKillToRedClip_English, Camera.main.transform.position, Settings.Instance.MusicVolume);
 
         else
-            AudioSource.PlayClipAtPoint(firstKillToRedClip_Hindi, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(firstKillToRedClip_Hindi, Camera.main.transform.position, Settings.Instance.MusicVolume);
     }
     public void PlayfirstKillToBlueLine()
     {
         if (English)
-            AudioSource.PlayClipAtPoint(firstKillToBlueClip_English, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(firstKillToBlueClip_English, Camera.main.transform.position, Settings.Instance.MusicVolume);
 
         else
-            AudioSource.PlayClipAtPoint(firstKillToBlueClip_Hindi, Camera.main.transform.position, 1f);
+            AudioSource.PlayClipAtPoint(firstKillToBlueClip_Hindi, Camera.main.transform.position, Settings.Instance.MusicVolume);
     }
 }

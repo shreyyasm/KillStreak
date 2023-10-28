@@ -11,6 +11,7 @@ namespace EOSLobbyTest
         public List<TextMeshProUGUI> myPlayersName;
         public List<GameObject> players;
 
+        public TextMeshProUGUI LeaveLobbyTime;
         private void Awake()
         {
             if (Instance == null)
@@ -114,8 +115,12 @@ namespace EOSLobbyTest
             ShowConclusion();
             SetFinalNamesNScore();
             yield return new WaitForSeconds(10f);
+            float timer = 10;
+            timer -= Time.deltaTime;
+            LeaveLobbyTime.text = "Back to lobby in..." + (int)timer + "Secs";
             PointSystem.Instance.LeaveLobby();
         }
-
+        
     }
+    
 }
