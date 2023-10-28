@@ -6,9 +6,13 @@ using UnityEngine.EventSystems;
 
 public class UltimateJoystickScreenSizeUpdater : UIBehaviour
 {
-	protected override void OnRectTransformDimensionsChange ()
+    protected override void Awake()
+    {
+		OnRectTransformDimensionsChange();
+	}
+    protected override void OnRectTransformDimensionsChange ()
 	{
-		//StartCoroutine( "YieldPositioning" );
+		StartCoroutine( "YieldPositioning" );
 	}
 
 	IEnumerator YieldPositioning ()
