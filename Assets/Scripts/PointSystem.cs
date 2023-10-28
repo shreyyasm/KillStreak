@@ -222,7 +222,7 @@ public class PointSystem : NetworkBehaviour
             {
                 
                 timeRemainingGameStop -= Time.deltaTime;
-                if ((int)timeRemainingGameStop == 100f && !halfTimePlayed)
+                if ((int)timeRemainingGameStop == 300f && !halfTimePlayed)
                 {
                     SoundManager.Instance.PlayHalfTimeLine();
                     halfTimePlayed = true;

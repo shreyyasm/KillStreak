@@ -251,7 +251,24 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
 
     public void RestoreHealth()
     {
+        if (base.IsServer)
+            RestoreHealthObserver();
+        else
+            RestoreHealthServer();
+    }
+    [ServerRpc(RequireOwnership = false, RunLocally = true)]
+    public void RestoreHealthServer()
+    {
         CurrentHealth = Maxhealth;
+        SetMaxHealth(CurrentHealth);
+        SetHealth(CurrentHealth);
+    }
+    [ObserversRpc(BufferLast = true, RunLocally = true)]
+    public void RestoreHealthObserver()
+    {
+        CurrentHealth = Maxhealth;
+        SetMaxHealth(CurrentHealth);
+        SetHealth(CurrentHealth);
     }
     public PlayerGunSelector playerGunSelector;
     public void RespawnAmmoLoadout()

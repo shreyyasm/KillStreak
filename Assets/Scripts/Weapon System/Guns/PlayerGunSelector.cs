@@ -1365,7 +1365,12 @@ public class PlayerGunSelector : NetworkBehaviour
             killSystem.playerKilled();
             KillsText.text = "Kills: " + killSystem.playerKills;
             playerRef.playerDeadConfirmed = true;
-            if(base.IsOwner)
+            playerHealth.RestoreHealth();           
+            gun1.AmmoConfig.RefillAmmo();
+            gun2.AmmoConfig.RefillAmmo();
+            ammoDisplayer.UpdateGunAmmo();
+            loadOutManager.PlayLoadoutSfX();
+            if (base.IsOwner)
                 AudioSource.PlayClipAtPoint(TargetDownClip, Camera.main.transform.position, 1f);
         }
         yield return new WaitForSeconds(5f);
