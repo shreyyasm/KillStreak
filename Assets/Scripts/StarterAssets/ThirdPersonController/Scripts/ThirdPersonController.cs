@@ -392,7 +392,7 @@ namespace StarterAssets
                         allObjects.gameObject.layer = LayerMask.NameToLayer("Player Root");
                     }
                 }
-                SetName();
+                //SetName();
                 Invoke("ChangeToGreenColor", 0.5f);
                 //ChangeToGreenColor();
             }
@@ -476,7 +476,7 @@ namespace StarterAssets
             {
 
                 Move = new Vector3(ultimateJoystick.GetHorizontalAxis(), 0f, ultimateJoystick.GetVerticalAxis()).normalized,
-                Look = new Vector3(screenTouch.lookInput.x, screenTouch.lookInput.y),
+                Look = new Vector3(lookPad.lookAt.x, lookPad.lookAt.y),
                 ResetPosRed = new Vector3(GameManagerEOS.Instance.RedTeamSpawnPoints[playerGunSelector.PlayerRedPosIndex].position.x, -0.46f, GameManagerEOS.Instance.RedTeamSpawnPoints[playerGunSelector.PlayerRedPosIndex].position.z),
                 ResetPosBlue = new Vector3(GameManagerEOS.Instance.BlueTeamSpawnPoints[playerGunSelector.PlayerBluePosIndex].position.x, -0.46f, GameManagerEOS.Instance.BlueTeamSpawnPoints[playerGunSelector.PlayerBluePosIndex].position.z),
                 CameraEulerY = _mainCamera.transform.eulerAngles.y,
@@ -622,30 +622,33 @@ namespace StarterAssets
         }
         public LayerMask IdentifyEnemy;
         private Ray ray;
-
+        public FP_CameraLook lookPad;
         public void CameraRotation()
         {
             if (playerHealth.PlayerDeathState())
                 return;
-            mouseX = screenTouch.lookInput.x;
-            mouseY = screenTouch.lookInput.y;
+            //mouseX = screenTouch.lookInput.x;
+            //mouseY = screenTouch.lookInput.y;
 
-            if (screenTouch.rightFingerID == -1)
-            {
-                mouseX = 0;
-                mouseY = 0;
-            }
-            if (screenTouch.rightFingerID != -1)
-            {
-                if (screenTouch.lookInput.sqrMagnitude >= _threshold && !LockCameraPosition)
+            mouseX = lookPad.lookAt.x;
+            mouseY = lookPad.lookAt.y;
+
+            //if (screenTouch.rightFingerID == -1)
+            //{
+            //    mouseX = 0;
+            //    mouseY = 0;
+            //}
+            //if (screenTouch.rightFingerID != -1)
+            //{
+                if (lookPad.lookAt.sqrMagnitude >= _threshold && !LockCameraPosition)
                 {
                     //Don't multiply mouse input by Time.deltaTime;
                     //float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
                     //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
                     //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
-                    _cinemachineTargetYaw += mouseX * Time.deltaTime * 100;
-                    _cinemachineTargetPitch -= mouseY * Time.deltaTime * 100;
+                    _cinemachineTargetYaw += mouseX ;
+                    _cinemachineTargetPitch -= mouseY ;
                 }
 
                 // clamp our rotations so our values are limited 360 degrees
@@ -655,7 +658,7 @@ namespace StarterAssets
 
                 CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
                         _cinemachineTargetYaw, 0.0f);
-            }
+            //}
         }
         private void CameraRotationOld()
         {
