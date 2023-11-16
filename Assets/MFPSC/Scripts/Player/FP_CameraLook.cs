@@ -61,25 +61,40 @@ public class FP_CameraLook : MonoBehaviour
     {
         //Cursor.visible = false;
         //Cursor.lockState = CursorLockMode.Locked;
+        //headBob.MainCamera.tag = "MainCamera";
     }
 
     // Use this for initialization
     void Start()
     {
+        //playerController = GetComponent<FP_Controller>();
+        //footSteps = GetComponent<FP_FootSteps>();
         playerInput = GetComponent<FP_Input>();
+
+        //originalLocalPos = headBob.MainCamera.localPosition;
+
+        //if (GetComponent<AudioSource>() == null)
+        //{
+        //    // we automatically add an audiosource, if one has not been manually added.
+        //    // (if you want to control the rolloff or other audio settings, add an audiosource manually)
+        //    gameObject.AddComponent<AudioSource>();
+        //}
+
+        //prevPosition = transform.position;
+        //audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-      
 
+        sensitivity = playerInput.Shoot() ? ShootSensitivity : LookSensitivity;
         switch (playerInput.UseMobileInput)
         {
             case true:
                 InputX = (playerInput.LookInput().x + playerInput.ShotInput().x) * Smooth * Time.deltaTime;
                 InputY = (playerInput.LookInput().y + playerInput.ShotInput().y) * Smooth * Time.deltaTime;
                 lookAt.x = Mathf.Lerp(lookAt.x, InputX, Smooth * Time.deltaTime)*(sensitivity / 10);
-                lookAt.y = Mathf.Lerp(lookAt.y, InputY, Smooth * Time.deltaTime) * (sensitivity / 10);
+                lookAt.y = Mathf.Lerp(lookAt.y, InputY, Smooth * Time.deltaTime)*(sensitivity / 10);
                 break;
             case false:
                 InputX = Input.GetAxis("Mouse X") * 10;
@@ -87,7 +102,7 @@ public class FP_CameraLook : MonoBehaviour
                 break;
         }
 
-        sensitivity = playerInput.Shoot() ? ShootSensitivity : LookSensitivity;
+        
 
         //PlayerHead.localPosition = Vector3.Lerp(PlayerHead.localPosition, new Vector3(
         //PlayerHead.localPosition.x, playerController.controller.center.y + playerController.controller.height / 2 - 0.25F, PlayerHead.localPosition.z), 0.15F * 3);

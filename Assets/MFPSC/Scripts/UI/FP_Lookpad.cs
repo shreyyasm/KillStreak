@@ -16,7 +16,7 @@ public class FP_Lookpad : MonoBehaviour {
     {
         SetupListeners();
         canvasGroup = GetComponent<CanvasGroup>();
-        canvasGroup.alpha = 0;
+        //canvasGroup.alpha = 0;
     }
 
     // Update is called once per frame

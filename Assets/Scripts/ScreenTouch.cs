@@ -39,7 +39,7 @@ public class ScreenTouch : MonoBehaviour
     void Update()
     {
 
-        GetTouch();
+        //GetTouch();
         if(MainMenu)
             GetTouchForShowcase();
     }
@@ -76,7 +76,7 @@ public class ScreenTouch : MonoBehaviour
                     float valueX = t.deltaTime > 0 ? t.deltaPosition.x / Screen.width / t.deltaTime : 0;
                     float valuY = t.deltaTime > 0 ? t.deltaPosition.y / Screen.width / t.deltaTime : 0;
                     Vector2 net = new Vector2(valueX, valuY);
-                    Debug.Log(net);
+                    //Debug.Log(net);
                     //if (Mathf.Abs(t.deltaPosition.x) > Mathf.Abs(t.deltaPosition.y))
                     //{
                     //    //Debug.Log("Delta Pos " + t.deltaPosition);

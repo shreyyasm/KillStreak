@@ -623,6 +623,7 @@ namespace StarterAssets
         public LayerMask IdentifyEnemy;
         private Ray ray;
         public FP_CameraLook lookPad;
+        public FixedTouchField touchField;
         public void CameraRotation()
         {
             if (playerHealth.PlayerDeathState())
@@ -950,7 +951,7 @@ namespace StarterAssets
 
                 //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
                 //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
-                _cinemachineTargetX += md.Look.x * lookSensitivity * (float)base.TimeManager.TickDelta;
+                _cinemachineTargetX += md.Look.x * (float)base.TimeManager.TickDelta;
                // _cinemachineTargetPitch -= md.Look.y * lookSensitivity * delta;
                 }
 
