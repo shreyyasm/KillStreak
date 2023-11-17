@@ -22,13 +22,16 @@ public class FP_Lookpad : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+       
         touchInput = (dragInput - prevDelta) / Time.deltaTime;
         prevDelta = dragInput;
     }
 
     //Setup events;
+    public float screenWidth;
     void SetupListeners()
     {
+        screenWidth = Screen.width;
         eventTrigger = gameObject.GetComponent<EventTrigger>();
 
         var a = new EventTrigger.TriggerEvent();
@@ -37,7 +40,8 @@ public class FP_Lookpad : MonoBehaviour {
             var evData = (PointerEventData)data;
             data.Use();
             isPressed = true;
-            prevDelta = dragInput = evData.position;
+            //if (evData.position.x > (screenWidth / 2))
+                prevDelta = dragInput = evData.position;
         });
 
         eventTrigger.triggers.Add(new EventTrigger.Entry { callback = a, eventID = EventTriggerType.PointerDown });
@@ -48,6 +52,7 @@ public class FP_Lookpad : MonoBehaviour {
         {
             var evData = (PointerEventData)data;
             data.Use();
+            
             dragInput = evData.position;
         });
 

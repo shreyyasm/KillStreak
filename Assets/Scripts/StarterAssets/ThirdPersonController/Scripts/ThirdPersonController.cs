@@ -623,6 +623,7 @@ namespace StarterAssets
         public LayerMask IdentifyEnemy;
         private Ray ray;
         public FP_CameraLook lookPad;
+        public FP_Lookpad lookPadData;
         public FixedTouchField touchField;
         public void CameraRotation()
         {
@@ -630,35 +631,36 @@ namespace StarterAssets
                 return;
             //mouseX = screenTouch.lookInput.x;
             //mouseY = screenTouch.lookInput.y;
-
+            
             mouseX = lookPad.lookAt.x;
             mouseY = lookPad.lookAt.y;
-
-            //if (screenTouch.rightFingerID == -1)
-            //{
-            //    mouseX = 0;
-            //    mouseY = 0;
-            //}
+            
+            if (lookPadData.touchInput.magnitude == 0)
+            {
+                mouseX = 0;
+                mouseY = 0;
+            }
+            Debug.Log(mouseY);
             //if (screenTouch.rightFingerID != -1)
             //{
-                if (lookPad.lookAt.sqrMagnitude >= _threshold && !LockCameraPosition)
-                {
-                    //Don't multiply mouse input by Time.deltaTime;
-                    //float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+            if (lookPad.lookAt.sqrMagnitude >= _threshold && !LockCameraPosition)
+            {
+                //Don't multiply mouse input by Time.deltaTime;
+                //float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
-                    //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
-                    //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
-                    _cinemachineTargetYaw += mouseX ;
-                    _cinemachineTargetPitch -= mouseY ;
-                }
+                //_cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * sensitivity;
+                //_cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * sensitivity;
+                _cinemachineTargetYaw += mouseX;
+                _cinemachineTargetPitch -= mouseY;
+            }
 
-                // clamp our rotations so our values are limited 360 degrees
-                _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-                _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+            // clamp our rotations so our values are limited 360 degrees
+            _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
+            _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
 
 
-                CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
-                        _cinemachineTargetYaw, 0.0f);
+            CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
+                    _cinemachineTargetYaw, 0.0f);
             //}
         }
         private void CameraRotationOld()
