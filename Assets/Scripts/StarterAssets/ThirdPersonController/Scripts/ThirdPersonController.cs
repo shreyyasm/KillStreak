@@ -405,23 +405,9 @@ namespace StarterAssets
         }
         public void SetName()
         {
-            PlayerName = playerManager.myPlayerName;
-            //if (base.IsServer)
-            //    SetNameObserver();
-            //else
-            //    SetNameServer();
-
+            PlayerName = playerManager.myPlayerName;          
         }
-        [ServerRpc(RequireOwnership = false, RunLocally = true)]        
-        public void SetNameServer()
-        {
-            PlayerName = playerManager.myPlayerName;
-        }      
-        [ObserversRpc(BufferLast = true, RunLocally = true)]
-        public void SetNameObserver()
-        {
-            PlayerName = playerManager.myPlayerName;
-        }
+      
 
         private void TimeManager_OnTick()
         {
@@ -456,9 +442,7 @@ namespace StarterAssets
             value = rd.valueSlide;
             slideSpeed = rd.slideSpeed;
             Grounded = rd.Grounded;
-            timerIsRunning = rd.timeIsRunning;
-            //_cinemachineTargetYaw = rd._cinemachineTargetYaw;
-            ///_cinemachineTargetPitch = rd._cinemachineTargetPitch;
+            timerIsRunning = rd.timeIsRunning;     
 
             _targetRotation = rd._targetRotation;
             movement = rd.movement;
@@ -492,10 +476,7 @@ namespace StarterAssets
 
         //slide value
         public float speed = 8f;
-        public float gravity = -9.81f;
-       
-        Vector3 velocity;
-        bool isGrounded;
+        public float gravity = -9.81f;     
  
         public Transform groundCheck;
         public float groundDistance = 0.4f;
@@ -529,10 +510,12 @@ namespace StarterAssets
             _hasAnimator = TryGetComponent(out _animator);
             AssignAnimationIDs();
             SetRigWeight();
+            SeeInvincibilty();
+            
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
-           
+            playerSpawned = true;
         }
      
         public Vector3 screenCenterPoint;
@@ -640,7 +623,7 @@ namespace StarterAssets
                 mouseX = 0;
                 mouseY = 0;
             }
-            Debug.Log(mouseY);
+            //Debug.Log(mouseY);
             //if (screenTouch.rightFingerID != -1)
             //{
             if (lookPad.lookAt.sqrMagnitude >= _threshold && !LockCameraPosition)
@@ -1231,6 +1214,7 @@ namespace StarterAssets
                 // move the player
                 if (!ResetPosition)
                     _controller.Move(movement * (float)base.TimeManager.TickDelta);
+               // PlayRunSound();
             }
             
             // update animator if using character
@@ -1419,91 +1403,7 @@ namespace StarterAssets
         }
        
      
-        public void JumpAndGravity(MoveData md, float delta)
-        {
-            if (md.Jump && isCrouching)
-            {
-                isCrouching = false;
-                _animator.SetBool("Crouch", isCrouching);
-            }
-            else if (Grounded && !isCrouching)
-            {
-                // reset the fall timeout timer
-                _fallTimeoutDelta = FallTimeout;
 
-                // stop our velocity dropping infinitely when grounded
-                if (_verticalVelocity < 0.0f)
-                {
-                    _animator.SetBool(_animIDIdleJump, false);
-                    _animator.SetBool(_animIDWalkJump, false);
-                    isPressedJump = false;
-                    _verticalVelocity = -2f;
-                }
-
-                // Jump
-                if (md.Jump && _jumpTimeoutDelta <= 0.0f)
-                {
-                    // set sphere position, with offset
-                    Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
-                        transform.position.z);
-                    Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
-                        QueryTriggerInteraction.Ignore);
-                    // the square root of H * -2 * G = how much velocity needed to reach desired height
-                    _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-
-                    // update animator if using character
-
-                    if (_hasAnimator)
-                    {
-                        if (_animationBlend > 1)
-                        {
-                            _animator.SetBool(_animIDWalkJump, true);
-                        }
-                        else
-                            _animator.SetBool(_animIDIdleJump, true);
-                    }
-
-                }
-
-                // jump timeout
-                if (_jumpTimeoutDelta >= 0.0f)
-                {
-                    _jumpTimeoutDelta -= delta;
-                }
-            }
-            else
-            {
-                // reset the jump timeout timer
-                _jumpTimeoutDelta = JumpTimeout;
-
-                // fall timeout
-                if (_fallTimeoutDelta >= 0.0f)
-                {
-                    _fallTimeoutDelta -= delta;
-                }
-                else
-                {
-                    // update animator if using character
-                    if (_hasAnimator)
-                    {
-                        // _animator.SetBool(_animIDFreeFall, true);
-                    }
-                }
-                // set sphere position, with offset
-                Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
-                    transform.position.z);
-                Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
-                    QueryTriggerInteraction.Ignore);
-                // if we are not grounded, do not jump
-                _input.jump = false;
-            }
-
-            // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
-            if (_verticalVelocity < _terminalVelocity)
-            {
-                _verticalVelocity += Gravity * delta;
-            }
-        }
         
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
         {
@@ -1512,39 +1412,7 @@ namespace StarterAssets
             return Mathf.Clamp(lfAngle, lfMin, lfMax);
         }
 
-        //private void OnDrawGizmosSelected()
-        //{
-        //    Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
-        //    Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
-
-        //    if (Grounded) Gizmos.color = transparentGreen;
-        //    else Gizmos.color = transparentRed;
-
-        //    // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
-        //    Gizmos.DrawSphere(
-        //        new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
-        //        GroundedRadius);
-        //}
-
-        private void OnFootstep(AnimationEvent animationEvent)
-        {
-            if (animationEvent.animatorClipInfo.weight > 0.5f)
-            {
-                if (FootstepAudioClips.Length > 0)
-                {
-                    var index = Random.Range(0, FootstepAudioClips.Length);
-                    AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
-                }
-            }
-        }
-
-        private void OnLand(AnimationEvent animationEvent)
-        {
-            if (animationEvent.animatorClipInfo.weight > 0.5f)
-            {
-                AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
-            }
-        }
+       
         public void SetSensitivity(float newSensitivity)
         {
             sensitivity = newSensitivity;
@@ -1749,27 +1617,21 @@ namespace StarterAssets
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void PlayRunSoundServer()
         {
-            if (Grounded)
+            if (Grounded && _animationBlend > 2)
             {
-                if (!isCrouching && _animationBlend > 2)
+                if (!isCrouching)
                 {
                     audioCrouchSource.Pause();
                     audioRunSource.UnPause();
                 }
 
 
-                else if (isCrouching && _animationBlend > 2)
+                else if (isCrouching)
                 {
                     audioRunSource.Pause();
                     audioCrouchSource.UnPause();
-                }
-
-                else
-                {
-                    audioRunSource.Pause();
-                    audioCrouchSource.Pause();
-                }
-            }
+                }              
+            } 
             else
             {
                 audioRunSource.Pause();
@@ -1779,25 +1641,19 @@ namespace StarterAssets
         [ObserversRpc(BufferLast = false, RunLocally = true)]
         public void PlayRunSoundObserver()
         {
-            if (Grounded)
+            if (Grounded && _animationBlend > 2)
             {
-                if (!isCrouching && _animationBlend > 2)
+                if (!isCrouching)
                 {
                     audioCrouchSource.Pause();
                     audioRunSource.UnPause();
                 }
 
 
-                else if (isCrouching && _animationBlend > 2)
+                else if (isCrouching)
                 {
                     audioRunSource.Pause();
                     audioCrouchSource.UnPause();
-                }
-
-                else
-                {
-                    audioRunSource.Pause();
-                    audioCrouchSource.Pause();
                 }
             }
             else
@@ -1811,8 +1667,7 @@ namespace StarterAssets
         public AudioClip gunInSound;
         public AudioClip gunOutSound;
         public void PlayJumpSound()
-        {
-
+        {           
             if (base.IsServer)
                 PlayJumpSoundObserver();
 
@@ -1822,32 +1677,16 @@ namespace StarterAssets
         [ServerRpc(RequireOwnership = false, RunLocally = true)]
         public void PlayJumpSoundServer()
         {
-          
-            if(!isCrouching)
-            {
-                if(Grounded)
-                {
-                    if (_jumpTimeoutDelta <= -0.1)
-                        audioSource.PlayOneShot(jumpSound, 0.8f);
-                }
-                    
-            }
-                
+
+            audioSource.PlayOneShot(jumpSound, 0.8f);
         }
         [ObserversRpc(BufferLast = false, RunLocally = true)]
         public void PlayJumpSoundObserver()
-        {
-            
-            if (!isCrouching)
-            {
-                if (Grounded)
-                {
-                    if (_jumpTimeoutDelta <= 0)
-                        audioSource.PlayOneShot(jumpSound, 0.8f);
-                }
-            }
-   
+        {                       
+            audioSource.PlayOneShot(jumpSound, 0.8f);
         }
+
+        //PlayerPosition Reset
         public void ResetPositionPlayer()
         {
             if (base.IsServer)
@@ -1875,33 +1714,28 @@ namespace StarterAssets
 
             if (playerGunSelector.redTeamPlayer)
                 _cinemachineTargetYaw = 0;
-            else
-                _cinemachineTargetYaw = 180;
-
-            if (loadOutButton != null)
-                loadOutButton.SetActive(true);
-            
 
             if (playerGunSelector.blueTeamPlayer)
                 _cinemachineTargetYaw = 180;
 
+        
+            loadOutButton?.SetActive(true);
+           
             yield return new WaitForSeconds(3f);
             ResetPosition = false;
 
             yield return new WaitForSeconds(3f);
-            if(loadOutButton != null)
-                loadOutButton.SetActive(false);
+            loadOutButton?.SetActive(false);
         }
+
+        //TeamOutlineColour Change
         public void ChangeToGreenColor()
-        {
-            
+        {           
             if (playerGunSelector.redTeamPlayer)
-            {
-                //Debug.Log("Work");
+            {               
                 foreach (GameObject i in PlayerRespawn.Instance.RedPlayers)
                 {
-                    PlayerCustomization playerCustomization = i.GetComponent<PlayerCustomization>();
-                    //Debug.Log("Color");
+                    PlayerCustomization playerCustomization = i.GetComponent<PlayerCustomization>();                   
                     playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex].gameObject.GetComponent<Outline>().enabled = false;
                 }
             }
@@ -1915,9 +1749,10 @@ namespace StarterAssets
             }
         }
 
+
+        //Invincibilty Outline
         public void SeeInvincibilty()
         {
-            //StartCoroutine(SeeInvincibiltyDelay());
             if (base.IsServer)
                 SeeInvincibiltyObserver();
 
@@ -1935,90 +1770,31 @@ namespace StarterAssets
             StartCoroutine(SeeInvincibiltyDelay());
         }
         public GameObject playerMainBody;
+        bool playerSpawned;
         IEnumerator SeeInvincibiltyDelay()
-        {
+        {          
+            if(!playerSpawned)
+                yield return new WaitForSeconds(2f);
             PlayerCustomization playerCustomization = GetComponent<PlayerCustomization>();
-            GameObject player = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex]; 
             playerMainBody = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
-
-            player.GetComponent<Outline>().OutlineColor = Color.white;
-
-            player.GetComponent<Outline>().enabled = true;
             
 
-           
-            yield return new WaitForSeconds(5f);
-            if (base.IsOwner)
-            {
-                //player.GetComponent<Outline>().enabled = false;
-                if (playerGunSelector.redTeamPlayer)
-                    PlayerRespawn.Instance.DisableOutlineRedPlayers();
-                else
-                    PlayerRespawn.Instance.DisableOutlineBluePlayers();
-
-            }
-            //if (playerGunSelector.redTeamPlayer)
-            //    PlayerRespawn.Instance.DisableOutlineRedPlayers();
-            //else
-            //    PlayerRespawn.Instance.DisableOutlineBluePlayers();
-
-            player.GetComponent<Outline>().OutlineColor = Color.red;
-        }
-        public void SeeInvincibiltySpawn()
-        {
-            //StartCoroutine(SeeInvincibiltyDelay());
-            if (base.IsServer)
-                SeeInvincibiltyObserverSpawn();
-
-            else
-                SeeInvincibiltyServeSpawn();
-        }
-        [ServerRpc(RequireOwnership = false, RunLocally = true)]
-        public void SeeInvincibiltyServeSpawn()
-        {
-            StartCoroutine(SeeInvincibiltyDelaySpawn());
-        }
-        [ObserversRpc(BufferLast = true, RunLocally = true)]
-        public void SeeInvincibiltyObserverSpawn()
-        {
-            StartCoroutine(SeeInvincibiltyDelaySpawn());
-        }
-        
-        IEnumerator SeeInvincibiltyDelaySpawn()
-        {
-            yield return new WaitForSeconds(2f);
-            PlayerCustomization playerCustomization = GetComponent<PlayerCustomization>();
-            GameObject player = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
-            playerMainBody = playerCustomization.Characters[playerCustomization.GenderIndex].MainBody[playerCustomization.characterIndex[playerCustomization.GenderIndex].MainBodyIndex];
-            player.GetComponent<Outline>().OutlineColor = Color.white;
-
-            player.GetComponent<Outline>().enabled = true;
-
-
+            Outline playerOutline = playerMainBody.GetComponent<Outline>();
+            playerOutline.OutlineColor = Color.white;
+            playerOutline.enabled = true;
 
             yield return new WaitForSeconds(5f);
             if (base.IsOwner)
             {
-                //player.GetComponent<Outline>().enabled = false;
                 if (playerGunSelector.redTeamPlayer)
                     PlayerRespawn.Instance.DisableOutlineRedPlayers();
                 else
                     PlayerRespawn.Instance.DisableOutlineBluePlayers();
-
             }
-            //if (playerGunSelector.redTeamPlayer)
-            //    PlayerRespawn.Instance.DisableOutlineRedPlayers();
-            //else
-            //    PlayerRespawn.Instance.DisableOutlineBluePlayers();
 
-            player.GetComponent<Outline>().OutlineColor = Color.red;
+            playerOutline.OutlineColor = Color.red;
         }
-        public GameObject joystick;
-        public Rect joystickPos;
-        public void SetJoystickPos()
-        {
-            joystick.transform.position = joystickPos.position;
-        }
+      
     }
     
 }

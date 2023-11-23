@@ -51,7 +51,7 @@ public class PlayerHealth : NetworkBehaviour, IDamageable
     }
     private void Start()
     {
-        thirdPersonController.SeeInvincibiltySpawn();
+        
     }
     public override void OnStartNetwork()
     {
